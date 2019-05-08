@@ -1,0 +1,110 @@
+.container {
+  animation: container-rotate 1568ms linear infinite;
+  display: inline-block;
+  line-height: 0;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite
+    both;
+}
+
+.side {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  border-color: inherit;
+}
+
+@mixin spin() {
+  width: 200%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: inherit;
+  border-bottom-color: hsla(0, 0%, 0%, 0);
+  border-radius: 50%;
+}
+
+$unit: 45deg;
+
+.left {
+  @include spin();
+  animation: left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  border-right-color: hsla(0, 0%, 0%, 0);
+  transform: rotate((3 * $unit - 6deg));
+}
+
+.right {
+  @include spin();
+  animation: right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  border-left-color: hsla(0, 0%, 0%, 0);
+  left: -100%;
+  transform: rotate(-3 * $unit + 6deg);
+}
+
+@keyframes container-rotate {
+  100% {
+    transform: rotate((8 * $unit));
+  }
+}
+
+@keyframes fill-unfill-rotate {
+  12.5% {
+    transform: rotate((3 * $unit));
+  }
+  25% {
+    transform: rotate((6 * $unit));
+  }
+  37.5% {
+    transform: rotate((9 * $unit));
+  }
+  50% {
+    transform: rotate((12 * $unit));
+  }
+  62.5% {
+    transform: rotate((15 * $unit));
+  }
+  75% {
+    transform: rotate((18 * $unit));
+  }
+  87.5% {
+    transform: rotate((21 * $unit));
+  }
+  100% {
+    transform: rotate((24 * $unit));
+  }
+}
+
+@keyframes left-spin {
+  0% {
+    transform: rotate((3 * $unit - 5deg));
+  }
+  50% {
+    transform: rotate((0 * $unit - 5deg));
+  }
+  100% {
+    transform: rotate((3 * $unit - 5deg));
+  }
+}
+
+@keyframes right-spin {
+  0% {
+    transform: rotate((-3 * $unit + 5deg));
+  }
+  50% {
+    transform: rotate((0 * $unit + 5deg));
+  }
+  100% {
+    transform: rotate((-3 * $unit + 5deg));
+  }
+}

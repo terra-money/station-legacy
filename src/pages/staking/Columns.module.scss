@@ -1,0 +1,20 @@
+@import '../../styles/variables';
+
+@media (min-width: $breakpoint) and (max-width: 1280px - 1) {
+  .row {
+    flex-wrap: wrap;
+
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
+}
+
+.card {
+  white-space: nowrap;
+}
+
+.header {
+  font-weight: 700;
+}

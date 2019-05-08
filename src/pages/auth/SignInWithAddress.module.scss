@@ -1,0 +1,21 @@
+@import '../../styles/variables';
+
+.list {
+  margin: -5px;
+}
+
+.item {
+  display: inline-block;
+  padding: 5px;
+
+  button {
+    background: #e9edf8;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 10px 12px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

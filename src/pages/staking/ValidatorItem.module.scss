@@ -1,0 +1,72 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.rank {
+  @include flex();
+
+  font-size: 11px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: $line;
+  color: $brand;
+
+  &.top {
+    background: $brand;
+    color: white;
+    font-weight: 500;
+  }
+
+  &.top-1 {
+    background: #d6af36;
+  }
+
+  &.top-2 {
+    background: #a7a7ad;
+  }
+
+  &.top-3 {
+    background: #a77044;
+  }
+}
+
+.name {
+  @include flex(flex-start);
+}
+
+.thumbnail {
+  background: $line;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.divider {
+  width: 20px;
+}
+
+/* Graph */
+.graph {
+  @include flex(flex-end, stretch);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.bar {
+  flex: none;
+}
+
+.undelegation {
+  background-color: fade-out($sky, 0.85);
+}
+
+.delegation {
+  background-color: fade-out($brand, 0.85);
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}

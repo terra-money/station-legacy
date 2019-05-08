@@ -1,0 +1,109 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+$border-bottom: 1px solid fade-out(white, 0.9);
+
+.nav {
+  @include drag();
+  background: $navy;
+
+  @media (min-width: $breakpoint-large) {
+    width: $nav-width-large;
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.header {
+  @include flex(space-between, stretch);
+
+  @media (max-width: $breakpoint-large - 1) {
+    height: $nav-height;
+
+    svg {
+      width: 113px;
+      height: 15px;
+    }
+  }
+
+  @media (min-width: $breakpoint-large) {
+    border-bottom: $border-bottom;
+    height: $nav-height-large;
+  }
+
+  .logo,
+  .toggle {
+    @include flex();
+    color: white;
+
+    @media (max-width: $breakpoint-large - 1) {
+      padding: 0 20px;
+    }
+
+    @media (min-width: $breakpoint-large) {
+      padding: 0 15px;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    svg {
+      fill: white;
+    }
+  }
+
+  .logo {
+    flex: 1;
+
+    @media (max-width: $breakpoint-large - 1) {
+      justify-content: flex-start;
+    }
+
+    @media (min-width: $breakpoint-large) {
+      justify-content: center;
+    }
+  }
+
+  .toggle {
+    flex: none;
+    font-size: 19px;
+
+    @media (min-width: $breakpoint-large) {
+      display: none;
+    }
+  }
+}
+
+.main {
+  @include flex(space-between, stretch);
+  flex-direction: column;
+  background: $navy;
+
+  @media (max-width: $breakpoint-large - 1) {
+    display: none;
+    padding-top: 30px;
+
+    &.open {
+      display: flex;
+    }
+
+    position: fixed;
+    top: $nav-height;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    flex: 1;
+    display: flex;
+    padding-top: 20px;
+  }
+}

@@ -1,0 +1,207 @@
+$border: fade-out($navy, 0.8);
+
+form {
+  > h1 {
+    font-size: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+}
+
+.form-group {
+  position: relative;
+
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+}
+
+.form-check {
+  padding-left: 24px;
+  position: relative;
+
+  input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+  }
+
+  label:before,
+  label:after {
+    background-color: $brand;
+    border-radius: 1px;
+    content: '';
+  }
+
+  label:before {
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: -24px;
+    height: 13px;
+    width: 13px;
+    opacity: 0.2;
+  }
+
+  label:after {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: -21px;
+    height: 7px;
+    width: 7px;
+  }
+
+  :checked ~ label:after {
+    display: block;
+  }
+}
+
+input {
+  border-color: $border;
+}
+
+.form-control {
+  appearance: none;
+  border: 1px solid $border;
+  border-radius: $radius;
+  display: block;
+  font-size: 14px;
+  padding: 0 $gutter;
+  height: 40px;
+  width: 100%;
+  min-width: 1px;
+}
+
+.form-control-md {
+  font-size: 11px;
+  height: 30px;
+  padding: 0 10px;
+  width: 80px;
+}
+
+.form-control-sm {
+  border-radius: 2px;
+  height: 25px;
+  width: auto;
+}
+
+textarea.form-control {
+  padding: 10px $gutter;
+  height: auto;
+}
+
+.form-text {
+  @include flex(flex-start, flex-start);
+
+  font-size: 12px;
+  margin-top: 10px;
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.label-button {
+  @include flex();
+  font-size: 12px;
+
+  i {
+    margin-right: 3px;
+  }
+}
+
+.input-group {
+  @include flex(flex-start, stretch);
+
+  .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .input-group-append {
+    @include flex();
+
+    background: #f4f5fb;
+    border: 1px solid $border;
+    border-left: 0;
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+    font-size: 12px;
+    padding: 0 15px;
+    word-break: initial;
+  }
+}
+
+.invalid-feedback {
+  $border: #ffd5d8;
+  $bg: #fff6f7;
+
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: 5px;
+  color: $red;
+  display: flex;
+  font-size: 12px;
+  padding: 5px 7px;
+  margin-top: 4px;
+
+  i {
+    margin-right: 5px;
+  }
+
+  &.tooltip {
+    position: absolute;
+    bottom: -33px;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      border-style: solid;
+      border-color: transparent;
+
+      position: absolute;
+    }
+
+    $left: 15px;
+
+    &:before {
+      $w: 6px;
+      $h: 10px;
+      width: (2 * $w);
+      height: (2 * $h);
+      border-width: $h $w;
+      border-bottom-color: $border;
+      top: (-2 * $h);
+      left: $left;
+    }
+
+    &:after {
+      $w: 5px;
+      $h: 9px;
+      width: (2 * $w);
+      height: (2 * $h);
+      border-width: $h $w;
+      border-bottom-color: $bg;
+      top: (-2 * $h);
+      left: ($left + 1px);
+    }
+  }
+}

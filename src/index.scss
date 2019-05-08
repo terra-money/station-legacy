@@ -1,0 +1,21 @@
+@import './styles/mixins';
+@import './styles/variables';
+@import './styles/fonts';
+@import './styles/reboot';
+@import './styles/components';
+
+body {
+  @media (min-width: $breakpoint-large) {
+    padding-left: $nav-width-large;
+    padding-top: $nav-height-large;
+  }
+}
+
+.material-icons {
+  font-size: 16px;
+  width: 16px;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}

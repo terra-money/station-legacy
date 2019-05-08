@@ -1,0 +1,9 @@
+.container {
+  cursor: default;
+  display: flex;
+  position: relative;
+
+  &:not(:hover) .tooltip {
+    display: none;
+  }
+}

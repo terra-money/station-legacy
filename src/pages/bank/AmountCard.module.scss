@@ -1,0 +1,51 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.card {
+  display: flex;
+
+  .article {
+    flex: 1;
+  }
+
+  .button {
+    flex: none;
+  }
+}
+
+.article {
+  white-space: nowrap;
+}
+
+.header {
+  @include flex(space-between);
+}
+
+.denom {
+  font-size: 16px;
+}
+
+.action {
+  @include flex();
+}
+
+.amount {
+  @media (max-width: $breakpoint - 1) {
+    font-size: 16px;
+  }
+
+  @media (min-width: $breakpoint) {
+    font-size: 20px;
+  }
+}
+
+.button button {
+  @media (max-width: $breakpoint - 1) {
+    margin-left: 5px;
+    min-width: unset;
+  }
+
+  @media (min-width: $breakpoint) {
+    margin-left: 25px;
+  }
+}

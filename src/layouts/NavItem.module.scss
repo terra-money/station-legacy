@@ -1,0 +1,52 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.link {
+  @include flex(space-between);
+
+  color: fade-out(white, 0.25);
+  width: 100%;
+
+  @media (max-width: $breakpoint-large - 1) {
+    font-size: 26px;
+    padding: 5px 20px;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    font-size: 14px;
+    padding: 15px 25px;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    @media (min-width: $breakpoint-large) {
+      color: white;
+    }
+  }
+
+  i {
+    font-size: 19px;
+    width: 19px;
+  }
+
+  span {
+    @include flex();
+
+    i {
+      margin-right: $gutter;
+    }
+  }
+}
+
+.active {
+  color: white;
+
+  @media (max-width: $breakpoint-large - 1) {
+    font-weight: 500;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    background: fade-out(white, 0.96);
+  }
+}

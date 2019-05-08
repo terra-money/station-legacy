@@ -1,0 +1,96 @@
+$border: 1px solid $line;
+$box-shadow: fade-out(black, 0.95);
+$padding: 25px;
+$padding-small: 20px;
+
+.card {
+  background: white;
+
+  @media (max-width: $breakpoint - 1) {
+    box-shadow: 0 1px 5px 0 $box-shadow;
+
+    & & {
+      border: $border;
+      border-radius: $radius;
+    }
+  }
+
+  @media (min-width: $breakpoint) {
+    border: $border;
+    border-radius: $radius;
+    box-shadow: 0 1px 1px 0 $box-shadow;
+  }
+
+  & & {
+    box-shadow: unset;
+  }
+}
+
+.card-header {
+  @include flex(space-between);
+
+  font-size: 15px;
+  font-weight: 500;
+
+  .card-actions {
+    @include flex();
+    flex: none;
+  }
+
+  .card-small & {
+    font-size: 13px;
+  }
+
+  @media (max-width: $breakpoint - 1) {
+    padding: $gutter;
+  }
+
+  @media (min-width: $breakpoint) {
+    padding: 20px $padding;
+
+    .card-small & {
+      padding: $padding-small;
+    }
+  }
+
+  &.bordered {
+    border-bottom: $border;
+  }
+
+  &.bg {
+    background: $bg-hover;
+  }
+
+  &.collapsed {
+    padding-bottom: 0;
+  }
+}
+
+.card-body {
+  @media (max-width: $breakpoint - 1) {
+    padding: $gutter;
+  }
+
+  @media (min-width: $breakpoint) {
+    padding: $padding;
+
+    .card-small & {
+      padding: $padding-small;
+      padding-top: ($padding-small/ 2);
+    }
+  }
+}
+
+.card-footer {
+  @media (max-width: $breakpoint - 1) {
+    padding: $gutter;
+  }
+
+  @media (min-width: $breakpoint) {
+    padding: $padding;
+
+    .card-small & {
+      padding: $padding-small;
+    }
+  }
+}

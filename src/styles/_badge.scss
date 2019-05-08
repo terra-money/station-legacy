@@ -1,0 +1,54 @@
+.badge {
+  color: $brand;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 22px;
+  height: 22px;
+  border-radius: 11px;
+  padding: 0 12px;
+  min-width: 60px;
+  text-align: center;
+  white-space: nowrap;
+
+  & + & {
+    margin-left: 10px;
+  }
+
+  &[class*='badge-'] {
+    color: white;
+    font-weight: 500;
+  }
+
+  &.badge-light {
+    background: fade-out($brand, 0.9);
+    color: fade-out($brand, 0.25);
+  }
+}
+
+.badge-primary {
+  background: $brand;
+}
+
+.badge-secondary {
+  background: $sky;
+}
+
+.badge-success {
+  background: $green;
+}
+
+.badge-warning {
+  background: $orange;
+}
+
+.badge-danger {
+  background: $red;
+}
+
+.badge-small {
+  font-size: 10px;
+  line-height: 19px;
+  height: 19px;
+  border-radius: (19px / 2);
+}

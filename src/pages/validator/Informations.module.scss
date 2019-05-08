@@ -1,0 +1,31 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.list {
+  @media (max-width: $breakpoint - 1) {
+    li:not(:first-child) {
+      margin-top: 30px;
+    }
+  }
+
+  @media (min-width: $breakpoint) {
+    @include flex(flex-start);
+    flex-wrap: wrap;
+    margin: -15px;
+
+    li {
+      width: 50%;
+      padding: 15px;
+    }
+  }
+
+  h1 {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 9px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+}

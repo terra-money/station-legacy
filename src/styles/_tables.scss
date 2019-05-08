@@ -1,0 +1,45 @@
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  &:not(:last-child) {
+    padding-right: $gutter;
+  }
+}
+
+th {
+  font-size: 12px;
+
+  thead & {
+    padding-bottom: 10px;
+  }
+}
+
+td {
+  font-size: 13px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: relative;
+
+  thead + tbody & {
+    border-top: 1px solid $line;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .table-sm & {
+    padding: 10px 0;
+  }
+
+  .table-light & {
+    border-color: fade-out($line, 0.95);
+  }
+}

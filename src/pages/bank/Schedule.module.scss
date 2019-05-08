@@ -1,0 +1,111 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+$border: #cdd5ee;
+
+.component {
+  @media (min-width: $breakpoint) {
+    @include flex(flex-start, stretch);
+  }
+
+  > :last-child {
+    flex: 1;
+  }
+}
+
+.component:not(:last-child) {
+  > :last-child {
+    @media (max-width: $breakpoint - 1) {
+      padding-bottom: 40px;
+    }
+
+    @media (min-width: $breakpoint) {
+      padding-bottom: 60px;
+    }
+  }
+
+  @media (min-width: $breakpoint) {
+    /* line */
+    .dot:before {
+      content: '';
+      display: block;
+      background: $border;
+      width: 2px;
+
+      position: absolute;
+      top: 20px;
+      bottom: 0;
+      left: ((20px - 2px) / 2);
+      z-index: 0;
+    }
+  }
+}
+
+.status {
+  display: flex;
+
+  @media (max-width: $breakpoint - 1) {
+    margin-bottom: 10px;
+  }
+}
+
+.dot {
+  width: 30px;
+  position: relative;
+}
+
+.circle {
+  @include flex();
+  border-radius: 50%;
+  color: white;
+  width: 20px;
+  height: 20px;
+
+  &:not(:empty) {
+    background: $brand;
+  }
+
+  &:empty {
+    border: 2px solid $border;
+  }
+}
+
+.percent {
+  font-size: 13px;
+  font-weight: bold;
+  width: 70px;
+}
+
+.header {
+  h1 {
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 12px;
+    margin-bottom: 10px;
+
+    @media (max-width: $breakpoint - 1) {
+      white-space: pre-line;
+    }
+  }
+
+  strong {
+    font-weight: 500;
+  }
+}
+
+.track,
+.progress {
+  height: 5px;
+  border-radius: 2.5px;
+}
+
+.track {
+  background-color: #d2d9f0;
+}
+
+.progress {
+  background-color: $brand;
+}

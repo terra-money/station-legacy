@@ -1,0 +1,38 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.component {
+  background: darken($navy, 3%);
+  color: white;
+  padding: 20px;
+}
+
+/* Select */
+.select {
+  border-radius: 2px;
+  border: 1px solid #415e9f;
+  font-size: 12px;
+  padding: 0 10px;
+  text-transform: capitalize;
+  height: 30px;
+}
+
+/* Connect */
+.connect {
+  @include flex(space-between);
+  color: #76a8f8;
+  font-size: 11px;
+  margin-top: 10px;
+}
+
+.status {
+  i {
+    margin-right: 5px;
+  }
+}
+
+.height {
+  i {
+    margin-left: 5px;
+  }
+}

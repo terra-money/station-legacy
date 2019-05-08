@@ -1,0 +1,135 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  -ms-overflow-style: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+body {
+  background: #f8f9fe;
+  color: $brand;
+  font-family: 'Gotham', sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-break: break-word;
+  -webkit-tap-highlight-color: transparent;
+}
+
+hr {
+  margin-top: $gutter;
+  margin-bottom: $gutter;
+  border: 0;
+  border-top: 1px solid $line;
+}
+
+a {
+  color: $sky;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+strong,
+.strong {
+  font-weight: 500;
+}
+
+small {
+  font-size: 75%;
+}
+
+h1,
+h2 {
+  font-size: inherit;
+  font-weight: 500;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+dl {
+  @include flex();
+  flex-wrap: wrap;
+  margin: 0;
+
+  dt,
+  dd {
+    margin: 0;
+    width: 50%;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+}
+
+button,
+input,
+textarea,
+select {
+  border: 0;
+  outline: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button,
+a {
+  user-select: none;
+}
+
+button:not(:disabled),
+select:not(:disabled) {
+  cursor: pointer;
+}
+
+input,
+textarea {
+  resize: none;
+
+  &::placeholder {
+    color: fade-out($brand, 0.7);
+  }
+
+  &:read-only {
+    border-color: $line;
+    background: $line;
+  }
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+option {
+  color: $brand;
+}

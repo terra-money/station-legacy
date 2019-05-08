@@ -1,0 +1,17 @@
+@import '../../styles/mixins';
+
+.card {
+  h1 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .content {
+    margin-bottom: 10px;
+  }
+}
+
+.pop {
+  @include flex();
+}

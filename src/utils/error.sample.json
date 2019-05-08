@@ -1,0 +1,8 @@
+[
+  {
+    "error": "{\"codespace\":\"sdk\",\"code\":12,\"message\":\"out of gas in location: ReadFlat; gasWanted: 33333, gasUsed: 33964\"}"
+  },
+  {
+    "error": "[{\"msg_index\":\"0\",\"success\":false,\"log\":\"{\\\"codespace\\\":\\\"staking\\\",\\\"code\\\":102,\\\"message\\\":\\\"too many unbonding delegation entries in this delegator/validator duo, please wait for some entries to mature\\\"}\"}]"
+  }
+]

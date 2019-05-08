@@ -1,0 +1,45 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.container {
+  @media (max-width: $breakpoint - 1) {
+    @include flex(flex-start, stretch);
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.actions {
+  @include flex(space-between);
+  flex-direction: row-reverse;
+
+  button {
+    @include flex();
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.right {
+  @include flex();
+
+  button + button {
+    margin-left: 15px;
+  }
+}
+
+.main {
+  @include flex();
+  flex: 1;
+
+  @media (min-width: $breakpoint) {
+    padding: 25px;
+    padding-top: 15px;
+  }
+}
+
+.inner {
+  flex: 1;
+}

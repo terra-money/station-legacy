@@ -1,0 +1,80 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.header {
+  @include flex();
+
+  @media (max-width: $breakpoint - 1) {
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.thumbnail {
+  flex: none;
+  border-radius: 50%;
+  background: $line;
+
+  @media (min-width: $breakpoint) {
+    margin-right: 15px;
+  }
+
+  @media (max-width: $breakpoint - 1) {
+    margin-bottom: 30px;
+  }
+}
+
+.moniker {
+  @include flex();
+
+  @media (max-width: $breakpoint - 1) {
+    font-size: 16px;
+  }
+
+  @media (min-width: $breakpoint) {
+    justify-content: flex-start;
+    font-size: 24px;
+  }
+
+  font-weight: 500;
+
+  .status {
+    margin-left: 10px;
+    text-transform: capitalize;
+  }
+}
+
+.p {
+  font-size: 13px;
+  font-weight: normal;
+  margin-top: 10px;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+
+  @media (max-width: $breakpoint - 1) {
+    article {
+      width: 50%;
+    }
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 30px;
+    font-weight: 300;
+  }
+
+  hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    max-width: 170px;
+  }
+}

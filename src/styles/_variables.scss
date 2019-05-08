@@ -1,0 +1,24 @@
+/* Colors */
+$navy: #0c3694;
+$brand: #2043b5;
+$sky: #5493f7;
+$line: #e7ebf6;
+
+$green: #1daa8e;
+$red: #ff5561;
+$orange: #fd9a02;
+
+$bg-hover: fade-out($brand, 0.98);
+
+/* Sizes */
+$breakpoint: 768px;
+$breakpoint-large: 1024px;
+$gutter: 20px;
+$gutter-large: 30px;
+$radius: 5px;
+$max-width: (1180px + (2 * $gutter-large));
+
+/* Copmonents */
+$nav-height: 55px;
+$nav-height-large: 68px;
+$nav-width-large: 240px;

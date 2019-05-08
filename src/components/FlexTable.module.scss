@@ -1,0 +1,60 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.container {
+  overflow-x: auto;
+}
+
+.table {
+  @media (max-width: $breakpoint - 1) {
+    height: initial !important;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  flex: none;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 1px solid $line;
+}
+
+.body {
+  flex: 1;
+  font-size: 13px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.bordered .row:not(:first-child) {
+  border-top: 1px solid $line;
+}
+
+.row {
+  @include flex(space-between, stretch);
+
+  .head & {
+    padding-bottom: 12px;
+  }
+
+  .body & {
+    height: 56px;
+
+    .hover &:hover {
+      background: $bg-hover;
+    }
+  }
+}
+
+.cell {
+  @include flex(stretch);
+  flex: none;
+
+  &.right {
+    justify-content: flex-end;
+  }
+}

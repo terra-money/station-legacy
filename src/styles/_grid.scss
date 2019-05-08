@@ -1,0 +1,85 @@
+$margin: 10px;
+$margin-large: 20px;
+
+.row {
+  @media (max-width: $breakpoint - 1) {
+    margin: -$margin;
+  }
+
+  @media (min-width: $breakpoint) {
+    @include flex(flex-start, stretch);
+    margin: -($margin-large / 2);
+  }
+
+  .col {
+    @media (max-width: $breakpoint - 1) {
+      padding: $margin;
+    }
+
+    @media (min-width: $breakpoint) {
+      flex: 1;
+      padding: ($margin-large / 2);
+    }
+
+    .card {
+      height: 100%;
+    }
+  }
+
+  .col-2 {
+    @media (min-width: $breakpoint) {
+      flex: none;
+      width: (100% * 2 / 12);
+    }
+  }
+
+  .col-4 {
+    @media (min-width: $breakpoint) {
+      flex: none;
+      width: (100% * 4 / 12);
+    }
+  }
+
+  .col-5 {
+    @media (min-width: $breakpoint) {
+      flex: none;
+      width: (100% * 5 / 12);
+    }
+  }
+
+  .col-6 {
+    @media (min-width: $breakpoint) {
+      flex: none;
+      width: (100% * 6 / 12);
+    }
+  }
+
+  .col-8 {
+    @media (min-width: $breakpoint) {
+      flex: none;
+      width: (100% * 8 / 12);
+    }
+  }
+
+  & + & {
+    @media (max-width: $breakpoint - 1) {
+      margin-top: $margin;
+    }
+
+    @media (min-width: $breakpoint) {
+      margin-top: ($margin-large / 2);
+    }
+  }
+}
+
+.row + .card,
+.card + .row,
+.card + .card {
+  @media (max-width: $breakpoint - 1) {
+    margin-top: (2 * $margin);
+  }
+
+  @media (min-width: $breakpoint) {
+    margin-top: $margin-large;
+  }
+}

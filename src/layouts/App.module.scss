@@ -1,0 +1,13 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.content {
+  @media (max-width: $breakpoint - 1) {
+    padding: $gutter 0;
+  }
+
+  @media (min-width: $breakpoint) {
+    padding: 25px $gutter-large;
+    max-width: $max-width;
+  }
+}

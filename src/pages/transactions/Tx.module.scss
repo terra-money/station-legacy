@@ -1,0 +1,70 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.header {
+  font-weight: normal;
+  padding: 13px 20px;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint - 1) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.hash {
+  @include truncate();
+  font-size: 11px;
+  flex: 1;
+}
+
+.date {
+  @include flex();
+  flex: none;
+  font-size: 12px;
+
+  i {
+    margin-right: 8px;
+  }
+
+  @media (max-width: $breakpoint - 1) {
+    margin-top: 8px;
+  }
+}
+
+.body {
+  padding: 20px;
+}
+
+.message {
+  @media (min-width: $breakpoint) {
+    @include flex(flex-start);
+  }
+}
+
+.tag {
+  text-transform: capitalize;
+  margin-right: 10px;
+
+  @media (max-width: $breakpoint - 1) {
+    margin-bottom: 5px;
+  }
+}
+
+.details {
+  font-size: 12px;
+
+  li {
+    display: flex;
+    word-break: break-all;
+  }
+
+  li:not(:last-child) {
+    padding-bottom: 8px;
+  }
+
+  strong {
+    flex: none;
+    width: 80px;
+  }
+}

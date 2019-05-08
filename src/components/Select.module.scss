@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(0, -50%);
+    pointer-events: none;
+  }
+}

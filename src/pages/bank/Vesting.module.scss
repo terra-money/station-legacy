@@ -1,0 +1,25 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.schedules {
+  border-top: 1px solid $line;
+  margin-top: 20px;
+
+  @media (max-width: $breakpoint - 1) {
+    padding-top: 20px;
+  }
+
+  @media (min-width: $breakpoint) {
+    padding-top: 40px;
+  }
+}
+
+.button {
+  @include flex();
+
+  border: 1px solid #eee;
+  border-radius: 50%;
+  margin-top: ((30px - 24px) / 2);
+  width: 24px;
+  height: 24px;
+}

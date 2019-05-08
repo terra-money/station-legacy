@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+
+.select {
+  margin-left: 10px;
+}
+
+.body {
+  padding-top: 0;
+}
+
+.header {
+  @include flex(flex-start);
+  font-size: 13px;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,27 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.component {
+  @include flex();
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.input {
+  @include flex();
+  width: 13px;
+  height: 13px;
+  border-radius: 1px;
+  background: fade-out($brand, 0.8);
+  margin-right: 10px;
+}
+
+.checked:after {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: $brand;
+}

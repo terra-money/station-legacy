@@ -1,0 +1,19 @@
+@import "https://cloud.typography.com/7420256/6416592/css/fonts.css";
+
+table,
+pre {
+  font-family: monospace, monospace !important;
+  font-weight: normal !important;
+  font-size: 13px !important;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #dee2e6;
+  padding: 8px;
+}
