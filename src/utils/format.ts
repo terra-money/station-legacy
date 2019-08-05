@@ -34,7 +34,7 @@ export default {
     const formatted = config.toLocale
       ? dt.setLocale('en').toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)
       : dt.toFormat('yyyy.MM.dd HH:mm:ss')
-    return param ? `${formatted} (${dt.offsetNameShort})` : ''
+    return param ? `${formatted} (${dt.offsetNameShort || 'Local'})` : ''
   },
 
   truncate: (address: string = '', [h, t]: number[]) => {
