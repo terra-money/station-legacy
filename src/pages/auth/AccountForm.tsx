@@ -264,7 +264,7 @@ const sanitize = (s: string) =>
   s
     .trim()
     .toLowerCase()
-    .replace(/[^a-z\d]/g, '')
+    .replace(/[^a-z\d-_]/g, '')
 
 const isNameExists = (name: string): boolean => {
   const keys = loadKeys()
