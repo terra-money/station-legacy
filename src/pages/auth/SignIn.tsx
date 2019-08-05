@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { loadKeys, testPassword } from '../../utils/localStorage'
 import { useForm, useAuth } from '../../hooks'
 import ModalContent from '../../components/ModalContent'
+import InvalidFeedback from '../../components/InvalidFeedback'
 import Select from '../../components/Select'
 import Divider from '../../components/Divider'
 import useModalActions from './useModalActions'
@@ -17,17 +18,24 @@ const SignIn = () => {
   /* form */
   type Values = { index: number; password: string }
   const initial = { index: 0, password: '' }
-  const { values, handleChange } = useForm<Values>({ initial })
+  const { values, changeValue, handleChange } = useForm<Values>({ initial })
   const { index, password } = values
 
   /* sign in */
+  const [incorrect, setIncorrect] = useState<string>('')
+
+  const handleChangePassword = (password: string) => {
+    setIncorrect('')
+    changeValue({ password })
+  }
+
   const submit: Submit = e => {
     e.preventDefault()
 
     const { name, address } = accounts[index]
     testPassword(name, password)
       ? auth.signin({ name, address })
-      : alert(`Signing In Failed\nPassword Error`)
+      : setIncorrect('Incorrect password')
   }
 
   /* render */
@@ -76,12 +84,15 @@ const SignIn = () => {
                 type="password"
                 name="password"
                 value={password}
-                onChange={handleChange}
+                onChange={e => handleChangePassword(e.target.value)}
                 placeholder="Must be at least 10 characters"
                 className="form-control"
                 autoComplete="off"
                 autoFocus
               />
+              {incorrect && (
+                <InvalidFeedback tooltip>{incorrect}</InvalidFeedback>
+              )}
             </section>
 
             <Divider />
