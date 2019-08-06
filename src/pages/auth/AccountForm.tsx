@@ -218,8 +218,12 @@ const AccountForm = ({ title, initial, generated }: Props) => {
             width="100%"
             content="We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Station doesn't store any data."
           >
-            <Icon name="error" />
-            <strong>What if I lost my seed phrase?</strong>
+            {() => (
+              <>
+                <Icon name="error" />
+                <strong>What if I lost my seed phrase?</strong>
+              </>
+            )}
           </Pop>
         )}
 

@@ -88,8 +88,12 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
             </p>
           }
         >
-          <Icon name="info" />
-          How can I create an account?
+          {() => (
+            <>
+              <Icon name="info" />
+              How can I create an account?
+            </>
+          )}
         </Pop>
       )}
     </ModalContent>

@@ -46,10 +46,12 @@ const Bank = () => {
                       placement="top"
                       content={<p className={s.tooltip}>{TOOLTIP}</p>}
                     >
-                      <Flex>
-                        Vesting
-                        <Icon name="info" className={s.icon} />
-                      </Flex>
+                      {() => (
+                        <Flex>
+                          Vesting
+                          <Icon name="info" className={s.icon} />
+                        </Flex>
+                      )}
                     </Pop>
                   }
                 >

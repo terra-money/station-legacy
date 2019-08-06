@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import c from 'classnames'
 import s from './Pop.module.scss'
 
@@ -15,10 +15,15 @@ export const Tooltip = ({ placement, width, content, className }: Tooltip) => (
   </div>
 )
 
-type Pop = { type: 'pop' | 'tooltip'; className?: string }
-const Pop: FC<Tooltip & Pop> = ({ className, children, ...tooltip }) => (
+type Pop = {
+  type: 'pop' | 'tooltip'
+  className?: string
+  children: () => ReactNode
+}
+
+const Pop = ({ className, children, ...tooltip }: Tooltip & Pop) => (
   <div className={c(s.container, className)}>
-    {children}
+    {children()}
     <Tooltip className={s.tooltip} {...tooltip} />
   </div>
 )

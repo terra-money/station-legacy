@@ -20,7 +20,7 @@ const ButtonWithName = ({ bottom, ...attrs }: Props) => {
         </p>
       }
     >
-      <button {...attrs} disabled />
+      {() => <button {...attrs} disabled />}
     </Pop>
   )
 }
