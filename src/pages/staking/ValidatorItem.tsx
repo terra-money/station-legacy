@@ -34,12 +34,10 @@ const renderItem = ({ validator, rank, total }: Props) => {
 
     return hasData ? (
       <Pop
-        tooltip={{
-          bottom: true,
-          style: { width: 400, bottom: -5 },
-          contentStyle: { left: -100 },
-          content: <DelegationTooltip {...validator} />
-        }}
+        type="tooltip"
+        placement="bottom"
+        width={400}
+        content={<DelegationTooltip {...validator} />}
         className={s.graph}
       >
         <div

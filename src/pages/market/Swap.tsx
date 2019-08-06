@@ -156,10 +156,10 @@ const Swap = ({ denoms, getMax }: Props) => {
           const spread = [min, max].map(n => percent(n, 0)).join('~')
           return (
             <Pop
-              tooltip={{
-                style: { width: 280 },
-                content: `${spread} of spread will be taken into account regarding LUNA swapping.`
-              }}
+              type="tooltip"
+              placement="top"
+              width={280}
+              content={`${spread} of spread will be taken into account regarding LUNA swapping.`}
             >
               <Icon name="info" className={s.icon} />
             </Pop>

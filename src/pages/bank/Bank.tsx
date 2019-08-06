@@ -42,10 +42,9 @@ const Bank = () => {
                 <Card
                   title={
                     <Pop
-                      tooltip={{
-                        content: TOOLTIP,
-                        contentStyle: { whiteSpace: 'pre' }
-                      }}
+                      type="tooltip"
+                      placement="top"
+                      content={<p className={s.tooltip}>{TOOLTIP}</p>}
                     >
                       <Flex>
                         Vesting

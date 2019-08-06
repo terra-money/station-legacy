@@ -54,12 +54,11 @@ const Actions = (v: Validator) => {
           <h1>My delegation</h1>
           <section className={s.content}>
             <Pop
+              type="pop"
+              placement="bottom"
+              width={400}
+              content={<DelegationTooltip {...v} />}
               className={s.pop}
-              tooltip={{
-                bottom: true,
-                style: { width: 400, bottom: -5 },
-                content: <DelegationTooltip {...v} />
-              }}
             >
               <Amount denom="uluna" fontSize={18}>
                 {v.myDelegation}

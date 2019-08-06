@@ -66,13 +66,10 @@ const Columns = (props: Staking) => {
         <Card title={title} className={s.card} headerClassName={s.header} small>
           {tooltip ? (
             <Pop
-              tooltip={{
-                bottom: true,
-                large: true,
-                style: { width },
-                contentStyle: { left: -50 },
-                content: tooltip
-              }}
+              type="pop"
+              placement="bottom"
+              width={width}
+              content={<div className={s.tooltip}>{tooltip}</div>}
             >
               <Flex>
                 {content}
