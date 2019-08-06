@@ -20,7 +20,11 @@ const ButtonWithName = ({ bottom, ...attrs }: Props) => {
         </p>
       }
     >
-      {() => <button {...attrs} disabled />}
+      {({ getAttrs }) => (
+        <span {...getAttrs({ className: s.wrapper })}>
+          <button {...attrs} disabled />
+        </span>
+      )}
     </Pop>
   )
 }

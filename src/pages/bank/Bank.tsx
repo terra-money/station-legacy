@@ -46,8 +46,8 @@ const Bank = () => {
                       placement="top"
                       content={<p className={s.tooltip}>{TOOLTIP}</p>}
                     >
-                      {() => (
-                        <Flex>
+                      {({ getAttrs }) => (
+                        <Flex {...getAttrs({})}>
                           Vesting
                           <Icon name="info" className={s.icon} />
                         </Flex>

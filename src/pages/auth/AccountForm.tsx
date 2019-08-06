@@ -8,6 +8,7 @@ import { useForm, useAuth } from '../../hooks'
 import Pop from '../../components/Pop'
 import Icon from '../../components/Icon'
 import Copy from '../../components/Copy'
+import Flex from '../../components/Flex'
 import ModalContent from '../../components/ModalContent'
 import InvalidFeedback from '../../components/InvalidFeedback'
 import Divider from '../../components/Divider'
@@ -218,11 +219,11 @@ const AccountForm = ({ title, initial, generated }: Props) => {
             width="100%"
             content="We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Station doesn't store any data."
           >
-            {() => (
-              <>
+            {({ getAttrs }) => (
+              <Flex {...getAttrs({})}>
                 <Icon name="error" />
                 <strong>What if I lost my seed phrase?</strong>
-              </>
+              </Flex>
             )}
           </Pop>
         )}

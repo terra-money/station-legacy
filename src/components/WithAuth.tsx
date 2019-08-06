@@ -10,7 +10,7 @@ const WithAuth: FC<Props> = ({ card, children }) => {
   const { address } = useAuth()
 
   const signIn = (
-    <span onClick={authModal.open} className="clickable">
+    <span onClick={authModal.open} className="text-secondary clickable">
       sign in
     </span>
   )

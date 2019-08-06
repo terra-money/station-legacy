@@ -1,29 +1,14 @@
 @import '../styles/variables';
 
-.container {
+.reference {
   cursor: default;
-  display: flex;
-  position: relative;
-
-  &:not(:hover) .tooltip {
-    display: none;
-  }
 }
 
 /* tooltip */
 .tooltip {
   position: absolute;
-  left: 50%;
-
-  &.top {
-    top: 0;
-    transform: translate(-50%, -100%);
-  }
-
-  &.bottom {
-    bottom: 0;
-    transform: translate(-50%, 100%);
-  }
+  top: 0;
+  left: 0;
 
   z-index: 1000;
   min-width: 80px;
