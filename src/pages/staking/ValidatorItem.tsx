@@ -40,15 +40,19 @@ const renderItem = ({ validator, rank, total }: Props) => {
         content={<DelegationTooltip {...validator} />}
         className={s.graph}
       >
-        <div
-          className={c(s.bar, s.undelegation)}
-          style={{ width: getWidth(myUndelegationAmount) }}
-        />
-        <div
-          className={c(s.bar, s.delegation)}
-          style={{ width: getWidth(myDelegation) }}
-        />
-        {number}
+        {() => (
+          <>
+            <div
+              className={c(s.bar, s.undelegation)}
+              style={{ width: getWidth(myUndelegationAmount) }}
+            />
+            <div
+              className={c(s.bar, s.delegation)}
+              style={{ width: getWidth(myDelegation) }}
+            />
+            {number}
+          </>
+        )}
       </Pop>
     ) : (
       <div className={s.graph}>{number}</div>
