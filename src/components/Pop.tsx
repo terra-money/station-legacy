@@ -1,11 +1,22 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import c from 'classnames'
-import Tooltip, { Props as TooltipProps } from './Tooltip'
 import s from './Pop.module.scss'
 
-type Props = { className?: string; tooltip: TooltipProps }
+type Tooltip = {
+  placement: 'top' | 'bottom'
+  width?: string | number
+  className?: string
+  content: ReactNode
+}
 
-const Pop: FC<Props> = ({ className, tooltip, children }) => (
+export const Tooltip = ({ placement, width, content, className }: Tooltip) => (
+  <div className={c(s.tooltip, s[placement], className)} style={{ width }}>
+    <div className={c(s.content)}>{content}</div>
+  </div>
+)
+
+type Pop = { type: 'pop' | 'tooltip'; className?: string }
+const Pop: FC<Tooltip & Pop> = ({ className, children, ...tooltip }) => (
   <div className={c(s.container, className)}>
     {children}
     <Tooltip className={s.tooltip} {...tooltip} />

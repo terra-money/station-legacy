@@ -76,17 +76,17 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
 
       {!isElectron && (
         <Pop
+          type="pop"
           className={s.footer}
-          tooltip={{
-            style: { width: 380 },
-            content: (
-              <p className={s.tooltip}>
-                If you want to create an account, please download {TerraStation}
-                . We don't support creating an account for Terra Station web due
-                to the security reasons.
-              </p>
-            )
-          }}
+          placement="top"
+          width={380}
+          content={
+            <p className={s.tooltip}>
+              If you want to create an account, please download {TerraStation}.
+              We don't support creating an account for Terra Station web due to
+              the security reasons.
+            </p>
+          }
         >
           <Icon name="info" />
           How can I create an account?
