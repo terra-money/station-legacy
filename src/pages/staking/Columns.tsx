@@ -71,8 +71,8 @@ const Columns = (props: Staking) => {
               width={width}
               content={<div className={s.tooltip}>{tooltip}</div>}
             >
-              {() => (
-                <Flex>
+              {({ getAttrs }) => (
+                <Flex {...getAttrs({})}>
                   {content}
                   <Icon name="arrow_drop_down" />
                 </Flex>

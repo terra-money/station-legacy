@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import c from 'classnames'
 import s from './Pop.module.scss'
 
@@ -17,15 +17,50 @@ export const Tooltip = ({ placement, width, content, className }: Tooltip) => (
 
 type Pop = {
   type: 'pop' | 'tooltip'
-  className?: string
-  children: () => ReactNode
+  children: (Params: {
+    getAttrs: (attrs: {
+      className?: string
+    }) => {
+      onClick?: () => void
+      onMouseEnter?: () => void
+      onMouseLeave?: () => void
+    }
+  }) => ReactNode
 }
 
-const Pop = ({ className, children, ...tooltip }: Tooltip & Pop) => (
-  <div className={c(s.container, className)}>
-    {children()}
-    <Tooltip className={s.tooltip} {...tooltip} />
-  </div>
-)
+const Pop = ({ type, children, ...tooltip }: Tooltip & Pop) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const open = () => setIsOpen(true)
+  const close = () => setIsOpen(false)
+  const toggle = () => setIsOpen(!isOpen)
+
+  const getAttrs = (attrs: { className?: string }) =>
+    Object.assign(
+      {},
+      attrs,
+      {
+        className: c(
+          attrs.className,
+          { tooltip: s.reference, pop: 'clickable' }[type]
+        )
+      },
+      {
+        tooltip: {
+          onMouseEnter: !isOpen ? open : undefined,
+          onMouseLeave: isOpen ? close : undefined
+        },
+        pop: {
+          onClick: toggle
+        }
+      }[type]
+    )
+
+  return (
+    <>
+      {children({ getAttrs })}
+      {isOpen && <Tooltip className={s.tooltip} {...tooltip} />}
+    </>
+  )
+}
 
 export default Pop

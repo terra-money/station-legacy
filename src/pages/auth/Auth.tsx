@@ -88,11 +88,11 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
             </p>
           }
         >
-          {() => (
-            <>
+          {({ getAttrs }) => (
+            <button {...getAttrs({})}>
               <Icon name="info" />
               How can I create an account?
-            </>
+            </button>
           )}
         </Pop>
       )}

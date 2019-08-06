@@ -6,6 +6,7 @@ import Modal from '../../components/Modal'
 import Amount from '../../components/Amount'
 import Icon from '../../components/Icon'
 import Pop from '../../components/Pop'
+import Flex from '../../components/Flex'
 import Delegate from '../staking/Delegate'
 import Withdraw from '../staking/Withdraw'
 import Claim from '../staking/Claim'
@@ -60,13 +61,13 @@ const Actions = (v: Validator) => {
               content={<DelegationTooltip {...v} />}
               className={s.pop}
             >
-              {() => (
-                <>
+              {({ getAttrs }) => (
+                <Flex {...getAttrs({})}>
                   <Amount denom="uluna" fontSize={18}>
                     {v.myDelegation}
                   </Amount>
                   <Icon name="arrow_drop_down" />
-                </>
+                </Flex>
               )}
             </Pop>
           </section>
