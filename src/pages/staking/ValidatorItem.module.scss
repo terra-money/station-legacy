@@ -50,6 +50,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  border-left: solid 1px lighten($hairline, 2%);
 }
 
 .bar {
@@ -67,6 +68,6 @@
 .number {
   position: absolute;
   top: 50%;
-  right: 0;
+  right: 10px;
   transform: translate(0, -50%);
 }
