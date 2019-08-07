@@ -35,6 +35,7 @@
     background: $bg-hover;
   }
 
+  &.disabled,
   &:disabled {
     i,
     h1 {
