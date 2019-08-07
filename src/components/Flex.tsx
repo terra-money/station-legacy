@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
+import React, { FC, RefObject } from 'react'
 import c from 'classnames'
 
-const Flex: FC<{ className?: string }> = ({ className, ...attrs }) => (
-  <div className={c('flex', className)} {...attrs} />
+type Attrs = { className?: string; forwardRef?: RefObject<HTMLElement> }
+const Flex: FC<Attrs> = ({ className, forwardRef, ...attrs }) => (
+  <span {...attrs} className={c('flex', className)} ref={forwardRef} />
 )
 
 export default Flex

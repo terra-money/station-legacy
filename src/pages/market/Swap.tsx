@@ -161,8 +161,12 @@ const Swap = ({ denoms, getMax }: Props) => {
               width={280}
               content={`${spread} of spread will be taken into account regarding LUNA swapping.`}
             >
-              {({ getAttrs }) => (
-                <Icon name="info" {...getAttrs({ className: s.icon })} />
+              {({ ref, getAttrs }) => (
+                <Icon
+                  name="info"
+                  forwardRef={ref}
+                  {...getAttrs({ className: s.icon })}
+                />
               )}
             </Pop>
           )

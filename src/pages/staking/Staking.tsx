@@ -21,7 +21,9 @@ const Staking = () => {
 
     const button = address && (
       <ButtonWithName
-        bottom
+        placement="bottom"
+        className="btn btn-primary btn-sm"
+        disabled={!name || !(rewards && gte(rewards.total, 1))}
         onClick={() =>
           rewards &&
           modal.open(
@@ -32,8 +34,6 @@ const Staking = () => {
             />
           )
         }
-        className="btn btn-primary btn-sm"
-        disabled={!name || !(rewards && gte(rewards.total, 1))}
       >
         Withdraw All Rewards
       </ButtonWithName>

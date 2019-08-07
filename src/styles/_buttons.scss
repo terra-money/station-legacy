@@ -12,6 +12,11 @@
   & + & {
     margin-left: 10px;
   }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 a.btn {
@@ -38,10 +43,6 @@ a.btn {
   &:hover:not(:disabled) {
     background: darken($brand, 5%);
   }
-
-  &:disabled {
-    opacity: 0.5;
-  }
 }
 
 .btn-sky {
@@ -50,10 +51,6 @@ a.btn {
 
   &:hover:not(:disabled) {
     background: darken($sky, 5%);
-  }
-
-  &:disabled {
-    opacity: 0.5;
   }
 }
 
@@ -64,10 +61,6 @@ a.btn {
   &:hover:not(:disabled) {
     background: darken($red, 5%);
   }
-
-  &:disabled {
-    opacity: 0.5;
-  }
 }
 
 .btn-light {
@@ -76,10 +69,6 @@ a.btn {
 
   &:hover:not(:disabled) {
     background: darken($line, 5%);
-  }
-
-  &:disabled {
-    opacity: 0.5;
   }
 }
 

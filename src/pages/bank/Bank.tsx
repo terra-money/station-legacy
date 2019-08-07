@@ -4,17 +4,10 @@ import WithRequest from '../../components/WithRequest'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
 import Info from '../../components/Info'
-import Icon from '../../components/Icon'
-import Flex from '../../components/Flex'
-import Pop from '../../components/Pop'
 import WithAuth from '../../components/WithAuth'
 import Address from './Address'
-import Vesting from './Vesting'
 import AvailableList from './AvailableList'
-import s from './Bank.module.scss'
-
-const TOOLTIP = `This displays your investment with Terra.
-Vested Luna can be delegated in the meantime.`
+import VestingList from './VestingList'
 
 const Bank = () => {
   const { address } = useAuth()
@@ -38,28 +31,7 @@ const Bank = () => {
                 </Card>
               )}
 
-              {!!vesting.length && (
-                <Card
-                  title={
-                    <Pop
-                      type="tooltip"
-                      placement="top"
-                      content={<p className={s.tooltip}>{TOOLTIP}</p>}
-                    >
-                      {({ getAttrs }) => (
-                        <Flex {...getAttrs({})}>
-                          Vesting
-                          <Icon name="info" className={s.icon} />
-                        </Flex>
-                      )}
-                    </Pop>
-                  }
-                >
-                  {vesting.map((v, i) => (
-                    <Vesting {...v} key={i} />
-                  ))}
-                </Card>
-              )}
+              {!!vesting.length && <VestingList list={vesting} />}
             </>
           )}
         </WithRequest>

@@ -5,6 +5,7 @@
 }
 
 /* tooltip */
+.pop,
 .tooltip {
   position: absolute;
   top: 0;
@@ -12,23 +13,26 @@
 
   z-index: 1000;
   min-width: 80px;
+}
 
-  &.top:after,
-  &.bottom:before {
-    $size: 6px;
-    content: '';
-    display: block;
-    width: (2 * $size);
-    height: (2 * $size);
-    border: $size solid transparent;
-    margin: 0 auto;
-  }
+.tooltip {
+  pointer-events: none;
+}
 
-  &.top:after {
+.arrow {
+  $size: 6px;
+  content: '';
+  display: block;
+  width: (2 * $size);
+  height: (2 * $size);
+  border: $size solid transparent;
+  margin: 0 auto;
+
+  &.top {
     border-top-color: $brand;
   }
 
-  &.bottom:before {
+  &.bottom {
     border-bottom-color: $brand;
   }
 }
@@ -46,4 +50,8 @@
   @media (max-width: $breakpoint - 1) {
     left: initial !important;
   }
+}
+
+.hidden {
+  visibility: hidden;
 }
