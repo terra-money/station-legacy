@@ -1,6 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react'
 import { without } from 'ramda'
-import c from 'classnames'
 import api from '../../api/api'
 import { minus, times, gt, gte, percent } from '../../api/math'
 import v from '../../api/validate'
@@ -17,6 +16,7 @@ import WithRequest from '../../components/WithRequest'
 import ButtonWithName from '../../components/ButtonWithName'
 import Divider from '../../components/Divider'
 import SwapModal from './SwapModal'
+import { ReactComponent as SwapIcon } from '../../helpers/Swap.svg'
 import s from './Swap.module.scss'
 
 type Props = { denoms: string[]; getMax: (denom: string) => string }
@@ -248,8 +248,9 @@ const Swap = ({ denoms, getMax }: Props) => {
             <section className="col col-5">{renderLeft()}</section>
 
             <section className="col col-2">
-              <p className={c(s.arrow, 'desktop')}>→</p>
-              <p className={c(s.arrow, 'mobile')}>↓</p>
+              <div className={s.arrow}>
+                <SwapIcon />
+              </div>
             </section>
 
             <section className="col col-5">{renderRight()}</section>
