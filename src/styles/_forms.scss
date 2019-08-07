@@ -73,7 +73,7 @@ input {
   border-radius: $radius;
   display: block;
   font-size: 14px;
-  padding: 0 $gutter;
+  padding: 0 15px;
   height: 40px;
   width: 100%;
   min-width: 1px;
@@ -93,7 +93,7 @@ input {
 }
 
 textarea.form-control {
-  padding: 10px $gutter;
+  padding: 10px 15px;
   height: auto;
 }
 
