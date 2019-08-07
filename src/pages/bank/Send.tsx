@@ -114,7 +114,19 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
               </section>
 
               <section className="form-group">
-                <label className="label">Amount</label>
+                <header className="flex space-between">
+                  <label className="label">Amount</label>
+                  <p className="label-text">
+                    Available:
+                    <button
+                      type="button"
+                      onClick={setToMax}
+                      className="btn-link"
+                    >
+                      <Amount>{max}</Amount>
+                    </button>
+                  </p>
+                </header>
                 <input
                   type="text"
                   name="input"
@@ -126,12 +138,6 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
                 />
                 {renderError('input')}
               </section>
-              <p className="form-text">
-                Available:{' '}
-                <button type="button" onClick={setToMax} className="btn-link">
-                  <Amount>{max}</Amount>
-                </button>
-              </p>
 
               <section className="form-group">
                 <label className="label">Memo (Optional)</label>

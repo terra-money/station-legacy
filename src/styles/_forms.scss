@@ -108,6 +108,15 @@ textarea.form-control {
   }
 }
 
+.label-text {
+  @include flex;
+  font-size: 12px;
+  button {
+    font-weight: 500;
+    margin-left: 5px;
+  }
+}
+
 .label {
   display: block;
   font-size: 12px;
