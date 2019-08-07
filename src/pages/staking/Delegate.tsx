@@ -180,7 +180,15 @@ const Form = (props: Props & FormProps) => {
           )}
 
           <section className="form-group">
-            <label className="label">Amount</label>
+            <header className="flex space-between">
+              <label className="label">Amount</label>
+              <p className="label-text">
+                Available:
+                <button type="button" onClick={setToMax} className="btn-link">
+                  <Amount>{max}</Amount>
+                </button>
+              </p>
+            </header>
             <div className="input-group">
               <input
                 type="text"
@@ -198,12 +206,6 @@ const Form = (props: Props & FormProps) => {
             </div>
             {renderError('input')}
           </section>
-          <p className="form-text">
-            Available:{' '}
-            <button type="button" onClick={setToMax} className="btn-link">
-              <Amount>{max}</Amount>
-            </button>
-          </p>
 
           {!undelegate && (
             <section className="form-group">
