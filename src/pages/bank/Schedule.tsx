@@ -1,4 +1,5 @@
 import React from 'react'
+import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
 import Amount from '../../components/Amount'
@@ -42,7 +43,11 @@ const Schedule = ({ denom, ...schedule }: Schedule & { denom: string }) => {
         </p>
 
         <div className={s.track}>
-          <div className={s.progress} style={{ width }} title={width} />
+          <div
+            className={c(s.progress, status === 0 && s.active)}
+            style={{ width }}
+            title={width}
+          />
         </div>
       </header>
     </article>
