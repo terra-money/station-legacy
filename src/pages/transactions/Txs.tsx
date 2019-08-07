@@ -71,7 +71,7 @@ const Txs = ({ location: { search, pathname } }: RouteComponentProps) => {
               <Pagination
                 {...pagination}
                 empty={
-                  <Info icon="info" title="No transaction history">
+                  <Info icon="info_outline" title="No transaction history">
                     Looks like you haven't made any transaction yet.
                   </Info>
                 }
