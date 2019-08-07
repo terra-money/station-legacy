@@ -77,7 +77,6 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
       {!isElectron && (
         <Pop
           type="pop"
-          className={s.footer}
           placement="top"
           width={380}
           content={
@@ -88,11 +87,11 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
             </p>
           }
         >
-          {({ getAttrs }) => (
-            <button {...getAttrs({})}>
-              <Icon name="info" />
+          {({ ref, iconRef, getAttrs }) => (
+            <span {...getAttrs({ className: s.footer })} ref={ref}>
+              <Icon name="info" forwardRef={iconRef} />
               How can I create an account?
-            </button>
+            </span>
           )}
         </Pop>
       )}

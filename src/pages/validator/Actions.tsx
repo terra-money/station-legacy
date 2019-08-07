@@ -6,7 +6,7 @@ import Modal from '../../components/Modal'
 import Amount from '../../components/Amount'
 import Icon from '../../components/Icon'
 import Pop from '../../components/Pop'
-import Flex from '../../components/Flex'
+import ButtonWithName from '../../components/ButtonWithName'
 import Delegate from '../staking/Delegate'
 import Withdraw from '../staking/Withdraw'
 import Claim from '../staking/Claim'
@@ -59,34 +59,39 @@ const Actions = (v: Validator) => {
               placement="bottom"
               width={400}
               content={<DelegationTooltip {...v} />}
-              className={s.pop}
             >
-              {({ getAttrs }) => (
-                <Flex {...getAttrs({})}>
+              {({ ref, iconRef, getAttrs }) => (
+                <span {...getAttrs({ className: s.pop })} ref={ref}>
                   <Amount denom="uluna" fontSize={18}>
                     {v.myDelegation}
                   </Amount>
-                  <Icon name="arrow_drop_down" />
-                </Flex>
+                  <Icon name="arrow_drop_down" forwardRef={iconRef} />
+                </span>
               )}
             </Pop>
           </section>
 
-          <button
-            onClick={() => delegate({})}
-            className="btn btn-sm btn-primary"
-            disabled={!name || v.status === 'jailed'}
-          >
-            Delegate
-          </button>
+          <section className={s.actions}>
+            <span className={s.action}>
+              <ButtonWithName
+                onClick={() => delegate({})}
+                className="btn btn-sm btn-primary"
+                disabled={!name || v.status === 'jailed'}
+              >
+                Delegate
+              </ButtonWithName>
+            </span>
 
-          <button
-            onClick={() => delegate({ undelegate: true })}
-            className="btn btn-sm btn-sky"
-            disabled={!delegate || !name || !v.myDelegation}
-          >
-            Undelegate
-          </button>
+            <span className={s.action}>
+              <ButtonWithName
+                onClick={() => delegate({ undelegate: true })}
+                className="btn btn-sm btn-sky"
+                disabled={!delegate || !name || !v.myDelegation}
+              >
+                Undelegate
+              </ButtonWithName>
+            </span>
+          </section>
         </Card>
       </div>
 
@@ -99,19 +104,28 @@ const Actions = (v: Validator) => {
             </Amount>
           </section>
 
-          <button
-            onClick={() => withdraw()}
-            className="btn btn-sky btn-sm"
-            disabled={!name || !(myRewards && gte(myRewards.total, 1))}
-          >
-            Withdraw Rewards
-          </button>
+          <section className={s.actions}>
+            <span className={s.action}>
+              <ButtonWithName
+                onClick={() => withdraw()}
+                className="btn btn-sky btn-sm"
+                disabled={!name || !(myRewards && gte(myRewards.total, 1))}
+              >
+                Withdraw Rewards
+              </ButtonWithName>
+            </span>
 
-          {v.accountAddress === address && name && (
-            <button onClick={() => claim()} className="btn btn-sky btn-sm">
-              Claim
-            </button>
-          )}
+            {v.accountAddress === address && name && (
+              <span className={s.action}>
+                <ButtonWithName
+                  onClick={() => claim()}
+                  className="btn btn-sky btn-sm"
+                >
+                  Claim
+                </ButtonWithName>
+              </span>
+            )}
+          </section>
         </Card>
       </div>
     </div>

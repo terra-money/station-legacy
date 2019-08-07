@@ -71,10 +71,10 @@ const Columns = (props: Staking) => {
               width={width}
               content={<div className={s.tooltip}>{tooltip}</div>}
             >
-              {({ getAttrs }) => (
-                <Flex {...getAttrs({})}>
+              {({ ref, iconRef, getAttrs }) => (
+                <Flex {...getAttrs({})} forwardRef={ref}>
                   {content}
-                  <Icon name="arrow_drop_down" />
+                  <Icon name="arrow_drop_down" forwardRef={iconRef} />
                 </Flex>
               )}
             </Pop>

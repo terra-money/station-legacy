@@ -1,11 +1,14 @@
 import React, { ButtonHTMLAttributes } from 'react'
+import c from 'classnames'
 import { useAuth } from '../hooks'
 import Pop from './Pop'
 import s from './ButtonWithName.module.scss'
 
-type Props = { bottom?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>
+type Props = { placement?: 'top' | 'bottom' }
+type Attrs = ButtonHTMLAttributes<HTMLButtonElement>
 
-const ButtonWithName = ({ bottom, ...attrs }: Props) => {
+const TOOLTIP = 'Please sign in with account or ledger to execute'
+const ButtonWithName = ({ placement = 'top', ...attrs }: Props & Attrs) => {
   const { name } = useAuth()
 
   return name ? (
@@ -13,18 +16,19 @@ const ButtonWithName = ({ bottom, ...attrs }: Props) => {
   ) : (
     <Pop
       type="tooltip"
-      placement="bottom"
-      content={
-        <p className={s.tooltip}>
-          Please sign in with account or ledger to execute
-        </p>
-      }
+      placement={placement}
+      content={<p className={s.tooltip}>{TOOLTIP}</p>}
     >
-      {({ getAttrs }) => (
-        <span {...getAttrs({ className: s.wrapper })}>
-          <button {...attrs} disabled />
-        </span>
-      )}
+      {({ ref, getAttrs }) => {
+        const className = c(s.wrapper, attrs.className, 'disabled')
+
+        /* Use <span> because onMouseLeave doesn't work with disabled buttons */
+        return (
+          <span {...getAttrs({ className })} ref={ref}>
+            {attrs.children}
+          </span>
+        )
+      }}
     </Pop>
   )
 }

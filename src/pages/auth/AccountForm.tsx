@@ -214,15 +214,17 @@ const AccountForm = ({ title, initial, generated }: Props) => {
         {generated && (
           <Pop
             type="tooltip"
-            className="form-text text-danger"
             placement="top"
-            width="100%"
             content="We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Station doesn't store any data."
+            fullWidth
           >
-            {({ getAttrs }) => (
-              <Flex {...getAttrs({})}>
+            {({ ref, iconRef, getAttrs }) => (
+              <Flex
+                {...getAttrs({ className: 'form-text text-danger' })}
+                forwardRef={ref}
+              >
                 <Icon name="error" />
-                <strong>What if I lost my seed phrase?</strong>
+                <strong ref={iconRef}>What if I lost my seed phrase?</strong>
               </Flex>
             )}
           </Pop>

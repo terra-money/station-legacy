@@ -1,39 +1,126 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, RefObject, useRef, useState, useEffect } from 'react'
 import c from 'classnames'
 import s from './Pop.module.scss'
 
+const GUTTER = 20
+
 type Tooltip = {
   placement: 'top' | 'bottom'
-  width?: string | number
+  width?: number
+  transform?: string
   className?: string
+  arrowPosition?: number
   content: ReactNode
+  forwardRef?: RefObject<HTMLDivElement>
 }
 
-export const Tooltip = ({ placement, width, content, className }: Tooltip) => (
-  <div className={c(s.tooltip, s[placement], className)} style={{ width }}>
-    <div className={c(s.content)}>{content}</div>
-  </div>
-)
+export const Tooltip = (props: Tooltip) => {
+  const { placement, width, className, transform, arrowPosition } = props
+  const { content, forwardRef } = props
+
+  const arrowAttrs = Object.assign(
+    { className: c(s.arrow, s[placement]) },
+    arrowPosition && {
+      style: { marginLeft: arrowPosition, transform: 'translate(-50%, 0)' }
+    }
+  )
+
+  return (
+    <div
+      className={c(className, s[placement], !transform && s.hidden)}
+      style={{ transform, width }}
+      ref={forwardRef}
+    >
+      {placement === 'bottom' && <div {...arrowAttrs} />}
+      <div className={c(s.content)}>{content}</div>
+      {placement === 'top' && <div {...arrowAttrs} />}
+    </div>
+  )
+}
+
+type Attrs = {
+  onClick?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
+}
 
 type Pop = {
   type: 'pop' | 'tooltip'
+  fullWidth?: boolean
   children: (Params: {
-    getAttrs: (attrs: {
-      className?: string
-    }) => {
-      onClick?: () => void
-      onMouseEnter?: () => void
-      onMouseLeave?: () => void
-    }
+    ref: RefObject<HTMLElement>
+    iconRef: RefObject<HTMLSpanElement>
+    getAttrs: (attrs: { className?: string }) => Attrs
   }) => ReactNode
 }
 
-const Pop = ({ type, children, ...tooltip }: Tooltip & Pop) => {
+const Pop = (props: Tooltip & Pop) => {
+  const { type, children, fullWidth, width, ...tooltipProps } = props
+
+  /* refs */
+  const ref = useRef<HTMLElement>(null)
+  const iconRef = useRef<HTMLSpanElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  /* toggle tooltip */
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const open = () => setIsOpen(true)
   const close = () => setIsOpen(false)
   const toggle = () => setIsOpen(!isOpen)
 
+  /* position */
+  const [tooltipWidth, setTooltipWidth] = useState<number>()
+  const [position, setPosition] = useState<{ top: number; left: number }>()
+  const [arrowPosition, setArrowPosition] = useState<number>()
+
+  /* calculate position */
+  useEffect(() => {
+    const getRect = (dom: HTMLElement) => dom.getBoundingClientRect()
+
+    const calcTooltipPosition = (ref: HTMLElement, tooltip: HTMLElement) => {
+      const calcTooltipWidth = () => {
+        const w = width || (fullWidth && r.width)
+        const max = innerWidth - 2 * GUTTER
+        w && setTooltipWidth(Math.min(w, max))
+      }
+
+      const calcArrowPosition = (icon: HTMLElement) => {
+        const i = getRect(icon)
+        setArrowPosition(i.left + i.width / 2 - left)
+      }
+
+      const calcLeft = () => {
+        const left = r.left + (r.width - t.width) / 2
+        return left < GUTTER
+          ? GUTTER
+          : left + t.width > innerWidth
+          ? innerWidth - GUTTER - t.width
+          : left
+      }
+
+      /* calc */
+      const innerWidth = window.innerWidth
+      const r = getRect(ref)
+      const t = getRect(tooltip)
+      const left = calcLeft()
+      const top =
+        r.top +
+        window.pageYOffset +
+        { top: -1 * t.height, bottom: r.height }[tooltipProps.placement]
+
+      calcTooltipWidth()
+      calcArrowPosition(iconRef.current || ref)
+      setPosition({ top, left })
+    }
+
+    isOpen &&
+      !!ref.current &&
+      !!tooltipRef.current &&
+      calcTooltipPosition(ref.current, tooltipRef.current)
+    // eslint-disable-next-line
+  }, [isOpen, tooltipWidth])
+
+  /* render */
   const getAttrs = (attrs: { className?: string }) =>
     Object.assign(
       {},
@@ -55,10 +142,22 @@ const Pop = ({ type, children, ...tooltip }: Tooltip & Pop) => {
       }[type]
     )
 
+  const transform =
+    position && `translate(${position.left}px, ${position.top}px)`
+
   return (
     <>
-      {children({ getAttrs })}
-      {isOpen && <Tooltip className={s.tooltip} {...tooltip} />}
+      {children({ ref, iconRef, getAttrs })}
+      {isOpen && (
+        <Tooltip
+          className={c(s[type])}
+          width={tooltipWidth}
+          transform={transform}
+          forwardRef={tooltipRef}
+          arrowPosition={arrowPosition}
+          {...tooltipProps}
+        />
+      )}
     </>
   )
 }
