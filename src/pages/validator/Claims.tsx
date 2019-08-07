@@ -67,7 +67,7 @@ const Claims = ({ address }: { address: string }) => {
           action={setPage}
           empty={
             <p className={s.empty}>
-              <Icon name="info" size={30} />
+              <Icon name="info_outline" size={30} />
               This validator has no claim history yet.
             </p>
           }

@@ -25,7 +25,7 @@ const Bank = () => {
                 <AvailableList list={balance} />
               ) : (
                 <Card>
-                  <Info icon="info" title="Account empty">
+                  <Info icon="info_outline" title="Account empty">
                     This account doesn't hold any coins yet.
                   </Info>
                 </Card>
