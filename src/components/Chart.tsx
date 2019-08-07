@@ -125,7 +125,19 @@ const getOptions = (type: ChartType): ChartConfiguration => {
         xAxes: [
           {
             type: 'time',
-            ticks: { source: 'data', autoSkip: true }
+            ticks: {
+              source: 'data',
+              autoSkip: true,
+              fontColor: '#7282c9',
+              fontSize: 11
+            },
+            gridLines: { color: '#f0f0f0' }
+          }
+        ],
+        yAxes: [
+          {
+            ticks: { fontColor: '#7282c9', fontSize: 11 },
+            gridLines: { color: '#f0f0f0' }
           }
         ]
       }
