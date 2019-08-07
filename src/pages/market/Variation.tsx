@@ -23,7 +23,9 @@ const Variation = ({ inline, render, ...variation }: Props & Variation) => {
       {inline ? <Amount>{times(h, 1e6)}</Amount> : format.decimal(h)}
     </div>,
 
-    <span className={c('text-right', color)}>{inline ? `(${t})` : t}</span>
+    <span className={c('text-right', s.percent, color)}>
+      {inline ? `(${t})` : t}
+    </span>
   ])
 }
 
