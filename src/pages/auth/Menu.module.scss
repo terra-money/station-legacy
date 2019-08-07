@@ -29,6 +29,9 @@
     font-size: 15px;
     font-weight: 500;
     margin-top: 10px;
+    @media (max-width: $breakpoint - 1) {
+      font-size: 18px;
+    }
   }
 
   &:hover:not(:disabled) {
