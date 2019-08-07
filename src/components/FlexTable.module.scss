@@ -20,7 +20,7 @@
   flex: none;
   font-size: 12px;
   font-weight: 500;
-  border-bottom: 1px solid $line;
+  border-bottom: 1px solid $hairline;
 }
 
 .body {
@@ -31,7 +31,7 @@
 }
 
 .bordered .row:not(:first-child) {
-  border-top: 1px solid $line;
+  border-top: 1px solid $hairline;
 }
 
 .row {
