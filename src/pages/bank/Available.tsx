@@ -28,7 +28,7 @@ const Available = ({ denom, available }: Balance) => {
         button={
           <ButtonWithName
             onClick={openModal}
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm btn-send"
             disabled={!name}
           >
             Send
