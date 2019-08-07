@@ -1,5 +1,6 @@
 import React, { useState, createContext, ReactNode } from 'react'
 import { isElectron } from '../../helpers/env'
+import { loadKeys } from '../../utils/localStorage'
 import ModalContent from '../../components/ModalContent'
 import Pop from '../../components/Pop'
 import Icon from '../../components/Icon'
@@ -15,46 +16,47 @@ export type Item = {
   title: string
   icon: string
   isNotReady?: boolean
-  disabled?: (length: number) => boolean
+  disabled?: boolean
   render: () => ReactNode
 }
 
-const menu: { [key: string]: Item } = {
-  SIGN_IN_WITH_ADDRESS: {
-    title: 'Sign in with address',
-    icon: 'account_balance_wallet',
-    render: () => <SignInWithAddress />
-  },
-  SIGN_IN: {
-    title: 'Sign in with password',
-    icon: 'lock',
-    disabled: (keysLength: number) => !keysLength,
-    render: () => <SignIn />
-  },
-  CREATE: {
-    title: 'Create an account',
-    icon: 'person_add',
-    render: () => <Create />
-  },
-  IMPORT: {
-    title: 'Import with seed',
-    icon: 'settings_backup_restore',
-    render: () => <Import />
-  },
-  LEDGER: {
-    isNotReady: true,
-    title: 'Sign in with Ledger',
-    icon: 'usb',
-    render: () => <Hardware />
-  }
-}
-
-const list = isElectron
-  ? [menu.SIGN_IN, menu.SIGN_IN_WITH_ADDRESS, menu.CREATE, menu.IMPORT]
-  : [menu.LEDGER, menu.SIGN_IN_WITH_ADDRESS]
-
 export const ModalContext = createContext({ close: () => {}, goBack: () => {} })
 const Auth = ({ onClose }: { onClose: () => void }) => {
+  const menu: { [key: string]: Item } = {
+    SIGN_IN_WITH_ADDRESS: {
+      title: 'Sign in with address',
+      icon: 'account_balance_wallet',
+      render: () => <SignInWithAddress />
+    },
+    SIGN_IN: {
+      title: 'Sign in with password',
+      icon: 'lock',
+      disabled: !loadKeys().length,
+      render: () => <SignIn />
+    },
+    CREATE: {
+      title: 'Create an account',
+      icon: 'person_add',
+      render: () => <Create />
+    },
+    IMPORT: {
+      title: 'Import with seed',
+      icon: 'settings_backup_restore',
+      render: () => <Import />
+    },
+    LEDGER: {
+      title: 'Sign in with Ledger',
+      icon: 'usb',
+      isNotReady: true,
+      disabled: true,
+      render: () => <Hardware />
+    }
+  }
+
+  const list = isElectron
+    ? [menu.SIGN_IN, menu.SIGN_IN_WITH_ADDRESS, menu.CREATE, menu.IMPORT]
+    : [menu.LEDGER, menu.SIGN_IN_WITH_ADDRESS]
+
   const [currentIndex, setCurrentIndex] = useState<number>(-1)
   const modalActions = { close: onClose, goBack: () => setCurrentIndex(-1) }
   const currentMenu = list[currentIndex] || {}
