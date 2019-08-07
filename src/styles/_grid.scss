@@ -73,7 +73,6 @@ $margin-large: 20px;
 }
 
 .row + .card,
-.card + .row,
 .card + .card {
   @media (max-width: $breakpoint - 1) {
     margin-top: (2 * $margin);
@@ -81,5 +80,15 @@ $margin-large: 20px;
 
   @media (min-width: $breakpoint) {
     margin-top: $margin-large;
+  }
+}
+
+.card + .row {
+  @media (max-width: $breakpoint - 1) {
+    margin-top: $margin;
+  }
+
+  @media (min-width: $breakpoint) {
+    margin-top: ($margin-large / 2);
   }
 }
