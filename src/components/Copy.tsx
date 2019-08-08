@@ -1,7 +1,9 @@
 import React, { useState, ReactNode } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import c from 'classnames'
 import Icon from './Icon'
 import { Tooltip } from './Pop'
+import tooltipStyle from './Pop.module.scss'
 import s from './Copy.module.scss'
 
 type Props = {
@@ -9,11 +11,10 @@ type Props = {
   text: string
   buttonLabel?: string
   children?: ReactNode
-  tooltip?: ReactNode
 }
 
 const Copy = (props: Props) => {
-  const { classNames = {}, text, buttonLabel, children, tooltip } = props
+  const { classNames = {}, text, buttonLabel, children } = props
   const [copied, setCopied] = useState(false)
 
   const showTooltip = () => {
@@ -39,7 +40,13 @@ const Copy = (props: Props) => {
           </button>
         </CopyToClipboard>
 
-        {copied && (tooltip || <Tooltip placement="top" content="Copied!" />)}
+        {copied && (
+          <Tooltip
+            placement="top"
+            content="Copied!"
+            className={c(tooltipStyle.tooltip, s.tooltip)}
+          />
+        )}
       </section>
     </div>
   )

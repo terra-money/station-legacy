@@ -1,3 +1,9 @@
 .wrapper {
   position: relative;
 }
+
+.tooltip {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}

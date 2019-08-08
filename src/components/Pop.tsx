@@ -27,7 +27,7 @@ export const Tooltip = (props: Tooltip) => {
 
   return (
     <div
-      className={c(className, s[placement], !transform && s.hidden)}
+      className={c(className, s[placement])}
       style={{ transform, width }}
       ref={forwardRef}
     >
@@ -150,7 +150,7 @@ const Pop = (props: Tooltip & Pop) => {
       {children({ ref, iconRef, getAttrs })}
       {isOpen && (
         <Tooltip
-          className={c(s[type])}
+          className={c(s[type], !transform && s.hidden)}
           width={tooltipWidth}
           transform={transform}
           forwardRef={tooltipRef}
