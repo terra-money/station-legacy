@@ -1,6 +1,28 @@
 .chart {
   margin: 0 auto;
   position: relative;
+
+  > div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border: 18px solid #f4f5fb;
+    border-radius: 50%;
+    z-index: 1;
+  }
 }
 
 .total {
