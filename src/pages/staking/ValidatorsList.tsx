@@ -8,7 +8,10 @@ const Columns: [string, Attr][] = [
   ['Rank', { style: { width: 60 } }],
   ['Moniker', { style: { width: 240 } }],
   ['Voting power', { align: 'right', style: { width: 120 } }],
-  ['Commission', { align: 'right', style: { width: 100 } }],
+  [
+    'Validator commission',
+    { align: 'right', style: { width: 100, textAlign: 'right' } }
+  ],
   ['Uptime', { align: 'right', style: { width: 80 } }],
   ['Reward pool (Luna)', { align: 'right', style: { width: 150 } }],
   ['', { style: { width: 20 } }],
