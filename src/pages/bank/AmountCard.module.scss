@@ -42,17 +42,21 @@
 .button {
   @media (max-width: $breakpoint - 1) {
     margin-left: 10px;
-    min-width: unset;
-    font-size: 0;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    &:global(.btn-send) {
-      &:before {
-        content: 'send';
-        font-family: 'Material Icons';
-        font-size: 16px;
-        margin-left: 1px;
+    line-height: 1;
+    span {
+      min-width: unset;
+      font-size: 0;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      &:global(.btn-send) {
+        &:before {
+          content: 'send';
+          font-family: 'Material Icons';
+          font-size: 16px;
+          margin-left: 1px;
+          line-height: 1;
+        }
       }
     }
   }
