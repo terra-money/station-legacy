@@ -83,8 +83,6 @@ const Form = (props: Props & FormProps) => {
         validator_address: to,
         amount: { amount, denom }
       },
-      warning:
-        'Redelegation to the same validator will be prohibitted for 21 days. Please make sure you input right amount of luna to delegate.',
       label: ['Delegate', 'Delegating'],
       message: `Delegated ${input} ${format.denom(denom)} to ${moniker}`
     },
