@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import ChartJS, { helpers } from 'chart.js'
 import { ChartConfiguration, ChartDataSets, ChartData } from 'chart.js'
 import { ChartTooltipItem, ChartPoint } from 'chart.js'
+import { times } from '../api/math'
 import { format } from '../utils'
 
 type ChartType = 'doughnut' | 'line'
@@ -91,14 +92,32 @@ const getOptions = (type: ChartType): ChartConfiguration => {
   const defaultOptions = {
     responsive: true,
     animation: { duration: 0 },
-    legend: { display: false },
-    tooltips: { displayColors: false }
+    legend: { display: false }
   }
 
   const options = {
     doughnut: {
       aspectRatio: 1,
-      cutoutPercentage: 85
+      cutoutPercentage: 85,
+      tooltips: {
+        backgroundColor: BLUE,
+        titleFontFamily: 'Gotham',
+        titleFontSize: 13,
+        titleFontStyle: 700,
+        titleMarginBottom: 4,
+        bodyFontFamily: 'Gotham',
+        bodyFontSize: 13,
+        bodyFontStyle: 'normal',
+        xPadding: 15,
+        yPadding: 10,
+        caretSize: 6,
+        displayColors: false,
+        callbacks: {
+          title: ([{ index }]: ChartTooltipItem[], { labels }: ChartData) =>
+            labels && typeof index === 'number' && labels[index],
+          label: getLabel
+        }
+      }
     },
     line: {
       tooltips: {
@@ -162,7 +181,11 @@ const getLabel = ({ index }: ChartTooltipItem, { datasets }: ChartData) => {
   const dataset = datasets && getDataset(datasets)
   const data = dataset && getData(dataset)
   const point = data && typeof index === 'number' && getChartPoint(data, index)
-  const t = point && typeof point !== 'number' && getPoint(point)
+  const t = point && typeof point !== 'number' ? getPoint(point) : point
 
-  return t instanceof Date ? format.date(t) : ''
+  return t instanceof Date
+    ? format.date(t)
+    : t
+    ? format.amount(times(t, 1e6))
+    : ''
 }
