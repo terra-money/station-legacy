@@ -3,7 +3,7 @@ $margin-large: 20px;
 
 .row {
   @media (max-width: $breakpoint - 1) {
-    margin: -$margin;
+    margin: -$margin 0;
   }
 
   @media (min-width: $breakpoint) {
@@ -13,7 +13,7 @@ $margin-large: 20px;
 
   .col {
     @media (max-width: $breakpoint - 1) {
-      padding: $margin;
+      padding: $margin 0;
     }
 
     @media (min-width: $breakpoint) {
