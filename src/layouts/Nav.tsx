@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
+import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import NavItem from './NavItem'
 import NavFooter from './NavFooter'
@@ -8,6 +9,7 @@ import { ReactComponent as TerraStation } from '../helpers/TerraStation.svg'
 import s from './Nav.module.scss'
 
 const Nav = ({ pathname }: { pathname: string }) => {
+  const { key } = useApp()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggle = () => setIsOpen(!isOpen)
   const close = () => setIsOpen(false)
@@ -47,7 +49,7 @@ const Nav = ({ pathname }: { pathname: string }) => {
           ))}
         </ul>
 
-        <NavFooter onChangeChain={close} />
+        <NavFooter onChangeChain={close} key={key} />
       </section>
     </nav>
   )

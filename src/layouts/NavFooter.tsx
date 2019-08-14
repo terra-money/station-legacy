@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
-import api, { ChainList } from '../api/api'
+import { ChainList, useSocket } from '../api/api'
 import { useApp } from '../hooks'
 import Flex from '../components/Flex'
 import Icon from '../components/Icon'
@@ -10,7 +10,13 @@ import Finder from '../components/Finder'
 import s from './NavFooter.module.scss'
 
 const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
-  const { chain, selectChain, key } = useApp()
+  const { chain, selectChain } = useApp()
+  const socket = useSocket(chain)
+
+  /* state */
+  const [height, setHeight] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<Error>()
 
   /* event: Change chain */
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -18,31 +24,20 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
     onChangeChain()
   }
 
-  /* onMount: Latest block */
-  const [height, setHeight] = useState<string>()
-  const [error, setError] = useState<Error>()
-  const [timeoutId, setTimeoutId] = useState()
-
+  /* socket: Latest block height */
   useEffect(() => {
-    const request = async () => {
-      try {
-        type Latest = { block: { header: { height: string } } }
-        const { data } = await api.get<Latest>('/blocks/latest')
-        setError(undefined)
-        setHeight(data.block.header.height)
-      } catch (error) {
-        setError(error)
-        const id = setTimeout(() => request(), 5000)
-        setTimeoutId(id)
-      }
+    const onHeight = (height: string) => {
+      setError(undefined)
+      setIsLoading(false)
+      setHeight(height)
     }
 
-    request()
-  }, [key])
+    const channel = socket.subscribe('latestBlockHeight')
+    channel.watch(onHeight)
 
-  useEffect(() => {
-    return () => clearTimeout(timeoutId)
-  }, [timeoutId])
+    return () => channel.unsubscribe()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <article className={s.component}>
@@ -66,7 +61,7 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
             size={12}
             className={!error ? 'text-success' : 'text-danger'}
           />
-          <span>{!error ? 'Connected' : 'Connecting...'}</span>
+          <span>{error || isLoading ? 'Connecting...' : 'Connected'}</span>
         </Flex>
 
         {height && (
