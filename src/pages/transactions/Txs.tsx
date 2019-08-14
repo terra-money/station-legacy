@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import URLSearchParams from '@ungap/url-search-params'
 import c from 'classnames'
@@ -17,8 +17,8 @@ import s from './Txs.module.scss'
 
 /* constants */
 const tabs = ['send', 'receive', 'staking', 'swap', 'vote']
-const Txs = ({ location: { search, pathname } }: RouteComponentProps) => {
-  /* context */
+const Txs = ({ location, history }: RouteComponentProps) => {
+  const { search, pathname } = location
   const { address } = useAuth()
 
   /* URLSearchParams: tab */
@@ -34,6 +34,12 @@ const Txs = ({ location: { search, pathname } }: RouteComponentProps) => {
 
   const currentTab = getSearch().get('tag') || ''
   const page = getSearch().get('page') || '1'
+
+  /* unmount: init url */
+  useEffect(() => {
+    return () => history.replace(getNextSearch([['tag', ''], ['page', '']]))
+    // eslint-disable-next-line
+  }, [])
 
   /* render: tabs */
   const renderTabs = () => (
@@ -58,37 +64,41 @@ const Txs = ({ location: { search, pathname } }: RouteComponentProps) => {
   })
 
   return (
-    <Page title="Transactions">
-      <WithAuth card>
-        <Card title={renderTabs()} headerClassName={s.header} bordered>
-          <WithRequest
-            url="/v1/msgs"
-            params={{ account: address, action: currentTab, page }}
-            loading={<Loading />}
-            key={currentTab}
+    <Card title={renderTabs()} headerClassName={s.header} bordered>
+      <WithRequest
+        url="/v1/msgs"
+        params={{ account: address, action: currentTab, page }}
+        loading={<Loading />}
+        key={currentTab}
+      >
+        {({ txs, ...pagination }: Pagination & { txs: Tx[] }) => (
+          <Pagination
+            {...pagination}
+            empty={
+              <Info icon="info_outline" title="No transaction history">
+                Looks like you haven't made any transaction yet.
+              </Info>
+            }
+            link={getLink}
           >
-            {({ txs, ...pagination }: Pagination & { txs: Tx[] }) => (
-              <Pagination
-                {...pagination}
-                empty={
-                  <Info icon="info_outline" title="No transaction history">
-                    Looks like you haven't made any transaction yet.
-                  </Info>
-                }
-                link={getLink}
-              >
-                {txs.map((tx, index) => (
-                  <ErrorBoundary fallback={<Card>{OOPS}</Card>} key={index}>
-                    <Tx {...tx} />
-                  </ErrorBoundary>
-                ))}
-              </Pagination>
-            )}
-          </WithRequest>
-        </Card>
-      </WithAuth>
-    </Page>
+            {txs.map((tx, index) => (
+              <ErrorBoundary fallback={<Card>{OOPS}</Card>} key={index}>
+                <Tx {...tx} />
+              </ErrorBoundary>
+            ))}
+          </Pagination>
+        )}
+      </WithRequest>
+    </Card>
   )
 }
 
-export default Txs
+const TxsContainer = (props: RouteComponentProps) => (
+  <Page title="Transactions">
+    <WithAuth card>
+      <Txs {...props} />
+    </WithAuth>
+  </Page>
+)
+
+export default TxsContainer
