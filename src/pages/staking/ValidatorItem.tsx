@@ -36,7 +36,7 @@ const renderItem = ({ validator, rank, total }: Props) => {
       <Pop
         type="tooltip"
         placement="bottom"
-        width={400}
+        width={420}
         content={<DelegationTooltip {...validator} />}
       >
         {({ ref, getAttrs }) => (
