@@ -32,8 +32,8 @@ const Market = () => {
                   <Swap
                     denoms={['uluna', ...actives]}
                     getMax={denom => {
-                      const a: Balance = find(balance)(denom)
-                      return a ? a.available : String(0)
+                      const b = find<Balance>(balance)(denom)
+                      return b ? b.available : String(0)
                     }}
                   />
                 )}
