@@ -314,26 +314,33 @@ export default Confirmation
 
 /* validations */
 type Validate = (params: Params, balance: Balance[]) => boolean
+type Compare = (b: Balance) => boolean
 type Params = { amount: string; denom: string; tax?: string; fee: Coin }
 const isAvailable: Validate = (params, balance) => {
+  const compare: Compare = b =>
+    denom === fee.denom
+      ? lte(sum([amount, tax, fee.amount]), b.available)
+      : lte(plus(amount, tax), b.available) && isFeeAvailable(params, balance)
+
   const { amount, denom, tax = '0', fee } = params
-  const a = find(balance)(denom)
-  return denom === fee.denom
-    ? lte(sum([amount, tax, fee.amount]), a.available)
-    : lte(plus(amount, tax), a.available) && isFeeAvailable(params, balance)
+  const b = find<Balance>(balance)(denom)
+  return !!b && compare(b)
 }
 
 const isDelegatable: Validate = (params, balance) => {
+  const compare: Compare = b =>
+    denom === fee.denom
+      ? lte(plus(amount, fee.amount), b.delegatable)
+      : lte(amount, b.delegatable) && isFeeAvailable(params, balance)
+
   const { amount, denom, fee } = params
-  const a = find(balance)(denom)
-  return denom === fee.denom
-    ? lte(plus(amount, fee.amount), a.delegatable)
-    : lte(amount, a.delegatable) && isFeeAvailable(params, balance)
+  const b = find<Balance>(balance)(denom)
+  return !!b && compare(b)
 }
 
 const isFeeAvailable: Validate = ({ fee }, balance) => {
-  const a = find(balance)(fee.denom)
-  return lte(fee.amount, a.available)
+  const b = find<Balance>(balance)(fee.denom)
+  return !!b && lte(fee.amount, b.available)
 }
 
 const validate = (name: string) => {

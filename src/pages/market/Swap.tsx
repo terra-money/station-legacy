@@ -54,8 +54,8 @@ const Swap = ({ denoms, getMax }: Props) => {
       const params = { offer_coin: amount + from, ask_denom: to }
       const swapped = await api.get<Coin>(`/market/swap`, { params })
       const rateList = await api.get<RateList>(`/v1/market/swaprate/${from}`)
-      const a: Rate = find(rateList.data)(to)
-      return [swapped.data.amount, a ? a.swaprate : '0']
+      const r = find<Rate>(rateList.data)(to)
+      return [swapped.data.amount, r ? r.swaprate : '0']
     }
 
     const calculate = async () => {
@@ -79,8 +79,8 @@ const Swap = ({ denoms, getMax }: Props) => {
 
     const fetchMinimum = async () => {
       const { data } = await api.get<RateList>(`/v1/market/swaprate/${to}`)
-      const a: Rate = find(data)(from)
-      return a ? a.swaprate : '0'
+      const r = find<Rate>(data)(from)
+      return r ? r.swaprate : '0'
     }
 
     const effect = async () => {
