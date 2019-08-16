@@ -25,7 +25,6 @@ const Withdraw = (props: Props) => {
     <ModalContent close={onWithdraw} disabled={isWithdrawing}>
       <Confirmation
         url={`/distribution/delegators/${to}/rewards${from ? '/' + from : ''}`}
-        denom="uluna"
         amounts={amounts}
         label={['Withdraw', 'Withdrawing']}
         message={`Withdrew to ${to}`}

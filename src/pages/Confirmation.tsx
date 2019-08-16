@@ -20,7 +20,7 @@ import s from './Confirmation.module.scss'
 type Props = {
   /* values: tx */
   url: string
-  denom: string
+  denom?: string
   memo?: string
   tax?: string
   type?: string
@@ -76,7 +76,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
   /* state: simulate */
   const [estimatedFeeAmount, setEstimatedFeeAmount] = useState<string>('0')
   const [input, setInput] = useState<string>('0')
-  const [feeDenom, setFeeDenom] = useState<string>(denom)
+  const [feeDenom, setFeeDenom] = useState<string>(denom || balance[0].denom)
   const feeAmount = times(input || 0, 1e6)
   const fee = { amount: feeAmount, denom: feeDenom }
   const gas = calcGas(fee.amount)
@@ -182,21 +182,21 @@ const Form = (props: Props & { balance: Balance[] }) => {
     <form onSubmit={submit}>
       <h1>Confirm</h1>
       <dl className={s.dl}>
-        {amounts ? (
-          amounts.map((a, i) => (
-            <Fragment key={i}>
-              <dt>{!i && 'Amount'}</dt>
-              <dd>{formatAmount(a)}</dd>
-            </Fragment>
-          ))
-        ) : (
-          <>
-            <dt>Amount</dt>
-            <dd>{formatAmount({ amount, denom })}</dd>
-          </>
-        )}
+        {amounts
+          ? amounts.map((a, i) => (
+              <Fragment key={i}>
+                <dt>{!i && 'Amount'}</dt>
+                <dd>{formatAmount(a)}</dd>
+              </Fragment>
+            ))
+          : denom && (
+              <>
+                <dt>Amount</dt>
+                <dd>{formatAmount({ amount, denom })}</dd>
+              </>
+            )}
 
-        {gt(tax, 0) && (
+        {gt(tax, 0) && denom && (
           <>
             <dt>Tax (0.1%, Max 1 Luna)</dt>
             <dd>{formatAmount({ amount: tax, denom })}</dd>
@@ -315,7 +315,7 @@ export default Confirmation
 /* validations */
 type Validate = (params: Params, balance: Balance[]) => boolean
 type Compare = (b: Balance) => boolean
-type Params = { amount: string; denom: string; tax?: string; fee: Coin }
+type Params = { amount: string; denom?: string; tax?: string; fee: Coin }
 const isAvailable: Validate = (params, balance) => {
   const compare: Compare = b =>
     denom === fee.denom
@@ -323,7 +323,7 @@ const isAvailable: Validate = (params, balance) => {
       : lte(plus(amount, tax), b.available) && isFeeAvailable(params, balance)
 
   const { amount, denom, tax = '0', fee } = params
-  const b = find<Balance>(balance)(denom)
+  const b = denom && find<Balance>(balance)(denom)
   return !!b && compare(b)
 }
 
@@ -334,7 +334,7 @@ const isDelegatable: Validate = (params, balance) => {
       : lte(amount, b.delegatable) && isFeeAvailable(params, balance)
 
   const { amount, denom, fee } = params
-  const b = find<Balance>(balance)(denom)
+  const b = denom && find<Balance>(balance)(denom)
   return !!b && compare(b)
 }
 
