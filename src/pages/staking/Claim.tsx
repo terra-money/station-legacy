@@ -19,7 +19,6 @@ const Claim = ({ onClaiming, onClaim, ...v }: Props) => {
     <ModalContent close={onClaim} disabled={isClaiming}>
       <Confirmation
         url={`distribution/validators/${v.operatorAddress}/rewards`}
-        denom="uluna"
         label={['Claim', 'Claiming']}
         message={`Claimed to ${v.description.moniker}`}
         onSubmitting={handleClaiming}
