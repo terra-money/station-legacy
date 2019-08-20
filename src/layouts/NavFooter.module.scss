@@ -19,20 +19,13 @@
 
 /* Connect */
 .connect {
-  @include flex(space-between);
+  @include flex(flex-end);
   color: #76a8f8;
   font-size: 11px;
+  height: (11px * 1.5);
   margin-top: 10px;
 }
 
-.status {
-  i {
-    margin-right: 5px;
-  }
-}
-
-.height {
-  i {
-    margin-left: 5px;
-  }
+.height i {
+  margin-left: 5px;
 }
