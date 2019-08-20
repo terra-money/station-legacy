@@ -15,8 +15,6 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
 
   /* state */
   const [height, setHeight] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error>()
 
   /* event: Change chain */
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -26,15 +24,8 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
 
   /* socket: Latest block height */
   useEffect(() => {
-    const onHeight = (height: string) => {
-      setError(undefined)
-      setIsLoading(false)
-      setHeight(height)
-    }
-
     const channel = socket.subscribe('latestBlockHeight')
-    channel.watch(onHeight)
-
+    channel.watch(setHeight)
     return () => channel.unsubscribe()
     // eslint-disable-next-line
   }, [])
@@ -55,15 +46,6 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
       </Select>
 
       <section className={s.connect}>
-        <Flex className={s.status}>
-          <Icon
-            name="signal_wifi_4_bar"
-            size={12}
-            className={!error ? 'text-success' : 'text-danger'}
-          />
-          <span>{error || isLoading ? 'Connecting...' : 'Connected'}</span>
-        </Flex>
-
         {height && (
           <Flex className={s.height}>
             <Finder q="blocks" v={height}>
