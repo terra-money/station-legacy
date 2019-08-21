@@ -2,9 +2,14 @@
 @import '../styles/variables';
 
 .component {
+  @include flex(space-between);
   background: darken($navy, 3%);
   color: white;
   padding: 20px;
+  > div {
+    flex: auto;
+    margin-right: 10px;
+  }
 }
 
 /* Select */
@@ -12,9 +17,12 @@
   border-radius: 2px;
   border: 1px solid #415e9f;
   font-size: 12px;
-  padding: 0 10px;
+  padding: 0 25px 0 10px;
   text-transform: capitalize;
   height: 30px;
+  + i {
+    right: 5px;
+  }
 }
 
 /* Connect */
@@ -23,7 +31,8 @@
   color: #76a8f8;
   font-size: 11px;
   height: (11px * 1.5);
-  margin-top: 10px;
+  min-width: 75px;
+  white-space: nowrap;
 }
 
 .height i {
