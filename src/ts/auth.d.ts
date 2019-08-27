@@ -1,4 +1,5 @@
 interface Auth {
-  name: string
   address: string
+  name: string
+  withLedger: boolean
 }

@@ -10,13 +10,13 @@ export const storeKeys = (keys: Key[]) => {
   localStorage.setItem('keys', JSON.stringify(keys))
 }
 
-export const getKey = (name: string, password: string): Wallet => {
+export const getStoredWallet = (name: string, password: string): Wallet => {
   const keys = loadKeys()
-  const key = keys.find(key => key.name === name)
-  if (!key) throw new Error('Key with that name does not exist')
+  const stored = keys.find(key => key.name === name)
+  if (!stored) throw new Error('Key with that name does not exist')
 
   try {
-    const decrypted = electron<string>('decrypt', [key.wallet, password])
+    const decrypted = electron<string>('decrypt', [stored.wallet, password])
     return JSON.parse(decrypted)
   } catch (err) {
     throw new Error('Incorrect password')
@@ -87,6 +87,17 @@ export const setLastAddress = (address: string) => {
 
 export const removeLastAddress = () => {
   localStorage.removeItem('lastAddress')
+}
+
+export const getLastWithLedger = () =>
+  JSON.parse(localStorage.getItem('lastWithLedger') || 'false')
+
+export const setLastWithLedger = (withLedger: string) => {
+  localStorage.setItem('lastWithLedger', withLedger)
+}
+
+export const removeLastWithLedger = () => {
+  localStorage.removeItem('lastWithLedger')
 }
 
 /* Chain */

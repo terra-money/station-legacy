@@ -9,9 +9,9 @@ type Attrs = ButtonHTMLAttributes<HTMLButtonElement>
 
 const TOOLTIP = 'Please sign in with account or ledger to execute'
 const ButtonWithName = ({ placement = 'top', ...attrs }: Props & Attrs) => {
-  const { name } = useAuth()
+  const { name, withLedger } = useAuth()
 
-  return name ? (
+  return name || withLedger ? (
     <button {...attrs} />
   ) : (
     <Pop

@@ -1,20 +1,23 @@
-import React, { useState, useEffect, FormEvent, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
+import { FormEvent, ButtonHTMLAttributes } from 'react'
 import { OOPS } from '../helpers/constants'
-import electron from '../helpers/electron'
+import signTx from '../cosmos/api/signTx'
+import getSigner from '../cosmos/signer'
 import api from '../api/api'
 import { GAS_PRICE, calcFee, calcGas } from '../api/calcFee'
 import getBaseRequest from '../api/getBaseRequest'
 import { plus, sum, times, div, gt, lte, lt } from '../api/math'
-import { getKey } from '../utils/localStorage'
 import { format, find, report, sanitize } from '../utils'
 import { parseError } from '../utils/error'
 import { useAuth } from '../hooks'
 import WithRequest from '../components/WithRequest'
+import ProgressCircle from '../components/ProgressCircle'
 import InvalidFeedback from '../components/InvalidFeedback'
 import Select from '../components/Select'
 import Confirm from '../components/Confirm'
 import WithAuth from '../components/WithAuth'
 import Divider from '../components/Divider'
+import Icon from '../components/Icon'
 import s from './Confirmation.module.scss'
 
 type Props = {
@@ -42,7 +45,7 @@ type Props = {
 const Form = (props: Props & { balance: Balance[] }) => {
   /* context */
   const auth = useAuth()
-  const { name, address: from } = auth
+  const { address: from, name, withLedger } = auth
 
   /* props */
   const { url, denom, memo, tax = '0', type, payload = {} } = props
@@ -66,6 +69,8 @@ const Form = (props: Props & { balance: Balance[] }) => {
   /* state: form */
   const [password, setPassword] = useState<string>('')
   const [incorrect, setIncorrect] = useState<string>('')
+  const [ledgerError, setLedgerError] = useState<string>('')
+  const [isConfirming, setIsConfirming] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
   const handleChange = (password: string) => {
@@ -139,19 +144,24 @@ const Form = (props: Props & { balance: Balance[] }) => {
         const { value: tx } = data
 
         /* sign */
-        const wallet = getKey(name, password)
-        const params = { wallet, tx, request: { ...base, type } }
-        await api.post('/txs', electron('signTx', params), config)
+        const submitType = withLedger ? 'ledger' : 'local'
+        const signer = await getSigner(submitType, { name, password })
+        const signedTx = await signTx(tx, signer, { ...base, type })
+        await api.post('/txs', signedTx, config)
         setIsSubmitted(true)
       } catch (error) {
         error.message === 'Incorrect password'
           ? setIncorrect('Incorrect password')
+          : error.message && error.message.includes('Signing failed: ')
+          ? setLedgerError(error.message)
           : handleError(error)
       }
     }
 
     e.preventDefault()
+    setLedgerError('')
     setIsSubmitting(true)
+    withLedger && setIsConfirming(true)
     await post()
     setIsSubmitting(false)
   }
@@ -165,8 +175,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
   /* validate */
   const invalid = !validate(label[0])({ amount, denom, tax, fee }, balance)
   const hasFee = gt(fee.amount, '0')
-  const disabled =
-    !password || isSimulating || isSubmitting || invalid || !hasFee
+  const disabled = isSimulating || isSubmitting || invalid || !hasFee
 
   /* render */
   const formatAmount = ({ amount, denom }: Coin) => (
@@ -183,6 +192,11 @@ const Form = (props: Props & { balance: Balance[] }) => {
     }
   ]
 
+  const submitAttrs: ButtonHTMLAttributes<HTMLButtonElement> = {
+    type: 'submit',
+    className: 'btn btn-block btn-primary'
+  }
+
   return errorMessage ? (
     <Confirm icon="error_outline" title="Fail" actions={actions}>
       {errorMessage}
@@ -190,119 +204,157 @@ const Form = (props: Props & { balance: Balance[] }) => {
   ) : isSimulating ? (
     <p>(Simulating...)</p>
   ) : !isSubmitted ? (
-    <form onSubmit={submit}>
-      <h1>Confirm</h1>
-      <dl className={s.dl}>
-        {amounts
-          ? amounts.map((a, i) => (
-              <Fragment key={i}>
-                <dt>{!i && 'Amount'}</dt>
-                <dd>{formatAmount(a)}</dd>
-              </Fragment>
-            ))
-          : denom && (
-              <>
-                <dt>Amount</dt>
-                <dd>{formatAmount({ amount, denom })}</dd>
-              </>
-            )}
+    isConfirming ? (
+      <form className={s.ledger} onSubmit={submit}>
+        <h1>Confirm with Ledger</h1>
 
-        {gt(tax, 0) && denom && (
-          <>
-            <dt>Tax (0.1%, Max 1 Luna)</dt>
-            <dd>{formatAmount({ amount: tax, denom })}</dd>
-          </>
-        )}
-
-        <dt>
-          Fees
-          <Select
-            name="feeDenom"
-            value={fee.denom}
-            onChange={e => setFeeDenom(e.target.value)}
-            disabled={isSubmitting}
-            className="form-control form-control-sm"
-          >
-            {balance.map(({ denom }, index) => (
-              <option value={denom} key={index}>
-                {format.denom(denom)}
-              </option>
-            ))}
-          </Select>
-        </dt>
-        <dd>
-          <input
-            type="text"
-            name="feeAmount"
-            value={input}
-            onChange={e => setInput(sanitize(e.target.value))}
-            disabled={isSubmitting}
-            className="form-control form-control-sm"
-            autoComplete="off"
-          />
-          <span>{format.denom(fee.denom)}</span>
-        </dd>
-
-        {memo && (
-          <>
-            <dt>Memo</dt>
-            <dd>{memo}</dd>
-          </>
-        )}
-
-        {receive && (
-          <>
-            <dt>Receive</dt>
-            <dd>{formatAmount(receive)}</dd>
-          </>
-        )}
-      </dl>
-
-      <section className={s.feedback}>
-        {lt(fee.amount, estimatedFeeAmount) && (
-          <p className="text-right">
-            <small>
-              Recommended fee is{' '}
-              {format.coin({ amount: estimatedFeeAmount, denom: fee.denom })} or
-              higher.
-              <br />
-              Transactions with low fee might fail to proceed.
-            </small>
+        <section>
+          <Icon name="usb" size={64} />
+          <p>
+            Please confirm in your
+            <br />
+            Ledger Wallet
           </p>
-        )}
-        {warning && <InvalidFeedback>{warning}</InvalidFeedback>}
-        {invalid && (
-          <InvalidFeedback>
-            You don't have enough balance. Please adjust either the amount or
-            the fee.
-          </InvalidFeedback>
-        )}
-      </section>
+        </section>
 
-      <section className="form-group">
-        <label className="label">Confirm with password</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={e => handleChange(e.target.value)}
-          disabled={isSubmitting}
-          placeholder="Input your password to confirm"
-          className="form-control"
-          autoComplete="off"
-        />
-        {incorrect && <InvalidFeedback tooltip>{incorrect}</InvalidFeedback>}
-      </section>
+        <footer className="text-center">
+          {!ledgerError ? (
+            <ProgressCircle />
+          ) : (
+            <>
+              <p>
+                <button type="submit" className="btn btn-primary btn-sm">
+                  Retry
+                </button>
+              </p>
+              <p>
+                <small>{ledgerError}</small>
+              </p>
+            </>
+          )}
+        </footer>
+      </form>
+    ) : (
+      <form onSubmit={submit}>
+        <h1>Confirm</h1>
+        <dl className={s.dl}>
+          {amounts
+            ? amounts.map((a, i) => (
+                <Fragment key={i}>
+                  <dt>{!i && 'Amount'}</dt>
+                  <dd>{formatAmount(a)}</dd>
+                </Fragment>
+              ))
+            : denom && (
+                <>
+                  <dt>Amount</dt>
+                  <dd>{formatAmount({ amount, denom })}</dd>
+                </>
+              )}
 
-      <Divider />
-      <button
-        type="submit"
-        disabled={disabled}
-        className="btn btn-block btn-primary"
-      >
-        {isSubmitting ? `${label[1]}…` : label[0]}
-      </button>
-    </form>
+          {gt(tax, 0) && denom && (
+            <>
+              <dt>Tax (0.1%, Max 1 Luna)</dt>
+              <dd>{formatAmount({ amount: tax, denom })}</dd>
+            </>
+          )}
+
+          <dt>
+            Fees
+            <Select
+              name="feeDenom"
+              value={fee.denom}
+              onChange={e => setFeeDenom(e.target.value)}
+              disabled={isSubmitting}
+              className="form-control form-control-sm"
+            >
+              {balance.map(({ denom }, index) => (
+                <option value={denom} key={index}>
+                  {format.denom(denom)}
+                </option>
+              ))}
+            </Select>
+          </dt>
+          <dd>
+            <input
+              type="text"
+              name="feeAmount"
+              value={input}
+              onChange={e => setInput(sanitize(e.target.value))}
+              disabled={isSubmitting}
+              className="form-control form-control-sm"
+              autoComplete="off"
+            />
+            <span>{format.denom(fee.denom)}</span>
+          </dd>
+
+          {memo && (
+            <>
+              <dt>Memo</dt>
+              <dd>{memo}</dd>
+            </>
+          )}
+
+          {receive && (
+            <>
+              <dt>Receive</dt>
+              <dd>{formatAmount(receive)}</dd>
+            </>
+          )}
+        </dl>
+
+        <section className={s.feedback}>
+          {lt(fee.amount, estimatedFeeAmount) && (
+            <p className="text-right">
+              <small>
+                Recommended fee is{' '}
+                {format.coin({ amount: estimatedFeeAmount, denom: fee.denom })}{' '}
+                or higher.
+                <br />
+                Transactions with low fee might fail to proceed.
+              </small>
+            </p>
+          )}
+          {warning && <InvalidFeedback>{warning}</InvalidFeedback>}
+          {invalid && (
+            <InvalidFeedback>
+              You don't have enough balance. Please adjust either the amount or
+              the fee.
+            </InvalidFeedback>
+          )}
+        </section>
+
+        {withLedger ? (
+          <button {...submitAttrs} disabled={disabled}>
+            Confirm with ledger
+          </button>
+        ) : (
+          <>
+            <section className="form-group">
+              <label className="label">Confirm with password</label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={e => handleChange(e.target.value)}
+                disabled={isSubmitting}
+                placeholder="Input your password to confirm"
+                className="form-control"
+                autoComplete="off"
+              />
+              {incorrect && (
+                <InvalidFeedback tooltip>{incorrect}</InvalidFeedback>
+              )}
+            </section>
+
+            <Divider />
+            <button {...submitAttrs} disabled={disabled || !password}>
+              {isSubmitting ? `${label[1]}…` : label[0]}
+            </button>
+          </>
+        )}
+      </form>
+    )
   ) : (
     <Confirm icon="check_circle" title="Success!" actions={actions}>
       {message}

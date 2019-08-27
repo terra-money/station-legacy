@@ -5,7 +5,7 @@ import { isProduction, isElectron } from '../helpers/env'
 import electron from '../helpers/electron'
 import { changeChain, ChainList } from '../api/api'
 import { report } from '../utils'
-import { getLastAddress } from '../utils/localStorage'
+import { getLastAddress, getLastWithLedger } from '../utils/localStorage'
 import { getLastChain, setLastChain } from '../utils/localStorage'
 import { useModal } from '../hooks'
 import routes from '../routes'
@@ -85,7 +85,8 @@ const App = ({ location, history }: RouteComponentProps) => {
 
     const ready = async () => {
       const address = getLastAddress()
-      address && auth.signin({ address })
+      const withLedger = getLastWithLedger()
+      address && auth.signin({ address, withLedger })
       changeChain(chain)
       isElectron && (await checkVersion())
       setKey(1)
