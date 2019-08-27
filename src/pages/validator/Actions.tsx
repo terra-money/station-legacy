@@ -16,7 +16,7 @@ import s from './Actions.module.scss'
 const Actions = (v: Validator) => {
   const { description, myRewards } = v
   const modal = useModal()
-  const { name, address } = useAuth()
+  const { address, name, withLedger } = useAuth()
 
   /* tx */
   const delegate = ({ undelegate }: { undelegate?: boolean }) =>
@@ -77,7 +77,7 @@ const Actions = (v: Validator) => {
                 onClick={() => delegate({})}
                 className="btn btn-sm btn-primary"
                 disabled={
-                  !name ||
+                  (!name && !withLedger) ||
                   !(v.myDelegatable && gt(v.myDelegatable, 0)) ||
                   v.status === 'jailed'
                 }
@@ -90,7 +90,7 @@ const Actions = (v: Validator) => {
               <ButtonWithName
                 onClick={() => delegate({ undelegate: true })}
                 className="btn btn-sm btn-sky"
-                disabled={!delegate || !name || !v.myDelegation}
+                disabled={(!name && !withLedger) || !v.myDelegation}
               >
                 Undelegate
               </ButtonWithName>
@@ -113,13 +113,16 @@ const Actions = (v: Validator) => {
               <ButtonWithName
                 onClick={() => withdraw()}
                 className="btn btn-sky btn-sm"
-                disabled={!name || !(myRewards && gte(myRewards.total, 1))}
+                disabled={
+                  (!name && !withLedger) ||
+                  !(myRewards && gte(myRewards.total, 1))
+                }
               >
                 Withdraw Rewards
               </ButtonWithName>
             </span>
 
-            {v.accountAddress === address && name && (
+            {v.accountAddress === address && (name || withLedger) && (
               <span className={s.action}>
                 <ButtonWithName
                   onClick={() => claim()}

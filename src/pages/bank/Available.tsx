@@ -7,7 +7,7 @@ import AmountCard from './AmountCard'
 import Send from './Send'
 
 const Available = ({ denom, available }: Balance) => {
-  const { name } = useAuth()
+  const { name, withLedger } = useAuth()
   const modal = useModal()
 
   const openModal = () =>
@@ -29,7 +29,7 @@ const Available = ({ denom, available }: Balance) => {
           <ButtonWithName
             onClick={openModal}
             className="btn btn-primary btn-sm btn-send"
-            disabled={!name}
+            disabled={!name && !withLedger}
           >
             Send
           </ButtonWithName>

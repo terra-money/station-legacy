@@ -13,7 +13,7 @@ import Columns from './Columns'
 import MyDelegations from './MyDelegations'
 
 const Staking = () => {
-  const { address, name } = useAuth()
+  const { address, name, withLedger } = useAuth()
   const modal = useModal()
 
   const render = (staking: Staking) => {
@@ -23,7 +23,7 @@ const Staking = () => {
       <ButtonWithName
         placement="bottom"
         className="btn btn-primary btn-sm"
-        disabled={!name || !(rewards && gte(rewards.total, 1))}
+        disabled={(!name && !withLedger) || !(rewards && gte(rewards.total, 1))}
         onClick={() =>
           rewards &&
           modal.open(

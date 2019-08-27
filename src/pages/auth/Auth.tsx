@@ -47,8 +47,6 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
     LEDGER: {
       title: 'Sign in with Ledger',
       icon: 'usb',
-      isNotReady: true,
-      disabled: true,
       render: () => <Hardware />
     }
   }
