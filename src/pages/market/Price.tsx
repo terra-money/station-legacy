@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, ReactNode } from 'react'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
-import { ChartPoint } from 'chart.js'
+import { ChartPoint, helpers } from 'chart.js'
 import { OOPS } from '../../helpers/constants'
 import api from '../../api/api'
 import { times } from '../../api/math'
@@ -98,6 +98,13 @@ const Price = ({ actives }: { actives: string[] }) => {
         }))
       : [lastPrice]
 
+    const lineStyle = {
+      backgroundColor: helpers
+        .color('#e4e8f6')
+        .alpha(0.5)
+        .rgbString()
+    }
+
     return (
       <>
         <header className={s.header}>
@@ -107,7 +114,7 @@ const Price = ({ actives }: { actives: string[] }) => {
         </header>
 
         <section style={{ height: 260 }}>
-          <Chart type="line" data={data} height={260} />
+          <Chart type="line" data={data} lineStyle={lineStyle} height={260} />
         </section>
       </>
     )

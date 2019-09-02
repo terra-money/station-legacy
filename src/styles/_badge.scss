@@ -14,41 +14,54 @@
   & + & {
     margin-left: 10px;
   }
+}
 
-  &[class*='badge-'] {
-    color: white;
-    font-weight: 500;
-  }
+/* sizes */
+.badge-small {
+  $height: 20px;
+  font-size: 11px;
+  line-height: $height;
+  height: $height;
+  min-width: 55px;
+  border-radius: ($height / 2);
 
-  &.badge-light {
-    background: fade-out($brand, 0.9);
-    color: fade-out($brand, 0.25);
+  & + & {
+    margin-left: 5px;
   }
 }
 
+/* variant */
+.badge-light {
+  background: fade-out($brand, 0.9);
+  color: fade-out($brand, 0.25);
+}
+
 .badge-primary {
+  color: white;
+  font-weight: 500;
   background: $brand;
 }
 
 .badge-secondary {
+  color: white;
+  font-weight: 500;
   background: $sky;
 }
 
 .badge-success {
+  color: white;
+  font-weight: 500;
   background: $green;
 }
 
 .badge-warning {
+  color: white;
+  font-weight: 500;
   background: $orange;
 }
 
 .badge-danger {
+  color: white;
+  font-weight: 500;
   background: $red;
-}
-
-.badge-small {
-  font-size: 10px;
-  line-height: 19px;
-  height: 19px;
-  border-radius: (19px / 2);
 }

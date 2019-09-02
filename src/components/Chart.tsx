@@ -1,20 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react'
-import ChartJS, { helpers } from 'chart.js'
-import { ChartConfiguration, ChartDataSets, ChartData } from 'chart.js'
-import { ChartTooltipItem, ChartPoint } from 'chart.js'
+import { mergeDeepRight as mergeDeep, path } from 'ramda'
+import ChartJS from 'chart.js'
 import { times } from '../api/math'
 import { format } from '../utils'
 
 type ChartType = 'doughnut' | 'line'
-type Props = {
+export type Props = {
   type: ChartType
+  lineStyle?: ChartJS.ChartDataSets
   labels?: string[]
-  data: number[] | ChartPoint[]
+  data: number[] | ChartJS.ChartPoint[]
+  options?: ChartJS.ChartOptions
   width?: number
   height: number
 }
 
-const Chart = ({ type, labels, data, height, ...props }: Props) => {
+const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
   /* DOM Size */
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number>(props.width || 0)
@@ -35,25 +36,37 @@ const Chart = ({ type, labels, data, height, ...props }: Props) => {
     const initChart = (ctx: CanvasRenderingContext2D) => {
       ctx.canvas.width = width
       ctx.canvas.height = height
-      const chart = new ChartJS(ctx, getOptions(type))
+      const chart = new ChartJS(ctx, getOptions(type, props.lineStyle))
       setChart(chart)
     }
 
     const canvas = canvasRef.current
     const ctx = canvas && canvas.getContext('2d')
     width && ctx && initChart(ctx)
-  }, [width, height, type])
+    // eslint-disable-next-line
+  }, [width])
 
   /* Update chart */
   useEffect(() => {
     const updateChart = (chart: ChartJS) => {
+      const merge = (options: ChartJS.ChartOptions) => {
+        const getAxe = (axis: string) => path(['scales', `${axis}Axes`, 0])
+        const scales = {
+          xAxes: [mergeDeep(getAxe('x')(chart.options), getAxe('x')(options))],
+          yAxes: [mergeDeep(getAxe('y')(chart.options), getAxe('y')(options))]
+        }
+        chart.options = mergeDeep(chart.options, { ...options, scales })
+      }
+
       labels && (chart.data.labels = labels)
       chart.data.datasets && (chart.data.datasets[0].data = data)
+      options && merge(options)
+
       chart.update()
     }
 
     chart && updateChart(chart)
-  }, [chart, labels, data])
+  }, [chart, labels, data, options])
 
   return (
     <div ref={containerRef}>
@@ -66,7 +79,10 @@ export default Chart
 
 /* Chart.js */
 const BLUE = '#2043b5'
-const getOptions = (type: ChartType): ChartConfiguration => {
+const getOptions = (
+  type: ChartType,
+  lineStyle?: ChartJS.ChartDataSets
+): ChartJS.ChartConfiguration => {
   /* Dataset Properties */
   const defaultProps = {
     borderWidth: 1
@@ -77,14 +93,11 @@ const getOptions = (type: ChartType): ChartConfiguration => {
       backgroundColor: ['#6292ec', '#5152f3', '#a757f4', '#f19f4d', '#ce4a6f']
     },
     line: {
-      backgroundColor: helpers
-        .color('#e4e8f6')
-        .alpha(0.5)
-        .rgbString(),
       borderColor: BLUE,
       pointBackgroundColor: BLUE,
       pointRadius: 0,
-      pointHoverRadius: 0
+      pointHoverRadius: 0,
+      ...lineStyle
     }
   }[type]
 
@@ -113,8 +126,10 @@ const getOptions = (type: ChartType): ChartConfiguration => {
         caretSize: 6,
         displayColors: false,
         callbacks: {
-          title: ([{ index }]: ChartTooltipItem[], { labels }: ChartData) =>
-            labels && typeof index === 'number' && labels[index],
+          title: (
+            [{ index }]: ChartJS.ChartTooltipItem[],
+            { labels }: ChartJS.ChartData
+          ) => labels && typeof index === 'number' && labels[index],
           label: getLabel
         }
       }
@@ -136,7 +151,7 @@ const getOptions = (type: ChartType): ChartConfiguration => {
         caretSize: 6,
         displayColors: false,
         callbacks: {
-          title: ([{ value }]: ChartTooltipItem[]) => value,
+          title: ([{ value }]: ChartJS.ChartTooltipItem[]) => value,
           label: getLabel
         }
       },
@@ -171,18 +186,14 @@ const getOptions = (type: ChartType): ChartConfiguration => {
 }
 
 /* callbacks */
-type Data = (number | null | undefined | ChartPoint)[]
-const getLabel = ({ index }: ChartTooltipItem, { datasets }: ChartData) => {
-  const getDataset = ([dataset]: ChartDataSets[]) => dataset
-  const getData = ({ data }: ChartDataSets) => data
-  const getChartPoint = (data: Data, index: number) => data[index]
-  const getPoint = ({ t }: ChartPoint) => t
-
-  const dataset = datasets && getDataset(datasets)
-  const data = dataset && getData(dataset)
-  const point = data && typeof index === 'number' && getChartPoint(data, index)
-  const t = point && typeof point !== 'number' ? getPoint(point) : point
-
+const getLabel = (
+  { index }: ChartJS.ChartTooltipItem,
+  { datasets }: ChartJS.ChartData
+) => {
+  type Point = ChartJS.ChartPoint | number
+  const point: Point =
+    (typeof index === 'number' && path([0, 'data', index], datasets)) || 0
+  const t = point && typeof point !== 'number' ? point.t : point
   return t instanceof Date
     ? format.date(t)
     : t

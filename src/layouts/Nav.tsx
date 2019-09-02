@@ -15,8 +15,8 @@ const Nav = ({ pathname }: { pathname: string }) => {
   const close = () => setIsOpen(false)
 
   const menu = [
-    // { name: 'Dashboard', to: '/', icon: 'dashboard' },
-    { name: 'Bank', to: '/', icon: 'account_balance' },
+    { name: 'Dashboard', to: '/', icon: 'dashboard' },
+    { name: 'Bank', to: '/bank', icon: 'account_balance' },
     { name: 'Transactions', to: '/transactions', icon: 'swap_horiz' },
     { name: 'Staking', to: '/staking', icon: 'layers' },
     { name: 'Market', to: '/market', icon: 'timeline' }

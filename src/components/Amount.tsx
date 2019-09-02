@@ -3,6 +3,7 @@ import { format } from '../utils'
 
 type Props = {
   estimated?: boolean
+  hideDecimal?: boolean
   fontSize?: number
   className?: string
   denom?: string
@@ -10,7 +11,7 @@ type Props = {
 }
 
 const Amount = (props: Props) => {
-  const { estimated, fontSize, className, denom, children } = props
+  const { estimated, hideDecimal, fontSize, className, denom, children } = props
   const [integer, decimal] = format.amount(children || '0').split('.')
   return (
     <span className={className} style={{ fontSize }}>
@@ -18,7 +19,7 @@ const Amount = (props: Props) => {
       {integer}
 
       <small>
-        .{decimal}
+        {!hideDecimal && `.${decimal}`}
         {denom && ` ${format.denom(denom)}`}
       </small>
     </span>

@@ -4,6 +4,9 @@ $padding: 25px;
 $padding-small: 20px;
 
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: white;
 
   @media (max-width: $breakpoint - 1) {
@@ -23,6 +26,24 @@ $padding-small: 20px;
 
   & & {
     box-shadow: unset;
+  }
+}
+
+.card-main {
+  appearance: none;
+  text-align: left;
+
+  .card-icon {
+    @include flex();
+    border: 1px solid $line;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover .card-icon {
+    background: $brand;
+    color: white;
   }
 }
 
@@ -84,13 +105,16 @@ $padding-small: 20px;
 .card-footer {
   @media (max-width: $breakpoint - 1) {
     padding: $gutter;
+    padding-top: 0;
   }
 
   @media (min-width: $breakpoint) {
     padding: $padding;
+    padding-top: 0;
 
     .card-small & {
       padding: $padding-small;
+      padding-top: 0;
     }
   }
 }

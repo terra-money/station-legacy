@@ -8,4 +8,8 @@
     transform: translate(0, -50%);
     pointer-events: none;
   }
+
+  & + & {
+    margin-left: 10px;
+  }
 }

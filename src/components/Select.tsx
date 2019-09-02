@@ -1,15 +1,11 @@
-import React, { FC, ChangeEvent } from 'react'
+import React, { FC, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
 import Icon from './Icon'
 import s from './Select.module.scss'
 
-type Props = {
-  name: string
-  value: string | number
-  className: string
-  autoComplete?: 'off'
-  disabled?: boolean
-  onChange: (e: ChangeEvent<HTMLSelectElement>) => void
-}
+type Props = DetailedHTMLProps<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
+>
 
 const Select: FC<Props> = attrs => (
   <div className={s.container}>

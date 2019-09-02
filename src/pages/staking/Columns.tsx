@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react'
-import c from 'classnames'
 import { sum } from '../../api/math'
 import Card from '../../components/Card'
 import Amount from '../../components/Amount'
@@ -62,7 +61,7 @@ const Columns = (props: Staking) => {
     )
 
     return (
-      <div className={c('col', s.column)} key={title}>
+      <div className="col col-6-1280" key={title}>
         <Card title={title} className={s.card} headerClassName={s.header} small>
           {tooltip ? (
             <Pop
@@ -86,7 +85,7 @@ const Columns = (props: Staking) => {
     )
   }
 
-  return <div className={c('row', s.row)}>{columns.map(renderColumn)}</div>
+  return <div className="row">{columns.map(renderColumn)}</div>
 }
 
 export default Columns
