@@ -1,14 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { DateTime } from 'luxon'
 
-const formatDecimal = (number: BigNumber.Value): string =>
-  new BigNumber(number).decimalPlaces(6, BigNumber.ROUND_DOWN).toFixed(6)
+const formatDecimal = (number: BigNumber.Value, p: number = 6): string =>
+  new BigNumber(number).decimalPlaces(p, BigNumber.ROUND_DOWN).toFormat(p)
 
-const formatAmount = (amount: BigNumber.Value): string =>
+const formatAmount = (amount: BigNumber.Value, p: number = 6): string =>
   new BigNumber(amount)
     .div(1e6)
-    .decimalPlaces(6, BigNumber.ROUND_DOWN)
-    .toFormat(6)
+    .decimalPlaces(p, BigNumber.ROUND_DOWN)
+    .toFormat(p)
 
 const formatDenom = (denom: string): string => {
   const f = denom.slice(1)
@@ -25,16 +25,23 @@ export default {
   coin: formatCoin,
   coins: (coins: Coin[]): string[] => coins.map(formatCoin),
 
-  date: (param: string | Date, config: { toLocale?: boolean } = {}): string => {
+  date: (
+    param: string | Date,
+    config: { toLocale?: boolean; short?: boolean } = {}
+  ): string => {
     const dt =
       typeof param === 'string'
         ? DateTime.fromISO(param)
         : DateTime.fromJSDate(param)
 
-    const formatted = config.toLocale
+    const formatted = config.short
+      ? dt.setLocale('en').toLocaleString(DateTime.DATE_MED)
+      : config.toLocale
       ? dt.setLocale('en').toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)
       : dt.toFormat('yyyy.MM.dd HH:mm:ss')
-    return param ? `${formatted} (${dt.offsetNameShort || 'Local'})` : ''
+    return param
+      ? formatted + (!config.short ? ` (${dt.offsetNameShort || 'Local'})` : '')
+      : ''
   },
 
   truncate: (address: string = '', [h, t]: number[]) => {
