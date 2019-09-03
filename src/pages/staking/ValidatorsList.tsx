@@ -13,7 +13,6 @@ const Columns: [string, Attr][] = [
     { align: 'right', style: { width: 100, textAlign: 'right' } }
   ],
   ['Uptime', { align: 'right', style: { width: 80 } }],
-  ['Reward pool (Luna)', { align: 'right', style: { width: 150 } }],
   ['', { style: { width: 20 } }],
   ['My delegation', { align: 'right', style: { width: 200 } }]
 ]

@@ -7,7 +7,7 @@ export default {
     return !input
       ? 'Amount is required'
       : !gt(max, 0)
-      ? 'Not enough balance'
+      ? 'Insufficient balance'
       : !(gt(amount, 0) && lte(amount, max))
       ? `Amount must be between ${format.amount('1')} and ${format.amount(max)}`
       : !isInteger(amount)
