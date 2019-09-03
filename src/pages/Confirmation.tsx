@@ -95,9 +95,20 @@ const Form = (props: Props & { balance: Balance[] }) => {
 
         const { data } = await api.post(url, body)
         const { gas_estimate } = data
+
         const estimatedFeeAmount = calcFee(times(gas_estimate, 1.2))
         setEstimatedFeeAmount(estimatedFeeAmount)
-        setInput(format.decimal(div(estimatedFeeAmount, 1e6)))
+
+        const input = format.decimal(div(estimatedFeeAmount, 1e6))
+        setInput(input)
+
+        const feeAvailable = balance.find(({ denom: feeDenom }) => {
+          const feeAmount = times(input || 0, 1e6)
+          const fee = { amount: feeAmount, denom: feeDenom }
+          return validate(label[0])({ amount, denom, tax, fee }, balance)
+        })
+        feeAvailable && setFeeDenom(feeAvailable.denom)
+
         setIsSimulating(false)
       } catch (error) {
         handleError(error)
@@ -316,6 +327,7 @@ export default Confirmation
 type Validate = (params: Params, balance: Balance[]) => boolean
 type Compare = (b: Balance) => boolean
 type Params = { amount: string; denom?: string; tax?: string; fee: Coin }
+
 const isAvailable: Validate = (params, balance) => {
   const compare: Compare = b =>
     denom === fee.denom
@@ -330,7 +342,8 @@ const isAvailable: Validate = (params, balance) => {
 const isDelegatable: Validate = (params, balance) => {
   const compare: Compare = b =>
     denom === fee.denom
-      ? lte(plus(amount, fee.amount), b.delegatable)
+      ? lte(plus(amount, fee.amount), b.delegatable) &&
+        lte(fee.amount, b.available)
       : lte(amount, b.delegatable) && isFeeAvailable(params, balance)
 
   const { amount, denom, fee } = params
