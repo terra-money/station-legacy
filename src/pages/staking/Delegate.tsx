@@ -107,7 +107,7 @@ const Form = (props: Props & FormProps) => {
         amount: { amount, denom }
       },
       warning:
-        'Redelegation to the same validator will be prohibitted for 21 days. Please make sure you input right amount of luna to delegate.',
+        'Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.',
       label: ['Redelegate', 'Redelegating'],
       message: redelegation
         ? `Redelegated ${input} ${format.denom(denom)} from ${

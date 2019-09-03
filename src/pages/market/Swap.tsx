@@ -207,7 +207,6 @@ const Swap = ({ denoms, getMax }: Props) => {
       />
 
       {renderTable([
-        ['Requested', { amount: output, denom: to }],
         [spread, { amount: minus(output, receive), denom: to }],
         ['Receive', { amount: receive, denom: to }]
       ])}

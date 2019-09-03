@@ -214,7 +214,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
           >
             {balance.map(({ denom }, index) => (
               <option value={denom} key={index}>
-                in {format.denom(denom)}
+                {format.denom(denom)}
               </option>
             ))}
           </Select>

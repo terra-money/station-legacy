@@ -7,7 +7,6 @@ import Page from '../../components/Page'
 import Header from './Header'
 import Actions from './Actions'
 import Informations from './Informations'
-import Rewards from './Rewards'
 import Claims from './Claims'
 import Delegations from './Delegations'
 import Delegators from './Delegators'
@@ -33,7 +32,7 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
           <h2>Delegations</h2>
           <div className="row">
             <div className="col col-8">
-              <Card title="Power events" bodyClassName={s.delegation} bordered>
+              <Card title="Event log" bodyClassName={s.delegation} bordered>
                 <Delegations address={v.operatorAddress} />
               </Card>
             </div>
@@ -45,18 +44,7 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
             </div>
           </div>
 
-          <h2>Rewards and commissions</h2>
-          <div className="row">
-            <div className="col">
-              <Rewards title="Rewards pool" list={v.rewardsPool.denoms} />
-            </div>
-
-            <div className="col">
-              <Rewards title="Commissions" list={v.commissions} />
-            </div>
-          </div>
-
-          <Card title="Claim history" bordered>
+          <Card title="Claim log" bordered>
             <Claims address={v.operatorAddress} />
           </Card>
         </Page>
