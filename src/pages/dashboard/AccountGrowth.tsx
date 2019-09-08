@@ -16,7 +16,6 @@ const AccountGrowth = () => (
   <ChartCard
     title="Account growth"
     url="/v1/dashboard/account_growth"
-    additionalSelector={() => ['Total', 'Active']}
     renderHeader={(
       { totalAccountCount, monthlyActive }: Results,
       index: number
