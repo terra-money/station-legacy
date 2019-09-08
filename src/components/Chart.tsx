@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { mergeDeepRight as mergeDeep, path } from 'ramda'
+import debounce from 'lodash/fp/debounce'
 import ChartJS from 'chart.js'
 import { times } from '../api/math'
 import { format } from '../utils'
@@ -27,7 +28,8 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
 
     const container = containerRef.current
     !width && container && getWidth(container)
-  }, [width])
+    // eslint-disable-next-line
+  }, [])
 
   /* Init chart */
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -75,7 +77,18 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
   )
 }
 
-export default Chart
+const ChartContainer = (props: Props) => {
+  const [key, setKey] = useState<number>(0)
+  useEffect(() => {
+    const refresh = debounce(300)(() => setKey(k => k + 1))
+    window.addEventListener('resize', refresh)
+    return () => window.removeEventListener('resize', refresh)
+  }, [])
+
+  return <Chart {...props} key={key} />
+}
+
+export default ChartContainer
 
 /* Chart.js */
 const BLUE = '#2043b5'
