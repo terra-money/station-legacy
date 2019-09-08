@@ -103,6 +103,9 @@ $padding-small: 20px;
 }
 
 .card-footer {
+  overflow-x: auto;
+  white-space: nowrap;
+
   @media (max-width: $breakpoint - 1) {
     padding: $gutter;
     padding-top: 0;
