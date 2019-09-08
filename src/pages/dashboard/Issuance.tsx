@@ -20,6 +20,7 @@ const Issuance = ({ issuances }: Props) => {
             label === current && 'badge-primary'
           )}
           onClick={() => setCurrent(label)}
+          style={{ margin: 0 }}
           key={index}
         >
           {format.denom(label)}
