@@ -11,19 +11,19 @@ const Dashboard = () => (
     <Columns />
 
     <div className="row">
-      <div className="col">
+      <div className="col col-6">
         <TxVolume />
       </div>
-      <div className="col">
+      <div className="col col-6">
         <StakingReturn />
       </div>
     </div>
 
     <div className="row">
-      <div className="col">
+      <div className="col col-6">
         <TaxProceeds />
       </div>
-      <div className="col">
+      <div className="col col-6">
         <AccountGrowth />
         {/* <SeigniorageProceeds /> */}
       </div>
