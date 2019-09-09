@@ -32,4 +32,5 @@ interface Settings {
   withLedger?: boolean
   recentAddresses?: string[]
   chain?: string
+  hideSmallBalances?: boolean
 }
