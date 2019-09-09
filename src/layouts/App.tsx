@@ -5,8 +5,7 @@ import { isProduction, isElectron } from '../helpers/env'
 import electron from '../helpers/electron'
 import { changeChain, ChainList } from '../api/api'
 import { report } from '../utils'
-import { getLastAddress, getLastWithLedger } from '../utils/localStorage'
-import { getLastChain, setLastChain } from '../utils/localStorage'
+import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'
 import routes from '../routes'
 import Modal from '../components/Modal'
@@ -37,7 +36,7 @@ const initial = {
   refresh: () => {},
   authModal: { open: () => {}, close: () => {} },
 
-  chain: getLastChain() || ChainList[Number(!isProduction)],
+  chain: localSettings.get().chain || ChainList[Number(!isProduction)],
   selectChain: () => {},
 
   goBack: '',
@@ -84,8 +83,9 @@ const App = ({ location, history }: RouteComponentProps) => {
     }
 
     const ready = async () => {
-      const address = getLastAddress()
-      const withLedger = getLastWithLedger()
+      localSettings.migrate()
+
+      const { address, withLedger } = localSettings.get()
       address && auth.signin({ address, withLedger })
       changeChain(chain)
       isElectron && (await checkVersion())
@@ -105,7 +105,7 @@ const App = ({ location, history }: RouteComponentProps) => {
   /* provider: app */
   const [goBack, setGoBack] = useState(initial.goBack) // Header
   const selectChain = (chain: string) => {
-    setLastChain(chain)
+    localSettings.set({ chain })
     changeChain(chain)
     setChain(chain)
     location.pathname.includes('/validator') && history.push('/staking')

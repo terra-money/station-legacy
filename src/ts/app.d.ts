@@ -26,3 +26,10 @@ interface Tab {
   label: string
   key: 'amountDelegated' | 'totalReward'
 }
+
+interface Settings {
+  address?: string
+  withLedger?: boolean
+  recentAddresses?: string[]
+  chain?: string
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import v from '../../api/validate'
 import { format } from '../../utils'
-import { getRecent, clearRecent } from '../../utils/localStorage'
+import { localSettings } from '../../utils/localStorage'
 import { useForm, useAuth } from '../../hooks'
 import Icon from '../../components/Icon'
 import ModalContent from '../../components/ModalContent'
@@ -23,9 +23,10 @@ const SignInWithAddress = () => {
   const { address } = values
 
   /* state */
-  const [recent, setRecent] = useState<string[]>(getRecent)
+  const { recentAddresses = [] } = localSettings.get()
+  const [recent, setRecent] = useState<string[]>(recentAddresses)
   const handleDelete = () => {
-    clearRecent()
+    localSettings.delete(['recentAddresses'])
     setRecent([])
   }
 

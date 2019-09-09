@@ -1,4 +1,4 @@
-import { without } from 'ramda'
+import { mergeRight as merge, omit } from 'ramda'
 import electron from '../helpers/electron'
 
 /* keys */
@@ -65,48 +65,42 @@ export const testPassword = (name: string, password: string) => {
   }
 }
 
-/* Recent */
-export const getRecent = (): string[] =>
-  JSON.parse(localStorage.getItem('recent') || '[]')
-
-export const prependRecent = (address: string) => {
-  const next = [address, ...without([address], getRecent())]
-  localStorage.setItem('recent', JSON.stringify(next))
+/* Settings */
+const SETTINGS = 'settings'
+const getSettings = (): Settings => {
+  const settings = localStorage.getItem(SETTINGS)
+  return settings ? JSON.parse(settings) : {}
 }
 
-export const clearRecent = () => {
-  localStorage.removeItem('recent')
+const setSettings = (next: Partial<Settings>): void => {
+  const settings = getSettings()
+  localStorage.setItem(SETTINGS, JSON.stringify(merge(settings, next)))
 }
 
-/* Last address */
-export const getLastAddress = () => localStorage.getItem('lastAddress')
+export const localSettings = {
+  get: getSettings,
+  set: setSettings,
+  delete: (keys: (keyof Settings)[]): void => {
+    const settings = getSettings()
+    localStorage.setItem(SETTINGS, JSON.stringify(omit(keys, settings)))
+  },
+  migrate: (): void => {
+    const deprecated: Settings = {
+      address: localStorage.getItem('lastAddress') || '',
+      withLedger: JSON.parse(localStorage.getItem('lastWithLedger') || 'false'),
+      recentAddresses: JSON.parse(localStorage.getItem('recent') || '[]'),
+      chain: localStorage.getItem('lastChain') || ''
+    }
 
-export const setLastAddress = (address: string) => {
-  localStorage.setItem('lastAddress', address)
-}
+    const remove = () => {
+      localStorage.removeItem('lastAddress')
+      localStorage.removeItem('lastWithLedger')
+      localStorage.removeItem('recent')
+      localStorage.removeItem('lastChain')
+    }
 
-export const removeLastAddress = () => {
-  localStorage.removeItem('lastAddress')
-}
-
-export const getLastWithLedger = () =>
-  JSON.parse(localStorage.getItem('lastWithLedger') || 'false')
-
-export const setLastWithLedger = (withLedger: string) => {
-  localStorage.setItem('lastWithLedger', withLedger)
-}
-
-export const removeLastWithLedger = () => {
-  localStorage.removeItem('lastWithLedger')
-}
-
-/* Chain */
-export const getLastChain = () => localStorage.getItem('lastChain')
-
-export const setLastChain = (chain: string) => {
-  localStorage.setItem('lastChain', chain)
-}
-
-export const removeLastChain = () => {
-  localStorage.removeItem('lastChain')
+    const migrated = !!localStorage.getItem('settings')
+    !migrated && setSettings(deprecated)
+    !migrated && remove()
+  }
 }

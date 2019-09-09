@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react'
-import { prependRecent, findName } from '../utils/localStorage'
-import * as TerraLocalStorage from '../utils/localStorage'
+import { without } from 'ramda'
+import { localSettings, findName } from '../utils/localStorage'
 
 type AuthContext = Auth & {
   signin: (params: {
@@ -37,11 +37,13 @@ export const useAuthContext: Ctx = ({ onSignIn, onSignOut }) => {
       setWithLedger(!!withLedger)
       onSignIn()
 
-      prependRecent(address)
-      TerraLocalStorage.setLastAddress(address)
-      TerraLocalStorage.setLastWithLedger(String(!!withLedger))
+      const { recentAddresses = [] } = localSettings.get()
+      localSettings.set({
+        address,
+        withLedger: !!withLedger,
+        recentAddresses: [address, ...without([address], recentAddresses)]
+      })
     }
-
     address && signin()
   }
 
@@ -49,8 +51,7 @@ export const useAuthContext: Ctx = ({ onSignIn, onSignOut }) => {
     init()
     onSignOut()
 
-    TerraLocalStorage.removeLastAddress()
-    TerraLocalStorage.removeLastWithLedger()
+    localSettings.delete(['address', 'withLedger'])
   }
 
   const data = { name, address, withLedger }
