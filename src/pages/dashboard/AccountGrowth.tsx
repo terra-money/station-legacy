@@ -14,7 +14,7 @@ interface Results {
 
 const AccountGrowth = () => (
   <ChartCard
-    title="Account growth"
+    title="Total accounts"
     url="/v1/dashboard/account_growth"
     renderHeader={(
       { totalAccountCount, monthlyActive }: Results,
