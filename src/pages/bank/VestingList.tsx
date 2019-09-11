@@ -19,7 +19,7 @@ const VestingList = ({ list }: { list: Vesting[] }) => (
       >
         {({ ref, iconRef, getAttrs }) => (
           <Flex {...getAttrs({})} forwardRef={ref}>
-            Vesting
+            Vesting Schedule
             <Icon name="info" className={s.icon} forwardRef={iconRef} />
           </Flex>
         )}
