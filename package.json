@@ -4,16 +4,16 @@
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
-    "@ledgerhq/hw-transport-u2f": "^4.68.4",
+    "@ledgerhq/hw-transport-u2f": "^4.70.0",
     "@lunie/cosmos-keys": "^0.1.0",
     "@sentry/browser": "^5.6.3",
     "@types/bech32": "^1.1.1",
-    "@types/chart.js": "^2.8.4",
+    "@types/chart.js": "^2.8.5",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.138",
     "@types/luxon": "^1.15.2",
-    "@types/node": "^12.7.3",
+    "@types/node": "^12.7.4",
     "@types/ramda": "^0.26.21",
     "@types/react": "^16.9.2",
     "@types/react-copy-to-clipboard": "^4.2.6",
@@ -46,10 +46,10 @@
     "semver": "^6.3.0",
     "socketcluster-client": "^14.3.1",
     "source-map-explorer": "^2.0.1",
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
+    "@babel/core": "^7.6.0",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-info": "^5.1.11",
     "@storybook/addon-knobs": "^5.1.11",
