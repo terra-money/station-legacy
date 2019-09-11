@@ -3,7 +3,7 @@ import { OOPS } from '../../helpers/constants'
 import { times, div } from '../../api/math'
 import v from '../../api/validate'
 import getTax from '../../api/getTax'
-import { format, report } from '../../utils'
+import { format } from '../../utils'
 import { useForm } from '../../hooks'
 import ModalContent from '../../components/ModalContent'
 import Amount from '../../components/Amount'
@@ -55,7 +55,6 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
       setTax(await getTax({ amount, denom }))
       setIsSubmitted(true)
     } catch (error) {
-      report(error)
       setHasError(true)
     }
 

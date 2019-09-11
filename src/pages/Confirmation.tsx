@@ -7,7 +7,7 @@ import api from '../api/api'
 import { GAS_PRICE, calcFee, calcGas } from '../api/calcFee'
 import getBaseRequest from '../api/getBaseRequest'
 import { plus, sum, times, div, gt, lte, lt } from '../api/math'
-import { format, find, report, sanitize } from '../utils'
+import { format, find, sanitize } from '../utils'
 import { parseError } from '../utils/error'
 import { useAuth } from '../hooks'
 import WithRequest from '../components/WithRequest'
@@ -57,8 +57,6 @@ const Form = (props: Props & { balance: Balance[] }) => {
   /* state: component */
   const [errorMessage, setErrorMessage] = useState<string>('')
   const handleError = (error: any) => {
-    report(error)
-
     const { message = OOPS } = error.response
       ? parseError(error.response.data)
       : {}

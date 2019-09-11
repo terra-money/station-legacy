@@ -33,6 +33,8 @@ export default instance
 
 /* socket */
 export const useSocket = (chain: string) => {
-  const { socket } = Chains[chain]
-  return socketCluster.create(socket)
+  const { socket: options } = Chains[chain]
+  const socket = socketCluster.create(options)
+  socket.on('error', /* ignore */ () => {})
+  return socket
 }

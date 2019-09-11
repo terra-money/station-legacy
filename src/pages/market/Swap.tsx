@@ -3,7 +3,7 @@ import { without } from 'ramda'
 import api from '../../api/api'
 import { minus, times, gt, gte, percent } from '../../api/math'
 import v from '../../api/validate'
-import { format, find, report } from '../../utils'
+import { format, find } from '../../utils'
 import { useForm, useModal } from '../../hooks'
 import Modal from '../../components/Modal'
 import Icon from '../../components/Icon'
@@ -31,7 +31,6 @@ const Swap = ({ denoms, getMax }: Props) => {
   const [output, setOutput] = useState<string>('0')
   const [receive, setReceive] = useState<string>('0')
   const handleError = (error: Error) => {
-    report(error)
     setHasError(true)
   }
 
