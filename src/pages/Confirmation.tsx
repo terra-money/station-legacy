@@ -99,7 +99,8 @@ const Form = (props: Props & { balance: Balance[] }) => {
         const { data } = await api.post(url, body)
         const { gas_estimate } = data
 
-        const estimatedFeeAmount = calcFee(times(gas_estimate, 1.2))
+        const coefficient = getCoefficient(label[0])
+        const estimatedFeeAmount = calcFee(times(gas_estimate, coefficient))
         setEstimatedFeeAmount(estimatedFeeAmount)
 
         const input = format.decimal(div(estimatedFeeAmount, 1e6))
@@ -372,6 +373,13 @@ const Confirmation = (props: Props) => {
 }
 
 export default Confirmation
+
+/* coefficient */
+const getCoefficient = (name: string): string => {
+  const defaultCoefficient = '1.2'
+  const coefficients: { [name: string]: string } = { Redelegate: '1.4' }
+  return coefficients[name] || defaultCoefficient
+}
 
 /* validations */
 type Validate = (params: Params, balance: Balance[]) => boolean
