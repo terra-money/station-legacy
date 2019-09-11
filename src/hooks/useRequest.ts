@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from 'axios'
 import api from '../api/api'
-import { report } from '../utils'
 
 export default ({ url = '', params, list }: RequestProps): ResponseProps => {
   const [data, setData] = useState()
@@ -23,7 +22,6 @@ export default ({ url = '', params, list }: RequestProps): ResponseProps => {
             : getData(await api.get(url, { params }))
         )
       } catch (error) {
-        report(error)
         setError(error)
       }
 

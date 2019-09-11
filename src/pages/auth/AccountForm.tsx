@@ -3,7 +3,6 @@ import electron from '../../helpers/electron'
 import { OOPS } from '../../helpers/constants'
 import { importKey, loadKeys } from '../../utils/localStorage'
 import api from '../../api/api'
-import { report } from '../../utils'
 import { useForm, useAuth } from '../../hooks'
 import Pop from '../../components/Pop'
 import Icon from '../../components/Icon'
@@ -76,7 +75,6 @@ const AccountForm = ({ title, initial, generated }: Props) => {
   }
 
   const handleError = (error: Error) => {
-    report(error)
     setHasError(true)
   }
 
