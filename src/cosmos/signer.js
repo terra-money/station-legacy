@@ -1,5 +1,5 @@
-import { signWithPrivateKey } from '@lunie/cosmos-keys'
 import { getStoredWallet } from '../utils/localStorage'
+import { signWithPrivateKey } from './keys'
 import ledger from './ledger'
 
 export default async (submitType = '', { name, password }) => {

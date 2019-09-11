@@ -5,7 +5,6 @@
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
     "@ledgerhq/hw-transport-u2f": "^4.70.0",
-    "@lunie/cosmos-keys": "^0.1.0",
     "@sentry/browser": "^5.6.3",
     "@types/bech32": "^1.1.1",
     "@types/chart.js": "^2.8.5",
