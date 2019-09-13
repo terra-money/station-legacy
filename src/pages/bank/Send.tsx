@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react'
 import { OOPS } from '../../helpers/constants'
 import { times, div } from '../../api/math'
 import v from '../../api/validate'
-import getTax from '../../api/getTax'
+import getTaxInfo, { calcTax } from '../../api/getTaxInfo'
 import { format } from '../../utils'
 import { useForm } from '../../hooks'
 import ModalContent from '../../components/ModalContent'
@@ -43,7 +43,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
   const setToMax = () => changeValue({ input: String(div(max, 1e6)) })
 
   /* state: tax */
-  const [tax, setTax] = useState<string>('0')
+  const [taxInfo, setTaxInfo] = useState<TaxInfo>({ rate: '0', cap: '0' })
   const [hasError, setHasError] = useState<boolean>(false)
 
   /* submit: tx */
@@ -52,7 +52,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
     setIsSubmitting(true)
 
     try {
-      setTax(await getTax({ amount, denom }))
+      setTaxInfo(await getTaxInfo(denom))
       setIsSubmitted(true)
     } catch (error) {
       setHasError(true)
@@ -168,7 +168,8 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
           url={`/bank/accounts/${to}/transfers`}
           denom={denom}
           memo={memo}
-          tax={tax}
+          tax={calcTax(amount, taxInfo)}
+          taxInfo={taxInfo}
           type="send"
           payload={{ coins: [{ amount, denom }] }}
           amount={amount}

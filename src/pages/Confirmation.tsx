@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, ReactNode } from 'react'
 import { FormEvent, ButtonHTMLAttributes } from 'react'
 import { OOPS } from '../helpers/constants'
 import signTx from '../cosmos/api/signTx'
@@ -6,7 +6,7 @@ import getSigner from '../cosmos/signer'
 import api from '../api/api'
 import { GAS_PRICE, calcFee, calcGas } from '../api/calcFee'
 import getBaseRequest from '../api/getBaseRequest'
-import { plus, sum, times, div, gt, lte, lt } from '../api/math'
+import { plus, sum, times, div, gt, lte, lt, percent } from '../api/math'
 import { format, find, sanitize } from '../utils'
 import { parseError } from '../utils/error'
 import { useAuth } from '../hooks'
@@ -26,6 +26,7 @@ type Props = {
   denom?: string
   memo?: string
   tax?: string
+  taxInfo?: TaxInfo
   type?: string
   payload?: object
 
@@ -48,7 +49,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
   const { address: from, name, withLedger } = auth
 
   /* props */
-  const { url, denom, memo, tax = '0', type, payload = {} } = props
+  const { url, denom, memo, tax = '0', taxInfo, type, payload = {} } = props
   const { amount = '0', amounts, receive, warning } = props
   const { label = ['Submit', 'Submitting'] } = props
   const { message, onSubmitting, onFinish } = props
@@ -183,6 +184,12 @@ const Form = (props: Props & { balance: Balance[] }) => {
     </>
   )
 
+  const getTaxString = ({ rate, cap }: TaxInfo, denom: string): ReactNode => (
+    <small>
+      ({percent(rate, 3)}, Max {format.coin({ amount: cap, denom })})
+    </small>
+  )
+
   const actions = onFinish && [
     {
       onClick: onFinish,
@@ -251,9 +258,9 @@ const Form = (props: Props & { balance: Balance[] }) => {
                 </>
               )}
 
-          {gt(tax, 0) && denom && (
+          {gt(tax, 0) && taxInfo && denom && (
             <>
-              <dt>Tax (0.1%, Max 1 Luna)</dt>
+              <dt>Tax {getTaxString(taxInfo, denom)}</dt>
               <dd>{formatAmount({ amount: tax, denom })}</dd>
             </>
           )}
