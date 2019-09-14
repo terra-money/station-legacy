@@ -29,18 +29,18 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
       render: () => <SignInWithAddress />
     },
     SIGN_IN: {
-      title: 'Sign in with password',
+      title: 'Sign in',
       icon: 'lock',
       disabled: !loadKeys().length,
       render: () => <SignIn />
     },
     CREATE: {
-      title: 'Create an account',
+      title: 'Sign up',
       icon: 'person_add',
       render: () => <Create />
     },
     IMPORT: {
-      title: 'Import with seed',
+      title: 'Recover',
       icon: 'settings_backup_restore',
       render: () => <Import />
     },
@@ -52,8 +52,8 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
   }
 
   const list = isElectron
-    ? [menu.SIGN_IN, menu.SIGN_IN_WITH_ADDRESS, menu.CREATE, menu.IMPORT]
-    : [menu.LEDGER, menu.SIGN_IN_WITH_ADDRESS]
+    ? [menu.SIGN_IN, menu.CREATE, menu.IMPORT]
+    : [menu.LEDGER]
 
   const [currentIndex, setCurrentIndex] = useState<number>(-1)
   const modalActions = { close: onClose, goBack: () => setCurrentIndex(-1) }
