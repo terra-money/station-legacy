@@ -15,7 +15,6 @@ import s from './Auth.module.scss'
 export type Item = {
   title: string
   icon: string
-  isNotReady?: boolean
   disabled?: boolean
   render: () => ReactNode
 }
@@ -75,25 +74,27 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
       <Menu list={list} onSelect={setCurrentIndex} />
 
       {!isElectron && (
-        <Pop
-          type="pop"
-          placement="top"
-          width={380}
-          content={
-            <p className={s.tooltip}>
-              If you want to create an account, please download {TerraStation}.
-              We don't support creating an account for Terra Station web due to
-              the security reasons.
-            </p>
-          }
-        >
-          {({ ref, iconRef, getAttrs }) => (
-            <span {...getAttrs({ className: s.footer })} ref={ref}>
-              <Icon name="info" forwardRef={iconRef} />
-              How can I create an account?
-            </span>
-          )}
-        </Pop>
+        <footer className={s.footer}>
+          <Pop
+            type="pop"
+            placement="top"
+            width={380}
+            content={
+              <p className={s.tooltip}>
+                If you want to create an account, please download {TerraStation}
+                . We don't support creating an account for Terra Station web due
+                to the security reasons.
+              </p>
+            }
+          >
+            {({ ref, iconRef, getAttrs }) => (
+              <span {...getAttrs({})} ref={ref}>
+                <Icon name="info" forwardRef={iconRef} />
+                How can I create an account?
+              </span>
+            )}
+          </Pop>
+        </footer>
       )}
     </ModalContent>
   )
