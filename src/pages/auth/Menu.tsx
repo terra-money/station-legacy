@@ -1,7 +1,6 @@
 import React from 'react'
 import c from 'classnames'
 import Icon from '../../components/Icon'
-import Pop from '../../components/Pop'
 import { Item } from './Auth'
 import s from './Menu.module.scss'
 
@@ -23,25 +22,7 @@ const Menu = ({ list, onSelect }: Props) => (
         )
       }
 
-      return disabled ? (
-        <Pop
-          type="tooltip"
-          placement="top"
-          content="Please create an account or import with seed first"
-          key={title}
-        >
-          {({ ref, getAttrs }) => (
-            <span
-              {...getAttrs({ className: c(attrs.className, s.disabled) })}
-              ref={ref}
-            >
-              {attrs.children}
-            </span>
-          )}
-        </Pop>
-      ) : (
-        <button {...attrs} key={title} />
-      )
+      return disabled ? null : <button {...attrs} key={title} />
     })}
   </div>
 )

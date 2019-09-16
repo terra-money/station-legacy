@@ -32,11 +32,7 @@
     height: 20px;
   }
 
-  &.disabled {
-    opacity: 0.5;
-  }
-
-  &:not(.disabled):hover {
+  &:hover {
     background: $bg-hover;
 
     .chevron {
