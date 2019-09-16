@@ -1,10 +1,18 @@
+@import '../../styles/variables';
 @import '../../styles/mixins';
 
 .footer {
-  @include flex();
+  border-top: 1px solid $hairline;
+  padding: 20px;
+  padding-bottom: 0;
 
-  font-size: 13px;
-  margin: 30px auto 0;
+  span {
+    @include flex(flex-start);
+    display: inline-flex;
+
+    color: $sky;
+    font-size: 13px;
+  }
 
   i {
     margin-right: 8px;

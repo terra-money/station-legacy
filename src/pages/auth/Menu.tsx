@@ -1,7 +1,6 @@
 import React from 'react'
 import c from 'classnames'
 import Icon from '../../components/Icon'
-import Badge from '../../components/Badge'
 import Pop from '../../components/Pop'
 import { Item } from './Auth'
 import s from './Menu.module.scss'
@@ -10,26 +9,21 @@ type Props = { list: Item[]; onSelect: (index: number) => void }
 
 const Menu = ({ list, onSelect }: Props) => (
   <div className={s.list}>
-    {list.map(({ title, icon, isNotReady, disabled }, index) => {
+    {list.map(({ title, icon, disabled }, index) => {
       const attrs = {
         disabled,
-        className: c(s.item, isNotReady && 'desktop'),
+        className: c(s.item),
         onClick: () => onSelect(index),
         children: (
           <>
-            <Icon name={icon} size={48} />
+            <Icon name={icon} size={40} />
             <h1>{title}</h1>
-
-            {isNotReady && (
-              <p className={s.badge}>
-                <Badge className="badge-secondary">Coming soon</Badge>
-              </p>
-            )}
+            <Icon name="chevron_right" className={s.chevron} />
           </>
         )
       }
 
-      return disabled && !isNotReady ? (
+      return disabled ? (
         <Pop
           type="tooltip"
           placement="top"

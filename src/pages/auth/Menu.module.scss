@@ -1,59 +1,47 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
-.list {
-  @include flex(flex-start);
-  flex-wrap: wrap;
-
-  .item {
-    flex: none;
-
-    @media (max-width: $breakpoint - 1) {
-      width: 100%;
-    }
-
-    @media (min-width: $breakpoint) {
-      width: 50%;
-    }
-  }
-}
-
 .item {
   @include flex();
-  flex-direction: column;
-  padding: 25px;
+  padding: 20px;
   position: relative;
   overflow: visible;
+  width: 100%;
+
+  &:not(:first-child) {
+    border-top: 1px solid $hairline;
+  }
 
   h1 {
+    flex: 1;
     font-size: 15px;
     font-weight: 500;
-    margin-top: 10px;
+    margin-left: 15px;
+    text-align: left;
+
     @media (max-width: $breakpoint - 1) {
       font-size: 18px;
     }
   }
 
-  &:hover:not(:disabled) {
-    background: $bg-hover;
+  .chevron {
+    @include flex();
+    border: 1px solid $line;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
   }
 
-  &.disabled,
-  &:disabled {
-    i,
-    h1 {
-      opacity: 0.5;
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &:not(.disabled):hover {
+    background: $bg-hover;
+
+    .chevron {
+      background: $brand;
+      color: white;
     }
   }
-}
-
-.badge {
-  position: absolute;
-  left: 50%;
-  bottom: -10px;
-  transform: translate(-50%, 0);
-
-  font-size: 11px;
-  font-weight: 400;
-  text-transform: uppercase;
 }
