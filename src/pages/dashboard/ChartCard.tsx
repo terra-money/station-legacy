@@ -105,7 +105,7 @@ const ChartCard = ({ url, title, ...props }: Props) => {
     const defaultOptions: ChartOptions = {
       scales: {
         xAxes: [{ time: { unit: 'day' } }],
-        yAxes: [{ ticks: { callback: formatTickY } }]
+        yAxes: [{ ticks: { min: 0, callback: formatTickY } }]
       },
       tooltips: {
         callbacks: {
