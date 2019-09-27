@@ -28,7 +28,7 @@ const StakingReturn = () => (
       })),
       options: {
         scales: {
-          yAxes: [{ ticks: { min: 0, max: 12, callback: v => `${v}%` } }]
+          yAxes: [{ ticks: { callback: v => `${v}%` } }]
         },
         tooltips: {
           callbacks: {
