@@ -147,7 +147,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
         const submitType = withLedger ? 'ledger' : 'local'
         const signer = await getSigner(submitType, { name, password })
         const signedTx = await signTx(tx, signer, { ...base, type })
-        await api.post('/txs', signedTx, config)
+        await api.post('/v1/txs', signedTx, config)
         setIsSubmitted(true)
       } catch (error) {
         error.message === 'Incorrect password'
