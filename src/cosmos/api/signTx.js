@@ -1,4 +1,4 @@
-import { createSignedTransactionObject, createBroadcastBody } from './send'
+import { createSignedTransactionObject } from './send'
 import { createSignMessage, createSignature } from './signature'
 
 const createSignedTransaction = async (tx, signer, request) => {
@@ -25,5 +25,5 @@ const createSignedTransaction = async (tx, signer, request) => {
 
 export default async (tx, signer, request) => {
   const signedTx = await createSignedTransaction(tx, signer, request)
-  return createBroadcastBody(signedTx, 'block')
+  return JSON.stringify(signedTx)
 }
