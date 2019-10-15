@@ -3,8 +3,7 @@
 
 .footer {
   border-top: 1px solid $hairline;
-  padding: 20px;
-  padding-bottom: 0;
+  text-align: center;
 
   span {
     @include flex(flex-start);
@@ -16,6 +15,16 @@
 
   i {
     margin-right: 8px;
+  }
+}
+
+.address {
+  font-size: 13px;
+  padding: 30px 0;
+
+  button {
+    display: inline-block;
+    font-weight: 500;
   }
 }
 
