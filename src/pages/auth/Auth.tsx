@@ -25,6 +25,7 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
     SIGN_IN_WITH_ADDRESS: {
       title: 'Sign in with address',
       icon: 'account_balance_wallet',
+      disabled: true,
       render: () => <SignInWithAddress />
     },
     SIGN_IN: {
@@ -52,7 +53,7 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
 
   const list = isElectron
     ? [menu.SIGN_IN, menu.CREATE, menu.IMPORT]
-    : [menu.LEDGER]
+    : [menu.LEDGER, menu.SIGN_IN_WITH_ADDRESS]
 
   const [currentIndex, setCurrentIndex] = useState<number>(-1)
   const modalActions = { close: onClose, goBack: () => setCurrentIndex(-1) }
@@ -75,6 +76,13 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
 
       {!isElectron && (
         <footer className={s.footer}>
+          <p className={s.address}>
+            Just browsing?{' '}
+            <button onClick={() => setCurrentIndex(1)}>
+              Quickly glance through your address
+            </button>
+          </p>
+
           <Pop
             type="pop"
             placement="top"
