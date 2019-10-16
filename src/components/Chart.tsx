@@ -52,11 +52,24 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
   useEffect(() => {
     const updateChart = (chart: ChartJS) => {
       const merge = (options: ChartJS.ChartOptions) => {
-        const getAxe = (axis: string) => path(['scales', `${axis}Axes`, 0])
+        const getAxe = (axis: string) =>
+          path<object>(['scales', `${axis}Axes`, 0])
+
         const scales = {
-          xAxes: [mergeDeep(getAxe('x')(chart.options), getAxe('x')(options))],
-          yAxes: [mergeDeep(getAxe('y')(chart.options), getAxe('y')(options))]
+          xAxes: [
+            mergeDeep(
+              getAxe('x')(chart.options) || {},
+              getAxe('x')(options) || {}
+            )
+          ],
+          yAxes: [
+            mergeDeep(
+              getAxe('y')(chart.options) || {},
+              getAxe('y')(options) || {}
+            )
+          ]
         }
+
         chart.options = mergeDeep(chart.options, { ...options, scales })
       }
 
