@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { update } from 'ramda'
-import c from 'classnames'
+import Menmonic from './Mnemonic'
 import s from './Phrases.module.scss'
 
 type Props = {
@@ -14,29 +14,33 @@ const Phrases = ({ list, onChange }: Props) => {
   return (
     <ul className={s.list}>
       {list.map((word, index) => {
-        const small = !!word || index === currentFocusIndex
+        const updateWord = (s: string) =>
+          onChange(update(index, sanitize(s), list))
+
         return (
-          <li className={s.item} key={index}>
-            <span className={c(s.number, small && s.small)}>{index + 1}.</span>
-            <input
-              name="word"
-              value={word}
-              onChange={e => {
-                onChange(update(index, sanitize(e.target.value), list))
-              }}
-              onFocus={() => {
-                setCurrentFocusIndex(index)
-              }}
-              onPaste={e => {
+          <Menmonic
+            key={index}
+            index={index}
+            word={word}
+            isFocused={index === currentFocusIndex}
+            onSelect={w => {
+              updateWord(w)
+              setCurrentFocusIndex((i = 0) => (i + 1 < list.length ? i + 1 : i))
+            }}
+            attrs={{
+              name: 'word',
+              value: word,
+              onChange: e => updateWord(e.target.value),
+              onFocus: () => setCurrentFocusIndex(index),
+              onPaste: e => {
                 e.preventDefault()
                 const clipboard = e.clipboardData.getData('text')
                 const next = toArray(clipboard)
                 onChange(paste(index, next, list))
-              }}
-              className={s.input}
-              autoComplete="off"
-            />
-          </li>
+              },
+              autoComplete: 'off'
+            }}
+          />
         )
       })}
     </ul>
