@@ -5,7 +5,8 @@ import s from './Modal.module.scss'
 
 ReactModal.setAppElement('#root')
 
-type Props = { title?: string; config: ReactModal.Props }
+type Config = ReactModal.Props & { onRequestClose: () => void }
+type Props = { title?: string; config: Config }
 
 const Modal: FC<Props> = ({ title, config, children }) => {
   const modal = {
