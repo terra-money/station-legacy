@@ -1,6 +1,16 @@
 import React from 'react'
-import s from './NotFound.module.scss'
+import Card from '../components/Card'
+import Info from '../components/Info'
 
-const NotFound = () => <p className={s.p}>404 Not Found</p>
+const NotFound = () => (
+  <Card>
+    <Info
+      icon="sentiment_very_dissatisfied"
+      title="Oops! Something went wrong."
+    >
+      You have encounteted an error.
+    </Info>
+  </Card>
+)
 
 export default NotFound
