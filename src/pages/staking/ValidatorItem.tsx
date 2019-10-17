@@ -72,9 +72,9 @@ const renderItem = ({ validator, rank, total }: Props) => {
         {description.moniker}
       </Link>
     </h1>,
-    percent(votingPower.weight),
-    percent(commissionInfo.rate, 0),
-    percent(upTime, 0),
+    <span className={s.percent}>{percent(votingPower.weight)}</span>,
+    <span className={s.percent}>{percent(commissionInfo.rate, 0)}</span>,
+    <span className={s.percent}>{percent(upTime, 0)}</span>,
     null,
     total && renderMyDelegation(total)
   ]
