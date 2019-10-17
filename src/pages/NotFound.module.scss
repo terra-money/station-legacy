@@ -1,7 +1,0 @@
-@import '../styles/mixins';
-@import '../styles/variables';
-
-.p {
-  @include flex();
-  padding: $gutter-large;
-}
