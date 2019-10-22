@@ -45,8 +45,10 @@ const Mnemonic: React.FC<Props> = props => {
   const prevRef = useRef<number>(0)
 
   /* Suggestions */
-  const suggestions = wordlist.filter(w => w.startsWith(word) && w !== word)
-  const showSuggestions = isFocused && !!word.length && !!suggestions.length
+  const suggestions = wordlist.filter(
+    w => word && w.startsWith(word) && w !== word
+  )
+  const showSuggestions = isFocused && !!suggestions.length
 
   /* Suggestions: index */
   const [currentIndex, setCurrentIndex] = useState(-1)
