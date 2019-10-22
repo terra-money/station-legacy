@@ -4,6 +4,7 @@ import { useAuth, useGoBack } from '../../hooks'
 import WithRequest from '../../components/WithRequest'
 import Card from '../../components/Card'
 import Page from '../../components/Page'
+import NotFound from '../NotFound'
 import Header from './Header'
 import Actions from './Actions'
 import Informations from './Informations'
@@ -19,6 +20,7 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
     <WithRequest
       url={`/v1/staking/validators/${match.params.address}`}
       params={{ account: address }}
+      error={<NotFound />}
     >
       {(v: Validator) => (
         <Page title="Validator Details">
