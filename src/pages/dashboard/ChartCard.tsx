@@ -153,7 +153,7 @@ const formatTickY = (value: number, index: number, values: number[]) => {
   return average > 1000000000
     ? value / 1000000000 + 'B'
     : average > 1000000
-    ? value / 100000 + 'M'
+    ? value / 1000000 + 'M'
     : average > 1000
     ? value / 1000 + 'K'
     : value
