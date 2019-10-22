@@ -50,7 +50,7 @@ const Phrases = ({ list, onChange }: Props) => {
 export default Phrases
 
 /* utils */
-const sanitize = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '')
+const sanitize = (s: string = '') => s.toLowerCase().replace(/[^a-z]/g, '')
 const toArray = (s: string) =>
   s
     .trim()
