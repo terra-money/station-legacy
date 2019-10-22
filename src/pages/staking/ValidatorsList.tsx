@@ -69,10 +69,11 @@ const ValidatorsList = (staking: Staking) => {
           return !hidden
         })
         .sort((validatorA, validatorB) => {
-          const a: string = path(prop, validatorA) || '0'
-          const b: string = path(prop, validatorB) || '0'
-          const compareString = asc ? (a > b ? 1 : -1) : a > b ? -1 : 1
-          const compareNumber = asc ? (gt(a, b) ? 1 : -1) : gt(a, b) ? -1 : 1
+          const a: string = String(path(prop, validatorA) || 0)
+          const b: string = String(path(prop, validatorB) || 0)
+          const c = asc ? 1 : -1
+          const compareString = c * (a.toLowerCase() > b.toLowerCase() ? 1 : -1)
+          const compareNumber = c * (gt(a, b) ? 1 : -1)
           return a === b ? 0 : isString ? compareString : compareNumber
         })
 
