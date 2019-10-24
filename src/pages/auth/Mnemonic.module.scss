@@ -9,6 +9,10 @@
 .suggestions {
   position: absolute;
 
+  :nth-child(6n) > & {
+    right: 0;
+  }
+
   background: white;
   border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
