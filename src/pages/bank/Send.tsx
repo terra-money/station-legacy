@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import { OOPS } from '../../helpers/constants'
-import { times, div } from '../../api/math'
+import { times, div, floor } from '../../api/math'
 import v from '../../api/validate'
 import getTaxInfo, { calcTax } from '../../api/getTaxInfo'
 import { format } from '../../utils'
@@ -40,7 +40,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
   const amount = times(input || 0, 1e6)
 
   /* helpers: form */
-  const setToMax = () => changeValue({ input: String(div(max, 1e6)) })
+  const setToMax = () => changeValue({ input: String(div(floor(max), 1e6)) })
 
   /* state: tax */
   const [taxInfo, setTaxInfo] = useState<TaxInfo>({ rate: '0', cap: '0' })
