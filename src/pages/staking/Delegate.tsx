@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import c from 'classnames'
-import { times, div } from '../../api/math'
+import { times, div, floor } from '../../api/math'
 import v from '../../api/validate'
 import { format } from '../../utils'
 import { useAuth, useForm } from '../../hooks'
@@ -60,7 +60,7 @@ const Form = (props: Props & FormProps) => {
   const max = getMax(from)
 
   /* helpers: form */
-  const setToMax = () => changeValue({ input: String(div(max, 1e6)) })
+  const setToMax = () => changeValue({ input: String(div(floor(max), 1e6)) })
 
   /* submit: tx */
   const submit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
