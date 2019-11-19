@@ -19,8 +19,8 @@ const Nav = ({ pathname }: { pathname: string }) => {
     { name: 'Bank', to: '/bank', icon: 'account_balance' },
     { name: 'Transactions', to: '/transactions', icon: 'swap_horiz' },
     { name: 'Staking', to: '/staking', icon: 'layers' },
-    { name: 'Market', to: '/market', icon: 'timeline' }
-    // { name: 'Budget', to: '/budget', icon: 'how_to_vote' }
+    { name: 'Market', to: '/market', icon: 'timeline' },
+    { name: 'Governance', to: '/governance', icon: 'how_to_vote' }
   ]
 
   /* Close on change path (Android) */
