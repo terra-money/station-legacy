@@ -5,9 +5,10 @@ import ChartJS from 'chart.js'
 import { times } from '../api/math'
 import { format } from '../utils'
 
-type ChartType = 'doughnut' | 'line'
+type ChartType = 'doughnut' | 'line' | 'pie'
 export type Props = {
   type: ChartType
+  pieBackgroundColors?: string[]
   lineStyle?: ChartJS.ChartDataSets
   labels?: string[]
   data: number[] | ChartJS.ChartPoint[]
@@ -16,7 +17,10 @@ export type Props = {
   height: number
 }
 
-const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
+const ChartComponent = (props: Props) => {
+  const { type, labels, data, height, options } = props
+  const { pieBackgroundColors, lineStyle } = props
+
   /* DOM Size */
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number>(props.width || 0)
@@ -38,7 +42,10 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
     const initChart = (ctx: CanvasRenderingContext2D) => {
       ctx.canvas.width = width
       ctx.canvas.height = height
-      const chart = new ChartJS(ctx, getOptions(type, props.lineStyle))
+      const chart = new ChartJS(
+        ctx,
+        getOptions(type, { pieBackgroundColors, lineStyle })
+      )
       setChart(chart)
     }
 
@@ -70,7 +77,10 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
           ]
         }
 
-        chart.options = mergeDeep(chart.options, { ...options, scales })
+        chart.options = mergeDeep(
+          chart.options,
+          Object.assign({}, options, options.scales && { scales })
+        )
       }
 
       labels && (chart.data.labels = labels)
@@ -90,7 +100,7 @@ const Chart = ({ type, labels, data, height, options, ...props }: Props) => {
   )
 }
 
-const ChartContainer = (props: Props) => {
+const Chart = (props: Props) => {
   const [key, setKey] = useState<number>(0)
   useEffect(() => {
     const refresh = debounce(300)(() => setKey(k => k + 1))
@@ -98,16 +108,19 @@ const ChartContainer = (props: Props) => {
     return () => window.removeEventListener('resize', refresh)
   }, [])
 
-  return <Chart {...props} key={key} />
+  return <ChartComponent {...props} key={key} />
 }
 
-export default ChartContainer
+export default Chart
 
 /* Chart.js */
 const BLUE = '#2043b5'
 const getOptions = (
   type: ChartType,
-  lineStyle?: ChartJS.ChartDataSets
+  config: {
+    pieBackgroundColors?: string[]
+    lineStyle?: ChartJS.ChartDataSets
+  }
 ): ChartJS.ChartConfiguration => {
   /* Dataset Properties */
   const defaultProps = {
@@ -118,12 +131,15 @@ const getOptions = (
     doughnut: {
       backgroundColor: ['#6292ec', '#5152f3', '#a757f4', '#f19f4d', '#ce4a6f']
     },
+    pie: {
+      backgroundColor: config.pieBackgroundColors
+    },
     line: {
       borderColor: BLUE,
       pointBackgroundColor: BLUE,
       pointRadius: 0,
       pointHoverRadius: 0,
-      ...lineStyle
+      ...config.lineStyle
     }
   }[type]
 
@@ -134,31 +150,38 @@ const getOptions = (
     legend: { display: false }
   }
 
+  const tooltips = {
+    backgroundColor: BLUE,
+    titleFontFamily: 'Gotham',
+    titleFontSize: 13,
+    titleFontStyle: 700,
+    titleMarginBottom: 4,
+    bodyFontFamily: 'Gotham',
+    bodyFontSize: 13,
+    bodyFontStyle: 'normal',
+    xPadding: 15,
+    yPadding: 10,
+    caretSize: 6,
+    displayColors: false,
+    callbacks: {
+      title: (
+        [{ index }]: ChartJS.ChartTooltipItem[],
+        { labels }: ChartJS.ChartData
+      ) => labels && typeof index === 'number' && labels[index],
+      label: getLabel
+    }
+  }
+
   const options = {
     doughnut: {
       aspectRatio: 1,
       cutoutPercentage: 85,
-      tooltips: {
-        backgroundColor: BLUE,
-        titleFontFamily: 'Gotham',
-        titleFontSize: 13,
-        titleFontStyle: 700,
-        titleMarginBottom: 4,
-        bodyFontFamily: 'Gotham',
-        bodyFontSize: 13,
-        bodyFontStyle: 'normal',
-        xPadding: 15,
-        yPadding: 10,
-        caretSize: 6,
-        displayColors: false,
-        callbacks: {
-          title: (
-            [{ index }]: ChartJS.ChartTooltipItem[],
-            { labels }: ChartJS.ChartData
-          ) => labels && typeof index === 'number' && labels[index],
-          label: getLabel
-        }
-      }
+      tooltips
+    },
+    pie: {
+      aspectRatio: 1,
+      cutoutPercentage: 0,
+      tooltips
     },
     line: {
       tooltips: {

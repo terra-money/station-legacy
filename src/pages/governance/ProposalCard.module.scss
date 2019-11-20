@@ -1,0 +1,76 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.link {
+  color: unset;
+
+  .circle {
+    flex: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    .circle {
+      background: $brand;
+      color: white;
+    }
+  }
+}
+
+.card {
+  background: #f9fafd;
+  height: 100%;
+}
+
+.main {
+  @include flex(space-between);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: normal;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.meta {
+  font-size: 12px;
+}
+
+.details {
+  @include flex(flex-start, center);
+  margin-top: 20px;
+
+  article {
+    @include flex(space-between, flex-start);
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  article + article {
+    border-left: 1px solid $line;
+  }
+
+  h2 {
+    font-size: 12px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  small {
+    font-size: 13.5px;
+  }
+}
+
+.circle {
+  @include flex();
+
+  background: white;
+  border: 1px solid $line;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}

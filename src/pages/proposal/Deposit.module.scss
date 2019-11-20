@@ -1,0 +1,50 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  @include flex(flex-end, stretch);
+
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+}
+
+.content {
+  @include flex();
+
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 0;
+
+  .orb {
+    margin: 0 auto;
+  }
+
+  strong {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}
+
+.footer {
+  @include flex();
+
+  article {
+    font-size: 12px;
+    width: 50%;
+
+    &:not(:first-child) {
+      border-left: 1px solid $line;
+    }
+  }
+}

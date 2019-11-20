@@ -61,3 +61,26 @@
     border-right: $border;
   }
 }
+
+/* dl */
+.dl-wrap {
+  @include flex();
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  dt,
+  dd {
+    @include flex(flex-start);
+    padding: 5px 0;
+    width: 50%;
+    overflow: hidden;
+  }
+
+  dt {
+    font-weight: 500;
+  }
+
+  dd {
+    text-align: right;
+  }
+}

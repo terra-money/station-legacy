@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { useRef, useState, useEffect, FC, ReactNode } from 'react'
 import c from 'classnames'
 import Icon from './Icon'
 
@@ -11,19 +11,36 @@ type Props = {
   /* styles */
   className?: string
   headerClassName?: string
+  mainClassName?: string
   bodyClassName?: string
+  footerClassName?: string
 
   style?: object
 
   bordered?: boolean
   bgHeader?: boolean
   small?: boolean
+  fixedHeight?: boolean
 }
 
 const Card: FC<Props> = props => {
   const { title, footer, children, actions, onClick } = props
-  const { className, headerClassName, bodyClassName, style } = props
-  const { bordered, bgHeader, small } = props
+  const { className, headerClassName, mainClassName } = props
+  const { bodyClassName, footerClassName } = props
+  const { bordered, bgHeader, small, fixedHeight, style } = props
+  const shouldCollapse = !(bordered || bgHeader)
+
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const [minHeight, setMinHeight] = useState(0)
+
+  useEffect(() => {
+    const fixHeight = () => {
+      const { height } = bodyRef.current!.getBoundingClientRect()
+      setMinHeight(height)
+    }
+
+    fixedHeight && fixHeight()
+  })
 
   const main = (
     <>
@@ -31,7 +48,8 @@ const Card: FC<Props> = props => {
         <header
           className={c(
             'card-header',
-            bordered ? 'bordered' : bgHeader ? 'bg' : 'collapsed',
+            bgHeader && 'bg',
+            shouldCollapse && 'collapsed',
             headerClassName
           )}
         >
@@ -47,23 +65,45 @@ const Card: FC<Props> = props => {
         </header>
       )}
 
-      <section className={c('card-body', bodyClassName)}>{children}</section>
+      <section
+        className={c('card-body', bodyClassName)}
+        style={{ minHeight }}
+        ref={bodyRef}
+      >
+        {children}
+      </section>
     </>
   )
 
   return (
     <article
-      className={c('card', small && 'card-small', className)}
+      className={c(
+        'card',
+        small && 'card-small',
+        bordered && 'bordered',
+        className
+      )}
       style={style}
     >
       {onClick ? (
-        <button className="card-main" onClick={onClick}>
+        <button className={c('card-main', mainClassName)} onClick={onClick}>
           {main}
         </button>
       ) : (
-        <div className="card-main">{main}</div>
+        <div className={c('card-main', mainClassName)}>{main}</div>
       )}
-      {footer && <footer className="card-footer">{footer}</footer>}
+
+      {footer && (
+        <footer
+          className={c(
+            'card-footer',
+            shouldCollapse && 'collapsed',
+            footerClassName
+          )}
+        >
+          {footer}
+        </footer>
+      )}
     </article>
   )
 }

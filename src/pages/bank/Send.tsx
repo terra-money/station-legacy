@@ -3,7 +3,7 @@ import { OOPS } from '../../helpers/constants'
 import { times, div, floor } from '../../api/math'
 import v from '../../api/validate'
 import getTaxInfo, { calcTax } from '../../api/getTaxInfo'
-import { format } from '../../utils'
+import { format, getSize } from '../../utils'
 import { useForm } from '../../hooks'
 import ModalContent from '../../components/ModalContent'
 import Amount from '../../components/Amount'
@@ -26,7 +26,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
   const validate = ({ input, to, memo }: Values) => ({
     to: v.address(to),
     input: v.input(input, max),
-    memo: !(new Blob([memo]).size <= 256) ? 'Memo is too long' : ''
+    memo: !(getSize(memo) <= 256) ? 'Memo is too long' : ''
   })
 
   /* state: form */

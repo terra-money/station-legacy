@@ -1,0 +1,47 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.list {
+  margin: ($gutter-large / -2);
+
+  @media (min-width: $breakpoint) {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+}
+
+.item {
+  padding: ($gutter-large / 2);
+  width: 100%;
+
+  @media (min-width: 1280px) {
+    width: 50%;
+  }
+}
+
+.footer {
+  article {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  @media (min-width: $breakpoint) {
+    @include flex();
+
+    article {
+      width: (100% / 3);
+    }
+  }
+
+  @media (max-width: $breakpoint - 1) {
+    article:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+}

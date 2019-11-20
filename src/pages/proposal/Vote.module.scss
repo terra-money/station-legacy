@@ -1,0 +1,97 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.main {
+  @media (min-width: $breakpoint) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.header {
+  display: flex;
+
+  @media (max-width: $breakpoint - 1) {
+    margin-bottom: $gutter;
+  }
+}
+
+.summary {
+  margin: 0 20px;
+
+  article:not(:first-child) {
+    margin-top: 15px;
+  }
+
+  h1 {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+
+.options {
+  @include flex(flex-end, stretch);
+
+  flex: 1;
+  flex-wrap: wrap;
+  margin: (-$gutter / 2);
+}
+
+.option {
+  width: (100% / 2);
+  padding: ($gutter / 2);
+
+  @media (min-width: 1280px) {
+    width: (100% / 4);
+    max-width: 190px;
+  }
+
+  article {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 12px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+}
+
+.Yes {
+  border-color: $yes;
+}
+
+.No {
+  border-color: $no;
+}
+
+.NoWithVeto {
+  border-color: $veto;
+}
+
+.Abstain {
+  border-color: $abstain;
+}
+
+/* footer */
+.footer {
+  font-size: 12px;
+  margin-top: 40px;
+
+  p {
+    margin-top: 10px;
+  }
+
+  small {
+    font-size: 11px;
+  }
+}

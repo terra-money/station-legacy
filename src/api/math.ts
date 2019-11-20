@@ -29,6 +29,8 @@ export const floor = (n: BN.Value): string =>
 export const percent = (n: BN.Value, f: number = 2): string =>
   new BN(times(n, 100)).toFixed(f) + '%'
 
+export const toNumber = (n: BN.Value): number => new BN(n).toNumber()
+
 /* boolean */
 export const gt = (a: BN.Value, b: BN.Value): boolean => new BN(a).gt(b)
 export const lt = (a: BN.Value, b: BN.Value): boolean => new BN(a).lt(b)
