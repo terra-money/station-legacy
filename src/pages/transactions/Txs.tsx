@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react'
-import { RouteComponentProps, Link } from 'react-router-dom'
-import URLSearchParams from '@ungap/url-search-params'
-import c from 'classnames'
+import React from 'react'
 import { OOPS } from '../../helpers/constants'
-import { useAuth } from '../../hooks'
+import { useAuth, useTabs } from '../../hooks'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
 import Loading from '../../components/Loading'
@@ -13,58 +10,15 @@ import WithRequest from '../../components/WithRequest'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import Info from '../../components/Info'
 import Tx from './Tx'
-import s from './Txs.module.scss'
 
-/* constants */
-const tabs = ['send', 'receive', 'staking', 'swap', 'vote']
-const Txs = ({ location, history }: RouteComponentProps) => {
-  const { search, pathname } = location
+const TABS = ['', 'send', 'receive', 'staking', 'swap', 'vote']
+
+const Txs = () => {
   const { address } = useAuth()
-
-  /* URLSearchParams: tab */
-  const getSearch = () => new URLSearchParams(search)
-  const getNextSearch = (entries: string[][]) => {
-    const sp = getSearch()
-    entries.forEach(([key, value]) =>
-      value ? sp.set(key, value) : sp.delete(key)
-    )
-
-    return `?${sp.toString()}`
-  }
-
-  const currentTab = getSearch().get('tag') || ''
-  const page = getSearch().get('page') || '1'
-
-  /* unmount: init url */
-  useEffect(() => {
-    return () => history.replace(getNextSearch([['tag', ''], ['page', '']]))
-    // eslint-disable-next-line
-  }, [])
-
-  /* render: tabs */
-  const renderTabs = () => (
-    <section className={s.tabs}>
-      {renderTab('')}
-      {tabs.map(renderTab)}
-    </section>
-  )
-
-  const renderTab = (t: string) => {
-    const isCurrent = t === currentTab
-    const to = { pathname, search: getNextSearch([['tag', t], ['page', '']]) }
-    const className = c('badge', isCurrent && 'badge-primary', s.tab)
-    const attrs = { className: className, children: t || 'all', key: t }
-    return isCurrent ? <span {...attrs} /> : <Link to={to} {...attrs} />
-  }
-
-  /* helpers */
-  const getLink = (page: string) => ({
-    pathname,
-    search: getNextSearch([['page', page]])
-  })
+  const { currentTab, page, renderTabs, getLink } = useTabs('tag', TABS)
 
   return (
-    <Card title={renderTabs()} headerClassName={s.header} bordered>
+    <Card title={renderTabs()} bordered>
       <WithRequest
         url="/v1/msgs"
         params={{ account: address, action: currentTab, page }}
@@ -93,10 +47,10 @@ const Txs = ({ location, history }: RouteComponentProps) => {
   )
 }
 
-const TxsContainer = (props: RouteComponentProps) => (
+const TxsContainer = () => (
   <Page title="Transactions">
     <WithAuth card>
-      <Txs {...props} />
+      <Txs />
     </WithAuth>
   </Page>
 )

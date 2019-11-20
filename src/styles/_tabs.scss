@@ -1,16 +1,6 @@
-@import '../../styles/mixins';
-@import '../../styles/variables';
-
-.header {
-  overflow-x: auto;
-}
-
 .tabs {
   @include flex(flex-start);
   white-space: nowrap;
   padding-right: $gutter;
-}
-
-.tab {
   text-transform: capitalize;
 }

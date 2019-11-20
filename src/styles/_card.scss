@@ -52,6 +52,7 @@ $padding-small: 20px;
 
   font-size: 15px;
   font-weight: 500;
+  overflow-x: auto;
 
   .card-actions {
     @include flex();
