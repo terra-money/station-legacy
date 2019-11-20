@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .chart {
   margin: 0 auto;
   position: relative;
@@ -19,7 +21,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    border: 18px solid #f4f5fb;
+    border: 18px solid $bg;
     border-radius: 50%;
     z-index: 1;
   }

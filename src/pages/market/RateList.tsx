@@ -26,7 +26,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
   )
 
   return (
-    <Card title="Terra exchange rate">
+    <Card title="Terra exchange rate" fixedHeight>
       <Select
         name="denom"
         value={denom}

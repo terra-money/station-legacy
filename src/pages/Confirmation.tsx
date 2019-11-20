@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment, ReactNode } from 'react'
 import { FormEvent, ButtonHTMLAttributes } from 'react'
+import c from 'classnames'
 import { OOPS } from '../helpers/constants'
 import signTx from '../cosmos/api/signTx'
 import getSigner from '../cosmos/signer'
@@ -60,7 +61,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
   const handleError = (error: any) => {
     const { message = OOPS } = error.response
       ? parseError(error.response.data)
-      : {}
+      : error || {}
 
     setErrorMessage(message)
   }
@@ -78,9 +79,10 @@ const Form = (props: Props & { balance: Balance[] }) => {
   }
 
   /* state: simulate */
+  const getInitialFeeDenom = () => denom || balance[0]?.denom || 'uluna'
   const [estimatedFeeAmount, setEstimatedFeeAmount] = useState<string>('0')
   const [input, setInput] = useState<string>('0')
-  const [feeDenom, setFeeDenom] = useState<string>(denom || balance[0].denom)
+  const [feeDenom, setFeeDenom] = useState<string>(getInitialFeeDenom)
   const feeAmount = times(input || 0, 1e6)
   const fee = { amount: feeAmount, denom: feeDenom }
   const gas = calcGas(fee.amount)
@@ -89,11 +91,26 @@ const Form = (props: Props & { balance: Balance[] }) => {
   const [isSimulating, setIsSimulating] = useState<boolean>(true)
 
   useEffect(() => {
+    const findAvailableDenom = (feeAmount: string) => {
+      const validateWithFee = (fee: Coin) =>
+        validate(label[0])({ amount, denom, tax, fee }, balance)
+
+      return validateWithFee({ amount: feeAmount, denom: fee.denom })
+        ? fee.denom
+        : balance.find(({ denom }) =>
+            validateWithFee({ amount: feeAmount, denom })
+          )?.denom ?? fee.denom
+    }
+
     const simulate = async () => {
       try {
         const base = await getBaseRequest(from)
+
+        const simulationFees = { amount: '1', denom: findAvailableDenom('1') }
+        const gasData = { gas: 'auto', fees: [simulationFees] }
+
         const body = {
-          base_req: { ...base, memo, simulate: true },
+          base_req: { ...base, memo, simulate: true, ...gasData },
           ...payload
         }
 
@@ -106,13 +123,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
 
         const input = format.decimal(div(estimatedFeeAmount, 1e6))
         setInput(input)
-
-        const feeAvailable = balance.find(({ denom: feeDenom }) => {
-          const feeAmount = times(input || 0, 1e6)
-          const fee = { amount: feeAmount, denom: feeDenom }
-          return validate(label[0])({ amount, denom, tax, fee }, balance)
-        })
-        feeAvailable && setFeeDenom(feeAvailable.denom)
+        setFeeDenom(findAvailableDenom(estimatedFeeAmount))
 
         setIsSimulating(false)
       } catch (error) {
@@ -251,7 +262,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
     ) : (
       <form onSubmit={submit}>
         <h1>Confirm</h1>
-        <dl className={s.dl}>
+        <dl className={c('dl-wrap', s.dl)}>
           {amounts
             ? amounts.map((a, i) => (
                 <Fragment key={i}>
@@ -401,39 +412,48 @@ type Validate = (params: Params, balance: Balance[]) => boolean
 type Compare = (b: Balance) => boolean
 type Params = { amount: string; denom?: string; tax?: string; fee: Coin }
 
-const isAvailable: Validate = (params, balance) => {
-  const compare: Compare = b =>
-    denom === fee.denom
-      ? lte(sum([amount, tax, fee.amount]), b.available)
-      : lte(plus(amount, tax), b.available) && isFeeAvailable(params, balance)
-
-  const { amount, denom, tax = '0', fee } = params
-  const b = denom && find<Balance>(balance)(denom)
-  return !!b && compare(b)
-}
-
-const isDelegatable: Validate = (params, balance) => {
-  const compare: Compare = b =>
-    denom === fee.denom
-      ? lte(plus(amount, fee.amount), b.delegatable) &&
-        lte(fee.amount, b.available)
-      : lte(amount, b.delegatable) && isFeeAvailable(params, balance)
-
-  const { amount, denom, fee } = params
-  const b = denom && find<Balance>(balance)(denom)
-  return !!b && compare(b)
-}
-
-const isFeeAvailable: Validate = ({ fee }, balance) => {
-  const b = find<Balance>(balance)(fee.denom)
-  return !!b && lte(fee.amount, b.available)
-}
+const getEmpty = (denom: string) => ({
+  denom,
+  available: '0',
+  delegatable: '0'
+})
 
 const validate = (name: string) => {
+  const isAvailable: Validate = (params, balance) => {
+    const compare: Compare = b =>
+      denom === fee.denom
+        ? lte(sum([amount, tax, fee.amount]), b.available)
+        : lte(plus(amount, tax), b.available) && isFeeAvailable(params, balance)
+
+    const { amount, denom, tax = '0', fee } = params
+    const b = denom && (find<Balance>(balance)(denom) || getEmpty(denom))
+    return !!b && compare(b)
+  }
+
+  const isDelegatable: Validate = (params, balance) => {
+    const compare: Compare = b =>
+      denom === fee.denom
+        ? lte(plus(amount, fee.amount), b.delegatable) &&
+          lte(fee.amount, b.available)
+        : lte(amount, b.delegatable) && isFeeAvailable(params, balance)
+
+    const { amount, denom, fee } = params
+    const b = denom && find<Balance>(balance)(denom)
+    return !!b && compare(b)
+  }
+
+  const isFeeAvailable: Validate = ({ fee }, balance) => {
+    const b = find<Balance>(balance)(fee.denom)
+    return !!b && lte(fee.amount, b.available)
+  }
+
   const functions: { [name: string]: Validate } = {
     Send: isAvailable,
     Swap: isAvailable,
-    Delegate: isDelegatable
+    Delegate: isDelegatable,
+    Propose: isAvailable,
+    Deposit: isAvailable,
+    Vote: isFeeAvailable
   }
 
   return functions[name] || isFeeAvailable
@@ -442,8 +462,17 @@ const validate = (name: string) => {
 const findErrorMessage = (raw_log: string): string => {
   try {
     const parsed = JSON.parse(raw_log)
-    const { message } = parsed
-    return message
+
+    if (Array.isArray(parsed)) {
+      const { log } = parsed.find(({ success }) => !success)
+      const { message } = JSON.parse(log)
+      return message
+    } else if (typeof parsed === 'object') {
+      const { message } = parsed
+      return message
+    }
+
+    return ''
   } catch (error) {
     return ''
   }

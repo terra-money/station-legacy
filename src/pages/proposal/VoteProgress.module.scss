@@ -1,0 +1,51 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+$gutter: 40px;
+$height: 10px;
+
+.container {
+  position: relative;
+}
+
+.gutter {
+  padding-top: $gutter;
+}
+
+.threshold {
+  @include flex();
+
+  background: $brand;
+  border-radius: 3px;
+  color: white;
+  padding: 5px 10px;
+
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, 0);
+  z-index: 1;
+}
+
+.flag {
+  content: '';
+  display: block;
+  background: $brand;
+  width: 2px;
+  margin-left: -1px;
+
+  position: absolute;
+  top: 0;
+  bottom: $height;
+}
+
+.track {
+  display: flex;
+  background: fade-out($brand, 0.9);
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.item {
+  height: $height;
+}

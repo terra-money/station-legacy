@@ -67,16 +67,14 @@ ul {
   list-style: none;
 }
 
-dl {
-  @include flex();
-  flex-wrap: wrap;
+dl,
+dd {
   margin: 0;
+}
 
-  dt,
-  dd {
-    margin: 0;
-    width: 50%;
-  }
+pre {
+  max-width: 100%;
+  overflow: auto;
 }
 
 table {

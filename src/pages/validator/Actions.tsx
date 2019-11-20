@@ -6,6 +6,7 @@ import Modal from '../../components/Modal'
 import Amount from '../../components/Amount'
 import Icon from '../../components/Icon'
 import Pop from '../../components/Pop'
+import ActionBar from '../../components/ActionBar'
 import ButtonWithName from '../../components/ButtonWithName'
 import Delegate from '../staking/Delegate'
 import Withdraw from '../staking/Withdraw'
@@ -71,8 +72,8 @@ const Actions = (v: Validator) => {
             </Pop>
           </section>
 
-          <section className={s.actions}>
-            <span className={s.action}>
+          <ActionBar
+            list={[
               <ButtonWithName
                 onClick={() => delegate({})}
                 className="btn btn-sm btn-primary"
@@ -83,10 +84,8 @@ const Actions = (v: Validator) => {
                 }
               >
                 Delegate
-              </ButtonWithName>
-            </span>
+              </ButtonWithName>,
 
-            <span className={s.action}>
               <ButtonWithName
                 onClick={() => delegate({ undelegate: true })}
                 className="btn btn-sm btn-sky"
@@ -94,8 +93,8 @@ const Actions = (v: Validator) => {
               >
                 Undelegate
               </ButtonWithName>
-            </span>
-          </section>
+            ]}
+          />
         </Card>
       </div>
 

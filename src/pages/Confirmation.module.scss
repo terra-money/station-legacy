@@ -3,18 +3,6 @@
 .dl {
   font-size: 14px;
   margin-bottom: 20px;
-  align-items: flex-start;
-
-  dt,
-  dd {
-    @include flex(flex-start);
-    padding: 5px 0;
-    overflow: hidden;
-  }
-
-  dt {
-    font-weight: 500;
-  }
 
   dd {
     > :last-child {
@@ -26,7 +14,6 @@
       flex: 1;
     }
 
-    &,
     input {
       text-align: right;
     }

@@ -9,7 +9,7 @@ type Return = {
   error: Error
   reset: () => void
   handleChange: (e: ChangeEvent<HTMLFieldElement>) => void
-  changeValue: (params: { [name: string]: any }) => void
+  changeValue: (params: { [name: string]: any }, withoutTouch?: boolean) => void
 }
 
 export default <T>({
@@ -27,7 +27,7 @@ export default <T>({
     Object.keys(values).reduce((acc, key) => ({ ...acc, [key]: false }), {})
   const [touched, setTouched] = useState<Return['touched']>(initTouched)
 
-  const changeValue: Return['changeValue'] = params => {
+  const changeValue: Return['changeValue'] = (params, withoutTouch = false) => {
     /* values */
     const nextValues = { ...values, ...params }
     setValues(Object.assign({}, nextValues, parse && parse(nextValues)))
@@ -35,7 +35,7 @@ export default <T>({
     /* touched */
     const reducer = (acc: any, name: string) => ({ ...acc, [name]: true })
     const nextTouched = Object.keys(params).reduce(reducer, {})
-    setTouched(Object.assign({}, touched, nextTouched))
+    !withoutTouch && setTouched(Object.assign({}, touched, nextTouched))
   }
 
   const handleChange = (e: ChangeEvent<HTMLFieldElement>) => {

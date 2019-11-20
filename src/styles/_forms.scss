@@ -144,7 +144,7 @@ textarea.form-control {
   .input-group-append {
     @include flex();
 
-    background: #f4f5fb;
+    background: $bg;
     border: 1px solid $border;
     border-left: 0;
     border-top-right-radius: $radius;
