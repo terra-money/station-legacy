@@ -14,18 +14,22 @@ export default async (from: string): Promise<object> => {
 
 /* helpers */
 enum AccountType {
-  STANDARD = 'auth/Account',
+  STANDARD = 'core/Account',
   VESTING = 'core/LazyGradedVestingAccount'
 }
 
 interface StandardAccount {
-  type: AccountType.STANDARD
-  value: AccountValue
+  result: {
+    type: AccountType.STANDARD
+    value: AccountValue
+  }
 }
 
 interface VestingAccount {
-  type: AccountType.VESTING
-  value: { BaseVestingAccount: { BaseAccount: AccountValue } }
+  result: {
+    type: AccountType.VESTING
+    value: { BaseVestingAccount: { BaseAccount: AccountValue } }
+  }
 }
 
 interface AccountValue {
@@ -34,6 +38,6 @@ interface AccountValue {
 }
 
 const getValue = (account: StandardAccount | VestingAccount): AccountValue =>
-  account.type === AccountType.STANDARD
-    ? account.value
-    : account.value.BaseVestingAccount.BaseAccount
+  account.result.type === AccountType.STANDARD
+    ? account.result.value
+    : account.result.value.BaseVestingAccount.BaseAccount

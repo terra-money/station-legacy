@@ -51,10 +51,11 @@ const Swap = ({ denoms, getMax }: Props) => {
   useEffect(() => {
     const fetch = async (): Promise<string[]> => {
       const params = { offer_coin: amount + from, ask_denom: to }
-      const swapped = await api.get<Coin>(`/market/swap`, { params })
+      type Swapped = { result: Coin }
+      const swapped = await api.get<Swapped>(`/market/swap`, { params })
       const rateList = await api.get<RateList>(`/v1/market/swaprate/${from}`)
       const r = find<Rate>(rateList.data)(to)
-      return [swapped.data.amount, r ? r.swaprate : '0']
+      return [swapped.data.result.amount, r ? r.swaprate : '0']
     }
 
     const calculate = async () => {
@@ -146,19 +147,20 @@ const Swap = ({ denoms, getMax }: Props) => {
     </>
   )
 
-  type Params = { min_swap_spread: string; max_swap_spread: string }
+  type Params = { min_spread: string }
   const spread = (
     <Flex>
       Spread
-      <WithRequest url="/market/params">
-        {({ min_swap_spread: min, max_swap_spread: max }: Params) => {
-          const spread = [min, max].map(n => percent(n, 0)).join('~')
+      <WithRequest url="/market/parameters">
+        {({ result }: { result: Params }) => {
+          const { min_spread } = result
+          const min = percent(min_spread, 0)
           return (
             <Pop
               type="tooltip"
               placement="top"
               width={280}
-              content={`${spread} of spread will be taken into account regarding LUNA swapping.`}
+              content={`Minimum ${min} of spread will be taken into account regarding LUNA swapping.`}
             >
               {({ ref, getAttrs }) => (
                 <Icon
