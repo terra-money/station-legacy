@@ -6,16 +6,20 @@ interface Chain {
   socket: SCClientSocket.ClientOptions
 }
 
-const Chain = { COLUMBUS_2: 'columbus-2', VODKA: 'vodka' }
-export const ChainList = [Chain.COLUMBUS_2, Chain.VODKA]
+const Chain = { COLUMBUS: 'columbus-3', VODKA: 'vodka-0001', SOJU: 'soju-0013' }
+export const ChainList = [Chain.COLUMBUS, Chain.VODKA, Chain.SOJU]
 const Chains: { [slug: string]: Chain } = {
-  [Chain.COLUMBUS_2]: {
+  [Chain.COLUMBUS]: {
     fcd: 'https://fcd.terra.dev',
     socket: { hostname: 'fcd.terra.dev', port: 443, secure: true }
   },
   [Chain.VODKA]: {
     fcd: 'https://vodka-fcd.terra.dev',
     socket: { hostname: 'vodka-fcd.terra.dev', port: 443, secure: true }
+  },
+  [Chain.SOJU]: {
+    fcd: 'https://soju-fcd.terra.dev',
+    socket: { hostname: 'soju-fcd.terra.dev', port: 443, secure: true }
   }
 }
 
@@ -26,15 +30,20 @@ instance.interceptors.request.use(({ params, ...config }) => ({
   params: { ...params, _t: Date.now() }
 }))
 
-export const changeChain = (slug: string) =>
-  (instance.defaults.baseURL = Chains[slug]['fcd'])
+export const changeChain = (slug: string) => {
+  const { fcd } = getChain(slug)
+  instance.defaults.baseURL = fcd
+}
 
 export default instance
 
 /* socket */
-export const useSocket = (chain: string) => {
-  const { socket: options } = Chains[chain]
+export const useSocket = (slug: string) => {
+  const { socket: options } = getChain(slug)
   const socket = socketCluster.create(options)
   socket.on('error', /* ignore */ () => {})
   return socket
 }
+
+/* helper */
+const getChain = (slug: string) => Chains[slug] || Chains[Chain.COLUMBUS]
