@@ -13,7 +13,7 @@ const Market = () => {
   const { address } = useAuth()
   return (
     <WithRequest url="/oracle/denoms/actives">
-      {({ actives }: { actives: string[] }) => (
+      {({ result: actives }: { result: string[] }) => (
         <Page title="Market">
           <div className="row">
             <div className="col col-6">
