@@ -1,7 +1,7 @@
 import { useState, ReactNode } from 'react'
 
 const portalClassName = 'TerraModalPortal'
-export default () => {
+export default (): Modal => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [content, setContent] = useState<ReactNode>(null)
   const [config, setConfig] = useState<object>({})

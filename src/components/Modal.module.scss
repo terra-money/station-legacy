@@ -30,5 +30,9 @@
     box-shadow: 0px 4px 8px 0 fade-out(black, 0.8);
     padding: 15px;
     width: 520px;
+
+    &:empty {
+      padding: 0;
+    }
   }
 }

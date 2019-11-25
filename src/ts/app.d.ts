@@ -27,6 +27,15 @@ interface Tab {
   key: 'amountDelegated' | 'totalReward'
 }
 
+interface Modal {
+  open: (content?: ReactNode, config?: object) => void
+  close: () => void
+  setContent: Dispatch<SetStateAction<ReactNode>>
+  prevent: (prevent: boolean) => void
+  content: ReactNode
+  config: ReactModal.Props & { onRequestClose: () => void }
+}
+
 interface Settings {
   address?: string
   withLedger?: boolean
