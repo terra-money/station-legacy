@@ -137,9 +137,11 @@ const ChartCard = ({ url, title, ...props }: Props) => {
     )
   }
 
+  const isEmpty = Array.isArray(data) && !data.length
+
   return (
     <Card title={title} actions={renderActions()} small>
-      {error ? OOPS : data ? render() : null}
+      {error ? OOPS : data ? (isEmpty ? 'No Data' : render()) : null}
     </Card>
   )
 }
