@@ -11,7 +11,7 @@ import ErrorBoundary from '../../components/ErrorBoundary'
 import Info from '../../components/Info'
 import Tx from './Tx'
 
-const TABS = ['', 'send', 'receive', 'staking', 'swap', 'vote']
+const TABS = ['', 'send', 'receive', 'staking', 'swap', 'vote', 'governance']
 
 const Txs = () => {
   const { address } = useAuth()
