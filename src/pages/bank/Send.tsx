@@ -52,7 +52,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
     setIsSubmitting(true)
 
     try {
-      setTaxInfo(await getTaxInfo(denom))
+      denom !== 'uluna' && setTaxInfo(await getTaxInfo(denom))
       setIsSubmitted(true)
     } catch (error) {
       setHasError(true)
