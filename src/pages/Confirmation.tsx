@@ -391,8 +391,8 @@ export default Confirmation
 
 /* coefficient */
 const getCoefficient = (name: string): string => {
-  const defaultCoefficient = '1.2'
-  const coefficients: { [name: string]: string } = { Redelegate: '1.4' }
+  const defaultCoefficient = '1.5'
+  const coefficients: { [name: string]: string } = {}
   return coefficients[name] || defaultCoefficient
 }
 
