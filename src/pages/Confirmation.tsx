@@ -147,7 +147,15 @@ const Form = (props: Props & { balance: Balance[] }) => {
         const submitType = withLedger ? 'ledger' : 'local'
         const signer = await getSigner(submitType, { name, password })
         const signedTx = await signTx(tx, signer, { ...base, type })
-        await api.post('/v1/txs', signedTx, config)
+
+        type Res = { raw_log: string }
+        const { data: res } = await api.post<Res>('/v1/txs', signedTx, config)
+
+        const errorMessage = findErrorMessage(res.raw_log)
+        if (errorMessage) {
+          throw Error(errorMessage)
+        }
+
         setIsSubmitted(true)
       } catch (error) {
         error.message === 'Incorrect password'
@@ -429,4 +437,14 @@ const validate = (name: string) => {
   }
 
   return functions[name] || isFeeAvailable
+}
+
+const findErrorMessage = (raw_log: string): string => {
+  try {
+    const parsed = JSON.parse(raw_log)
+    const { message } = parsed
+    return message
+  } catch (error) {
+    return ''
+  }
 }
