@@ -6,9 +6,14 @@ type Output = { message?: string }
 
 export const parseError = (data: Input): Output => {
   try {
-    const { error = '' } = data || {}
-    const parsed = typeof error === 'string' ? JSON.parse(error) : error
-    return Array.isArray(parsed) ? JSON.parse(parsed[0].log) : parsed
+    const { error = '', message } = data || {}
+
+    if (message) {
+      return data
+    } else {
+      const parsed = typeof error === 'string' ? JSON.parse(error) : error
+      return Array.isArray(parsed) ? JSON.parse(parsed[0].log) : parsed
+    }
   } catch (error) {
     return {}
   }
