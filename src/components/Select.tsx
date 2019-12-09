@@ -1,14 +1,17 @@
-import React, { FC, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
+import React, { DetailedHTMLProps, SelectHTMLAttributes } from 'react'
 import Icon from './Icon'
 import s from './Select.module.scss'
 
-type Props = DetailedHTMLProps<
-  SelectHTMLAttributes<HTMLSelectElement>,
-  HTMLSelectElement
->
+interface Props
+  extends DetailedHTMLProps<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  > {
+  width?: number
+}
 
-const Select: FC<Props> = attrs => (
-  <div className={s.container}>
+const Select = ({ width, ...attrs }: Props) => (
+  <div className={s.container} style={{ width }}>
     <select {...attrs} />
     <Icon name="arrow_drop_down" size={20} />
   </div>

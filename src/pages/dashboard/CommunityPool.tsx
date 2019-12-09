@@ -5,12 +5,12 @@ import Amount from '../../components/Amount'
 import Select from '../../components/Select'
 
 interface Props {
-  issuances: CoinMap
+  pool: CoinMap
 }
 
-const Issuance = ({ issuances = {} }: Props) => {
-  const [current, setCurrent] = useState<string>(Object.keys(issuances)[0])
-  const options = Object.keys(issuances).map((label, index) => (
+const CommunityPool = ({ pool = {} }: Props) => {
+  const [current, setCurrent] = useState<string>(Object.keys(pool)[0])
+  const options = Object.keys(pool).map((label, index) => (
     <option value={label} key={index}>
       {format.denom(label)}
     </option>
@@ -18,7 +18,7 @@ const Issuance = ({ issuances = {} }: Props) => {
 
   return (
     <Card
-      title="Issuance"
+      title="Community Pool"
       footer={
         <Select
           onChange={e => setCurrent(e.target.value)}
@@ -31,10 +31,10 @@ const Issuance = ({ issuances = {} }: Props) => {
       small
     >
       <Amount denom={current} fontSize={20} hideDecimal>
-        {issuances[current]}
+        {pool[current]}
       </Amount>
     </Card>
   )
 }
 
-export default Issuance
+export default CommunityPool
