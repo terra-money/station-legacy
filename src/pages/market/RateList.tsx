@@ -1,70 +1,49 @@
-import React, { useState, ChangeEvent, ReactNode } from 'react'
+import React, { useState, ChangeEvent } from 'react'
+import c from 'classnames'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
-import Table from '../../components/Table'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
 import NotAvailable from './NotAvailable'
 import variation from './Variation'
+import s from './RateList.module.scss'
 
 const RateList = ({ denoms }: { denoms: string[] }) => {
-  const [denom, setDenom] = useState('uluna')
+  const [denom, setDenom] = useState(denoms[0])
   const handleChange = (e: ChangeEvent<HTMLFieldElement>) =>
     setDenom(e.target.value)
 
+  const renderRow = (r: Rate & Variation, index: number) => (
+    <li className={s.row} key={index}>
+      <header>
+        <span className={s.unit}>1 {format.denom(denom)} =</span>
+        <p className={s.price}>
+          {format.decimal(r.swaprate)} <strong>{format.denom(r.denom)}</strong>
+        </p>
+      </header>
+      <section>{variation({ ...r, render: ([h]) => h })}</section>
+    </li>
+  )
+
   return (
-    <Card
-      title="Swap rate"
-      actions={
-        <Select
-          name="denom"
-          value={denom}
-          onChange={handleChange}
-          className="form-control form-control-md"
-        >
-          {denoms.map((denom, index) => (
-            <option value={denom} key={index}>
-              {format.denom(denom)}
-            </option>
-          ))}
-        </Select>
-      }
-    >
+    <Card title="Terra exchange rate">
+      <Select
+        name="denom"
+        value={denom}
+        onChange={handleChange}
+        className={c('form-control', s.select)}
+      >
+        {denoms.map((denom, index) => (
+          <option value={denom} key={index}>
+            {format.denom(denom)}
+          </option>
+        ))}
+      </Select>
+
       <WithRequest url={`/v1/market/swaprate/${denom}`}>
         {(rateList: RateList) =>
           !!rateList.length ? (
-            <Table>
-              <thead>
-                <tr>
-                  <th />
-                  <th colSpan={2} className="text-right">
-                    24h Change
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {rateList.map((r, index) => {
-                  const renderCells = ([h, t]: ReactNode[]): ReactNode => (
-                    <>
-                      <td>{h}</td>
-                      <td className="text-right">{t}</td>
-                    </>
-                  )
-
-                  return (
-                    <tr key={index}>
-                      <td>
-                        {format.decimal(r.swaprate)}{' '}
-                        <strong>{format.denom(r.denom)}</strong>
-                      </td>
-
-                      {variation({ ...r, render: renderCells })}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </Table>
+            <ul>{rateList.map(renderRow)}</ul>
           ) : (
             <NotAvailable q="Swapping" />
           )

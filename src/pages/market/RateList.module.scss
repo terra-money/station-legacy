@@ -1,0 +1,21 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.select {
+  margin-bottom: 25px;
+}
+
+.row {
+  @include flex(space-between);
+  font-size: 14px;
+}
+
+.row:not(:first-child) {
+  border-top: 1px solid $line;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.unit {
+  font-size: 10px;
+}

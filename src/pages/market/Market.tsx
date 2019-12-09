@@ -21,7 +21,7 @@ const Market = () => {
             </div>
 
             <div className="col col-6">
-              <RateList denoms={['uluna', ...actives]} />
+              <RateList denoms={actives} />
             </div>
           </div>
 
