@@ -2,11 +2,12 @@ interface Dashboard {
   prices: Prices
   taxRate: string
   taxCaps: TaxCap[]
-  issuances: Issuances
+  issuances: CoinMap
+  communityPool: CoinMap
   stakingPool: StakingPool
 }
 
-interface Issuances {
+interface CoinMap {
   [denom: string]: string
 }
 
