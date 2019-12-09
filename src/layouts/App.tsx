@@ -10,6 +10,7 @@ import { useModal } from '../hooks'
 import routes from '../routes'
 import Modal from '../components/Modal'
 import ModalContent from '../components/ModalContent'
+import ErrorBoundary from '../components/ErrorBoundary'
 import Version from '../pages/Version'
 import Auth from '../pages/auth/Auth'
 import Nav from './Nav'
@@ -127,7 +128,7 @@ const App = ({ location, history }: RouteComponentProps) => {
         <section className={s.main}>
           <Header className={s.header} />
           <section className={s.content} key={key}>
-            {routes}
+            <ErrorBoundary>{routes}</ErrorBoundary>
           </section>
         </section>
         <Modal config={modal.config}>{modal.content}</Modal>
