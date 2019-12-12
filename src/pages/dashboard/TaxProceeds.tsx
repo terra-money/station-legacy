@@ -1,5 +1,5 @@
 import React from 'react'
-import { div } from '../../api/math'
+import { div, minus } from '../../api/math'
 import { format } from '../../utils'
 import Amount from '../../components/Amount'
 import Flex from '../../components/Flex'
@@ -17,11 +17,12 @@ const TaxProceeds = () => (
     title="Tax proceeds"
     url="/v1/dashboard/tax"
     renderHeader={(results: Results) => {
-      const { tax } = results[results.length - 1]
+      const { tax: head } = results[0]
+      const { tax: tail } = results[results.length - 1]
       return (
         <Flex>
           <Amount denom={denom} fontSize={20} hideDecimal>
-            {tax}
+            {minus(tail, head)}
           </Amount>
         </Flex>
       )
