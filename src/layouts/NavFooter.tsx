@@ -1,12 +1,15 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
+import { toast } from 'react-toastify'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
+import currentVersion from '../currentVersion'
 import { ChainList, useSocket } from '../api/api'
 import { useApp } from '../hooks'
 import Flex from '../components/Flex'
 import Icon from '../components/Icon'
 import Select from '../components/Select'
 import Finder from '../components/Finder'
+import AppUpdate from './AppUpdate'
 import s from './NavFooter.module.scss'
 
 const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
@@ -24,9 +27,27 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
 
   /* socket: Latest block height */
   useEffect(() => {
-    const channel = socket.subscribe('latestBlockHeight')
-    channel.watch(setHeight)
-    return () => channel.unsubscribe()
+    const checkVersion = (s: string) => {
+      const pop = (status: VersionWeb) => {
+        const shouldUpdate = currentVersion !== status.version
+        shouldUpdate &&
+          toast(<AppUpdate {...status} />, { toastId: 'App Update' })
+      }
+
+      const status = parseVersion(s)
+      status && pop(status)
+    }
+
+    const channelHeight = socket.subscribe('latestBlockHeight')
+    const channelStatus = socket.subscribe('stationStatus')
+
+    channelHeight.watch(setHeight)
+    channelStatus.watch(checkVersion)
+
+    return () => {
+      channelHeight.unsubscribe()
+      channelStatus.unsubscribe()
+    }
     // eslint-disable-next-line
   }, [])
 
@@ -63,3 +84,11 @@ export default NavFooter
 
 /* helper */
 const formatHeight = (height: string) => new BigNumber(height).toFormat()
+
+const parseVersion = (s: string): VersionWeb | undefined => {
+  try {
+    return JSON.parse(s)
+  } catch (error) {
+    return undefined
+  }
+}
