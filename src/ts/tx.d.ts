@@ -6,6 +6,7 @@ interface Tx {
   memo: string
   success: boolean
   errorMessage: string
+  chainId: string
 }
 
 interface Message {
