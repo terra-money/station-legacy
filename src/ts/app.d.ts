@@ -10,6 +10,13 @@ interface Version {
   forceUpdate: boolean
 }
 
+interface VersionWeb {
+  version: string
+  title: string
+  content: string
+  forceUpdate: boolean
+}
+
 interface Wallet {
   privateKey: string
   publicKey: string

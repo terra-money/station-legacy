@@ -45,6 +45,7 @@
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
+    "react-toastify": "^5.4.1",
     "secp256k1": "^3.7.1",
     "semver": "^6.3.0",
     "socketcluster-client": "^14.3.1",

@@ -1,0 +1,66 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.component {
+  font-size: 14px;
+
+  header {
+    @include flex(space-between);
+
+    height: 36px;
+    padding: 10px 15px;
+    color: white;
+
+    section {
+      @include flex(flex-start);
+
+      i {
+        margin-right: 9px;
+      }
+    }
+
+    button {
+      @include flex();
+    }
+  }
+
+  h1 {
+    display: inline;
+  }
+
+  p {
+    padding: 20px;
+
+    button {
+      display: inline;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-left: 9px;
+    }
+  }
+}
+
+/* Themes */
+.warn {
+  background: #fffaf2;
+
+  header {
+    background: $orange;
+  }
+
+  p {
+    color: #e48a01;
+  }
+}
+
+.error {
+  background: #fff6f7;
+
+  header {
+    background: $red;
+  }
+
+  p {
+    color: #e64c57;
+  }
+}

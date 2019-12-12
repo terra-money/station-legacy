@@ -1,5 +1,7 @@
 import React, { useState, useEffect, createContext, ReactNode } from 'react'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { ToastContainer, toast, Slide } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { isProduction, isElectron } from '../helpers/env'
 import electron from '../helpers/electron'
@@ -17,6 +19,7 @@ import Nav from './Nav'
 import Header from './Header'
 import AuthContext, { useAuthContext } from './AuthContext'
 import s from './App.module.scss'
+import './App.scss'
 
 type AppContext = {
   key: number
@@ -132,9 +135,19 @@ const App = ({ location, history }: RouteComponentProps) => {
           </section>
         </section>
         <Modal config={modal.config}>{modal.content}</Modal>
+        <ToastContainer {...ToastConfig} autoClose={false} />
       </AuthContext.Provider>
     </AppContext.Provider>
   ) : null
 }
 
 export default withRouter(App)
+
+/* Toast */
+const ToastConfig = {
+  position: toast.POSITION.TOP_RIGHT,
+  transition: Slide,
+  draggable: false,
+  closeButton: false,
+  closeOnClick: false
+}
