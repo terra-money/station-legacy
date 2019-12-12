@@ -1,5 +1,5 @@
 import React from 'react'
-import { div } from '../../api/math'
+import { div, sum } from '../../api/math'
 import { format } from '../../utils'
 import Amount from '../../components/Amount'
 import Flex from '../../components/Flex'
@@ -21,10 +21,11 @@ const TxVolume = () => (
     }
     renderHeader={(results: Results, index: number) => {
       const { denom, data } = results[index]
+
       return (
         <Flex>
           <Amount denom={denom} fontSize={20} hideDecimal>
-            {data[data.length - 1].txVolume}
+            {sum(data.map(d => d.txVolume))}
           </Amount>
         </Flex>
       )
