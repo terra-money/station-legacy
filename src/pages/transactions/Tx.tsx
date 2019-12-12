@@ -12,7 +12,7 @@ const Tx = (tx: Tx) => {
 
   const renderTitle = () => (
     <>
-      <Finder q="tx" v={txhash} className={s.hash}>
+      <Finder network={tx.chainId} q="tx" v={txhash} className={s.hash}>
         {format.truncate(txhash, [18, 18])}
       </Finder>
 

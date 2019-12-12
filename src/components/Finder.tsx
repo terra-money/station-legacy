@@ -3,7 +3,8 @@ import c from 'classnames'
 import { FINDER } from '../helpers/constants'
 import { useApp } from '../hooks'
 
-type Props = {
+interface Props {
+  network?: string
   q: string
   v?: string
   children: string
@@ -11,11 +12,11 @@ type Props = {
   brand?: boolean
 }
 
-const Finder = ({ q, v, children, className, brand }: Props) => {
+const Finder = ({ network, q, v, children, className, brand }: Props) => {
   const { chain } = useApp()
   return (
     <a
-      href={`${FINDER}/${chain}/${q}/${v || children}`}
+      href={`${FINDER}/${network || chain}/${q}/${v || children}`}
       target="_blank"
       rel="noopener noreferrer"
       className={c(className, brand && 'text-primary')}
