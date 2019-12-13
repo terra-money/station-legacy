@@ -9,7 +9,7 @@ interface Props {
 }
 
 const CommunityPool = ({ pool = {} }: Props) => {
-  const [current, setCurrent] = useState<string>(Object.keys(pool)[0])
+  const [current, setCurrent] = useState<string>('uluna')
   const options = Object.keys(pool).map((label, index) => (
     <option value={label} key={index}>
       {format.denom(label)}
@@ -22,6 +22,7 @@ const CommunityPool = ({ pool = {} }: Props) => {
       footer={
         <Select
           onChange={e => setCurrent(e.target.value)}
+          value={current}
           className="form-control form-control-md"
           width={80}
         >
