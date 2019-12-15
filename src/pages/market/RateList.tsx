@@ -27,28 +27,34 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
 
   return (
     <Card title="Terra exchange rate" fixedHeight>
-      <Select
-        name="denom"
-        value={denom}
-        onChange={handleChange}
-        className={c('form-control', s.select)}
-      >
-        {denoms.map((denom, index) => (
-          <option value={denom} key={index}>
-            {format.denom(denom)}
-          </option>
-        ))}
-      </Select>
+      {!!denoms.length ? (
+        <>
+          <Select
+            name="denom"
+            value={denom}
+            onChange={handleChange}
+            className={c('form-control', s.select)}
+          >
+            {denoms.map((denom, index) => (
+              <option value={denom} key={index}>
+                {format.denom(denom)}
+              </option>
+            ))}
+          </Select>
 
-      <WithRequest url={`/v1/market/swaprate/${denom}`}>
-        {(rateList: RateList) =>
-          !!rateList.length ? (
-            <ul>{rateList.map(renderRow)}</ul>
-          ) : (
-            <NotAvailable q="Swapping" />
-          )
-        }
-      </WithRequest>
+          <WithRequest url={`/v1/market/swaprate/${denom}`}>
+            {(rateList: RateList) =>
+              !!rateList.length ? (
+                <ul>{rateList.map(renderRow)}</ul>
+              ) : (
+                <NotAvailable q="Swapping" />
+              )
+            }
+          </WithRequest>
+        </>
+      ) : (
+        <NotAvailable q="Swapping" />
+      )}
     </Card>
   )
 }
