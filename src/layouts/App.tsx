@@ -131,7 +131,7 @@ const App = ({ location, history }: RouteComponentProps) => {
         <section className={s.main}>
           <Header className={s.header} />
           <section className={s.content} key={key}>
-            <ErrorBoundary>{routes}</ErrorBoundary>
+            <ErrorBoundary key={location.pathname}>{routes}</ErrorBoundary>
           </section>
         </section>
         <Modal config={modal.config}>{modal.content}</Modal>
