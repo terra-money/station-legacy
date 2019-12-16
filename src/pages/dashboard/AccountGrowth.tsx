@@ -18,9 +18,9 @@ const AccountGrowth = () => (
     url="/v1/dashboard/account_growth"
     renderHeader={(
       { totalAccountCount, monthlyActive }: Results,
-      index: number
+      { additionalIndex }
     ) => {
-      const value = !index ? totalAccountCount : monthlyActive
+      const value = !additionalIndex ? totalAccountCount : monthlyActive
       return (
         <span style={{ fontSize: 20 }}>
           {format.decimal(value, 0)}
