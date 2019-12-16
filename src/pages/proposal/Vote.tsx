@@ -56,7 +56,7 @@ const Vote = ({ vote, showProgressBar, threshold }: Props) => {
         <footer className={s.footer}>
           <VoteProgress threshold={threshold} ratio={ratio} list={list} />
           <p>
-            <strong>Percent Voting: {percent(ratio)}</strong>
+            <strong>Percent voting: {percent(ratio)}</strong>
           </p>
           <small>
             {[total, stakedLuna].map(formatNumeral).join(' of ')} LUNA has

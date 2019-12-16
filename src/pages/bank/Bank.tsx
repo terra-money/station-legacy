@@ -14,7 +14,7 @@ const Bank = () => {
   return (
     <Page title="Bank">
       <WithAuth card>
-        <Card title="My Wallet" bordered>
+        <Card title="My wallet" bordered>
           <Address address={address} />
         </Card>
 

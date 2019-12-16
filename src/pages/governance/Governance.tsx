@@ -41,7 +41,7 @@ const Governance = () => {
             )
           }
         >
-          New Proposal
+          New proposal
         </ButtonWithName>
       )}
     </WithMaxLuna>

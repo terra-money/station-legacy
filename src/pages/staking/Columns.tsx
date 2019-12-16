@@ -31,11 +31,11 @@ const Columns = (props: Staking) => {
       value: availableLuna
     },
     {
-      title: 'Delegated Assets',
+      title: 'Delegated assets',
       value: delegationTotal
     },
     {
-      title: 'Undelegated Assets',
+      title: 'Undelegated assets',
       value: undelegationsAmount,
       tooltip: undelegations && !!undelegations.length && (
         <Undelegations undelegations={undelegations} />

@@ -35,7 +35,7 @@ const Staking = () => {
           )
         }
       >
-        Withdraw All Rewards
+        Withdraw all rewards
       </ButtonWithName>
     )
 

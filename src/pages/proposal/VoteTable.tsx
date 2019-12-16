@@ -29,7 +29,7 @@ const VoteTable = ({ id, count }: Vote) => {
           className={c('badge', params.option === s && 'badge-primary')}
           key={s}
         >
-          {s || 'All Votes'}({s ? count[s] : total})
+          {s || 'All votes'}({s ? count[s] : total})
         </button>
       ))}
     </section>

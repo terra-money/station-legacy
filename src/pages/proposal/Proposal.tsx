@@ -54,7 +54,7 @@ const Component = (props: ProposalDetail) => {
   )
 
   return (
-    <Page title="Proposal Detail" action={<Actions detail={props} />}>
+    <Page title="Proposal detail" action={<Actions detail={props} />}>
       <div className="row">
         <div className="col col-8">
           <Card>
@@ -106,7 +106,7 @@ const Component = (props: ProposalDetail) => {
       </div>
 
       {status === 'Voting' && tallyingParameters && (
-        <Card title="Tallying Procedure" bordered bodyClassName={s.tallying}>
+        <Card title="Tallying procedure" bordered bodyClassName={s.tallying}>
           <Tallying {...tallyingParameters} />
         </Card>
       )}

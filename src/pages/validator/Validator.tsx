@@ -23,7 +23,7 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
       error={<NotFound />}
     >
       {(v: Validator) => (
-        <Page title="Validator Details">
+        <Page title="Validator details">
           <Header {...v} />
           {address && <Actions {...v} />}
 
