@@ -4,8 +4,8 @@ import { percent } from '../../api/math'
 const Tallying = ({ quorum, threshold, veto }: TallyingParameters) => {
   const contents = [
     ['Quorum', quorum],
-    ['Pass Threshold', threshold],
-    ['Veto Threshold', veto]
+    ['Pass threshold', threshold],
+    ['Veto threshold', veto]
   ]
 
   const renderContent = ([title, value]: string[]) => (

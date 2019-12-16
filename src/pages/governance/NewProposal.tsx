@@ -280,7 +280,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>New Proposal</h1>
+          <h1>New proposal</h1>
 
           <section className="form-group">
             <label className="label">Type</label>

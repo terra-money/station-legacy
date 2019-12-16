@@ -100,7 +100,7 @@ const Actions = (v: Validator) => {
 
       <div className="col">
         <Card className={s.card}>
-          <h1>My Rewards</h1>
+          <h1>My rewards</h1>
           <section className={s.content}>
             <Amount denom="uluna" fontSize={18} estimated>
               {myRewards && myRewards.total}
@@ -117,7 +117,7 @@ const Actions = (v: Validator) => {
                   !(myRewards && gte(myRewards.total, 1))
                 }
               >
-                Withdraw Rewards
+                Withdraw rewards
               </ButtonWithName>
             </span>
 

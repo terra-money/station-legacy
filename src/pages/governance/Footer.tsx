@@ -14,9 +14,9 @@ const Footer = ({ votingPeriod, minDeposit, maxDepositPeriod }: Props) => {
   )
 
   const contents: [string, ReactNode][] = [
-    ['Voting Period', stringify(votingPeriod)],
-    ['Minimum Deposit', <CoinList list={minDeposit} />],
-    ['Maximum Deposit Period', stringify(maxDepositPeriod)]
+    ['Voting period', stringify(votingPeriod)],
+    ['Minimum deposit', <CoinList list={minDeposit} />],
+    ['Maximum deposit period', stringify(maxDepositPeriod)]
   ]
 
   return <>{contents.map(renderContent)}</>

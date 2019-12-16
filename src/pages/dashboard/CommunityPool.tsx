@@ -18,7 +18,7 @@ const CommunityPool = ({ pool = {} }: Props) => {
 
   return (
     <Card
-      title="Community Pool"
+      title="Community pool"
       footer={
         <Select
           onChange={e => setCurrent(e.target.value)}

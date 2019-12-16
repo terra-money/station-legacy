@@ -25,7 +25,7 @@ const Market = () => {
             </div>
           </div>
 
-          <Card title="Swap Coins" bordered>
+          <Card title="Swap coins" bordered>
             <WithAuth>
               <WithRequest url={`/v1/bank/${address}`}>
                 {({ balance }: Bank) => (
