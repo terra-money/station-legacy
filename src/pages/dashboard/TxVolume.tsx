@@ -13,19 +13,24 @@ interface Result {
 type Results = Result[]
 const TxVolume = () => (
   <ChartCard
-    title="Daily transaction volume"
+    title="Transaction volume"
     url="/v1/dashboard/tx_volume"
     initialAdditionalIndex={1}
+    durations={[1, 7, 30, 0]}
+    initialDuration={1}
     additionalSelector={(results: Results) =>
       results.map(({ denom }: { denom: string }) => format.denom(denom))
     }
-    renderHeader={(results: Results, index: number) => {
-      const { denom, data } = results[index]
+    renderHeader={(results: Results, { additionalIndex, duration }) => {
+      const { denom, data } = results[additionalIndex]
+      const lastData = data[data.length - 1]
 
       return (
         <Flex>
           <Amount denom={denom} fontSize={20} hideDecimal>
-            {sum(data.map(d => d.txVolume))}
+            {duration === 1
+              ? lastData.txVolume
+              : sum(data.map(d => d.txVolume))}
           </Amount>
         </Flex>
       )

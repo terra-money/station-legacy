@@ -12,25 +12,29 @@ interface Props {
   url: string
   title: string
   initialAdditionalIndex?: number
+  durations?: number[]
+  initialDuration?: number
   additionalSelector?: (data: any) => string[]
-  renderHeader: (data: any, additionalIndex: number) => ReactNode
+  renderHeader: (
+    data: any,
+    params: { additionalIndex: number; duration: number }
+  ) => ReactNode
   getChartProps: (
     data: any,
     additionalIndex: number
   ) => Omit<ChartProps, 'height'>
 }
 
-const durations = [0, 7, 14, 30]
-
 const ChartCard = ({ url, title, ...props }: Props) => {
-  const { initialAdditionalIndex, additionalSelector } = props
+  const { initialAdditionalIndex = 0, additionalSelector } = props
   const { renderHeader, getChartProps } = props
+  const { durations = [0, 7, 14, 30], initialDuration = 0 } = props
 
   /* form */
   type Values = { duration: number; additionalIndex: number }
   const InitialValues = {
-    duration: 0,
-    additionalIndex: initialAdditionalIndex || 0
+    duration: initialDuration,
+    additionalIndex: initialAdditionalIndex
   }
   const [values, setValues] = useState<Values>(InitialValues)
   const { duration, additionalIndex } = values
@@ -53,7 +57,8 @@ const ChartCard = ({ url, title, ...props }: Props) => {
       setError(undefined)
 
       try {
-        const params = Object.assign({}, duration > 0 && { count: duration })
+        const count = duration === 1 ? 3 : duration
+        const params = Object.assign({}, duration > 0 && { count })
         const { data } = await api.get<any>(url, { params })
         setData(data)
       } catch (error) {
@@ -93,7 +98,11 @@ const ChartCard = ({ url, title, ...props }: Props) => {
       >
         {durations.map(duration => (
           <option value={duration} key={duration}>
-            {!duration ? 'From Genesis' : `${duration} Days`}
+            {!duration
+              ? 'From genesis'
+              : duration === 1
+              ? 'Last day'
+              : `${duration} days`}
           </option>
         ))}
       </Select>
@@ -123,7 +132,7 @@ const ChartCard = ({ url, title, ...props }: Props) => {
     return (
       <>
         <header style={{ marginBottom: 20 }}>
-          {renderHeader(data, additionalIndex)}
+          {renderHeader(data, { additionalIndex, duration })}
         </header>
 
         <section style={{ height: 260 }}>
