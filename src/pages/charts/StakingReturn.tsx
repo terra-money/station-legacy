@@ -14,6 +14,7 @@ const StakingReturn = () => (
   <ChartCard
     title="Staking return"
     url="/v1/dashboard/staking_return"
+    cumulativeOptions={{ initial: false, hide: true }}
     renderHeader={(results: Results) => (
       <span style={{ fontSize: 20 }}>
         {percent(results[results.length - 1].annualizedReturn)}
@@ -41,6 +42,7 @@ const StakingReturn = () => (
         backgroundColor: 'rgba(32, 67, 181, 0.25)'
       }
     })}
+    fixedYAxis
   />
 )
 

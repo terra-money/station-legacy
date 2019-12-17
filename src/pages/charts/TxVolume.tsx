@@ -1,5 +1,5 @@
 import React from 'react'
-import { div, sum } from '../../api/math'
+import { div, sum, minus } from '../../api/math'
 import { format } from '../../utils'
 import Amount from '../../components/Amount'
 import Flex from '../../components/Flex'
@@ -15,47 +15,68 @@ const TxVolume = () => (
   <ChartCard
     title="Transaction volume"
     url="/v1/dashboard/tx_volume"
-    initialAdditionalIndex={1}
-    durations={[1, 7, 30, 0]}
-    initialDuration={1}
-    additionalSelector={(results: Results) =>
-      results.map(({ denom }: { denom: string }) => format.denom(denom))
-    }
-    renderHeader={(results: Results, { additionalIndex, duration }) => {
-      const { denom, data } = results[additionalIndex]
-      const lastData = data[data.length - 1]
-
-      return (
-        <Flex>
-          <Amount denom={denom} fontSize={20} hideDecimal>
-            {duration === 1
-              ? lastData.txVolume
-              : sum(data.map(d => d.txVolume))}
-          </Amount>
-        </Flex>
-      )
+    cumulativeOptions={{ initial: false }}
+    durationOptions={{ initial: 1, list: [0, 1, 7, 14, 30] }}
+    additionalOptions={{
+      initial: 'ukrw',
+      getList: (results: Results) =>
+        !Array.isArray(results)
+          ? []
+          : results.map(({ denom }: { denom: string }) => ({
+              value: denom,
+              label: format.denom(denom)
+            }))
     }}
-    getChartProps={(results: Results, index: number) => ({
-      type: 'line',
-      data: results[index].data.map(({ datetime, txVolume }) => ({
-        t: new Date(datetime),
-        y: div(txVolume, 1e6)
-      })),
-      options: {
-        tooltips: {
-          callbacks: {
-            title: ([{ value = '' }]) =>
-              `${format.decimal(value, 0)} ${format.denom(
-                results[index].denom
-              )}`
-          }
-        }
-      },
-      lineStyle: {
-        borderColor: 'rgba(32, 67, 181, 0.25)',
-        backgroundColor: 'rgba(32, 67, 181, 0.25)'
+    renderHeader={(results: Results, { cumulative, duration, additional }) => {
+      const result = results.find(r => r.denom === additional)
+
+      const render = (result: Result) => {
+        const { denom, data } = result
+        const { txVolume: head } = data[0]
+        const { txVolume: tail } = data[data.length - 1]
+        const { txVolume: secondTail } = data[data.length - 2]
+
+        const value = cumulative
+          ? minus(tail, head)
+          : sum(data.slice(1).map(d => d.txVolume))
+        const lastDayValue = cumulative ? minus(tail, secondTail) : tail
+
+        return (
+          <Flex>
+            <Amount denom={denom} fontSize={20} hideDecimal>
+              {duration !== 1 ? value : lastDayValue}
+            </Amount>
+          </Flex>
+        )
       }
-    })}
+
+      return result ? render(result) : null
+    }}
+    getChartProps={(results: Results, { additional }) => {
+      const result = results.find(r => r.denom === additional)
+      return {
+        type: 'line',
+        data:
+          result?.data.map(({ datetime, txVolume }) => ({
+            t: new Date(datetime),
+            y: div(txVolume, 1e6)
+          })) ?? [],
+        options: {
+          tooltips: {
+            callbacks: {
+              title: ([{ value = '' }]) =>
+                result
+                  ? `${format.decimal(value, 0)} ${format.denom(result.denom)}`
+                  : ''
+            }
+          }
+        },
+        lineStyle: {
+          borderColor: 'rgba(32, 67, 181, 0.25)',
+          backgroundColor: 'rgba(32, 67, 181, 0.25)'
+        }
+      }
+    }}
   />
 )
 

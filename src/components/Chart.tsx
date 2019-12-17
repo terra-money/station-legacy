@@ -83,15 +83,17 @@ const ChartComponent = (props: Props) => {
         )
       }
 
+      const { datasets } = chart.data
       labels && (chart.data.labels = labels)
-      chart.data.datasets && (chart.data.datasets[0].data = data)
+      datasets && (datasets[0].data = data)
       options && merge(options)
+      lineStyle && datasets && (datasets[0] = { ...datasets[0], ...lineStyle })
 
       chart.update()
     }
 
     chart && updateChart(chart)
-  }, [chart, labels, data, options])
+  }, [chart, labels, data, options, lineStyle])
 
   return (
     <div ref={containerRef}>

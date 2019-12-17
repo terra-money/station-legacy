@@ -1,5 +1,5 @@
-import React from 'react'
-import { div, minus } from '../../api/math'
+import React, { ReactNode } from 'react'
+import { div, minus, sum } from '../../api/math'
 import { format } from '../../utils'
 import Amount from '../../components/Amount'
 import Flex from '../../components/Flex'
@@ -7,7 +7,7 @@ import ChartCard from './ChartCard'
 
 interface Result {
   datetime: number
-  tax: string
+  blockReward: string
 }
 
 type Results = Result[]
@@ -16,22 +16,25 @@ const BlockRewards = () => (
   <ChartCard
     title="Block rewards"
     url="/v1/dashboard/block_rewards"
-    renderHeader={(results: Results) => {
-      const { tax: head } = results[0]
-      const { tax: tail } = results[results.length - 1]
+    cumulativeOptions={{ initial: true }}
+    renderHeader={(results: Results, { cumulative }): ReactNode => {
+      const { blockReward: head } = results[0]
+      const { blockReward: tail } = results[results.length - 1]
       return (
         <Flex>
           <Amount denom={denom} fontSize={20} hideDecimal>
-            {minus(tail, head)}
+            {cumulative
+              ? minus(tail, head)
+              : sum(results.slice(1).map(d => d.blockReward))}
           </Amount>
         </Flex>
       )
     }}
     getChartProps={(results: Results) => ({
       type: 'line',
-      data: results.map(({ datetime, tax }) => ({
+      data: results.map(({ datetime, blockReward }) => ({
         t: new Date(datetime),
-        y: div(tax, 1e6)
+        y: div(blockReward, 1e6)
       })),
       options: {
         tooltips: {
@@ -42,11 +45,9 @@ const BlockRewards = () => (
         }
       },
       lineStyle: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
-        lineTension: 0
+        backgroundColor: 'rgba(255, 255, 255, 0)'
       }
     })}
-    variableY
   />
 )
 

@@ -9,48 +9,63 @@ import Select from '../../components/Select'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import Chart, { Props as ChartProps } from '../../components/Chart'
 
+enum CumulativeValues {
+  C = 'cumulative',
+  P = 'periodic'
+}
+
 interface Props {
   url: string
   title: string
-  initialAdditionalIndex?: number
-  durations?: number[]
-  initialDuration?: number
-  variableY?: boolean
-  additionalSelector?: (data: any) => string[]
+
+  cumulativeOptions: {
+    initial: boolean
+    hide?: boolean
+  }
+
+  durationOptions?: {
+    initial?: number
+    list?: number[]
+  }
+
+  additionalOptions?: {
+    initial: string
+    getList: (results: any) => { value: string; label: string }[]
+  }
+
+  fixedYAxis?: boolean
+
   renderHeader: (
-    data: any,
-    params: { additionalIndex: number; duration: number }
+    results: any,
+    params: { cumulative: boolean; duration: number; additional?: string }
   ) => ReactNode
+
   getChartProps: (
-    data: any,
-    additionalIndex: number
+    results: any,
+    params: { additional?: string }
   ) => Omit<ChartProps, 'height'>
 }
 
 const Component = ({ url, title, ...props }: Props) => {
-  const { initialAdditionalIndex = 0, additionalSelector } = props
-  const { renderHeader, getChartProps, variableY } = props
-  const { durations = [0, 7, 14, 30], initialDuration = 0 } = props
+  const { cumulativeOptions, durationOptions, additionalOptions } = props
+  const { fixedYAxis } = props
+  const { renderHeader, getChartProps } = props
 
-  /* form */
-  type Values = { duration: number; additionalIndex: number }
-  const InitialValues = {
-    duration: initialDuration,
-    additionalIndex: initialAdditionalIndex
-  }
-  const [values, setValues] = useState<Values>(InitialValues)
-  const { duration, additionalIndex } = values
+  /* options */
+  const durations = durationOptions?.list ?? [0, 7, 14, 30]
 
-  /* api response */
+  /* state: options */
+  const [cumulative, setCumulative] = useState(!!cumulativeOptions?.initial)
+  const [duration, setDuration] = useState(durationOptions?.initial ?? 0)
+  const [additional, setAdditional] = useState(additionalOptions?.initial)
+
+  /* state: api response */
   const [data, setData] = useState<any>()
   const [, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
-  const additional = additionalSelector && data ? additionalSelector(data) : []
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setValues({ ...values, [name]: Number(value) })
-  }
+  const results = !cumulativeOptions.hide
+    ? data?.[cumulative ? CumulativeValues.C : CumulativeValues.P]
+    : data
 
   /* Fetch data */
   useEffect(() => {
@@ -75,28 +90,46 @@ const Component = ({ url, title, ...props }: Props) => {
   }, [duration])
 
   /* render */
-  const select = {
-    onChange: handleChange,
-    className: 'form-control form-control-md'
-  }
-
+  const className = 'form-control form-control-md text-capitalize'
+  const additionalList = additionalOptions?.getList(results)
   const renderActions = () => (
     <>
-      {additionalSelector && !!additional.length && (
-        <Select name="additionalIndex" value={additionalIndex} {...select}>
-          {additional.map((label, index) => (
-            <option value={index} key={index}>
+      {additionalOptions && (
+        <Select
+          value={additional}
+          onChange={e => setAdditional(e.target.value)}
+          className={className}
+        >
+          {additionalList?.map(({ value, label }, index) => (
+            <option value={value} key={index}>
               {label}
             </option>
           ))}
         </Select>
       )}
 
+      {!cumulativeOptions.hide && (
+        <Select
+          value={cumulative ? CumulativeValues.C : CumulativeValues.P}
+          onChange={e =>
+            setCumulative(e.target.value === CumulativeValues.C ? true : false)
+          }
+          className={className}
+          style={{ minWidth: 120 }}
+        >
+          {Object.values(CumulativeValues).map(value => (
+            <option value={value} key={value}>
+              {value}
+            </option>
+          ))}
+        </Select>
+      )}
+
       <Select
-        name="duration"
         value={duration}
+        onChange={e => setDuration(Number(e.target.value))}
+        className={className}
         style={{ minWidth: 120 }}
-        {...select}
       >
         {durations.map(duration => (
           <option value={duration} key={duration}>
@@ -112,12 +145,15 @@ const Component = ({ url, title, ...props }: Props) => {
   )
 
   const render = () => {
-    const { options, ...chartProps } = getChartProps(data, additionalIndex)
+    const { options, lineStyle, ...chartProps } = getChartProps(results, {
+      additional
+    })
+
     const defaultOptions: ChartOptions = {
       scales: {
         xAxes: [{ time: { unit: 'day' } }],
         yAxes: [
-          { ticks: { min: variableY ? undefined : 0, callback: formatTickY } }
+          { ticks: { min: fixedYAxis ? 0 : undefined, callback: formatTickY } }
         ]
       },
       tooltips: {
@@ -136,12 +172,16 @@ const Component = ({ url, title, ...props }: Props) => {
     return (
       <>
         <header style={{ marginBottom: 20 }}>
-          {renderHeader(data, { additionalIndex, duration })}
+          {renderHeader(results, { cumulative, duration, additional })}
         </header>
 
         <section style={{ height: 260 }}>
           <Chart
             {...chartProps}
+            lineStyle={{
+              ...lineStyle,
+              lineTension: cumulative ? 0 : undefined
+            }}
             options={mergeDeep(defaultOptions, options || {})}
             height={260}
           />
@@ -150,11 +190,11 @@ const Component = ({ url, title, ...props }: Props) => {
     )
   }
 
-  const isEmpty = Array.isArray(data) && !data.length
+  const isEmpty = Array.isArray(results) && !results.length
 
   return (
     <Card title={title} actions={renderActions()} small>
-      {error ? OOPS : data ? (isEmpty ? 'No Data' : render()) : null}
+      {error ? OOPS : results ? (isEmpty ? 'No Data' : render()) : null}
     </Card>
   )
 }
