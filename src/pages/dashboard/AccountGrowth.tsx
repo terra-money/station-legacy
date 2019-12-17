@@ -42,9 +42,11 @@ const AccountGrowth = () => (
         }
       },
       lineStyle: {
-        backgroundColor: 'rgba(255, 255, 255, 0)'
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        lineTension: 0
       }
     })}
+    variableY
   />
 )
 

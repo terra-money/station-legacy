@@ -14,6 +14,7 @@ interface Props {
   initialAdditionalIndex?: number
   durations?: number[]
   initialDuration?: number
+  variableY?: boolean
   additionalSelector?: (data: any) => string[]
   renderHeader: (
     data: any,
@@ -27,7 +28,7 @@ interface Props {
 
 const ChartCard = ({ url, title, ...props }: Props) => {
   const { initialAdditionalIndex = 0, additionalSelector } = props
-  const { renderHeader, getChartProps } = props
+  const { renderHeader, getChartProps, variableY } = props
   const { durations = [0, 7, 14, 30], initialDuration = 0 } = props
 
   /* form */
@@ -114,7 +115,9 @@ const ChartCard = ({ url, title, ...props }: Props) => {
     const defaultOptions: ChartOptions = {
       scales: {
         xAxes: [{ time: { unit: 'day' } }],
-        yAxes: [{ ticks: { min: 0, callback: formatTickY } }]
+        yAxes: [
+          { ticks: { min: variableY ? undefined : 0, callback: formatTickY } }
+        ]
       },
       tooltips: {
         callbacks: {
