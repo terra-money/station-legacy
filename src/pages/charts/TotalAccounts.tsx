@@ -12,7 +12,7 @@ interface Results {
   }[]
 }
 
-const AccountGrowth = () => (
+const TotalAccounts = () => (
   <ChartCard
     title="Total accounts"
     url="/v1/dashboard/account_growth"
@@ -50,4 +50,4 @@ const AccountGrowth = () => (
   />
 )
 
-export default AccountGrowth
+export default TotalAccounts

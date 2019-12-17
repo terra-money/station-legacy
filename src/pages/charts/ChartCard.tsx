@@ -6,6 +6,7 @@ import api from '../../api/api'
 import { format } from '../../utils'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
+import ErrorBoundary from '../../components/ErrorBoundary'
 import Chart, { Props as ChartProps } from '../../components/Chart'
 
 interface Props {
@@ -26,7 +27,7 @@ interface Props {
   ) => Omit<ChartProps, 'height'>
 }
 
-const ChartCard = ({ url, title, ...props }: Props) => {
+const Component = ({ url, title, ...props }: Props) => {
   const { initialAdditionalIndex = 0, additionalSelector } = props
   const { renderHeader, getChartProps, variableY } = props
   const { durations = [0, 7, 14, 30], initialDuration = 0 } = props
@@ -155,6 +156,20 @@ const ChartCard = ({ url, title, ...props }: Props) => {
     <Card title={title} actions={renderActions()} small>
       {error ? OOPS : data ? (isEmpty ? 'No Data' : render()) : null}
     </Card>
+  )
+}
+
+const ChartCard = (props: Props) => {
+  const fallback = (
+    <Card title={props.title} small>
+      {OOPS}
+    </Card>
+  )
+
+  return (
+    <ErrorBoundary fallback={fallback}>
+      <Component {...props} />
+    </ErrorBoundary>
   )
 }
 
