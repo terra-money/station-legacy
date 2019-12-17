@@ -12,10 +12,10 @@ interface Result {
 
 type Results = Result[]
 const denom = 'ukrw'
-const TaxProceeds = () => (
+const BlockRewards = () => (
   <ChartCard
-    title="Tax proceeds"
-    url="/v1/dashboard/tax"
+    title="Block rewards"
+    url="/v1/dashboard/block_rewards"
     renderHeader={(results: Results) => {
       const { tax: head } = results[0]
       const { tax: tail } = results[results.length - 1]
@@ -50,4 +50,4 @@ const TaxProceeds = () => (
   />
 )
 
-export default TaxProceeds
+export default BlockRewards

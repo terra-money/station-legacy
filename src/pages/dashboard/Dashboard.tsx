@@ -1,10 +1,9 @@
 import React from 'react'
 import Columns from './Columns'
-import TxVolume from './TxVolume'
-import StakingReturn from './StakingReturn'
-import TaxProceeds from './TaxProceeds'
-// import SeigniorageProceeds from './SeigniorageProceeds'
-import AccountGrowth from './AccountGrowth'
+import TxVolume from '../charts/TxVolume'
+import StakingReturn from '../charts/StakingReturn'
+import BlockRewards from '../charts/BlockRewards'
+import TotalAccounts from '../charts/TotalAccounts'
 
 const Dashboard = () => (
   <>
@@ -21,11 +20,10 @@ const Dashboard = () => (
 
     <div className="row">
       <div className="col col-6">
-        <TaxProceeds />
+        <BlockRewards />
       </div>
       <div className="col col-6">
-        <AccountGrowth />
-        {/* <SeigniorageProceeds /> */}
+        <TotalAccounts />
       </div>
     </div>
   </>
