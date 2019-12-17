@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
-import { isProduction, isElectron } from '../helpers/env'
+import { isElectron } from '../helpers/env'
 import electron from '../helpers/electron'
 import { changeChain, ChainList } from '../api/api'
 import { report } from '../utils'
@@ -40,11 +40,19 @@ const initial = {
   refresh: () => {},
   authModal: { open: () => {}, close: () => {} },
 
-  chain: localSettings.get().chain || ChainList[Number(!isProduction)],
+  chain: ChainList[0],
   selectChain: () => {},
 
   goBack: '',
   setGoBack: () => {}
+}
+
+const getInitialChain = () => {
+  const { chain: local } = localSettings.get()
+  const defaultChain = ChainList[0]
+  const chain = local && ChainList.includes(local) ? local : defaultChain
+  localSettings.set({ chain })
+  return chain
 }
 
 export const AppContext = createContext<AppContext>(initial)
@@ -60,7 +68,7 @@ const App = ({ location, history }: RouteComponentProps) => {
   })
 
   /* effect: app */
-  const [chain, setChain] = useState<string>(initial.chain)
+  const [chain, setChain] = useState<string>(getInitialChain)
   const [key, setKey] = useState<number>(initial.key) // refresh
   const [disabled, setDisabled] = useState<ReactNode>()
   const refresh = () => setKey(k => k + 1)

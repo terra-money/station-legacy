@@ -1,26 +1,28 @@
 import React from 'react'
 import { format } from '../../utils'
 import ChartCard from './ChartCard'
+import { minus, sum } from '../../api/math'
 
-interface Results {
+interface Result {
+  datetime: number
   totalAccountCount: number
-  monthlyActive: string
-  data: {
-    datetime: number
-    totalAccountCount: number
-    activeAccountCount: number
-  }[]
+  activeAccountCount: number
 }
+
+type Results = Result[]
 
 const TotalAccounts = () => (
   <ChartCard
     title="Total accounts"
     url="/v1/dashboard/account_growth"
-    renderHeader={(
-      { totalAccountCount, monthlyActive }: Results,
-      { additionalIndex }
-    ) => {
-      const value = !additionalIndex ? totalAccountCount : monthlyActive
+    cumulativeOptions={{ initial: true }}
+    renderHeader={(results: Results, { cumulative }) => {
+      const { totalAccountCount: head } = results[0]
+      const { totalAccountCount: tail } = results[results.length - 1]
+      const value = cumulative
+        ? minus(tail, head)
+        : sum(results.slice(1).map(d => d.totalAccountCount))
+
       return (
         <span style={{ fontSize: 20 }}>
           {format.decimal(value, 0)}
@@ -28,11 +30,11 @@ const TotalAccounts = () => (
         </span>
       )
     }}
-    getChartProps={({ data }: Results, index) => ({
+    getChartProps={(results: Results) => ({
       type: 'line',
-      data: data.map(({ datetime, ...count }) => ({
+      data: results.map(({ datetime, ...count }) => ({
         t: new Date(datetime),
-        y: [count.totalAccountCount, count.activeAccountCount][index]
+        y: count.totalAccountCount
       })),
       options: {
         tooltips: {
@@ -42,11 +44,9 @@ const TotalAccounts = () => (
         }
       },
       lineStyle: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
-        lineTension: 0
+        backgroundColor: 'rgba(255, 255, 255, 0)'
       }
     })}
-    variableY
   />
 )
 
