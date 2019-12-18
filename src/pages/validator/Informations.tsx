@@ -24,8 +24,12 @@ const Informations = (v: Validator) => {
       value: percent(v.commissionInfo.maxChangeRate)
     },
     {
+      label: 'Delegatoin return',
+      value: percent(v.stakingReturn)
+    },
+    {
       label: 'Last commission change',
-      value: `${format.date(v.commissionInfo.updateTime)}`
+      value: format.date(v.commissionInfo.updateTime)
     }
   ]
 

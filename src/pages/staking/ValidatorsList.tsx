@@ -21,6 +21,11 @@ const Columns: [string, Attr, Sorter?][] = [
     { align: 'right', style: { width: 100, textAlign: 'right' } },
     { prop: ['commissionInfo', 'rate'] }
   ],
+  [
+    'Delegation return',
+    { align: 'right', style: { width: 100, textAlign: 'right' } },
+    { prop: ['stakingReturn'] }
+  ],
   ['Uptime', { align: 'right', style: { width: 80 } }, { prop: ['upTime'] }],
   ['', { style: { width: 20 } }],
   [

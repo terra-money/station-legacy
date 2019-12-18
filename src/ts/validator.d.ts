@@ -6,6 +6,7 @@ interface Validator {
   selfDelegation: VotingPower
   commissions: Reward[]
   commissionInfo: CommissionInfo
+  stakingReturn: string
   upTime: number
   status: string
   rewardsPool: Rewards

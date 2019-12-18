@@ -11,7 +11,7 @@ import DelegationTooltip from './DelegationTooltip'
 type Props = { validator: Validator; rank: number; total?: string }
 const renderItem = ({ validator, rank, total }: Props) => {
   const { description, operatorAddress } = validator
-  const { votingPower, commissionInfo, upTime } = validator
+  const { votingPower, commissionInfo, stakingReturn, upTime } = validator
   const { myDelegation, myUndelegation = [] } = validator
 
   const renderMyDelegation = (total: string) => {
@@ -74,6 +74,7 @@ const renderItem = ({ validator, rank, total }: Props) => {
     </h1>,
     <span className={s.percent}>{percent(votingPower.weight)}</span>,
     <span className={s.percent}>{percent(commissionInfo.rate, 0)}</span>,
+    <span className={s.percent}>{percent(stakingReturn)}</span>,
     <span className={s.percent}>{percent(upTime, 0)}</span>,
     null,
     total && renderMyDelegation(total)
