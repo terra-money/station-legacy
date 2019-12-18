@@ -6,6 +6,7 @@ import api from '../../api/api'
 import { format } from '../../utils'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
+import RadioGroup from '../../components/RadioGroup'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import Chart, { Props as ChartProps } from '../../components/Chart'
 
@@ -92,7 +93,7 @@ const Component = ({ url, title, ...props }: Props) => {
   /* render */
   const className = 'form-control form-control-md text-capitalize'
   const additionalList = additionalOptions?.getList(results)
-  const renderActions = () => (
+  const actions = (
     <>
       {additionalOptions && (
         <Select
@@ -124,24 +125,22 @@ const Component = ({ url, title, ...props }: Props) => {
           ))}
         </Select>
       )}
-
-      <Select
-        value={duration}
-        onChange={e => setDuration(Number(e.target.value))}
-        className={className}
-        style={{ minWidth: 120 }}
-      >
-        {durations.map(duration => (
-          <option value={duration} key={duration}>
-            {!duration
-              ? 'From genesis'
-              : duration === 1
-              ? 'Last day'
-              : `${duration} days`}
-          </option>
-        ))}
-      </Select>
     </>
+  )
+
+  const footer = (
+    <RadioGroup
+      value={String(duration)}
+      onChange={value => setDuration(Number(value))}
+      options={durations.map(duration => ({
+        value: String(duration),
+        label: !duration
+          ? 'From genesis'
+          : duration === 1
+          ? 'Last day'
+          : `${duration} days`
+      }))}
+    />
   )
 
   const render = () => {
@@ -193,7 +192,13 @@ const Component = ({ url, title, ...props }: Props) => {
   const isEmpty = Array.isArray(results) && !results.length
 
   return (
-    <Card title={title} actions={renderActions()} small>
+    <Card
+      title={title}
+      actions={actions}
+      footer={footer}
+      footerClassName="text-center"
+      small
+    >
       {error ? OOPS : results ? (isEmpty ? 'No Data' : render()) : null}
     </Card>
   )
