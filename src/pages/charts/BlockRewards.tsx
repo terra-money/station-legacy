@@ -15,6 +15,7 @@ const denom = 'ukrw'
 const BlockRewards = () => (
   <ChartCard
     title="Block rewards"
+    description="Block rewards distributed over the selected time period. Block rewards are a sum of tax proceeds, oracle rewards, and gas fees"
     url="/v1/dashboard/block_rewards"
     cumulativeOptions={{ initial: true }}
     renderHeader={(results: Results, { cumulative }): ReactNode => {

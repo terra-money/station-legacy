@@ -4,6 +4,9 @@ import { ChartOptions, ChartPoint } from 'chart.js'
 import { OOPS } from '../../helpers/constants'
 import api from '../../api/api'
 import { format } from '../../utils'
+import Pop from '../../components/Pop'
+import Icon from '../../components/Icon'
+import Flex from '../../components/Flex'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
 import RadioGroup from '../../components/RadioGroup'
@@ -18,6 +21,7 @@ enum CumulativeValues {
 interface Props {
   url: string
   title: string
+  description: string
 
   cumulativeOptions: {
     initial: boolean
@@ -47,7 +51,7 @@ interface Props {
   ) => Omit<ChartProps, 'height'>
 }
 
-const Component = ({ url, title, ...props }: Props) => {
+const Component = ({ url, title, description, ...props }: Props) => {
   const { cumulativeOptions, durationOptions, additionalOptions } = props
   const { fixedYAxis } = props
   const { renderHeader, getChartProps } = props
@@ -190,10 +194,20 @@ const Component = ({ url, title, ...props }: Props) => {
   }
 
   const isEmpty = Array.isArray(results) && !results.length
+  const iconAttrs = { style: { marginLeft: 5 } }
 
   return (
     <Card
-      title={title}
+      title={
+        <Flex>
+          <h1>{title}</h1>
+          <Pop type="tooltip" placement="top" width={320} content={description}>
+            {({ ref, getAttrs }) => (
+              <Icon name="info" forwardRef={ref} {...getAttrs(iconAttrs)} />
+            )}
+          </Pop>
+        </Flex>
+      }
       actions={actions}
       footer={footer}
       footerClassName="text-center"
