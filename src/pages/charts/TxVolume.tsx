@@ -14,6 +14,7 @@ type Results = Result[]
 const TxVolume = () => (
   <ChartCard
     title="Transaction volume"
+    description="The onchain transaction volume for the selected currency over the selected time period"
     url="/v1/dashboard/tx_volume"
     cumulativeOptions={{ initial: false }}
     durationOptions={{ initial: 1, list: [0, 1, 7, 14, 30] }}

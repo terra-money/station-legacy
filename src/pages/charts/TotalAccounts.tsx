@@ -14,6 +14,7 @@ type Results = Result[]
 const TotalAccounts = () => (
   <ChartCard
     title="Total accounts"
+    description="Number of total accounts with more than 1 non-trivial transaction in the selected period"
     url="/v1/dashboard/account_growth"
     cumulativeOptions={{ initial: true }}
     renderHeader={(results: Results, { cumulative }) => {

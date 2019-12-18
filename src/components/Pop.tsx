@@ -38,11 +38,7 @@ export const Tooltip = (props: Tooltip) => {
   )
 }
 
-type Attrs = {
-  onClick?: () => void
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
-}
+type Attrs = React.HTMLAttributes<HTMLElement>
 
 type Pop = {
   type: 'pop' | 'tooltip'
@@ -50,7 +46,7 @@ type Pop = {
   children: (Params: {
     ref: RefObject<HTMLElement>
     iconRef: RefObject<HTMLSpanElement>
-    getAttrs: (attrs: { className?: string }) => Attrs
+    getAttrs: (attrs: Attrs) => Attrs
   }) => ReactNode
 }
 
@@ -121,7 +117,7 @@ const Pop = (props: Tooltip & Pop) => {
   }, [isOpen, tooltipWidth])
 
   /* render */
-  const getAttrs = (attrs: { className?: string }) =>
+  const getAttrs = (attrs: Attrs) =>
     Object.assign(
       {},
       attrs,
@@ -129,7 +125,8 @@ const Pop = (props: Tooltip & Pop) => {
         className: c(
           attrs.className,
           { tooltip: s.reference, pop: 'clickable' }[type]
-        )
+        ),
+        style: attrs.style
       },
       {
         tooltip: {
