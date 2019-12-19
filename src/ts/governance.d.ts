@@ -9,7 +9,7 @@ interface Governance {
 
 interface ProposalItem {
   id: string
-  proposer: string
+  proposer: SimpleValidator
   type: string
   status: Status
   submitTime: string
@@ -22,6 +22,12 @@ interface ProposalItem {
 interface ProposalDetail extends ProposalItem {
   content: Content[]
   tallyingParameters?: TallyingParameters
+}
+
+interface SimpleValidator {
+  accountAddress: string
+  operatorAddress: string
+  moniker: string
 }
 
 interface Content {
