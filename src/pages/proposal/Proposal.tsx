@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from 'react'
-import { RouteComponentProps, Link } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
@@ -7,7 +7,6 @@ import { useGoBack } from '../../hooks'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
-import Finder from '../../components/Finder'
 import WithRequest from '../../components/WithRequest'
 import { getBadgeColor } from '../governance/helpers'
 import Actions from './Actions'
@@ -17,6 +16,7 @@ import Vote from './Vote'
 import VoteTable from './VoteTable'
 import Tallying from './Tallying'
 import s from './Proposal.module.scss'
+import ValidatorLink from './ValidatorLink'
 
 const Component = (props: ProposalDetail) => {
   useGoBack('/governance')
@@ -53,8 +53,6 @@ const Component = (props: ProposalDetail) => {
     </Fragment>
   )
 
-  const { moniker, operatorAddress, accountAddress } = proposer
-
   return (
     <Page title="Proposal detail" action={<Actions detail={props} />}>
       <div className="row">
@@ -68,13 +66,7 @@ const Component = (props: ProposalDetail) => {
             <p className={s.meta}>
               Submitted by{' '}
               <strong>
-                {moniker ? (
-                  <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
-                ) : (
-                  <Finder q="account" v={accountAddress}>
-                    {accountAddress}
-                  </Finder>
-                )}
+                <ValidatorLink {...proposer} noTruncate />
               </strong>
             </p>
 

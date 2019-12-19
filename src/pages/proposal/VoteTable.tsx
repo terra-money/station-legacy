@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import c from 'classnames'
 import { sum, toNumber } from '../../api/math'
 import { format } from '../../utils'
@@ -8,6 +7,7 @@ import Pagination from '../../components/Pagination'
 import Card from '../../components/Card'
 import Table from '../../components/Table'
 import Finder from '../../components/Finder'
+import ValidatorLink from './ValidatorLink'
 
 interface VoteItem {
   txhash: string
@@ -44,28 +44,19 @@ const VoteTable = ({ id, count }: Vote) => {
     </tr>
   )
 
-  const renderVote = ({ voter, answer, txhash }: VoteItem, index: number) => {
-    const { moniker, operatorAddress, accountAddress } = voter
-    return (
-      <tr key={index}>
-        <td>
-          {moniker ? (
-            <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
-          ) : (
-            <Finder q="account" v={accountAddress}>
-              {format.truncate(accountAddress, [7, 6])}
-            </Finder>
-          )}
-        </td>
-        <td>{answer}</td>
-        <td className="text-right">
-          <Finder q="tx" v={txhash}>
-            {format.truncate(txhash, [14, 13])}
-          </Finder>
-        </td>
-      </tr>
-    )
-  }
+  const renderVote = ({ voter, answer, txhash }: VoteItem, index: number) => (
+    <tr key={index}>
+      <td>
+        <ValidatorLink {...voter} />
+      </td>
+      <td>{answer}</td>
+      <td className="text-right">
+        <Finder q="tx" v={txhash}>
+          {format.truncate(txhash, [14, 13])}
+        </Finder>
+      </td>
+    </tr>
+  )
 
   return (
     <Card title={renderTabs()} bordered fixedHeight>

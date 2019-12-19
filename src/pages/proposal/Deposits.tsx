@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -7,6 +6,7 @@ import Card from '../../components/Card'
 import Table from '../../components/Table'
 import Finder from '../../components/Finder'
 import CoinList from '../../components/CoinList'
+import ValidatorLink from './ValidatorLink'
 
 interface Deposit {
   txhash: string
@@ -27,17 +27,10 @@ const Deposits = ({ id }: { id: string }) => {
 
   const renderDeposit = (depositItem: Deposit, index: number) => {
     const { depositor, deposit, txhash } = depositItem
-    const { moniker, operatorAddress, accountAddress } = depositor
     return (
       <tr key={index}>
         <td>
-          {moniker ? (
-            <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
-          ) : (
-            <Finder q="account" v={accountAddress}>
-              {format.truncate(accountAddress, [7, 6])}
-            </Finder>
-          )}
+          <ValidatorLink {...depositor} />
         </td>
         <td>
           <CoinList list={deposit} />
