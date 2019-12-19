@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -10,7 +11,7 @@ import CoinList from '../../components/CoinList'
 interface Deposit {
   txhash: string
   deposit: Coin[]
-  depositor: string
+  depositor: SimpleValidator
 }
 
 const Deposits = ({ id }: { id: string }) => {
@@ -24,24 +25,31 @@ const Deposits = ({ id }: { id: string }) => {
     </tr>
   )
 
-  const renderDeposit = (deposit: Deposit, index: number) =>
-    deposit && (
+  const renderDeposit = (depositItem: Deposit, index: number) => {
+    const { depositor, deposit, txhash } = depositItem
+    const { moniker, operatorAddress, accountAddress } = depositor
+    return (
       <tr key={index}>
         <td>
-          <Finder q="account" v={deposit.depositor}>
-            {format.truncate(deposit.depositor, [7, 6])}
-          </Finder>
+          {moniker ? (
+            <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
+          ) : (
+            <Finder q="account" v={accountAddress}>
+              {format.truncate(accountAddress, [7, 6])}
+            </Finder>
+          )}
         </td>
         <td>
-          <CoinList list={deposit.deposit} />
+          <CoinList list={deposit} />
         </td>
         <td className="text-right">
-          <Finder q="tx" v={deposit.txhash}>
-            {format.truncate(deposit.txhash, [14, 13])}
+          <Finder q="tx" v={txhash}>
+            {format.truncate(txhash, [14, 13])}
           </Finder>
         </td>
       </tr>
     )
+  }
 
   type Deposits = { deposits: Deposit[] }
   return (
@@ -51,7 +59,7 @@ const Deposits = ({ id }: { id: string }) => {
           <Pagination {...pagination} action={setPage} empty="No deposits yet.">
             <Table>
               <thead>{renderHead()}</thead>
-              <tbody>{deposits.map(renderDeposit)}</tbody>
+              <tbody>{deposits.filter(Boolean).map(renderDeposit)}</tbody>
             </Table>
           </Pagination>
         )}

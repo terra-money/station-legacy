@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import c from 'classnames'
 import { sum, toNumber } from '../../api/math'
 import { format } from '../../utils'
@@ -11,7 +12,7 @@ import Finder from '../../components/Finder'
 interface VoteItem {
   txhash: string
   answer: string
-  voter: string
+  voter: SimpleValidator
 }
 
 const VoteTable = ({ id, count }: Vote) => {
@@ -43,22 +44,28 @@ const VoteTable = ({ id, count }: Vote) => {
     </tr>
   )
 
-  const renderVote = (vote: VoteItem, index: number) =>
-    vote && (
+  const renderVote = ({ voter, answer, txhash }: VoteItem, index: number) => {
+    const { moniker, operatorAddress, accountAddress } = voter
+    return (
       <tr key={index}>
         <td>
-          <Finder q="account" v={vote.voter}>
-            {format.truncate(vote.voter, [7, 6])}
-          </Finder>
+          {moniker ? (
+            <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
+          ) : (
+            <Finder q="account" v={accountAddress}>
+              {format.truncate(accountAddress, [7, 6])}
+            </Finder>
+          )}
         </td>
-        <td>{vote.answer}</td>
+        <td>{answer}</td>
         <td className="text-right">
-          <Finder q="tx" v={vote.txhash}>
-            {format.truncate(vote.txhash, [14, 13])}
+          <Finder q="tx" v={txhash}>
+            {format.truncate(txhash, [14, 13])}
           </Finder>
         </td>
       </tr>
     )
+  }
 
   return (
     <Card title={renderTabs()} bordered fixedHeight>
@@ -67,7 +74,7 @@ const VoteTable = ({ id, count }: Vote) => {
           <Pagination {...pagination} action={setPage} empty="No votes yet.">
             <Table>
               <thead>{renderHead()}</thead>
-              <tbody>{votes.map(renderVote)}</tbody>
+              <tbody>{votes.filter(Boolean).map(renderVote)}</tbody>
             </Table>
           </Pagination>
         )}

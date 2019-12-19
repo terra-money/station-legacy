@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Link } from 'react-router-dom'
 import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
@@ -53,6 +53,8 @@ const Component = (props: ProposalDetail) => {
     </Fragment>
   )
 
+  const { moniker, operatorAddress, accountAddress } = proposer
+
   return (
     <Page title="Proposal detail" action={<Actions detail={props} />}>
       <div className="row">
@@ -66,9 +68,13 @@ const Component = (props: ProposalDetail) => {
             <p className={s.meta}>
               Submitted by{' '}
               <strong>
-                <Finder q="account" v={proposer}>
-                  {proposer}
-                </Finder>
+                {moniker ? (
+                  <Link to={`/validator/${operatorAddress}`}>{moniker}</Link>
+                ) : (
+                  <Finder q="account" v={accountAddress}>
+                    {accountAddress}
+                  </Finder>
+                )}
               </strong>
             </p>
 

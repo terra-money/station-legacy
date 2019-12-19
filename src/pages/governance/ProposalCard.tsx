@@ -50,8 +50,12 @@ const ProposalCard = (proposal: ProposalItem) => {
 
           <h1 className={s.title}>{title}</h1>
           <p className={s.meta}>
-            Submitted by <strong>{format.truncate(proposer, [5, 5])}</strong> at{' '}
-            {format.date(submitTime)}
+            Submitted by{' '}
+            <strong>
+              {proposer.moniker ??
+                format.truncate(proposer.accountAddress, [5, 5])}
+            </strong>{' '}
+            at {format.date(submitTime)}
           </p>
 
           {proposal.status === 'Deposit' ? (
