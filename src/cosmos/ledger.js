@@ -1,4 +1,4 @@
-import TransportU2F from '@ledgerhq/hw-transport-u2f'
+import Transport from '@ledgerhq/hw-transport-webusb'
 import Cosmos from 'ledger-cosmos-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
@@ -45,7 +45,7 @@ const connect = async () => {
 
   const isSendingData = async () => {
     const path = await getPath()
-    const response = await app.publicKey(path)
+    const response = await app.getAddressAndPubKey(path, 'terra')
     checkLedgerErrors(response)
   }
 
@@ -55,7 +55,7 @@ const connect = async () => {
     await isSendingData()
   }
 
-  const transport = await TransportU2F.create()
+  const transport = await Transport.create()
   const app = new Cosmos(transport)
   await isReady()
 
@@ -64,7 +64,7 @@ const connect = async () => {
 
 const getPubKey = async () => {
   const { app, path } = await connect()
-  const response = await app.publicKey(path)
+  const response = await app.getAddressAndPubKey(path, 'terra')
   return response.compressed_pk
 }
 
