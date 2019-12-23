@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { OOPS } from '../../helpers/constants'
 import { times, div, floor } from '../../api/math'
-import v from '../../api/validate'
+import useValidate from '../../api/validate'
 import getTaxInfo, { calcTax } from '../../api/getTaxInfo'
 import { format, getSize } from '../../utils'
 import { useForm } from '../../hooks'
@@ -22,11 +23,14 @@ type Initial = { denom: string; input?: string; to?: string; memo?: string }
 type Values = { denom: string; input: string; to: string; memo: string }
 
 const Send = ({ max, onSending, onSend, ...props }: Props) => {
+  const { t } = useTranslation()
+  const v = useValidate()
+
   /* validation */
   const validate = ({ input, to, memo }: Values) => ({
     to: v.address(to),
     input: v.input(input, max),
-    memo: !(getSize(memo) <= 256) ? 'Memo is too long' : ''
+    memo: !(getSize(memo) <= 256) ? t('Memo is too long') : ''
   })
 
   /* state: form */
@@ -79,14 +83,14 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>Send</h1>
+          <h1>{t('Send')}</h1>
 
           {hasError ? (
             <p className="text-center">{OOPS}</p>
           ) : (
             <>
               <section className="form-group">
-                <label className="label">Denomination</label>
+                <label className="label">{t('Denomination')}</label>
                 <input
                   type="text"
                   name="denom"
@@ -98,13 +102,13 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
               </section>
 
               <section className="form-group">
-                <label className="label">Send to</label>
+                <label className="label">{t('Send to')}</label>
                 <input
                   type="text"
                   name="to"
                   value={to}
                   onChange={handleChange}
-                  placeholder="Input receiver's wallet address"
+                  placeholder={t("Input receiver's wallet address")}
                   className="form-control"
                   autoComplete="off"
                   autoFocus
@@ -114,9 +118,9 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
 
               <section className="form-group">
                 <header className="flex space-between">
-                  <label className="label">Amount</label>
+                  <label className="label">{t('Amount')}</label>
                   <p className="label-text">
-                    Available:
+                    {t('Available')}:
                     <button
                       type="button"
                       onClick={setToMax}
@@ -139,13 +143,15 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
               </section>
 
               <section className="form-group">
-                <label className="label">Memo (Optional)</label>
+                <label className="label">
+                  {t('Memo')} ({t('Optional')})
+                </label>
                 <input
                   type="text"
                   name="memo"
                   value={memo}
                   onChange={handleChange}
-                  placeholder="Input memo"
+                  placeholder={t('Input memo')}
                   className="form-control"
                   autoComplete="off"
                 />
@@ -158,7 +164,7 @@ const Send = ({ max, onSending, onSend, ...props }: Props) => {
                 disabled={invalid || isSubmitting}
                 className="btn btn-block btn-primary"
               >
-                Next
+                {t('Next')}
               </button>
             </>
           )}

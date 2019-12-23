@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { times, div, floor } from '../../../api/math'
-import v from '../../../api/validate'
+import useValidate from '../../../api/validate'
 import { format } from '../../../utils'
 import { useForm, useAuth } from '../../../hooks'
 import Amount from '../../../components/Amount'
@@ -26,7 +27,9 @@ interface Values {
 
 const Deposit = ({ id, deposit, max, onSubmitting, onSubmit }: Props) => {
   const { minDeposit, totalDeposit, depositEndTime } = deposit
+  const { t } = useTranslation()
   const { address } = useAuth()
+  const v = useValidate()
 
   /* validation */
   const validate = ({ input }: Values) => ({ input: v.input(input, max) })
@@ -70,26 +73,26 @@ const Deposit = ({ id, deposit, max, onSubmitting, onSubmit }: Props) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>Deposit</h1>
+          <h1>{t('Deposit')}</h1>
 
           <dl className={c('dl-wrap', s.dl)}>
-            <dt>Total deposit</dt>
+            <dt>{t('Total deposit')}</dt>
             <dd>{<CoinList list={total} />}</dd>
 
-            <dt>Minimum deposit</dt>
+            <dt>{t('Minimum deposit')}</dt>
             <dd>
               <CoinList list={minDeposit} />
             </dd>
 
-            <dt>Deposit end time</dt>
+            <dt>{t('Deposit end time')}</dt>
             <dd>{format.date(depositEndTime)}</dd>
           </dl>
 
           <section className="form-group">
             <header className="flex space-between">
-              <label className="label">Amount</label>
+              <label className="label">{t('Amount')}</label>
               <p className="label-text">
-                Available:
+                {t('Available')}:
                 <button type="button" onClick={setToMax} className="btn-link">
                   <Amount>{max}</Amount>
                 </button>
@@ -118,7 +121,7 @@ const Deposit = ({ id, deposit, max, onSubmitting, onSubmit }: Props) => {
             disabled={invalid}
             className="btn btn-block btn-primary"
           >
-            Next
+            {t('Next')}
           </button>
         </form>
       ) : (

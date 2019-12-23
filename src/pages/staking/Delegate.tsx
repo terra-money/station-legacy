@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { times, div, floor } from '../../api/math'
-import v from '../../api/validate'
+import useValidate from '../../api/validate'
 import { format } from '../../utils'
 import { useAuth, useForm } from '../../hooks'
 import Amount from '../../components/Amount'
@@ -35,11 +36,14 @@ type FormProps = {
 }
 
 const Form = (props: Props & FormProps) => {
+  const denom = 'uluna'
   const { sources, findRedelegation, getMax } = props
   const { undelegate, to, moniker } = props
   const { onDelegating, onDelegate } = props
+
+  const { t } = useTranslation()
   const { address } = useAuth()
-  const denom = 'uluna'
+  const v = useValidate()
 
   /* validation */
   type Values = { input: string; from: string }
@@ -93,8 +97,9 @@ const Form = (props: Props & FormProps) => {
         validator_address: to,
         amount: { amount, denom }
       },
-      warning:
-        'Undelegation takes 21 days to complete.  You would not get rewards in the meantime.',
+      warning: t(
+        'Undelegation takes 21 days to complete. You would not get rewards in the meantime.'
+      ),
       label: ['Undelegate', 'Undelegating'],
       message: `Undelegated ${input} ${format.denom(denom)} from ${moniker}`
     },
@@ -106,8 +111,9 @@ const Form = (props: Props & FormProps) => {
         validator_dst_address: to,
         amount: { amount, denom }
       },
-      warning:
-        'Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.',
+      warning: t(
+        'Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.'
+      ),
       label: ['Redelegate', 'Redelegating'],
       message: redelegation
         ? `Redelegated ${input} ${format.denom(denom)} from ${
@@ -135,11 +141,13 @@ const Form = (props: Props & FormProps) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>{title}</h1>
+          <h1>{t(title)}</h1>
 
           {!undelegate ? (
             <section className="form-group">
-              <label className="label">Source ({sourceLength})</label>
+              <label className="label">
+                {t('Source')} ({sourceLength})
+              </label>
               {!!sources.length ? (
                 <Select
                   name="from"
@@ -147,7 +155,9 @@ const Form = (props: Props & FormProps) => {
                   onChange={handleChange}
                   className={c('form-control', s.select)}
                 >
-                  <option value={address}>My wallet - {address}</option>
+                  <option value={address}>
+                    {t('My wallet')} - {address}
+                  </option>
                   {sources.map(({ validatorName, validatorAddress }, i) => (
                     <option value={validatorAddress} key={i}>
                       {`${validatorName} - ${validatorAddress}`}
@@ -166,7 +176,7 @@ const Form = (props: Props & FormProps) => {
             </section>
           ) : (
             <section className="form-group">
-              <label className="label">Undelegate from</label>
+              <label className="label">{t('Undelegate from')}</label>
               <input
                 type="text"
                 value={to}
@@ -179,9 +189,9 @@ const Form = (props: Props & FormProps) => {
 
           <section className="form-group">
             <header className="flex space-between">
-              <label className="label">Amount</label>
+              <label className="label">{t('Amount')}</label>
               <p className="label-text">
-                Available:
+                {t('Available')}:
                 <button type="button" onClick={setToMax} className="btn-link">
                   <Amount>{max}</Amount>
                 </button>
@@ -207,7 +217,7 @@ const Form = (props: Props & FormProps) => {
 
           {!undelegate && (
             <section className="form-group">
-              <label className="label">Delegate to</label>
+              <label className="label">{t('Delegate to')}</label>
               <input
                 type="text"
                 value={to}
@@ -224,7 +234,7 @@ const Form = (props: Props & FormProps) => {
             disabled={invalid}
             className="btn btn-block btn-primary"
           >
-            Next
+            {t('Next')}
           </button>
         </form>
       ) : (

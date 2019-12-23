@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
@@ -8,13 +9,16 @@ import s from './Schedule.module.scss'
 
 const Schedule = ({ denom, ...schedule }: Schedule & { denom: string }) => {
   const { amount, startTime, endTime, ratio, freedRate } = schedule
+
+  const { t } = useTranslation()
+
   const width = percent(freedRate)
   const now = new Date().getTime()
   const status = endTime < now ? -1 : startTime < now ? 0 : 1
   const text: { [key: string]: string } = {
-    '-1': 'Released',
-    '0': 'Releasing',
-    '1': 'Release on'
+    '-1': t('Released'),
+    '0': t('Releasing'),
+    '1': t('Release on')
   }
 
   return (

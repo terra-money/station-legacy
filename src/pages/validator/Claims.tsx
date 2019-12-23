@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -18,14 +19,15 @@ interface Claim {
 type Claims = Pagination & { claims: Claim[] }
 
 const Claims = ({ address }: { address: string }) => {
+  const { t } = useTranslation()
   const [page, setPage] = useState<string>('1')
 
   const renderHead = () => (
     <tr>
-      <th>Tx</th>
-      <th>Type</th>
-      <th className="text-right">Amount</th>
-      <th className="text-right">Time</th>
+      <th>{t('Tx')}</th>
+      <th>{t('Type')}</th>
+      <th className="text-right">{t('Amount')}</th>
+      <th className="text-right">{t('Time')}</th>
     </tr>
   )
 
@@ -38,7 +40,7 @@ const Claims = ({ address }: { address: string }) => {
           </Finder>
         </td>
 
-        <td>{claim.type}</td>
+        <td>{t(claim.type)}</td>
 
         <td className="text-right">
           {Array.isArray(claim.amounts) && (
@@ -68,7 +70,7 @@ const Claims = ({ address }: { address: string }) => {
           empty={
             <p className={s.empty}>
               <Icon name="info_outline" size={30} />
-              This validator has no claim history yet.
+              {t('This validator has no claim history yet.')}
             </p>
           }
         >

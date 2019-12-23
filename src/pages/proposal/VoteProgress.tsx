@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import s from './VoteProgress.module.scss'
 import { percent, times, sum, gt } from '../../api/math'
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const VoteProgress = ({ threshold, ratio, list }: Props) => {
+  const { t } = useTranslation()
+
   const getRatio = (label: string) =>
     list.find(item => item.label === label)?.ratio ?? '0'
 
@@ -23,7 +26,7 @@ const VoteProgress = ({ threshold, ratio, list }: Props) => {
       {showThreshold && (
         <>
           <div className={s.threshold} style={{ left }}>
-            Pass Threshold
+            {t('Pass threshold')}
           </div>
           <div className={s.flag} style={{ left }} />
         </>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks'
 import WithRequest from '../../components/WithRequest'
 import Page from '../../components/Page'
@@ -10,11 +11,12 @@ import AvailableList from './AvailableList'
 import VestingList from './VestingList'
 
 const Bank = () => {
+  const { t } = useTranslation()
   const { address } = useAuth()
   return (
-    <Page title="Bank">
+    <Page title={t('Bank')}>
       <WithAuth card>
-        <Card title="My wallet" bordered>
+        <Card title={t('My wallet')} bordered>
           <Address address={address} />
         </Card>
 
@@ -25,8 +27,8 @@ const Bank = () => {
                 <AvailableList list={balance} />
               ) : (
                 <Card>
-                  <Info icon="info_outline" title="Account empty">
-                    This account doesn't hold any coins yet.
+                  <Info icon="info_outline" title={t('Account empty')}>
+                    {t("This account doesn't hold any coins yet.")}
                   </Info>
                 </Card>
               )}

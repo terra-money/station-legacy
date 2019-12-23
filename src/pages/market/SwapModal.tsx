@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import ModalContent from '../../components/ModalContent'
 import Confirmation from '../Confirmation'
@@ -13,6 +14,8 @@ type Props = {
 
 const SwapModal = (props: Values & Props) => {
   const { receive, from, to, input, amount, onSwapping, close } = props
+
+  const { t } = useTranslation()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
 
   const handleSwapping = (b: boolean) => {
@@ -28,9 +31,11 @@ const SwapModal = (props: Values & Props) => {
         payload={{ ask_denom: to, offer_coin: { amount, denom: from } }}
         amount={amount}
         receive={{ amount: receive, denom: to }}
-        warning={`Final amount you receive in ${format.denom(
-          to
-        )} may vary due to the swap rate changes.`}
+        warning={[
+          t('Final amount you receive in '),
+          format.denom(to),
+          t(' may vary due to the swap rate changes.')
+        ].join('')}
         label={['Swap', 'Swapping']}
         message={`Swapped ${input} ${[from, to]
           .map(format.denom)

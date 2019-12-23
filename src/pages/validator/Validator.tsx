@@ -1,5 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth, useGoBack } from '../../hooks'
 import WithRequest from '../../components/WithRequest'
 import Card from '../../components/Card'
@@ -15,6 +16,7 @@ import s from './Validator.module.scss'
 
 const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
   useGoBack('/staking')
+  const { t } = useTranslation()
   const { address } = useAuth()
   return (
     <WithRequest
@@ -23,7 +25,7 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
       error={<NotFound />}
     >
       {(v: Validator) => (
-        <Page title="Validator details">
+        <Page title={`${t('Validator')}${t(' details')}`}>
           <Header {...v} />
           {address && <Actions {...v} />}
 
@@ -31,22 +33,30 @@ const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
             <Informations {...v} />
           </Card>
 
-          <h2>Delegations</h2>
+          <h2>{t('Delegations')}</h2>
           <div className="row">
             <div className="col col-8">
-              <Card title="Event log" bodyClassName={s.delegation} bordered>
+              <Card
+                title={t('Event log')}
+                bodyClassName={s.delegation}
+                bordered
+              >
                 <Delegations address={v.operatorAddress} />
               </Card>
             </div>
 
             <div className="col col-4">
-              <Card title="Delegators" bodyClassName={s.delegation} bordered>
+              <Card
+                title={t('Delegators')}
+                bodyClassName={s.delegation}
+                bordered
+              >
                 <Delegators address={v.operatorAddress} />
               </Card>
             </div>
           </div>
 
-          <Card title="Claim log" bordered>
+          <Card title={t('Claim log')} bordered>
             <Claims address={v.operatorAddress} />
           </Card>
         </Page>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { sum, toNumber } from '../../api/math'
 import { format } from '../../utils'
@@ -19,6 +20,7 @@ const VoteTable = ({ id, count }: Vote) => {
   const { Yes, No, NoWithVeto, Abstain } = count
   const total = toNumber(sum([Yes, No, NoWithVeto, Abstain]))
 
+  const { t } = useTranslation()
   const [params, setParams] = useState({ page: '1', option: '' })
   const setPage = (page: string) => setParams({ ...params, page })
 
@@ -30,7 +32,7 @@ const VoteTable = ({ id, count }: Vote) => {
           className={c('badge', params.option === s && 'badge-primary')}
           key={s}
         >
-          {s || 'All votes'}({s ? count[s] : total})
+          {t(s) || t('All votes')}({s ? count[s] : total})
         </button>
       ))}
     </section>
@@ -38,9 +40,9 @@ const VoteTable = ({ id, count }: Vote) => {
 
   const renderHead = () => (
     <tr>
-      <th>Voter</th>
-      <th>Answer</th>
-      <th className="text-right">Tx</th>
+      <th>{t('Voter')}</th>
+      <th>{t('Answer')}</th>
+      <th className="text-right">{t('Tx')}</th>
     </tr>
   )
 
@@ -49,7 +51,7 @@ const VoteTable = ({ id, count }: Vote) => {
       <td>
         <ValidatorLink {...voter} />
       </td>
-      <td>{answer}</td>
+      <td>{t(answer)}</td>
       <td className="text-right">
         <Finder q="tx" v={txhash}>
           {format.truncate(txhash, [14, 13])}
@@ -62,7 +64,11 @@ const VoteTable = ({ id, count }: Vote) => {
     <Card title={renderTabs()} bordered fixedHeight>
       <WithRequest url={`/v1/gov/proposals/${id}/votes`} params={params}>
         {({ votes, ...pagination }: Pagination & { votes: VoteItem[] }) => (
-          <Pagination {...pagination} action={setPage} empty="No votes yet.">
+          <Pagination
+            {...pagination}
+            action={setPage}
+            empty={t('No votes yet.')}
+          >
             <Table>
               <thead>{renderHead()}</thead>
               <tbody>{votes.filter(Boolean).map(renderVote)}</tbody>

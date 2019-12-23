@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { DateTime } from 'luxon'
 import { useModal } from '../../hooks'
 import Modal from '../../components/Modal'
@@ -16,6 +17,8 @@ interface Props {
 
 const Component = ({ max, disabled, detail }: Props) => {
   const { id, status, deposit } = detail
+
+  const { t } = useTranslation()
   const modal = useModal()
 
   const buttons = {
@@ -36,7 +39,7 @@ const Component = ({ max, disabled, detail }: Props) => {
           )
         }
       >
-        Deposit
+        {t('Deposit')}
       </ButtonWithName>
     ),
     vote: (
@@ -50,7 +53,7 @@ const Component = ({ max, disabled, detail }: Props) => {
           )
         }
       >
-        Vote
+        {t('Vote')}
       </ButtonWithName>
     )
   }

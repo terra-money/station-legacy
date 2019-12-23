@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTabs, useModal } from '../../hooks'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
@@ -15,6 +16,7 @@ import s from './Governance.module.scss'
 const STATUS = ['', 'Deposit', 'Voting', 'Passed', 'Rejected']
 
 const Governance = () => {
+  const { t } = useTranslation()
   const modal = useModal()
   const { currentTab, renderTabs } = useTabs('status', STATUS)
   const params = useMemo(() => ({ status: currentTab }), [currentTab])
@@ -41,7 +43,7 @@ const Governance = () => {
             )
           }
         >
-          New proposal
+          {t('New proposal')}
         </ButtonWithName>
       )}
     </WithMaxLuna>
@@ -54,7 +56,7 @@ const Governance = () => {
   )
 
   return (
-    <Page title="Governance" action={button}>
+    <Page title={t('Governance')} action={button}>
       <WithRequest url="/v1/gov/proposals" params={params}>
         {({ proposals, ...rest }: Governance) => (
           <Card
@@ -64,7 +66,9 @@ const Governance = () => {
             bordered
           >
             {!proposals.length ? (
-              <NotAvailable>No proposals here yet. Be the first!</NotAvailable>
+              <NotAvailable>
+                {t('No proposals here yet. Be the first!')}
+              </NotAvailable>
             ) : (
               <ul className={s.list}>{proposals.map(renderProposal)}</ul>
             )}

@@ -1,34 +1,37 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
 import Finder from '../../components/Finder'
 import s from './Informations.module.scss'
 
 const Informations = (v: Validator) => {
+  const { t } = useTranslation()
+
   /* render */
   const list = [
     {
-      label: 'Operator address',
+      label: t('Operator address'),
       value: v.operatorAddress
     },
     {
-      label: 'Account address',
+      label: t('Account address'),
       value: <Finder q="account">{v.accountAddress}</Finder>
     },
     {
-      label: 'Max commission rate',
+      label: t('Max commission rate'),
       value: percent(v.commissionInfo.maxRate)
     },
     {
-      label: 'Max daily commission change',
+      label: t('Max daily commission change'),
       value: percent(v.commissionInfo.maxChangeRate)
     },
     {
-      label: 'Delegation return',
+      label: t('Delegation return'),
       value: percent(v.stakingReturn)
     },
     {
-      label: 'Last commission change',
+      label: t('Last commission change'),
       value: format.date(v.commissionInfo.updateTime)
     }
   ]

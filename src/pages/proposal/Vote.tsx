@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
 import { percent, div } from '../../api/math'
 import { format } from '../../utils'
@@ -16,6 +17,8 @@ interface Props {
 
 const Vote = ({ vote, showProgressBar, threshold }: Props) => {
   const { distribution, total, votingEndTime, stakedLuna } = vote
+
+  const { t } = useTranslation()
   const { list } = convertVote(distribution)
   const ratio = div(total, stakedLuna)
 
@@ -27,13 +30,13 @@ const Vote = ({ vote, showProgressBar, threshold }: Props) => {
 
           <section className={s.summary}>
             <article>
-              <h1>Total</h1>
+              <h1>{t('Total')}</h1>
               <Amount fontSize={18} denom="uluna">
                 {total}
               </Amount>
             </article>
             <article>
-              <h1>Voting end time</h1>
+              <h1>{t('Voting end time')}</h1>
               <p>{format.date(votingEndTime)}</p>
             </article>
           </section>
@@ -43,7 +46,7 @@ const Vote = ({ vote, showProgressBar, threshold }: Props) => {
           {list.map(({ label, ratio, amount }) => (
             <div className={s.option} key={label}>
               <article className={s[label]}>
-                <h1>{label}</h1>
+                <h1>{t(label)}</h1>
                 <p>{percent(ratio)}</p>
                 <Amount fontSize={14}>{amount}</Amount>
               </article>
@@ -56,11 +59,14 @@ const Vote = ({ vote, showProgressBar, threshold }: Props) => {
         <footer className={s.footer}>
           <VoteProgress threshold={threshold} ratio={ratio} list={list} />
           <p>
-            <strong>Percent voting: {percent(ratio)}</strong>
+            <strong>
+              {t('Percent voting: ')}
+              {percent(ratio)}
+            </strong>
           </p>
           <small>
-            {[total, stakedLuna].map(formatNumeral).join(' of ')} LUNA has
-            voted.
+            {[total, stakedLuna].map(formatNumeral).join(' of ')} Luna
+            {t(' has voted.')}
           </small>
         </footer>
       )}

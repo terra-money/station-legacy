@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { useForm, useAuth } from '../../../hooks'
 import Divider from '../../../components/Divider'
@@ -19,16 +20,17 @@ interface Values {
 const OptionsList = [
   { key: 'yes', label: 'Yes', className: s.yes },
   { key: 'no', label: 'No', className: s.no },
-  { key: 'no_with_veto', label: 'No WithVeto', className: s.veto },
+  { key: 'no_with_veto', label: 'No\nWithVeto', className: s.veto },
   { key: 'abstain', label: 'Abstain', className: s.abstain }
 ]
 
 const Vote = ({ id, onSubmitting, onSubmit }: Props) => {
+  const { t } = useTranslation()
   const { address } = useAuth()
 
   /* validation */
   const validate = ({ option }: Values) => ({
-    option: !option ? 'Option is required' : ''
+    option: !option ? t('Option is required') : ''
   })
 
   /* state: form */
@@ -58,7 +60,7 @@ const Vote = ({ id, onSubmitting, onSubmit }: Props) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>Vote</h1>
+          <h1>{t('Vote')}</h1>
 
           <section className={s.options}>
             {OptionsList.map(({ key, label, className }) => {
@@ -78,7 +80,7 @@ const Vote = ({ id, onSubmitting, onSubmit }: Props) => {
                     htmlFor={key}
                     className={c(s.label, className, checked && s.checked)}
                   >
-                    {label}
+                    {t(label)}
                   </label>
                 </div>
               )
@@ -91,7 +93,7 @@ const Vote = ({ id, onSubmitting, onSubmit }: Props) => {
             disabled={invalid}
             className="btn btn-block btn-primary"
           >
-            Next
+            {t('Next')}
           </button>
         </form>
       ) : (

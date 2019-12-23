@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment, ReactNode } from 'react'
 import { FormEvent, ButtonHTMLAttributes } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import c from 'classnames'
 import { OOPS } from '../helpers/constants'
 import signTx from '../cosmos/api/signTx'
@@ -45,6 +46,8 @@ type Props = {
 }
 
 const Form = (props: Props & { balance: Balance[] }) => {
+  const { t } = useTranslation()
+
   /* context */
   const auth = useAuth()
   const { address: from, name, withLedger } = auth
@@ -170,7 +173,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
         setIsSubmitted(true)
       } catch (error) {
         error.message === 'Incorrect password'
-          ? setIncorrect('Incorrect password')
+          ? setIncorrect(t('Incorrect password'))
           : error.message && error.message.includes('Signing failed: ')
           ? setLedgerError(error.message)
           : handleError(error)
@@ -205,7 +208,8 @@ const Form = (props: Props & { balance: Balance[] }) => {
 
   const getTaxString = ({ rate, cap }: TaxInfo, denom: string): ReactNode => (
     <small>
-      ({percent(rate, 3)}, Max {format.coin({ amount: cap, denom })})
+      ({percent(rate, 3)}, {t('Max ')}
+      {format.coin({ amount: cap, denom })})
     </small>
   )
 
@@ -223,22 +227,24 @@ const Form = (props: Props & { balance: Balance[] }) => {
   }
 
   return errorMessage ? (
-    <Confirm icon="error_outline" title="Fail" actions={actions}>
+    <Confirm icon="error_outline" title={t('Fail')} actions={actions}>
       {errorMessage}
     </Confirm>
   ) : isSimulating ? (
-    <p>(Simulating...)</p>
+    <p>({t('Simulating')}...)</p>
   ) : !isSubmitted ? (
     isConfirming ? (
       <form className={s.ledger} onSubmit={submit}>
-        <h1>Confirm with Ledger</h1>
+        <h1>{t('Confirm with ledger')}</h1>
 
         <section>
           <Icon name="usb" size={64} />
           <p>
-            Please confirm in your
-            <br />
-            Ledger Wallet
+            <Trans i18nKey="Please confirm in your Ledger Wallet">
+              Please confirm in your
+              <br />
+              Ledger Wallet
+            </Trans>
           </p>
         </section>
 
@@ -249,7 +255,7 @@ const Form = (props: Props & { balance: Balance[] }) => {
             <>
               <p>
                 <button type="submit" className="btn btn-primary btn-sm">
-                  Retry
+                  {t('Retry')}
                 </button>
               </p>
               <p>
@@ -261,31 +267,33 @@ const Form = (props: Props & { balance: Balance[] }) => {
       </form>
     ) : (
       <form onSubmit={submit}>
-        <h1>Confirm</h1>
+        <h1>{t('Confirm')}</h1>
         <dl className={c('dl-wrap', s.dl)}>
           {amounts
             ? amounts.map((a, i) => (
                 <Fragment key={i}>
-                  <dt>{!i && 'Amount'}</dt>
+                  <dt>{!i && t('Amount')}</dt>
                   <dd>{formatAmount(a)}</dd>
                 </Fragment>
               ))
             : denom && (
                 <>
-                  <dt>Amount</dt>
+                  <dt>{t('Amount')}</dt>
                   <dd>{formatAmount({ amount, denom })}</dd>
                 </>
               )}
 
           {gt(tax, 0) && taxInfo && denom && (
             <>
-              <dt>Tax {getTaxString(taxInfo, denom)}</dt>
+              <dt>
+                {t('Tax')} {getTaxString(taxInfo, denom)}
+              </dt>
               <dd>{formatAmount({ amount: tax, denom })}</dd>
             </>
           )}
 
           <dt>
-            Fees
+            {t('Fees')}
             <Select
               name="feeDenom"
               value={fee.denom}
@@ -315,14 +323,14 @@ const Form = (props: Props & { balance: Balance[] }) => {
 
           {memo && (
             <>
-              <dt>Memo</dt>
+              <dt>{t('Memo')}</dt>
               <dd>{memo}</dd>
             </>
           )}
 
           {receive && (
             <>
-              <dt>Receive</dt>
+              <dt>{t('Receive')}</dt>
               <dd>{formatAmount(receive)}</dd>
             </>
           )}
@@ -332,38 +340,39 @@ const Form = (props: Props & { balance: Balance[] }) => {
           {lt(fee.amount, estimatedFeeAmount) && (
             <p className="text-right">
               <small>
-                Recommended fee is{' '}
-                {format.coin({ amount: estimatedFeeAmount, denom: fee.denom })}{' '}
-                or higher.
+                {t('Recommended fee is ')}
+                {format.coin({ amount: estimatedFeeAmount, denom: fee.denom })}
+                {t(' or higher.')}
                 <br />
-                Transactions with low fee might fail to proceed.
+                {t('Transactions with low fee might fail to proceed.')}
               </small>
             </p>
           )}
           {warning && <InvalidFeedback>{warning}</InvalidFeedback>}
           {invalid && (
             <InvalidFeedback>
-              You don't have enough balance. Please adjust either the amount or
-              the fee.
+              {t(
+                "You don't have enough balance. Please adjust either the amount or the fee."
+              )}
             </InvalidFeedback>
           )}
         </section>
 
         {withLedger ? (
           <button {...submitAttrs} disabled={disabled}>
-            Confirm with ledger
+            {t('Confirm with ledger')}
           </button>
         ) : (
           <>
             <section className="form-group">
-              <label className="label">Confirm with password</label>
+              <label className="label">{t('Confirm with password')}</label>
               <input
                 type="password"
                 name="password"
                 value={password}
                 onChange={e => handleChange(e.target.value)}
                 disabled={isSubmitting}
-                placeholder="Input your password to confirm"
+                placeholder={t('Input your password to confirm')}
                 className="form-control"
                 autoComplete="off"
               />
@@ -374,14 +383,14 @@ const Form = (props: Props & { balance: Balance[] }) => {
 
             <Divider />
             <button {...submitAttrs} disabled={disabled || !password}>
-              {isSubmitting ? `${label[1]}…` : label[0]}
+              {isSubmitting ? `${t(label[1])}…` : t(label[0])}
             </button>
           </>
         )}
       </form>
     )
   ) : (
-    <Confirm icon="check_circle" title="Success!" actions={actions}>
+    <Confirm icon="check_circle" title={t('Success!')} actions={actions}>
       {message}
     </Confirm>
   )

@@ -1,5 +1,6 @@
 import React, { Fragment, ReactNode } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
@@ -20,6 +21,7 @@ import ValidatorLink from './ValidatorLink'
 
 const Component = (props: ProposalDetail) => {
   useGoBack('/governance')
+  const { t } = useTranslation()
 
   const { id, submitTime, status, title, proposer, type, description } = props
   const { content, vote, deposit, tallyingParameters } = props
@@ -33,17 +35,17 @@ const Component = (props: ProposalDetail) => {
       ) : key === 'tax_rate' ? (
         percent(v)
       ) : (
-        v
+        t(v)
       )
 
-    return [key, stringify(value)]
+    return [t(key), stringify(value)]
   }
 
   const metadata: Metadata[] = [
-    ['Proposal ID', id],
-    ['Type', type],
+    [`${t('Proposal')} ID`, id],
+    [t('Type'), t(type)],
     ...content.map(parseContent),
-    ['Submit time', format.date(submitTime)]
+    [t('Submit time'), format.date(submitTime)]
   ]
 
   const renderMetadata = ([title, content]: Metadata) => (
@@ -54,7 +56,10 @@ const Component = (props: ProposalDetail) => {
   )
 
   return (
-    <Page title="Proposal detail" action={<Actions detail={props} />}>
+    <Page
+      title={`${t('Proposal')}${t(' details')}`}
+      action={<Actions detail={props} />}
+    >
       <div className="row">
         <div className="col col-8">
           <Card>
@@ -64,7 +69,7 @@ const Component = (props: ProposalDetail) => {
 
             <h1 className={s.title}>{title}</h1>
             <p className={s.meta}>
-              Submitted by{' '}
+              {t('Submitted by ')}
               <strong>
                 <ValidatorLink {...proposer} noTruncate />
               </strong>
@@ -82,7 +87,7 @@ const Component = (props: ProposalDetail) => {
 
       {status !== 'Deposit' && vote && (
         <>
-          <Card title="Vote" bordered>
+          <Card title={t('Vote')} bordered>
             <Vote
               vote={vote}
               showProgressBar={status === 'Voting'}
@@ -104,7 +109,11 @@ const Component = (props: ProposalDetail) => {
       </div>
 
       {status === 'Voting' && tallyingParameters && (
-        <Card title="Tallying procedure" bordered bodyClassName={s.tallying}>
+        <Card
+          title={t('Tallying procedure')}
+          bordered
+          bodyClassName={s.tallying}
+        >
           <Tallying {...tallyingParameters} />
         </Card>
       )}

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { percent } from '../../api/math'
 import { format } from '../../utils'
@@ -12,6 +13,7 @@ import VoteChart from './VoteChart'
 import s from './ProposalCard.module.scss'
 
 const ProposalCard = (proposal: ProposalItem) => {
+  const { t } = useTranslation()
   const { id, status, title, proposer, submitTime, deposit, vote } = proposal
 
   const renderDetail = ([title, content]: ReactNode[]) => (
@@ -29,13 +31,16 @@ const ProposalCard = (proposal: ProposalItem) => {
         <VoteChart options={list} />
         {mostVoted &&
           renderDetail([
-            'Most voted on',
+            t('Most voted on'),
             <>
               {mostVoted.label}
               <small>({percent(mostVoted.ratio)})</small>
             </>
           ])}
-        {renderDetail(['Ends in', <small>{format.date(votingEndTime)}</small>])}
+        {renderDetail([
+          t('Ends in'),
+          <small>{format.date(votingEndTime)}</small>
+        ])}
       </section>
     )
   }
@@ -45,12 +50,12 @@ const ProposalCard = (proposal: ProposalItem) => {
       <Card className={s.card} bodyClassName={s.main}>
         <section>
           <Badge className={c('text-capitalize', getBadgeColor(status))}>
-            {status}
+            {t(status)}
           </Badge>
 
           <h1 className={s.title}>{title}</h1>
           <p className={s.meta}>
-            Submitted by{' '}
+            {t('Submitted by ')}
             <strong>
               {proposer.moniker ??
                 format.truncate(proposer.accountAddress, [5, 5])}
@@ -61,9 +66,9 @@ const ProposalCard = (proposal: ProposalItem) => {
           {proposal.status === 'Deposit' ? (
             <section className={s.details}>
               <Orb ratio={calcDepositRatio(deposit)} size={100} />
-              {renderDetail(['Deposit', percent(calcDepositRatio(deposit))])}
+              {renderDetail([t('Deposit'), percent(calcDepositRatio(deposit))])}
               {renderDetail([
-                'Ends in',
+                t('Ends in'),
                 <small>{format.date(deposit.depositEndTime)}</small>
               ])}
             </section>

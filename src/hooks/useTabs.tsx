@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import URLSearchParams from '@ungap/url-search-params'
 import c from 'classnames'
 
 export default (name: string, tabs: string[]) => {
+  const { t } = useTranslation()
   const { search, pathname } = useLocation()
   const history = useHistory()
 
@@ -38,7 +40,7 @@ export default (name: string, tabs: string[]) => {
 
     const isCurrent = tab === currentTab
     const className = c('badge', isCurrent && 'badge-primary')
-    const attrs = { className, children: tab || 'all', key: tab }
+    const attrs = { className, children: t(tab) || t('all'), key: tab }
     const to = { pathname, search: next }
     return isCurrent ? <span {...attrs} /> : <Link to={to} {...attrs} />
   }

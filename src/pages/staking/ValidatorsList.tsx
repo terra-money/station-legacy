@@ -1,4 +1,5 @@
 import React, { CSSProperties, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { path, equals } from 'ramda'
 import { gt, plus, sum } from '../../api/math'
 import FlexTable from '../../components/FlexTable'
@@ -41,6 +42,8 @@ const Columns: [string, Attr, Sorter?][] = [
 
 const ValidatorsList = (staking: Staking) => {
   const { validators, delegationTotal = '0', undelegations } = staking
+  const { t } = useTranslation()
+
   const undelegationTotal =
     undelegations && undelegations.length
       ? sum(undelegations.map(u => u.amount))
@@ -64,12 +67,12 @@ const ValidatorsList = (staking: Staking) => {
 
         const button = (
           <button onClick={handleClick} className="flex">
-            {h}
+            {t(h)}
             <Icon name={icon} style={{ opacity: isPropSelected ? 1 : 0.3 }} />
           </button>
         )
 
-        return !s ? h : button
+        return !s ? t(h) : button
       })}
       body={validators
         .filter(v => {

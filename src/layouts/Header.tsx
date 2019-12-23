@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
 import { useApp, useAuth } from '../hooks'
@@ -6,6 +7,7 @@ import Icon from '../components/Icon'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
+  const { t } = useTranslation()
   const { authModal, refresh, goBack } = useApp()
   const { name, address, signout } = useAuth()
 
@@ -18,7 +20,7 @@ const Header = ({ className }: { className: string }) => {
               onClick={authModal.open}
               className={c('btn btn-primary btn-sm', s.button)}
             >
-              Sign In
+              {t('Sign in')}
             </button>
           ) : (
             <>

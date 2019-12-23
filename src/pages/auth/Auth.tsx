@@ -1,4 +1,5 @@
 import React, { useState, createContext, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isElectron } from '../../helpers/env'
 import { loadKeys } from '../../utils/localStorage'
 import ModalContent from '../../components/ModalContent'
@@ -55,6 +56,7 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
     ? [menu.SIGN_IN, menu.CREATE, menu.IMPORT]
     : [menu.LEDGER, menu.SIGN_IN_WITH_ADDRESS]
 
+  const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState<number>(-1)
   const modalActions = { close: onClose, goBack: () => setCurrentIndex(-1) }
   const currentMenu = list[currentIndex] || {}
@@ -62,7 +64,7 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
   /* Terra Station */
   const TerraStation = (
     <a href="https://terra.money" target="_blank" rel="noopener noreferrer">
-      Terra Station for Windows/MacOS
+      {t('Terra Station for Windows/MacOS')}
     </a>
   )
 
@@ -77,9 +79,9 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
       {!isElectron && (
         <footer className={s.footer}>
           <p className={s.address}>
-            Just browsing?{' '}
+            {t('Just browsing? ')}
             <button onClick={() => setCurrentIndex(1)}>
-              Quickly glance through your address
+              {t('Quickly glance through your address')}
             </button>
           </p>
 
@@ -89,16 +91,18 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
             width={380}
             content={
               <p className={s.tooltip}>
-                If you want to create an account, please download {TerraStation}
-                . We don't support creating an account for Terra Station web due
-                to the security reasons.
+                {t('If you want to create an account, please download ')}
+                {TerraStation}
+                {t(
+                  ". We don't support creating an account for Terra Station web due to the security reasons."
+                )}
               </p>
             }
           >
             {({ ref, iconRef, getAttrs }) => (
               <span {...getAttrs({})} ref={ref}>
                 <Icon name="info" forwardRef={iconRef} />
-                How can I create an account?
+                {t('How can I create an account?')}
               </span>
             )}
           </Pop>

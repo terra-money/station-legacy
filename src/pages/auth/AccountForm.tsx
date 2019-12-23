@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import electron from '../../helpers/electron'
 import { OOPS } from '../../helpers/constants'
 import { importKey, loadKeys } from '../../utils/localStorage'
@@ -28,6 +29,8 @@ type Props = { title: string; initial: () => Values; generated?: boolean }
 const bipList = [118, 330]
 
 const AccountForm = ({ title, initial, generated }: Props) => {
+  const { t } = useTranslation()
+
   /* context */
   const auth = useAuth()
   const { goBack, close } = useModalActions()
@@ -35,19 +38,19 @@ const AccountForm = ({ title, initial, generated }: Props) => {
   /* validation: account */
   const validate = ({ name, password, confirm, phrases, written }: Values) => ({
     name: !name.length
-      ? 'Account name is required'
+      ? t('Account name is required')
       : name.length < 5 || name.length > 20
-      ? 'Account name must be between 5 and 20 characters'
+      ? t('Account name must be between 5 and 20 characters')
       : isNameExists(name)
-      ? 'Account name already exists'
+      ? t('Account name already exists')
       : '',
     password: !password.length
-      ? 'Password is required'
+      ? t('Password is required')
       : password.length < 10
-      ? 'Password must be longer than 10 characters'
+      ? t('Password must be longer than 10 characters')
       : '',
-    confirm: password !== confirm ? 'Password does not match' : '',
-    phrases: !phrases.every(w => !!w.length) ? 'Invalid phrase' : '',
+    confirm: password !== confirm ? t('Password does not match') : '',
+    phrases: !phrases.every(w => !!w.length) ? t('Invalid phrase') : '',
     written: !written ? 'Recovery confirmation is required' : ''
   })
 
@@ -136,13 +139,13 @@ const AccountForm = ({ title, initial, generated }: Props) => {
       <form onSubmit={handleSubmit}>
         <h1>{title}</h1>
         <section className="form-group">
-          <label className="label">Account name</label>
+          <label className="label">{t('Account name')}</label>
           <input
             type="text"
             name="name"
             value={name}
             onChange={handleChange}
-            placeholder="Enter 5-20 alphanumeric characters"
+            placeholder={t('Enter 5-20 alphanumeric characters')}
             className="form-control"
             autoComplete="off"
             autoFocus
@@ -151,13 +154,13 @@ const AccountForm = ({ title, initial, generated }: Props) => {
         </section>
 
         <section className="form-group">
-          <label className="label">Password</label>
+          <label className="label">{t('Password')}</label>
           <input
             type="password"
             name="password"
             value={password}
             onChange={handleChange}
-            placeholder="Must be at least 10 characters"
+            placeholder={t('Must be at least 10 characters')}
             className="form-control"
             autoComplete="off"
           />
@@ -165,13 +168,13 @@ const AccountForm = ({ title, initial, generated }: Props) => {
         </section>
 
         <section className="form-group">
-          <label className="label">Confirm password</label>
+          <label className="label">{t('Confirm password')}</label>
           <input
             type="password"
             name="confirm"
             value={confirm}
             onChange={handleChange}
-            placeholder="Confirm your password"
+            placeholder={t('Confirm your password')}
             className="form-control"
             autoComplete="off"
           />
@@ -182,10 +185,10 @@ const AccountForm = ({ title, initial, generated }: Props) => {
           {generated ? (
             <>
               <header className="flex space-between">
-                <label className="label">Seed phrase</label>
+                <label className="label">{t('Seed phrase')}</label>
                 <Copy
                   text={phrase}
-                  buttonLabel="Copy"
+                  buttonLabel={t('Copy')}
                   classNames={{ button: 'label-button text-secondary' }}
                 />
               </header>
@@ -200,7 +203,7 @@ const AccountForm = ({ title, initial, generated }: Props) => {
             </>
           ) : (
             <>
-              <label className="label">Seed phrase</label>
+              <label className="label">{t('Seed phrase')}</label>
               <Phrases
                 list={phrases}
                 onChange={(phrases: string[]) => changeValue({ phrases })}
@@ -213,7 +216,9 @@ const AccountForm = ({ title, initial, generated }: Props) => {
           <Pop
             type="tooltip"
             placement="top"
-            content="We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Station doesn't store any data."
+            content={t(
+              "We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Station doesn't store any data."
+            )}
             fullWidth
           >
             {({ ref, iconRef, getAttrs }) => (
@@ -222,7 +227,9 @@ const AccountForm = ({ title, initial, generated }: Props) => {
                 forwardRef={ref}
               >
                 <Icon name="error" />
-                <strong ref={iconRef}>What if I lost my seed phrase?</strong>
+                <strong ref={iconRef}>
+                  {t('What if I lost my seed phrase?')}
+                </strong>
               </Flex>
             )}
           </Pop>
@@ -238,8 +245,10 @@ const AccountForm = ({ title, initial, generated }: Props) => {
               onChange={() => changeValue({ written: !written })}
             />
             <label htmlFor="written">
-              I have securely <strong>WRITTEN DOWN MY SEED</strong>. I
-              understand that lost seeds cannot be recovered.
+              <Trans i18nKey="written down my seed">
+                I have securely <strong>WRITTEN DOWN MY SEED</strong>. I
+                understand that lost seeds cannot be recovered.
+              </Trans>
             </label>
           </section>
         )}

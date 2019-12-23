@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import c from 'classnames'
 import Icon from './Icon'
@@ -15,6 +16,8 @@ type Props = {
 
 const Copy = (props: Props) => {
   const { classNames = {}, text, buttonLabel, children } = props
+
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const showTooltip = () => {
@@ -43,7 +46,7 @@ const Copy = (props: Props) => {
         {copied && (
           <Tooltip
             placement="top"
-            content="Copied!"
+            content={t('Copied!')}
             className={c(tooltipStyle.tooltip, s.tooltip)}
           />
         )}

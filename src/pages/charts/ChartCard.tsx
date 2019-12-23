@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { mergeDeepRight as mergeDeep, path } from 'ramda'
 import { ChartOptions, ChartPoint } from 'chart.js'
 import { OOPS } from '../../helpers/constants'
@@ -55,6 +56,8 @@ const Component = ({ url, title, description, ...props }: Props) => {
   const { cumulativeOptions, durationOptions, additionalOptions } = props
   const { fixedYAxis } = props
   const { renderHeader, getChartProps } = props
+
+  const { t } = useTranslation()
 
   /* options */
   const durations = durationOptions?.list ?? [0, 7, 14, 30]
@@ -124,7 +127,7 @@ const Component = ({ url, title, description, ...props }: Props) => {
         >
           {Object.values(CumulativeValues).map(value => (
             <option value={value} key={value}>
-              {value}
+              {t(value)}
             </option>
           ))}
         </Select>
@@ -139,10 +142,10 @@ const Component = ({ url, title, description, ...props }: Props) => {
       options={durations.map(duration => ({
         value: String(duration),
         label: !duration
-          ? 'From genesis'
+          ? t('From genesis')
           : duration === 1
-          ? 'Last day'
-          : `${duration} days`
+          ? t('Last day')
+          : `${duration}${t(' days')}`
       }))}
     />
   )

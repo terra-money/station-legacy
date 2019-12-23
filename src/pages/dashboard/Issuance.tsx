@@ -5,10 +5,11 @@ import Amount from '../../components/Amount'
 import Select from '../../components/Select'
 
 interface Props {
+  title: string
   issuances: CoinMap
 }
 
-const Issuance = ({ issuances = {} }: Props) => {
+const Issuance = ({ title, issuances = {} }: Props) => {
   const [current, setCurrent] = useState<string>('uluna')
   const options = Object.keys(issuances).map((label, index) => (
     <option value={label} key={index}>
@@ -18,7 +19,7 @@ const Issuance = ({ issuances = {} }: Props) => {
 
   return (
     <Card
-      title="Issuance"
+      title={title}
       footer={
         <Select
           onChange={e => setCurrent(e.target.value)}

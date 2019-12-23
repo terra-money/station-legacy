@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { sum } from '../../api/math'
 import Card from '../../components/Card'
 import Amount from '../../components/Amount'
@@ -19,6 +20,7 @@ type Column = {
 
 const Columns = (props: Staking) => {
   const { undelegations, availableLuna, delegationTotal, rewards } = props
+  const { t } = useTranslation()
 
   const undelegationsAmount =
     undelegations && undelegations.length
@@ -27,15 +29,15 @@ const Columns = (props: Staking) => {
 
   const columns: Column[] = [
     {
-      title: 'Available for delegation',
+      title: t('Available for delegation'),
       value: availableLuna
     },
     {
-      title: 'Delegated assets',
+      title: t('Delegated assets'),
       value: delegationTotal
     },
     {
-      title: 'Undelegated assets',
+      title: t('Undelegated assets'),
       value: undelegationsAmount,
       tooltip: undelegations && !!undelegations.length && (
         <Undelegations undelegations={undelegations} />
@@ -43,7 +45,7 @@ const Columns = (props: Staking) => {
       width: 540
     },
     {
-      title: 'Rewards',
+      title: t('Rewards'),
       value: rewards && rewards.total,
       tooltip: rewards && !!rewards.denoms.length && (
         <Rewards rewards={rewards.denoms} />

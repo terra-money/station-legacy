@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { gte } from '../../api/math'
 import { useModal, useAuth } from '../../hooks'
 import Card from '../../components/Card'
@@ -16,6 +17,8 @@ import s from './Actions.module.scss'
 
 const Actions = (v: Validator) => {
   const { description, myRewards } = v
+
+  const { t } = useTranslation()
   const modal = useModal()
   const { address, name, withLedger } = useAuth()
 
@@ -53,7 +56,7 @@ const Actions = (v: Validator) => {
       <Modal config={modal.config}>{modal.content}</Modal>
       <div className="col">
         <Card className={s.card}>
-          <h1>My delegation</h1>
+          <h1>{t('My delegation')}</h1>
           <section className={s.content}>
             <Pop
               type="pop"
@@ -79,7 +82,7 @@ const Actions = (v: Validator) => {
                 className="btn btn-sm btn-primary"
                 disabled={(!name && !withLedger) || v.status === 'jailed'}
               >
-                Delegate
+                {t('Delegate')}
               </ButtonWithName>,
 
               <ButtonWithName
@@ -87,7 +90,7 @@ const Actions = (v: Validator) => {
                 className="btn btn-sm btn-sky"
                 disabled={(!name && !withLedger) || !v.myDelegation}
               >
-                Undelegate
+                {t('Undelegate')}
               </ButtonWithName>
             ]}
           />
@@ -96,7 +99,7 @@ const Actions = (v: Validator) => {
 
       <div className="col">
         <Card className={s.card}>
-          <h1>My rewards</h1>
+          <h1>{t('My rewards')}</h1>
           <section className={s.content}>
             <Amount denom="uluna" fontSize={18} estimated>
               {myRewards && myRewards.total}
@@ -113,7 +116,7 @@ const Actions = (v: Validator) => {
                   !(myRewards && gte(myRewards.total, 1))
                 }
               >
-                Withdraw rewards
+                {t('Withdraw rewards')}
               </ButtonWithName>
             </span>
 
@@ -123,7 +126,7 @@ const Actions = (v: Validator) => {
                   onClick={() => claim()}
                   className="btn btn-sky btn-sm"
                 >
-                  Claim
+                  {t('Claim')}
                 </ButtonWithName>
               </span>
             )}

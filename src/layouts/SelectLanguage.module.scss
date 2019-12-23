@@ -1,0 +1,58 @@
+@import '../styles/mixins';
+
+.container {
+  padding: 20px;
+}
+
+.wrapper {
+  display: block;
+  padding: 7px 0;
+  border-bottom: 1px solid #415e9f;
+  user-select: none;
+}
+
+.list {
+  margin-top: 10px;
+}
+
+.item {
+  border-top: 1px solid fade-out(white, 0.95);
+}
+
+.button {
+  padding: 10px 0;
+  width: 100%;
+  text-align: left;
+}
+
+.lang {
+  @include flex(space-between);
+  font-size: 12px;
+
+  section {
+    @include flex(flex-start);
+  }
+
+  img {
+    margin-right: 6px;
+  }
+
+  .radio {
+    @include flex();
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background: fade-out(white, 0.8);
+  }
+
+  .active {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: white;
+  }
+}
+
+.select {
+  font-size: 14px;
+}

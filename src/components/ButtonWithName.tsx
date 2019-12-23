@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { useAuth } from '../hooks'
 import Pop from './Pop'
@@ -9,6 +10,7 @@ type Attrs = ButtonHTMLAttributes<HTMLButtonElement>
 
 const TOOLTIP = 'Please sign in with account or ledger to execute'
 const ButtonWithName = ({ placement = 'top', ...attrs }: Props & Attrs) => {
+  const { t } = useTranslation()
   const { name, withLedger } = useAuth()
 
   return name || withLedger ? (
@@ -17,7 +19,7 @@ const ButtonWithName = ({ placement = 'top', ...attrs }: Props & Attrs) => {
     <Pop
       type="tooltip"
       placement={placement}
-      content={<p className={s.tooltip}>{TOOLTIP}</p>}
+      content={<p className={s.tooltip}>{t(TOOLTIP)}</p>}
     >
       {({ ref, getAttrs }) => {
         const className = c(s.wrapper, attrs.className, 'disabled')

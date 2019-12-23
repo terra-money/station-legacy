@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -16,14 +17,15 @@ interface DelegationEvent {
 type DelegationsEvents = Pagination & { events: DelegationEvent[] }
 
 const Delegations = ({ address }: { address: string }) => {
+  const { t } = useTranslation()
   const [page, setPage] = useState<string>('1')
 
   const renderHead = () => (
     <tr>
-      <th>Height</th>
-      <th>Type</th>
-      <th className="text-right">Change</th>
-      <th className="text-right">Time</th>
+      <th>{t('Height')}</th>
+      <th>{t('Type')}</th>
+      <th className="text-right">{t('Change')}</th>
+      <th className="text-right">{t('Time')}</th>
     </tr>
   )
 
@@ -33,7 +35,7 @@ const Delegations = ({ address }: { address: string }) => {
         <td>
           <Finder q="blocks">{event.height}</Finder>
         </td>
-        <td>{event.type}</td>
+        <td>{t(event.type)}</td>
         <td className="text-right">
           <Amount>{event.amount.amount}</Amount>
         </td>
