@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { OOPS } from '../../helpers/constants'
 import { useAuth, useTabs } from '../../hooks'
 import Page from '../../components/Page'
@@ -14,6 +15,7 @@ import Tx from './Tx'
 const TABS = ['', 'send', 'receive', 'staking', 'market', 'governance']
 
 const Txs = () => {
+  const { t } = useTranslation()
   const { address } = useAuth()
   const { currentTab, page, renderTabs, getLink } = useTabs('tag', TABS)
 
@@ -29,8 +31,8 @@ const Txs = () => {
           <Pagination
             {...pagination}
             empty={
-              <Info icon="info_outline" title="No transaction history">
-                Looks like you haven't made any transaction yet.
+              <Info icon="info_outline" title={t('No transaction history')}>
+                {t("Looks like you haven't made any transaction yet.")}
               </Info>
             }
             link={getLink}
@@ -47,12 +49,15 @@ const Txs = () => {
   )
 }
 
-const TxsContainer = () => (
-  <Page title="Transactions">
-    <WithAuth card>
-      <Txs />
-    </WithAuth>
-  </Page>
-)
+const TxsContainer = () => {
+  const { t } = useTranslation()
+  return (
+    <Page title={t('Transactions')}>
+      <WithAuth card>
+        <Txs />
+      </WithAuth>
+    </Page>
+  )
+}
 
 export default TxsContainer

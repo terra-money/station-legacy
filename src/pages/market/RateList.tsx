@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
@@ -9,6 +10,7 @@ import variation from './Variation'
 import s from './RateList.module.scss'
 
 const RateList = ({ denoms }: { denoms: string[] }) => {
+  const { t } = useTranslation()
   const [denom, setDenom] = useState(denoms[0])
   const handleChange = (e: ChangeEvent<HTMLFieldElement>) =>
     setDenom(e.target.value)
@@ -26,7 +28,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
   )
 
   return (
-    <Card title="Terra exchange rate" fixedHeight>
+    <Card title={t('Terra exchange rate')} fixedHeight>
       {!!denoms.length ? (
         <>
           <Select
@@ -47,13 +49,13 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
               !!rateList.length ? (
                 <ul>{rateList.map(renderRow)}</ul>
               ) : (
-                <NotAvailable q="Swapping" />
+                <NotAvailable>{t('Swapping is not available.')}</NotAvailable>
               )
             }
           </WithRequest>
         </>
       ) : (
-        <NotAvailable q="Swapping" />
+        <NotAvailable>{t('Swapping is not available.')}</NotAvailable>
       )}
     </Card>
   )

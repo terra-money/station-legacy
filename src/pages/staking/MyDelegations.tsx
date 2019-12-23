@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
@@ -13,6 +14,8 @@ const tabs: Tab[] = [
 
 type Props = { myDelegations: StakingDelegation[] }
 const MyDelegations = ({ myDelegations }: Props) => {
+  const { t } = useTranslation()
+
   /* Tab */
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
   const renderTab = (tab: Tab) => {
@@ -22,7 +25,7 @@ const MyDelegations = ({ myDelegations }: Props) => {
 
     return (
       <button onClick={onClick} className={c('badge', badgeStyle)} key={key}>
-        {label}
+        {t(label)}
       </button>
     )
   }
@@ -51,7 +54,7 @@ const MyDelegations = ({ myDelegations }: Props) => {
       <div className="col col-6">
         <FlexTable
           attrs={[{}, { align: 'right' }, { align: 'right' }]}
-          head={['Validator', 'Delegated', 'Rewards']}
+          head={[t('Validator'), t('Delegated'), t('Rewards')]}
           body={list.map(getRow)}
           height={270}
           borderless

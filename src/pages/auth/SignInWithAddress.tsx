@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import v from '../../api/validate'
+import { useTranslation } from 'react-i18next'
+import useValidate from '../../api/validate'
 import { format } from '../../utils'
 import { localSettings } from '../../utils/localStorage'
 import { useForm, useAuth } from '../../hooks'
@@ -11,9 +12,12 @@ import useModalActions from './useModalActions'
 import s from './SignInWithAddress.module.scss'
 
 const SignInWithAddress = () => {
+  const { t } = useTranslation()
+
   /* context */
   const auth = useAuth()
   const modalActions = useModalActions()
+  const v = useValidate()
 
   /* form */
   type Values = { address: string }
@@ -43,15 +47,15 @@ const SignInWithAddress = () => {
   return (
     <ModalContent {...modalActions}>
       <form onSubmit={submit}>
-        <h1>Sign in with address</h1>
+        <h1>{t('Sign in with address')}</h1>
         <section className="form-group">
-          <label className="label">Wallet address</label>
+          <label className="label">{t('Wallet address')}</label>
           <input
             type="text"
             name="address"
             value={address}
             onChange={handleChange}
-            placeholder="Input your wallet address"
+            placeholder={t('Input your wallet address')}
             className="form-control"
             autoComplete="off"
             autoFocus
@@ -62,14 +66,14 @@ const SignInWithAddress = () => {
         {!!recent.length && (
           <section className="form-group">
             <header className="flex space-between">
-              <label className="label">Recent addresses</label>
+              <label className="label">{t('Recent addresses')}</label>
               <button
                 onClick={handleDelete}
                 className="label-button text-danger"
                 type="button"
               >
                 <Icon name="delete" size={12} />
-                Delete all
+                {t('Delete all')}
               </button>
             </header>
 
@@ -91,7 +95,7 @@ const SignInWithAddress = () => {
           disabled={invalid}
           className="btn btn-block btn-primary"
         >
-          Sign in
+          {t('Sign in')}
         </button>
       </form>
     </ModalContent>

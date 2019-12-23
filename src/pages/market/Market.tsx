@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { find } from '../../utils'
 import { useAuth } from '../../hooks'
 import Page from '../../components/Page'
@@ -10,11 +11,12 @@ import RateList from './RateList'
 import Swap from './Swap'
 
 const Market = () => {
+  const { t } = useTranslation()
   const { address } = useAuth()
   return (
     <WithRequest url="/oracle/denoms/actives">
       {({ result: actives }: { result: string[] }) => (
-        <Page title="Market">
+        <Page title={t('Market')}>
           <div className="row">
             <div className="col col-6">
               <Price actives={actives} />
@@ -25,7 +27,7 @@ const Market = () => {
             </div>
           </div>
 
-          <Card title="Swap coins" bordered>
+          <Card title={t('Swap coins')} bordered>
             <WithAuth>
               <WithRequest url={`/v1/bank/${address}`}>
                 {({ balance }: Bank) => (

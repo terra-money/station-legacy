@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
 import { ChartPoint, helpers } from 'chart.js'
@@ -21,6 +22,8 @@ type Price = {
 
 const intervals = ['1m', '5m', '15m', '30m', '1h', '1d']
 const Price = ({ actives }: { actives: string[] }) => {
+  const { t } = useTranslation()
+
   /* request */
   const [params, setParams] = useState({ denom: 'ukrw', interval: '15m' })
   const { denom, interval } = params
@@ -83,7 +86,7 @@ const Price = ({ actives }: { actives: string[] }) => {
       >
         {intervals.map(interval => (
           <option value={interval} key={interval}>
-            {interval}
+            {t(interval)}
           </option>
         ))}
       </Select>
@@ -122,13 +125,18 @@ const Price = ({ actives }: { actives: string[] }) => {
 
   return (
     <Card
-      title="Luna price"
+      title={t('Luna price')}
       actions={renderActions()}
       bodyClassName={c(!!lastPrice && s.body)}
     >
       {error
         ? OOPS
-        : !idle && (lastPrice ? renderGraph() : <NotAvailable q="Chart" />)}
+        : !idle &&
+          (lastPrice ? (
+            renderGraph()
+          ) : (
+            <NotAvailable>{t('Chart is not available.')}</NotAvailable>
+          ))}
     </Card>
   )
 }

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import Icon from './Icon'
 import s from './Disconnected.module.scss'
 
 const Disconnected = () => {
+  const { t } = useTranslation()
   const [connected, setConnected] = useState(true)
   const onOffline = () => setConnected(false)
   const onOnline = () => setConnected(true)
@@ -21,8 +23,8 @@ const Disconnected = () => {
     <div className={s.overlay}>
       <article>
         <Icon name="signal_wifi_off" size={50} />
-        <h1>No internet connection</h1>
-        <p>Please check your internet connection and retry again.</p>
+        <h1>{t('No internet connection')}</h1>
+        <p>{t('Please check your internet connection and retry again.')}</p>
       </article>
     </div>
   )

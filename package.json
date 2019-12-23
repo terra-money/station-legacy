@@ -1,7 +1,7 @@
 {
   "name": "station",
   "engines": { "node": "12.x" },
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
@@ -34,6 +34,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.6.2",
     "crypto-js": "^3.1.9-1",
+    "i18next": "^19.0.2",
     "intersection-observer": "^0.7.0",
     "ledger-cosmos-js": "^2.1.7",
     "lodash": "^4.17.15",
@@ -45,6 +46,7 @@
     "react-app-polyfill": "^1.0.5",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.12.0",
+    "react-i18next": "^11.2.7",
     "react-intersection-observer": "^8.25.2",
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",

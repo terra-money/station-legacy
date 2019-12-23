@@ -47,6 +47,7 @@ interface Settings {
   address?: string
   withLedger?: boolean
   recentAddresses?: string[]
+  lang?: string
   chain?: string
   hideSmallBalances?: boolean
 }

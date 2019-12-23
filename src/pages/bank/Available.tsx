@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import { useAuth, useModal } from '../../hooks'
 import Modal from '../../components/Modal'
@@ -7,6 +8,7 @@ import AmountCard from './AmountCard'
 import Send from './Send'
 
 const Available = ({ denom, available }: Balance) => {
+  const { t } = useTranslation()
   const { name, withLedger } = useAuth()
   const modal = useModal()
 
@@ -31,7 +33,7 @@ const Available = ({ denom, available }: Balance) => {
             className="btn btn-primary btn-sm btn-send"
             disabled={!name && !withLedger}
           >
-            Send
+            {t('Send')}
           </ButtonWithName>
         }
       />

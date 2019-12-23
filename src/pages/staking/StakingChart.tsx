@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import { plus, sum, isFinite } from '../../api/math'
 import Chart from '../../components/Chart'
@@ -13,6 +14,8 @@ type Props = {
 
 const StakingChart = ({ list, currentTab, renderTabs }: Props) => {
   const { label, key } = currentTab
+
+  const { t } = useTranslation()
 
   const getLabel = (d: StakingDelegation) => d.validatorName
   const getLabels = () =>
@@ -48,7 +51,7 @@ const StakingChart = ({ list, currentTab, renderTabs }: Props) => {
           height={240}
         />
         <section className={s.total}>
-          <h1>{label}</h1>
+          <h1>{t(label)}</h1>
           <Amount fontSize={20}>{getSum()}</Amount>
         </section>
       </div>

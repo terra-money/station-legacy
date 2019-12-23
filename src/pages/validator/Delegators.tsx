@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -16,13 +17,14 @@ interface Delegator {
 type Delegators = Pagination & { delegators: Delegator[] }
 
 const Delegators = ({ address }: { address: string }) => {
+  const { t } = useTranslation()
   const [page, setPage] = useState<string>('1')
 
   const renderHead = () => (
     <tr>
-      <th>Account</th>
-      <th className="text-right">Amount</th>
-      <th className="text-right">Weight</th>
+      <th>{t('Account')}</th>
+      <th className="text-right">{t('Amount')}</th>
+      <th className="text-right">{t('Weight')}</th>
     </tr>
   )
 

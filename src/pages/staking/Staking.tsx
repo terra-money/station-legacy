@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { gte } from '../../api/math'
 import { useAuth, useModal } from '../../hooks'
 import Modal from '../../components/Modal'
@@ -13,6 +14,7 @@ import Columns from './Columns'
 import MyDelegations from './MyDelegations'
 
 const Staking = () => {
+  const { t } = useTranslation()
   const { address, name, withLedger } = useAuth()
   const modal = useModal()
 
@@ -35,12 +37,12 @@ const Staking = () => {
           )
         }
       >
-        Withdraw all rewards
+        {t('Withdraw all rewards')}
       </ButtonWithName>
     )
 
     return (
-      <Page title="Staking" action={button}>
+      <Page title={t('Staking')} action={button}>
         {address && (
           <>
             <Columns {...staking} />
@@ -51,7 +53,7 @@ const Staking = () => {
               </Card>
             )}
 
-            <h2>Validators</h2>
+            <h2>{t('Validators')}</h2>
           </>
         )}
 
@@ -63,7 +65,7 @@ const Staking = () => {
   }
 
   const loading = (
-    <Page title="Staking">
+    <Page title={t('Staking')}>
       <Card>
         <Loading />
       </Card>

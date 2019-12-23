@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import ledger from '../../cosmos/ledger'
 import Icon from '../../components/Icon'
 import { useAuth } from '../../hooks'
@@ -8,6 +9,7 @@ import useModalActions from './useModalActions'
 import s from './Hardware.module.scss'
 
 const Hardware = () => {
+  const { t } = useTranslation()
   const auth = useAuth()
   const modalActions = useModalActions()
   const [error, setError] = useState()
@@ -32,14 +34,16 @@ const Hardware = () => {
   return (
     <ModalContent {...modalActions}>
       <article>
-        <h1 className={s.title}>Sign In</h1>
+        <h1 className={s.title}>{t('Sign in')}</h1>
 
         <section className={s.content}>
           <Icon name="usb" size={64} />
           <p>
-            Please plug in your
-            <br />
-            Ledger Wallet
+            <Trans i18nKey="Please plug in your Ledger Wallet">
+              Please plug in your
+              <br />
+              Ledger Wallet
+            </Trans>
           </p>
         </section>
 
@@ -50,7 +54,7 @@ const Hardware = () => {
             <>
               <p>
                 <button onClick={signin} className="btn btn-primary btn-sm">
-                  Retry
+                  {t('Retry')}
                 </button>
               </p>
               <p>

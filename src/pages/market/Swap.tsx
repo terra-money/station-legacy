@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { without } from 'ramda'
 import api from '../../api/api'
 import { minus, times, gt, gte, percent } from '../../api/math'
-import v from '../../api/validate'
+import useValidate from '../../api/validate'
 import { format, find } from '../../utils'
 import { useForm, useModal } from '../../hooks'
 import Modal from '../../components/Modal'
@@ -22,6 +23,8 @@ import s from './Swap.module.scss'
 type Props = { denoms: string[]; getMax: (denom: string) => string }
 export type Values = { from: string; to: string; input: string }
 const Swap = ({ denoms, getMax }: Props) => {
+  const { t } = useTranslation()
+  const v = useValidate()
   const modal = useModal()
   const [, firstActive] = denoms
 
@@ -142,26 +145,35 @@ const Swap = ({ denoms, getMax }: Props) => {
       </section>
 
       {renderTable([
-        ['Current balance', { amount: getMax(from), denom: from }]
+        [t('Current balance'), { amount: getMax(from), denom: from }]
       ])}
     </>
   )
 
-  type Params = { min_spread: string }
+  type Params = {
+    min_spread: string
+    tobin_tax: string
+    illiquid_tobin_tax_list: { denom: string; tax_rate: string }[]
+  }
+
   const spread = (
     <Flex>
-      Spread
+      {t('Spread')}
       <WithRequest url="/market/parameters">
         {({ result }: { result: Params }) => {
-          const { min_spread } = result
+          const { min_spread, tobin_tax, illiquid_tobin_tax_list } = result
           const min = percent(min_spread, 0)
+          const minText = `${t('Luna swap spread')}: ${t('min.')} ${min}`
+          const tobin = percent(tobin_tax)
+          const tobinText = `Terra ${t('tobin tax')}: ${tobin}`
+          const illiquid = illiquid_tobin_tax_list[0]
+          const illiquidText = `${t('except for ')}${format.denom(
+            illiquid.denom
+          )}${t(' set at ')}${percent(illiquid.tax_rate, 0)}`
+          const content = [minText, `${tobinText} (${illiquidText})`].join('\n')
+
           return (
-            <Pop
-              type="tooltip"
-              placement="top"
-              width={280}
-              content={`Minimum ${min} of spread will be taken into account regarding LUNA swapping.`}
-            >
+            <Pop type="tooltip" placement="top" width={340} content={content}>
               {({ ref, getAttrs }) => (
                 <Icon
                   name="info"
@@ -186,7 +198,7 @@ const Swap = ({ denoms, getMax }: Props) => {
         autoComplete="off"
       >
         <option value="" disabled>
-          Select a coin…
+          {t('Select a coin…')}
         </option>
 
         {without([from], denoms).map(denom => (
@@ -209,7 +221,7 @@ const Swap = ({ denoms, getMax }: Props) => {
 
       {renderTable([
         [spread, { amount: minus(output, receive), denom: to }],
-        ['Receive', { amount: receive, denom: to }]
+        [t('Receive'), { amount: receive, denom: to }]
       ])}
     </>
   )
@@ -239,8 +251,8 @@ const Swap = ({ denoms, getMax }: Props) => {
         <p className={s.p}>
           <Icon name="info" />
           {!firstActive || hasError
-            ? 'Swapping is not available at the moment'
-            : 'Select a coin to swap'}
+            ? t('Swapping is not available at the moment')
+            : t('Select a coin to swap')}
         </p>
 
         <form onSubmit={submit} className={s.form}>
@@ -262,7 +274,7 @@ const Swap = ({ denoms, getMax }: Props) => {
             disabled={invalid || hasError || !gt(receive, '0')}
             className="btn btn-block btn-primary"
           >
-            Swap
+            {t('Swap')}
           </ButtonWithName>
         </form>
       </article>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from '../../utils'
 import WithRequest from '../../components/WithRequest'
 import Pagination from '../../components/Pagination'
@@ -15,13 +16,14 @@ interface Deposit {
 }
 
 const Deposits = ({ id }: { id: string }) => {
+  const { t } = useTranslation()
   const [page, setPage] = useState('1')
 
   const renderHead = () => (
     <tr>
-      <th>Depositer</th>
-      <th>Amount</th>
-      <th className="text-right">Tx</th>
+      <th>{t('Depositor')}</th>
+      <th>{t('Amount')}</th>
+      <th className="text-right">{t('Tx')}</th>
     </tr>
   )
 
@@ -46,10 +48,14 @@ const Deposits = ({ id }: { id: string }) => {
 
   type Deposits = { deposits: Deposit[] }
   return (
-    <Card title="Depositors" bordered fixedHeight>
+    <Card title={t('Depositors')} bordered fixedHeight>
       <WithRequest url={`/v1/gov/proposals/${id}/deposits`} params={{ page }}>
         {({ deposits, ...pagination }: Pagination & Deposits) => (
-          <Pagination {...pagination} action={setPage} empty="No deposits yet.">
+          <Pagination
+            {...pagination}
+            action={setPage}
+            empty={t('No deposits yet.')}
+          >
             <Table>
               <thead>{renderHead()}</thead>
               <tbody>{deposits.filter(Boolean).map(renderDeposit)}</tbody>

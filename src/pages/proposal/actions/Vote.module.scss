@@ -27,6 +27,8 @@
   border-style: solid;
   border-radius: 5px;
 
+  white-space: pre-line;
+
   &.yes {
     border-color: $yes;
     color: $yes;

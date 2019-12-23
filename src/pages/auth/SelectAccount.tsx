@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import { format } from '../../utils'
 import Badge from '../../components/Badge'
@@ -11,6 +12,7 @@ type Props = { title: string; list: Item[]; onSelect: (index: number) => void }
 const bipList = [118, 330]
 
 const SelectAccount = ({ title, list, onSelect }: Props) => {
+  const { t } = useTranslation()
   const [selected, setSelected] = useState<number>(-1)
 
   const submit: Submit = async e => {
@@ -24,9 +26,9 @@ const SelectAccount = ({ title, list, onSelect }: Props) => {
 
     type Value = Vesting[] | Delegation[] | Unbonding[]
     const labels: [Value, string][] = [
-      [vesting, 'Vested'],
-      [delegations, 'Delegated'],
-      [unbondings, 'Undelegated']
+      [vesting, t('Vested')],
+      [delegations, t('Delegated')],
+      [unbondings, t('Undelegated')]
     ]
 
     return (
@@ -70,7 +72,7 @@ const SelectAccount = ({ title, list, onSelect }: Props) => {
                 ))}
               </ul>
             ) : (
-              'No balance'
+              t('No balance')
             )}
           </section>
         </label>
@@ -82,7 +84,7 @@ const SelectAccount = ({ title, list, onSelect }: Props) => {
     <form onSubmit={submit}>
       <h1>{title}</h1>
 
-      <p className={s.p}>Select address to recover</p>
+      <p className={s.p}>{t('Select address to recover')}</p>
       {list.map(renderItem)}
 
       <Divider />
@@ -91,7 +93,7 @@ const SelectAccount = ({ title, list, onSelect }: Props) => {
         className="btn btn-block btn-primary"
         disabled={selected === -1}
       >
-        Confirm
+        {t('Confirm')}
       </button>
     </form>
   )

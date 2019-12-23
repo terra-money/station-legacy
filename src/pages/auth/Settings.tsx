@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { cond, equals } from 'ramda'
 import { loadKeys, storeKeys } from '../../utils/localStorage'
 import Icon from '../../components/Icon'
@@ -13,6 +14,8 @@ type Props = {
 }
 
 const Settings = ({ modalActions, onDeleteAll }: Props) => {
+  const { t } = useTranslation()
+
   const Page = { PW: 'ChangePassword', DEL: 'DeleteAccount' }
   const [accounts, setAccounts] = useState(loadKeys)
   const [currentPage, setCurrentPage] = useState<string>('')
@@ -46,9 +49,9 @@ const Settings = ({ modalActions, onDeleteAll }: Props) => {
   ]
 
   const main = (
-    <Confirm title="Manage accounts">
+    <Confirm title={t('Manage accounts')}>
       {!accounts.length ? (
-        <p className="text-center">No accounts</p>
+        <p className="text-center">{t('No accounts')}</p>
       ) : (
         <ul>
           {accounts.map(({ name }, index) => (

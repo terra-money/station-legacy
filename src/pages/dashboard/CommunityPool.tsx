@@ -5,10 +5,11 @@ import Amount from '../../components/Amount'
 import Select from '../../components/Select'
 
 interface Props {
+  title: string
   pool: CoinMap
 }
 
-const CommunityPool = ({ pool = {} }: Props) => {
+const CommunityPool = ({ title, pool = {} }: Props) => {
   const [current, setCurrent] = useState<string>('uluna')
   const options = Object.keys(pool).map((label, index) => (
     <option value={label} key={index}>
@@ -18,7 +19,7 @@ const CommunityPool = ({ pool = {} }: Props) => {
 
   return (
     <Card
-      title="Community pool"
+      title={title}
       footer={
         <Select
           onChange={e => setCurrent(e.target.value)}

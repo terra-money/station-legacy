@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { loadKeys, testPassword } from '../../utils/localStorage'
 import { useForm, useAuth } from '../../hooks'
 import ModalContent from '../../components/ModalContent'
@@ -10,6 +11,7 @@ import Settings from './Settings'
 
 const SignIn = () => {
   const accounts = loadKeys()
+  const { t } = useTranslation()
 
   /* context */
   const { goBack, close } = useModalActions()
@@ -35,7 +37,7 @@ const SignIn = () => {
     const { name, address } = accounts[index]
     testPassword(name, password)
       ? auth.signin({ name, address })
-      : setIncorrect('Incorrect password')
+      : setIncorrect(t('Incorrect password'))
   }
 
   /* render */
@@ -56,14 +58,14 @@ const SignIn = () => {
       }
     >
       <form onSubmit={submit}>
-        <h1>Sign in with password</h1>
+        <h1>{t('Sign in with password')}</h1>
 
         {!accounts.length ? (
-          <p className="text-center">No accounts</p>
+          <p className="text-center">{t('No accounts')}</p>
         ) : (
           <>
             <section className="form-group">
-              <label className="label">Select account</label>
+              <label className="label">{t('Select account')}</label>
               <Select
                 name="index"
                 value={index}
@@ -79,13 +81,13 @@ const SignIn = () => {
             </section>
 
             <section className="form-group">
-              <label className="label">Password</label>
+              <label className="label">{t('Password')}</label>
               <input
                 type="password"
                 name="password"
                 value={password}
                 onChange={e => handleChangePassword(e.target.value)}
-                placeholder="Must be at least 10 characters"
+                placeholder={t('Must be at least 10 characters')}
                 className="form-control"
                 autoComplete="off"
                 autoFocus
@@ -101,7 +103,7 @@ const SignIn = () => {
               className="btn btn-block btn-primary"
               disabled={password.length < 10}
             >
-              Sign In
+              {t('Sign in')}
             </button>
           </>
         )}

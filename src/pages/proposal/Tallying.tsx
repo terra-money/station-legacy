@@ -1,11 +1,14 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { percent } from '../../api/math'
 
 const Tallying = ({ quorum, threshold, veto }: TallyingParameters) => {
+  const { t } = useTranslation()
+
   const contents = [
-    ['Quorum', quorum],
-    ['Pass threshold', threshold],
-    ['Veto threshold', veto]
+    [t('Quorum'), quorum],
+    [t('Pass threshold'), threshold],
+    [t('Veto threshold'), veto]
   ]
 
   const renderContent = ([title, value]: string[]) => (

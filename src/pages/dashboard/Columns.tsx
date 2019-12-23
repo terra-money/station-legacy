@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { times, percent, div } from '../../api/math'
@@ -19,11 +20,13 @@ const Component = ({ dashboard, onClickPrice }: Props) => {
   const { prices, taxRate, taxCaps, issuances, communityPool } = dashboard
   const { stakingPool } = dashboard
 
+  const { t } = useTranslation()
+
   return (
     <div className="row">
       <div className="col col-20 col-full-1280">
         <Card
-          title="Luna price"
+          title={t('Luna price')}
           footer={
             <Badge small active>
               {format.denom('ukrw')}
@@ -40,10 +43,10 @@ const Component = ({ dashboard, onClickPrice }: Props) => {
 
       <div className="col col-20 col-6-1280">
         <Card
-          title="Tax rate"
+          title={t('Tax rate')}
           footer={
             <Badge small light>
-              Capped at {taxCaps.map(formatTaxCap).join(' / ')}
+              {t('Capped at ') + taxCaps.map(formatTaxCap).join(' / ')}
             </Badge>
           }
           small
@@ -53,19 +56,19 @@ const Component = ({ dashboard, onClickPrice }: Props) => {
       </div>
 
       <div className="col col-20 col-6-1280">
-        <Issuance issuances={issuances} />
+        <Issuance title={t('Issuance')} issuances={issuances} />
       </div>
 
       <div className="col col-20 col-6-1280">
-        <CommunityPool pool={communityPool} />
+        <CommunityPool title={t('Community pool')} pool={communityPool} />
       </div>
 
       <div className="col col-20 col-6-1280">
         <Card
-          title="Staking ratio"
+          title={t('Staking ratio')}
           footer={
             <Badge small light>
-              Staked Luna / Total Luna
+              {t('Staked Luna / Total Luna')}
             </Badge>
           }
           small
@@ -77,7 +80,7 @@ const Component = ({ dashboard, onClickPrice }: Props) => {
           <p>
             <small>
               (<Amount hideDecimal>{stakingPool.bondedTokens}</Amount> Luna
-              staked)
+              {t(' staked')})
             </small>
           </p>
         </Card>

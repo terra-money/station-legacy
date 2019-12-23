@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { times, div, floor, gt } from '../../api/math'
-import v from '../../api/validate'
+import useValidate from '../../api/validate'
 import { getSize, find } from '../../utils'
 import { useForm, useAuth } from '../../hooks'
 import Amount from '../../components/Amount'
@@ -17,34 +18,6 @@ enum TypeKey {
   C = 'community_pool_spend',
   P = 'param_change'
 }
-
-const TypesList = [
-  {
-    key: TypeKey.DEFAULT,
-    title: 'Text Proposal',
-    url: '/gov/proposals'
-  },
-  {
-    key: TypeKey.T,
-    title: 'Tax-rate Update',
-    url: '/gov/proposals/tax_rate_update'
-  },
-  {
-    key: TypeKey.R,
-    title: 'Reward-weight Update',
-    url: '/gov/proposals/reward_weight_update'
-  },
-  {
-    key: TypeKey.C,
-    title: 'Community-pool Spend',
-    url: '/gov/proposals/community_pool_spend'
-  },
-  {
-    key: TypeKey.P,
-    title: 'Parameter-change',
-    url: '/gov/proposals/param_change'
-  }
-]
 
 interface Change {
   subspace: string
@@ -84,7 +57,37 @@ interface Values extends CustomField {
 }
 
 const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
+  const { t } = useTranslation()
   const { address } = useAuth()
+  const v = useValidate()
+
+  const TypesList = [
+    {
+      key: TypeKey.DEFAULT,
+      title: t('Text Proposal'),
+      url: '/gov/proposals'
+    },
+    {
+      key: TypeKey.T,
+      title: t('Tax-rate Update'),
+      url: '/gov/proposals/tax_rate_update'
+    },
+    {
+      key: TypeKey.R,
+      title: t('Reward-weight Update'),
+      url: '/gov/proposals/reward_weight_update'
+    },
+    {
+      key: TypeKey.C,
+      title: t('Community-pool Spend'),
+      url: '/gov/proposals/community_pool_spend'
+    },
+    {
+      key: TypeKey.P,
+      title: t('Parameter-change'),
+      url: '/gov/proposals/param_change'
+    }
+  ]
 
   /* validation */
   const validate = (values: Values) => {
@@ -93,14 +96,14 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
     return Object.assign(
       {
         title: !title.length
-          ? 'Title is required'
+          ? t('Title is required')
           : getSize(title) > 140
-          ? 'Title is too long'
+          ? t('Title is too long')
           : '',
         description: !description.length
-          ? 'Description is required'
+          ? t('Description is required')
           : getSize(description) > 5000
-          ? 'Description is too long'
+          ? t('Description is too long')
           : '',
         input: !input || input === '0' ? '' : v.input(input, max)
       },
@@ -112,20 +115,20 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
           tax_rate: v.between({
             input: updates.tax_rate,
             range: [0, 1],
-            label: 'Tax-rate'
+            label: t('Tax-rate')
           })
         },
         [TypeKey.R]: {
           reward_weight: v.between({
             input: updates.reward_weight,
             range: [0, 1],
-            label: 'Reward-weight'
+            label: t('Reward-weight')
           })
         },
         [TypeKey.C]: {
           recipient: v.address(updates.recipient),
           amount: !lunaPool
-            ? "Community pool doesn't exist"
+            ? t("Community pool doesn't exist")
             : v.between({
                 input: updates.amount,
                 range: [0, lunaPool.amount],
@@ -134,9 +137,9 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
         },
         [TypeKey.P]: {
           changes: !updates.changes
-            ? 'Changes are required'
+            ? t('Changes are required')
             : !validateChanges(updates.changes)
-            ? 'Invalid'
+            ? t('Invalid')
             : ''
         }
       }[TypesList[typeIndex].key]
@@ -186,7 +189,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
       [TypeKey.DEFAULT]: null,
       [TypeKey.T]: (
         <section className="form-group">
-          <label className="label">Tax-rate</label>
+          <label className="label">{t('Tax-rate')}</label>
           <input
             type="text"
             name="tax_rate"
@@ -201,7 +204,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
       ),
       [TypeKey.R]: (
         <section className="form-group">
-          <label className="label">Reward-weight</label>
+          <label className="label">{t('Reward-weight')}</label>
           <input
             type="text"
             name="reward_weight"
@@ -217,7 +220,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
       [TypeKey.C]: (
         <>
           <section className="form-group">
-            <label className="label">Recipient</label>
+            <label className="label">{t('Recipient')}</label>
             <input
               type="text"
               name="recipient"
@@ -231,7 +234,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
           </section>
 
           <section className="form-group">
-            <label className="label">Amount</label>
+            <label className="label">{t('Amount')}</label>
             <div className="input-group">
               <input
                 type="text"
@@ -252,7 +255,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
       ),
       [TypeKey.P]: (
         <section className="form-group">
-          <label className="label">Changes</label>
+          <label className="label">{t('Changes')}</label>
           <textarea
             name="updates"
             value={updates.changes}
@@ -280,10 +283,10 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
     >
       {!isSubmitted ? (
         <form onSubmit={submit}>
-          <h1>New proposal</h1>
+          <h1>{t('New proposal')}</h1>
 
           <section className="form-group">
-            <label className="label">Type</label>
+            <label className="label">{t('Type')}</label>
             <Select
               name="typeIndex"
               value={String(typeIndex)}
@@ -299,7 +302,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
           </section>
 
           <section className="form-group">
-            <label className="label">Title</label>
+            <label className="label">{t('Title')}</label>
             <input
               type="text"
               name="title"
@@ -314,7 +317,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
           </section>
 
           <section className="form-group">
-            <label className="label">Description</label>
+            <label className="label">{t('Description')}</label>
             <textarea
               name="description"
               value={description}
@@ -328,9 +331,11 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
 
           <section className="form-group">
             <header className="flex space-between">
-              <label className="label">Initial deposit (Optional)</label>
+              <label className="label">
+                {t('Initial deposit')} ({t('Optional')})
+              </label>
               <p className="label-text">
-                Available:
+                {t('Available')}:
                 <button type="button" onClick={setToMax} className="btn-link">
                   <Amount>{max}</Amount>
                 </button>
@@ -361,7 +366,7 @@ const NewProposal = ({ max, communityPool, onSubmitting, onSubmit }: Props) => {
             disabled={invalid}
             className="btn btn-block btn-primary"
           >
-            Next
+            {t('Next')}
           </button>
         </form>
       ) : (
