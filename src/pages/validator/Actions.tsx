@@ -1,5 +1,5 @@
 import React from 'react'
-import { gte, gt } from '../../api/math'
+import { gte } from '../../api/math'
 import { useModal, useAuth } from '../../hooks'
 import Card from '../../components/Card'
 import Modal from '../../components/Modal'
@@ -25,7 +25,7 @@ const Actions = (v: Validator) => {
       <Delegate
         to={v.operatorAddress}
         moniker={description.moniker}
-        max={!undelegate ? v.myDelegatable : v.myDelegation}
+        max={(!undelegate ? v.myDelegatable : v.myDelegation) ?? 0}
         onDelegating={modal.prevent}
         onDelegate={modal.close}
         undelegate={!!undelegate}
@@ -77,11 +77,7 @@ const Actions = (v: Validator) => {
               <ButtonWithName
                 onClick={() => delegate({})}
                 className="btn btn-sm btn-primary"
-                disabled={
-                  (!name && !withLedger) ||
-                  !(v.myDelegatable && gt(v.myDelegatable, 0)) ||
-                  v.status === 'jailed'
-                }
+                disabled={(!name && !withLedger) || v.status === 'jailed'}
               >
                 Delegate
               </ButtonWithName>,
