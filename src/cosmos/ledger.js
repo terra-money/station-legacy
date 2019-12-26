@@ -43,16 +43,9 @@ const connect = async () => {
     return [44, bip, 0, 0, 0]
   }
 
-  const isSendingData = async () => {
-    const path = await getPath()
-    const response = await app.getAddressAndPubKey(path, 'terra')
-    checkLedgerErrors(response)
-  }
-
   const isReady = async () => {
     await isAppOpen()
     await isVersionUpdated()
-    await isSendingData()
   }
 
   const transport = await Transport.create()
