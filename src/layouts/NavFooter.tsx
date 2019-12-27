@@ -2,6 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react'
 import { toast } from 'react-toastify'
 import c from 'classnames'
 import BigNumber from 'bignumber.js'
+import semver from 'semver'
 import currentVersion from '../currentVersion'
 import { ChainList, useSocket } from '../api/api'
 import { useApp } from '../hooks'
@@ -29,7 +30,7 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
   useEffect(() => {
     const checkVersion = (s: string) => {
       const pop = (status: VersionWeb) => {
-        const shouldUpdate = currentVersion !== status.version
+        const shouldUpdate = !semver.gte(currentVersion, status.version)
         shouldUpdate &&
           toast(<AppUpdate {...status} />, { toastId: 'App Update' })
       }
