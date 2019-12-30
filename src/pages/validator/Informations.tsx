@@ -24,7 +24,7 @@ const Informations = (v: Validator) => {
       value: percent(v.commissionInfo.maxChangeRate)
     },
     {
-      label: 'Delegatoin return',
+      label: 'Delegation return',
       value: percent(v.stakingReturn)
     },
     {
