@@ -10,9 +10,9 @@ import Icon from '../components/Icon'
 import Select from '../components/Select'
 import Finder from '../components/Finder'
 import AppUpdate from './AppUpdate'
-import s from './NavFooter.module.scss'
+import s from './SelectChain.module.scss'
 
-const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
+const SelectChain = ({ onChangeChain }: { onChangeChain: () => void }) => {
   const { chain, selectChain } = useApp()
   const socket = useSocket(chain)
 
@@ -83,7 +83,7 @@ const NavFooter = ({ onChangeChain }: { onChangeChain: () => void }) => {
   )
 }
 
-export default NavFooter
+export default SelectChain
 
 /* helper */
 const formatHeight = (height: string) => new BigNumber(height).toFormat()

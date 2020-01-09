@@ -4,8 +4,8 @@
 .component {
   @include flex(space-between);
   background: darken($navy, 3%);
-  color: white;
   padding: 20px;
+
   > div {
     flex: auto;
     margin-right: 10px;

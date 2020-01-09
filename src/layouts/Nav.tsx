@@ -4,7 +4,7 @@ import c from 'classnames'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import NavItem from './NavItem'
-import NavFooter from './NavFooter'
+import SelectChain from './SelectChain'
 import { ReactComponent as TerraStation } from '../helpers/TerraStation.svg'
 import s from './Nav.module.scss'
 
@@ -49,7 +49,9 @@ const Nav = ({ pathname }: { pathname: string }) => {
           ))}
         </ul>
 
-        <NavFooter onChangeChain={close} key={key} />
+        <footer className={s.footer}>
+          <SelectChain onChangeChain={close} key={key} />
+        </footer>
       </section>
     </nav>
   )
