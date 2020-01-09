@@ -1,7 +1,7 @@
 {
   "name": "station",
   "engines": { "node": "12.x" },
-  "version": "1.0.0",
+  "version": "3.3.0",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
