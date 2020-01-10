@@ -58,6 +58,7 @@ const connect = async () => {
 const getPubKey = async () => {
   const { app, path } = await connect()
   const response = await app.getAddressAndPubKey(path, 'terra')
+  checkLedgerErrors(response)
   return response.compressed_pk
 }
 
