@@ -1,9 +1,11 @@
-import Transport from '@ledgerhq/hw-transport-webusb'
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import Cosmos from 'ledger-cosmos-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
 
+const INTERACTION_TIMEOUT = 120
 const REQUIRED_APP_VERSION = '1.5.3'
 
 const connect = async () => {
@@ -48,7 +50,22 @@ const connect = async () => {
     await isVersionUpdated()
   }
 
-  const transport = await Transport.create()
+  getBrowser(navigator.userAgent)
+
+  let transport
+  if (isWindows(navigator.platform)) {
+    if (!navigator.hid) {
+      throw new Error(
+        `Your browser doesn't have HID enabled. Please enable this feature by visiting: chrome://flags/#enable-experimental-web-platform-features`
+      )
+    }
+
+    transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+  } else {
+    // OSX / Linux
+    transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+  }
+
   const app = new Cosmos(transport)
   await isReady()
 
@@ -95,6 +112,21 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
     default:
       throw new Error(error_message)
   }
+}
+
+const isWindows = platform => platform.indexOf('Win') > -1
+
+const getBrowser = userAgent => {
+  const ua = userAgent.toLowerCase()
+  const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
+  const isBrave = isChrome && !window.google
+
+  if (!isChrome && !isBrave) {
+    throw new Error("Your browser doesn't support Ledger devices.")
+  }
+
+  if (isBrave) return 'brave'
+  if (isChrome) return 'chrome'
 }
 
 export default {
