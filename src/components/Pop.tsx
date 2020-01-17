@@ -12,6 +12,7 @@ type Tooltip = {
   arrowPosition?: number
   content: ReactNode
   forwardRef?: RefObject<HTMLDivElement>
+  fixed?: boolean
 }
 
 export const Tooltip = (props: Tooltip) => {
@@ -51,7 +52,7 @@ type Pop = {
 }
 
 const Pop = (props: Tooltip & Pop) => {
-  const { type, children, fullWidth, width, ...tooltipProps } = props
+  const { type, children, fullWidth, width, fixed, ...tooltipProps } = props
 
   /* refs */
   const ref = useRef<HTMLElement>(null)
@@ -101,7 +102,7 @@ const Pop = (props: Tooltip & Pop) => {
       const left = calcLeft()
       const top =
         r.top +
-        window.pageYOffset +
+        (fixed ? 0 : window.pageYOffset) +
         { top: -1 * t.height, bottom: r.height }[tooltipProps.placement]
 
       calcTooltipWidth()
