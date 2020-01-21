@@ -7,7 +7,7 @@ import renderItem from './ValidatorItem'
 
 type Attr = { align?: 'center' | 'right'; style: CSSProperties }
 type Sorter = { prop: string[]; isString?: boolean }
-const DefaultSorter: Sorter = { prop: ['votingPower', 'weight'] }
+const DefaultSorter: Sorter = { prop: ['stakingReturn'] }
 const Columns: [string, Attr, Sorter?][] = [
   ['Rank', { style: { width: 60 } }],
   [
@@ -15,7 +15,11 @@ const Columns: [string, Attr, Sorter?][] = [
     { style: { width: 240 } },
     { prop: ['description', 'moniker'], isString: true }
   ],
-  ['Voting power', { align: 'right', style: { width: 120 } }, DefaultSorter],
+  [
+    'Voting power',
+    { align: 'right', style: { width: 120 } },
+    { prop: ['votingPower', 'weight'] }
+  ],
   [
     'Validator commission',
     { align: 'right', style: { width: 100, textAlign: 'right' } },
