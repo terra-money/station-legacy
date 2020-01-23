@@ -1,7 +1,7 @@
 {
   "name": "station",
   "engines": { "node": "12.x" },
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
@@ -35,6 +35,7 @@
     "core-js": "^3.6.2",
     "crypto-js": "^3.1.9-1",
     "i18next": "^19.0.2",
+    "i18next-browser-languagedetector": "^4.0.1",
     "intersection-observer": "^0.7.0",
     "ledger-cosmos-js": "^2.1.7",
     "lodash": "^4.17.15",

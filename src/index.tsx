@@ -4,6 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 import * as Sentry from '@sentry/browser'
 import ko from './lang/ko.json'
@@ -21,11 +22,14 @@ const dsn = ''
 const environment = process.env.REACT_APP_ENV
 !isLocal && !!dsn && Sentry.init({ dsn, environment })
 
-i18n.use(initReactI18next).init({
-  lng: localSettings.get().lang,
-  resources: { ko: { translation: ko }, zh: { translation: zh } },
-  keySeparator: false
-})
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    lng: localSettings.get().lang,
+    resources: { ko: { translation: ko }, zh: { translation: zh } },
+    keySeparator: false
+  })
 
 ReactDOM.render(
   <ErrorBoundary
