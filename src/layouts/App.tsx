@@ -55,22 +55,24 @@ const initial = {
   setGoBack: () => {}
 }
 
-const getInitialChain = () => {
-  const { chain: local } = localSettings.get()
-  const defaultChain = ChainList[0]
-  const chain = local && ChainList.includes(local) ? local : defaultChain
-  localSettings.set({ chain })
-  return chain
-}
-
-const getInitialLang = () => {
-  const { lang: local } = localSettings.get()
-  return local && Languages[local] ? local : initial.lang
-}
-
 export const AppContext = createContext<AppContext>(initial)
 
 const App = ({ location, history }: RouteComponentProps) => {
+  const getInitialChain = () => {
+    const { chain: local } = localSettings.get()
+    const defaultChain = ChainList[0]
+    const chain = local && ChainList.includes(local) ? local : defaultChain
+    localSettings.set({ chain })
+    return chain
+  }
+
+  const getInitialLang = () => {
+    const { lang: local } = localSettings.get()
+    const d = Object.keys(Languages).find(key => i18n.languages.includes(key))
+    const init = local ?? d
+    return init && Languages[init] ? init : initial.lang
+  }
+
   const { i18n } = useTranslation()
 
   /* context: modal */
