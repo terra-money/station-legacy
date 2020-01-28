@@ -63,7 +63,11 @@ const Auth = ({ onClose }: { onClose: () => void }) => {
 
   /* Terra Station */
   const TerraStation = (
-    <a href="https://terra.money" target="_blank" rel="noopener noreferrer">
+    <a
+      href="https://terra.money/protocol"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {t('Terra Station for Windows/MacOS')}
     </a>
   )
