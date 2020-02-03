@@ -17,10 +17,8 @@ const BlockRewards = () => {
   const { t } = useTranslation()
   return (
     <ChartCard
-      title={t('Block rewards')}
-      description={t(
-        'Block rewards distributed over the selected time period. Block rewards are a sum of tax proceeds, oracle rewards, and gas fees'
-      )}
+      title={t('Tax rewards')}
+      description={t('Tax rewards distributed over the selected time period.')}
       url="/v1/dashboard/block_rewards"
       cumulativeOptions={{ initial: true }}
       renderHeader={(results: Results, { cumulative }): ReactNode => {

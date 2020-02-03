@@ -17,7 +17,7 @@ const StakingReturn = () => {
     <ChartCard
       title={t('Staking return')}
       description={t(
-        'Annualized staking yield for Luna based on daily block rewards and latest prices of Luna'
+        'Annualized staking yield for Luna based on tax rewards, oracle rewards, gas and latest prices of Luna'
       )}
       url="/v1/dashboard/staking_return"
       cumulativeOptions={{ initial: false, hide: true }}

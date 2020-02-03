@@ -135,9 +135,9 @@
   "Transaction volume": "거래량",
   "The onchain transaction volume for the selected currency over the selected time period": "선택한 통화에 대한 선택한 기간 동안의 체인상 거래량입니다.",
   "Staking return": "스테이킹 수익",
-  "Annualized staking yield for Luna based on daily block rewards and latest prices of Luna": "일일 블록 보상 및 루나의 최신 가격을 기준으로 한 루나의 연간 스테이킹 수익율입니다.",
-  "Block rewards": "블록 보상",
-  "Block rewards distributed over the selected time period. Block rewards are a sum of tax proceeds, oracle rewards, and gas fees": "선택한 기간 동안 분배된 블록 보상입니다. 블록 보상은 세금 수익, 오라클 보상 및 가스 수수료의 합계입니다.",
+  "Annualized staking yield for Luna based on tax rewards, oracle rewards, gas and latest prices of Luna": "세금 보상, 오라클 보상, 가스 수수료 및 루나의 최신 가격을 기준으로 한 루나의 연간 스테이킹 수익율입니다",
+  "Tax rewards": "세금 보상",
+  "Tax rewards distributed over the selected time period.": "선택한 기간 동안 분배된 세금 보상입니다.",
   "Total accounts": "계정 수",
   "Number of total accounts with more than 1 non-trivial transaction in the selected period": "선택한 기간 동안 두 개 이상의 트랜잭션을 발생시킨 총 계정 수입니다.",
 
