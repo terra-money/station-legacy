@@ -135,9 +135,9 @@
   "Transaction volume": "交易量",
   "The onchain transaction volume for the selected currency over the selected time period": "所选周期内所选代币的链上交易量。",
   "Staking return": "质押收益",
-  "Annualized staking yield for Luna based on daily block rewards and latest prices of Luna": "基于每日的区块奖励和Luna 的最新价格的所得出的Luna 的年度质押收益率。",
-  "Block rewards": "区块奖励",
-  "Block rewards distributed over the selected time period. Block rewards are a sum of tax proceeds, oracle rewards, and gas fees": "在所选周期内分配的区块奖励，区块奖励是税收，预言（Oracle）奖励和Gas费的总和",
+  "Annualized staking yield for Luna based on tax rewards, oracle rewards, gas and latest prices of Luna": "税收，预言（Oracle）奖励，Gas费和Luna 的最新价格的所得出的Luna 的年度质押收益率。",
+  "Tax rewards": "税收奖励",
+  "Tax rewards distributed over the selected time period.": "在所选周期内分配的税收奖励。",
   "Total accounts": " 账户数",
   "Number of total accounts with more than 1 non-trivial transaction in the selected period": "在所选周期内交易不止1次的帐户总数。",
 
