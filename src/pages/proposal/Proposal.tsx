@@ -91,7 +91,7 @@ const Component = (props: ProposalDetail) => {
             <Vote
               vote={vote}
               showProgressBar={status === 'Voting'}
-              threshold={tallyingParameters?.threshold}
+              params={tallyingParameters}
             />
           </Card>
 

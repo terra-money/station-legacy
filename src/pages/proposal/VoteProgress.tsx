@@ -1,35 +1,49 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import c from 'classnames'
 import s from './VoteProgress.module.scss'
-import { percent, times, sum, gt } from '../../api/math'
+import { percent, times, sum, gt, lt } from '../../api/math'
 import { optionColors } from '../governance/constants'
 
-interface Props {
-  threshold?: string
+interface Props extends Partial<TallyingParameters> {
   ratio: string
   list: VoteOption[]
 }
 
-const VoteProgress = ({ threshold, ratio, list }: Props) => {
+const Flag: FC<{ left: string }> = ({ left, children }) => {
+  return (
+    <>
+      <div className={s.threshold} style={{ left }}>
+        {children}
+      </div>
+      <div className={s.flag} style={{ left }} />
+    </>
+  )
+}
+
+const VoteProgress = ({ threshold, quorum, ratio, list }: Props) => {
   const { t } = useTranslation()
 
   const getRatio = (label: string) =>
     list.find(item => item.label === label)?.ratio ?? '0'
 
   const d = sum(['Yes', 'No', 'NoWithVeto'].map(getRatio))
+  const showQuorum = quorum && lt(ratio, quorum)
   const showThreshold = gt(d, 0) && !!threshold
-  const left = threshold && percent(times(times(ratio, d), threshold))
+  const showFlag = showQuorum || showThreshold
 
   return (
-    <div className={c(s.container, showThreshold && s.gutter)}>
-      {showThreshold && (
-        <>
-          <div className={s.threshold} style={{ left }}>
-            {t('Pass threshold')}
-          </div>
-          <div className={s.flag} style={{ left }} />
-        </>
+    <div className={c(s.container, showFlag && s.gutter)}>
+      {showFlag && (
+        <Flag
+          left={
+            showQuorum
+              ? percent(quorum!)
+              : percent(times(times(ratio, d), threshold!))
+          }
+        >
+          {showQuorum ? t('Quorum') : t('Pass threshold')}
+        </Flag>
       )}
 
       <div className={s.track}>

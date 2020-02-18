@@ -12,10 +12,10 @@ import s from './Vote.module.scss'
 interface Props {
   vote: Vote
   showProgressBar: boolean
-  threshold?: string
+  params?: TallyingParameters
 }
 
-const Vote = ({ vote, showProgressBar, threshold }: Props) => {
+const Vote = ({ vote, showProgressBar, params }: Props) => {
   const { distribution, total, votingEndTime, stakedLuna } = vote
 
   const { t } = useTranslation()
@@ -57,7 +57,7 @@ const Vote = ({ vote, showProgressBar, threshold }: Props) => {
 
       {showProgressBar && (
         <footer className={s.footer}>
-          <VoteProgress threshold={threshold} ratio={ratio} list={list} />
+          <VoteProgress {...params} ratio={ratio} list={list} />
           <p>
             <strong>
               {t('Percent voting: ')}
