@@ -97,7 +97,7 @@ const Mnemonic: React.FC<Props> = props => {
       <input
         {...attrs}
         ref={inputRef}
-        onKeyDown={handleKeyDown}
+        onKeyDown={showSuggestions ? handleKeyDown : undefined}
         className={s.input}
       />
 
