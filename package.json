@@ -1,6 +1,8 @@
 {
   "name": "station",
-  "engines": { "node": "12.x" },
+  "engines": {
+    "node": "12.x"
+  },
   "version": "3.4.1",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
@@ -51,7 +53,7 @@
     "react-intersection-observer": "^8.25.2",
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "^3.4.0",
     "react-toastify": "^5.5.0",
     "secp256k1": "^3.7.1",
     "semver": "^6.3.0",
