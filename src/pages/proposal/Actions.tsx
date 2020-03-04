@@ -1,82 +1,33 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { DateTime } from 'luxon'
-import { useModal } from '../../hooks'
-import Modal from '../../components/Modal'
-import ActionBar from '../../components/ActionBar'
-import ButtonWithName from '../../components/ButtonWithName'
-import WithMaxLuna from '../../components/WithMaxLuna'
-import Deposit from './actions/Deposit'
-import Vote from './actions/Vote'
+import { ProposalUI } from '@terra-money/use-station'
+import { useApp } from '../../hooks'
+import ButtonWithAuth from '../../components/ButtonWithAuth'
+import Deposit from '../../post/Deposit'
+import Vote from '../../post/Vote'
 
-interface Props {
-  max: string
-  disabled: boolean
-  detail: ProposalDetail
+const Actions = ({ id, title, deposit, vote }: ProposalUI) => {
+  const { modal } = useApp()
+  const params = { id, title }
+
+  return vote?.voting ? (
+    <ButtonWithAuth
+      placement="bottom"
+      className="btn btn-primary btn-sm"
+      onClick={() => modal.open(<Vote params={params} />)}
+    >
+      {vote.title}
+    </ButtonWithAuth>
+  ) : deposit.depositing ? (
+    <ButtonWithAuth
+      placement="bottom"
+      className="btn btn-sky btn-sm"
+      onClick={() =>
+        modal.open(<Deposit params={params} contents={deposit.contents} />)
+      }
+    >
+      {deposit.title}
+    </ButtonWithAuth>
+  ) : null
 }
-
-const Component = ({ max, disabled, detail }: Props) => {
-  const { id, status, deposit } = detail
-
-  const { t } = useTranslation()
-  const modal = useModal()
-
-  const buttons = {
-    deposit: (
-      <ButtonWithName
-        placement="bottom"
-        className="btn btn-sky btn-sm"
-        disabled={disabled}
-        onClick={() =>
-          modal.open(
-            <Deposit
-              id={id}
-              deposit={deposit}
-              max={max}
-              onSubmitting={modal.prevent}
-              onSubmit={modal.close}
-            />
-          )
-        }
-      >
-        {t('Deposit')}
-      </ButtonWithName>
-    ),
-    vote: (
-      <ButtonWithName
-        placement="bottom"
-        className="btn btn-primary btn-sm"
-        disabled={disabled}
-        onClick={() =>
-          modal.open(
-            <Vote id={id} onSubmitting={modal.prevent} onSubmit={modal.close} />
-          )
-        }
-      >
-        {t('Vote')}
-      </ButtonWithName>
-    )
-  }
-
-  const isDepositing =
-    DateTime.fromISO(deposit.depositEndTime) > DateTime.local()
-  const isVoting = status === 'Voting'
-  const list = [isDepositing && buttons.deposit, isVoting && buttons.vote]
-
-  return (
-    <>
-      <ActionBar list={list.filter(Boolean)} />
-      <Modal config={modal.config}>{modal.content}</Modal>
-    </>
-  )
-}
-
-const Actions = (props: { detail: ProposalDetail }) => (
-  <WithMaxLuna>
-    {(max, balance) => (
-      <Component max={max} disabled={!balance.length} {...props} />
-    )}
-  </WithMaxLuna>
-)
 
 export default Actions

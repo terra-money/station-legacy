@@ -2,23 +2,22 @@ import React, { useRef, useEffect, useState } from 'react'
 import { mergeDeepRight as mergeDeep, path } from 'ramda'
 import debounce from 'lodash/fp/debounce'
 import ChartJS from 'chart.js'
-import { times } from '../api/math'
-import { format } from '../utils'
+import { times, format } from '@terra-money/use-station'
 
 type ChartType = 'doughnut' | 'line' | 'pie'
 export type Props = {
-  type: ChartType
+  type?: ChartType
   pieBackgroundColors?: string[]
   lineStyle?: ChartJS.ChartDataSets
   labels?: string[]
-  data: number[] | ChartJS.ChartPoint[]
+  data?: number[] | ChartJS.ChartPoint[]
   options?: ChartJS.ChartOptions
   width?: number
-  height: number
+  height?: number
 }
 
 const ChartComponent = (props: Props) => {
-  const { type, labels, data, height, options } = props
+  const { type = 'line', labels, data, height, options } = props
   const { pieBackgroundColors, lineStyle } = props
 
   /* DOM Size */
@@ -41,7 +40,7 @@ const ChartComponent = (props: Props) => {
   useEffect(() => {
     const initChart = (ctx: CanvasRenderingContext2D) => {
       ctx.canvas.width = width
-      ctx.canvas.height = height
+      height && (ctx.canvas.height = height)
       const chart = new ChartJS(
         ctx,
         getOptions(type, { pieBackgroundColors, lineStyle })
@@ -248,6 +247,6 @@ const getLabel = (
   return t instanceof Date
     ? format.date(t)
     : t
-    ? format.amount(times(t, 1e6))
+    ? format.amount(times(t as string, 1e6))
     : ''
 }

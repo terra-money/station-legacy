@@ -73,6 +73,7 @@ dd {
 }
 
 pre {
+  margin: 0;
   max-width: 100%;
   overflow: auto;
 }
@@ -123,8 +124,8 @@ textarea {
     color: fade-out($brand, 0.7);
   }
 
-  &:read-only {
-    border-color: $line;
+  &:read-only,
+  &:disabled {
     background: $line;
   }
 }

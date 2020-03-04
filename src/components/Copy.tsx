@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react'
-import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import c from 'classnames'
+import { useText } from '@terra-money/use-station'
 import Icon from './Icon'
 import { Tooltip } from './Pop'
 import tooltipStyle from './Pop.module.scss'
@@ -10,14 +10,12 @@ import s from './Copy.module.scss'
 type Props = {
   classNames?: { container?: string; text?: string; button?: string }
   text: string
-  buttonLabel?: string
+  noLabel?: boolean
   children?: ReactNode
 }
 
-const Copy = (props: Props) => {
-  const { classNames = {}, text, buttonLabel, children } = props
-
-  const { t } = useTranslation()
+const Copy = ({ classNames = {}, text, noLabel, children }: Props) => {
+  const { COPY, COPIED } = useText()
   const [copied, setCopied] = useState(false)
 
   const showTooltip = () => {
@@ -39,14 +37,14 @@ const Copy = (props: Props) => {
         <CopyToClipboard {...attrs}>
           <button className={classNames.button} type="button">
             <Icon name="filter_none" size={12} />
-            {buttonLabel}
+            {!noLabel && COPY}
           </button>
         </CopyToClipboard>
 
         {copied && (
           <Tooltip
             placement="top"
-            content={t('Copied!')}
+            content={COPIED}
             className={c(tooltipStyle.tooltip, s.tooltip)}
           />
         )}

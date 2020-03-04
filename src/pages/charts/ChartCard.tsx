@@ -1,176 +1,117 @@
-import React, { useState, useEffect, ReactNode } from 'react'
-import { useTranslation } from 'react-i18next'
-import { mergeDeepRight as mergeDeep, path } from 'ramda'
-import { ChartOptions, ChartPoint } from 'chart.js'
-import { OOPS } from '../../helpers/constants'
-import api from '../../api/api'
-import { format } from '../../utils'
+import React from 'react'
+import { ChartDataSets, ChartOptions } from 'chart.js'
+import { ChartUI, ChartKey, CumulativeType } from '@terra-money/use-station'
+import { useChart } from '@terra-money/use-station'
+import ErrorBoundary from '../../components/ErrorBoundary'
+import ErrorComponent from '../../components/ErrorComponent'
+import Chart from '../../components/Chart'
+import Card from '../../components/Card'
 import Pop from '../../components/Pop'
 import Icon from '../../components/Icon'
-import Flex from '../../components/Flex'
-import Card from '../../components/Card'
 import Select from '../../components/Select'
 import RadioGroup from '../../components/RadioGroup'
-import ErrorBoundary from '../../components/ErrorBoundary'
-import Chart, { Props as ChartProps } from '../../components/Chart'
+import Flex from '../../components/Flex'
+import Number from '../../components/Number'
 
-enum CumulativeValues {
-  C = 'cumulative',
-  P = 'periodic'
+interface ChartProps {
+  scales?: ChartOptions['scales']
+  lineStyle: ChartDataSets
+  fixedYAxis?: boolean
+}
+
+const LINE = { backgroundColor: 'rgba(255, 255, 255, 0)' }
+const BG = {
+  borderColor: 'rgba(32, 67, 181, 0.25)',
+  backgroundColor: 'rgba(32, 67, 181, 0.25)'
+}
+
+const chartProps: { [key in ChartKey]: ChartProps } = {
+  TxVolume: { lineStyle: BG },
+  StakingReturn: {
+    scales: { yAxes: [{ ticks: { callback: v => `${v}%` } }] },
+    lineStyle: BG,
+    fixedYAxis: true
+  },
+  TaxRewards: { lineStyle: LINE },
+  TotalAccounts: { lineStyle: LINE }
 }
 
 interface Props {
-  url: string
-  title: string
-  description: string
-
-  cumulativeOptions: {
-    initial: boolean
-    hide?: boolean
-  }
-
-  durationOptions?: {
-    initial?: number
-    list?: number[]
-  }
-
-  additionalOptions?: {
-    initial: string
-    getList: (results: any) => { value: string; label: string }[]
-  }
-
-  fixedYAxis?: boolean
-
-  renderHeader: (
-    results: any,
-    params: { cumulative: boolean; duration: number; additional?: string }
-  ) => ReactNode
-
-  getChartProps: (
-    results: any,
-    params: { additional?: string }
-  ) => Omit<ChartProps, 'height'>
+  chartKey: ChartKey
 }
 
-const Component = ({ url, title, description, ...props }: Props) => {
-  const { cumulativeOptions, durationOptions, additionalOptions } = props
-  const { fixedYAxis } = props
-  const { renderHeader, getChartProps } = props
-
-  const { t } = useTranslation()
-
-  /* options */
-  const durations = durationOptions?.list ?? [0, 7, 14, 30]
-
-  /* state: options */
-  const [cumulative, setCumulative] = useState(!!cumulativeOptions?.initial)
-  const [duration, setDuration] = useState(durationOptions?.initial ?? 0)
-  const [additional, setAdditional] = useState(additionalOptions?.initial)
-
-  /* state: api response */
-  const [data, setData] = useState<any>()
-  const [, setIsLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error>()
-  const results = !cumulativeOptions.hide
-    ? data?.[cumulative ? CumulativeValues.C : CumulativeValues.P]
-    : data
-
-  /* Fetch data */
-  useEffect(() => {
-    const fetchPrices = async () => {
-      setIsLoading(true)
-      setError(undefined)
-
-      try {
-        const count = duration === 1 ? 3 : duration
-        const params = Object.assign({}, duration > 0 && { count })
-        const { data } = await api.get<any>(url, { params })
-        setData(data)
-      } catch (error) {
-        setError(error)
-      }
-
-      setIsLoading(false)
-    }
-
-    fetchPrices()
-    // eslint-disable-next-line
-  }, [duration])
+const Component = ({ chartKey }: Props) => {
+  const { scales, lineStyle, fixedYAxis } = chartProps[chartKey]
+  const { filter, value, chart, ...rest } = useChart(chartKey)
+  const { type, denom, duration } = filter
 
   /* render */
+  const title = (
+    <Flex>
+      <h1>{rest.title}</h1>
+      <Pop type="tooltip" placement="top" width={320} content={rest.desc}>
+        {({ ref, getAttrs }) => (
+          <Icon
+            name="info"
+            forwardRef={ref}
+            {...getAttrs({ style: { marginLeft: 5 } })}
+          />
+        )}
+      </Pop>
+    </Flex>
+  )
+
   const className = 'form-control form-control-md text-capitalize'
-  const additionalList = additionalOptions?.getList(results)
-  const actions = (
+  const optionSelectors = (
     <>
-      {additionalOptions && (
+      {denom && (
         <Select
-          value={additional}
-          onChange={e => setAdditional(e.target.value)}
+          value={denom.value}
+          onChange={e => denom.set(e.target.value)}
           className={className}
         >
-          {additionalList?.map(({ value, label }, index) => (
-            <option value={value} key={index}>
-              {label}
-            </option>
+          {denom.options.map((attrs, index) => (
+            <option {...attrs} key={index} />
           ))}
         </Select>
       )}
 
-      {!cumulativeOptions.hide && (
+      {type && (
         <Select
-          value={cumulative ? CumulativeValues.C : CumulativeValues.P}
-          onChange={e =>
-            setCumulative(e.target.value === CumulativeValues.C ? true : false)
-          }
+          value={type.value}
+          onChange={e => type.set(e.target.value as CumulativeType)}
           className={className}
           style={{ minWidth: 120 }}
         >
-          {Object.values(CumulativeValues).map(value => (
-            <option value={value} key={value}>
-              {t(value)}
-            </option>
+          {type.options.map((attrs, index) => (
+            <option {...attrs} key={index} />
           ))}
         </Select>
       )}
     </>
   )
 
-  const footer = (
+  const durationSelector = (
     <RadioGroup
-      value={String(duration)}
-      onChange={value => setDuration(Number(value))}
-      options={durations.map(duration => ({
-        value: String(duration),
-        label: !duration
-          ? t('From genesis')
-          : duration === 1
-          ? t('Last day')
-          : `${duration}${t(' days')}`
-      }))}
+      value={duration.value}
+      onChange={duration.set}
+      options={duration.options}
     />
   )
 
-  const render = () => {
-    const { options, lineStyle, ...chartProps } = getChartProps(results, {
-      additional
-    })
-
+  const renderChart = (chart: ChartUI) => {
     const defaultOptions: ChartOptions = {
       scales: {
         xAxes: [{ time: { unit: 'day' } }],
         yAxes: [
           { ticks: { min: fixedYAxis ? 0 : undefined, callback: formatTickY } }
-        ]
+        ],
+        ...scales
       },
       tooltips: {
         callbacks: {
-          label: ({ index }, { datasets }) => {
-            const point: ChartPoint =
-              (typeof index === 'number' &&
-                path([0, 'data', index], datasets)) ||
-              {}
-            return point.t ? format.date(point.t as Date, { short: true }) : ''
-          }
+          title: ([{ index }]) => chart.tooltips[index!]['title'],
+          label: ({ index }) => chart.tooltips[index!]['label']
         }
       }
     }
@@ -178,17 +119,26 @@ const Component = ({ url, title, description, ...props }: Props) => {
     return (
       <>
         <header style={{ marginBottom: 20 }}>
-          {renderHeader(results, { cumulative, duration, additional })}
+          <Flex>
+            {Array.isArray(value) ? (
+              <span style={{ fontSize: 20 }}>
+                {value[0]}
+                <small>{value[1]}</small>
+              </span>
+            ) : (
+              <Number {...value} fontSize={20} integer />
+            )}
+          </Flex>
         </header>
 
         <section style={{ height: 260 }}>
           <Chart
-            {...chartProps}
+            data={chart.data}
             lineStyle={{
               ...lineStyle,
-              lineTension: cumulative ? 0 : undefined
+              lineTension: type?.value === CumulativeType.C ? 0 : undefined
             }}
-            options={mergeDeep(defaultOptions, options || {})}
+            options={defaultOptions}
             height={260}
           />
         </section>
@@ -196,56 +146,40 @@ const Component = ({ url, title, description, ...props }: Props) => {
     )
   }
 
-  const isEmpty = Array.isArray(results) && !results.length
-  const iconAttrs = { style: { marginLeft: 5 } }
-
   return (
     <Card
-      title={
-        <Flex>
-          <h1>{title}</h1>
-          <Pop type="tooltip" placement="top" width={320} content={description}>
-            {({ ref, getAttrs }) => (
-              <Icon name="info" forwardRef={ref} {...getAttrs(iconAttrs)} />
-            )}
-          </Pop>
-        </Flex>
-      }
-      actions={actions}
-      footer={footer}
+      title={title}
+      actions={optionSelectors}
+      footer={durationSelector}
       footerClassName="text-center"
       small
     >
-      {error ? OOPS : results ? (isEmpty ? 'No Data' : render()) : null}
+      {chart && renderChart(chart)}
     </Card>
   )
 }
 
-const ChartCard = (props: Props) => {
-  const fallback = (
-    <Card title={props.title} small>
-      {OOPS}
-    </Card>
-  )
-
-  return (
-    <ErrorBoundary fallback={fallback}>
-      <Component {...props} />
-    </ErrorBoundary>
-  )
-}
+const ChartCard = (props: Props) => (
+  <ErrorBoundary fallback={<ErrorComponent />}>
+    <Component {...props} />
+  </ErrorBoundary>
+)
 
 export default ChartCard
 
 /* helper */
+const B = 1e9
+const M = 1e6
+const K = 1e3
+
 const formatTickY = (value: number, index: number, values: number[]) => {
   const average = values.reduce((p, n) => p + n, 0) / values.length
 
-  return average > 1000000000
-    ? value / 1000000000 + 'B'
-    : average > 1000000
-    ? value / 1000000 + 'M'
-    : average > 1000
-    ? value / 1000 + 'K'
+  return average > B
+    ? value / B + 'B'
+    : average > M
+    ? value / M + 'M'
+    : average > K
+    ? value / K + 'K'
     : value
 }

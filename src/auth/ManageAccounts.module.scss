@@ -1,0 +1,13 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.item {
+  @include flex(space-between);
+  font-size: 14px;
+
+  &:not(:first-child) {
+    border-top: 1px solid #f2f2f2;
+    margin-top: 25px;
+    padding-top: 25px;
+  }
+}

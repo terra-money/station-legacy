@@ -1,0 +1,43 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.item {
+  @include flex();
+  padding: 20px;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+
+  &:not(:first-child) {
+    border-top: 1px solid $hairline;
+  }
+
+  h1 {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: 15px;
+    text-align: left;
+
+    @media (max-width: $breakpoint - 1) {
+      font-size: 18px;
+    }
+  }
+
+  .chevron {
+    @include flex();
+    border: 1px solid $line;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: $bg-hover;
+
+    .chevron {
+      background: $brand;
+      color: white;
+    }
+  }
+}

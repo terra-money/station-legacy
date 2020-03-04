@@ -1,108 +1,59 @@
-import React, { useState, useEffect, createContext, ReactNode } from 'react'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import React, { useState, useEffect, ReactNode } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import { ToastContainer, toast, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { without } from 'ramda'
 import axios from 'axios'
-import { isElectron } from '../helpers/env'
-import electron from '../helpers/electron'
-import { changeChain, ChainList } from '../api/api'
-import { report } from '../utils'
-import { localSettings } from '../utils/localStorage'
-import { useModal } from '../hooks'
-import routes from '../routes'
-import { Languages } from '../lang/list'
-import Modal from '../components/Modal'
-import ModalContent from '../components/ModalContent'
+
+import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
+import { useAuthState, AuthProvider } from '@terra-money/use-station'
+import { LangKey, ChainKey } from '@terra-money/use-station'
+
+import { electron, report } from '../utils'
+import { isElectron } from '../utils/env'
+import { localSettings, findName } from '../utils/localStorage'
+import { useScrollToTop, useModal, AppProvider } from '../hooks'
+import routes from './routes'
+
 import ErrorBoundary from '../components/ErrorBoundary'
-import Version from '../pages/Version'
-import Auth from '../pages/auth/Auth'
+import ErrorComponent from '../components/ErrorComponent'
+import ModalContent from '../components/ModalContent'
+import Modal from '../components/Modal'
+import Auth from '../auth/Auth'
+
 import Nav from './Nav'
 import Header from './Header'
-import AuthContext, { useAuthContext } from './AuthContext'
+import UpdateElectron from './UpdateElectron'
 import s from './App.module.scss'
-import './App.scss'
-import { useTranslation } from 'react-i18next'
 
-type AppContext = {
-  key: number
-  isReady: boolean
-  refresh: () => void
-  authModal: { open: () => void; close: () => void }
+const App = () => {
+  useScrollToTop()
+  const { pathname } = useLocation()
 
-  lang: string
-  selectLang: (lang: string) => void
+  /* init app */
+  const { lang, chain, address, ledger } = localSettings.get()
+  const initialState = { lang: lang as LangKey, chain: chain as ChainKey }
+  const initialUser = address
+    ? { name: findName(address), address, ledger }
+    : undefined
 
-  chain: string
-  selectChain: (chain: string) => void
+  /* app state */
+  const [appKey, setAppKey] = useState(0)
+  const [goBack, setGoBack] = useState<string>()
+  const refresh = () => setAppKey(k => k + 1)
 
-  goBack: string
-  setGoBack: (path: string) => void
-}
-
-const initial = {
-  key: 0,
-  isReady: false,
-  refresh: () => {},
-  authModal: { open: () => {}, close: () => {} },
-
-  lang: Languages.en.key,
-  selectLang: () => {},
-
-  chain: ChainList[0],
-  selectChain: () => {},
-
-  goBack: '',
-  setGoBack: () => {}
-}
-
-export const AppContext = createContext<AppContext>(initial)
-
-const App = ({ location, history }: RouteComponentProps) => {
-  const getInitialChain = () => {
-    const { chain: local } = localSettings.get()
-    const defaultChain = ChainList[0]
-    const chain = local && ChainList.includes(local) ? local : defaultChain
-    localSettings.set({ chain })
-    return chain
-  }
-
-  const getInitialLang = () => {
-    const { lang: local } = localSettings.get()
-    const d = Object.keys(Languages).find(key => i18n.languages.includes(key))
-    const init = local ?? d
-    return init && Languages[init] ? init : initial.lang
-  }
-
-  const { i18n } = useTranslation()
-
-  /* context: modal */
-  const modal = useModal()
-
-  /* context: auth */
-  const auth = useAuthContext({
-    onSignIn: () => modal.close(),
-    onSignOut: () => {}
-  })
-
-  /* effect: app */
-  const [lang, setLang] = useState<string>(getInitialLang)
-  const [chain, setChain] = useState<string>(getInitialChain)
-  const [key, setKey] = useState<number>(initial.key) // refresh
+  /* ready on electron version check */
   const [disabled, setDisabled] = useState<ReactNode>()
-  const refresh = () => setKey(k => k + 1)
 
   useEffect(() => {
     const checkVersion = async () => {
-      try {
-        const onDeprecated = (data: Version) => {
-          const content = <Version {...data} />
-          data.forceUpdate
-            ? setDisabled(content)
-            : modal.open(
-                <ModalContent close={modal.close}>{content}</ModalContent>
-              )
-        }
+      const onDeprecated = (data: Version) => {
+        const inner = <UpdateElectron {...data} />
+        const content = <ModalContent close={modal.close}>{inner}</ModalContent>
+        data.forceUpdate ? setDisabled(inner) : modal.open(content)
+      }
 
+      try {
         const url = 'https://terra.money/station/version.json'
         const { data } = await axios.get<Version>(url)
         const version = electron<string>('version')
@@ -113,72 +64,81 @@ const App = ({ location, history }: RouteComponentProps) => {
     }
 
     const ready = async () => {
-      localSettings.migrate()
-
-      const { address, withLedger } = localSettings.get()
-      address && auth.signin({ address, withLedger })
-      changeChain(chain)
       isElectron && (await checkVersion())
-      setKey(1)
+      refresh()
     }
 
     ready()
     // eslint-disable-next-line
   }, [])
 
-  /* provider: auth */
+  /* redirect on chain change */
+  const { push } = useHistory()
+  useEffect(() => {
+    goBack && push(goBack)
+    // eslint-disable-next-line
+  }, [chain])
+
+  /* provider */
+  const config = useConfigState(initialState)
+  const auth = useAuthState(initialUser)
+  const { current: currentLang = '' } = config.lang
+  const { current: currentChain = '' } = config.chain
+  const { user } = auth
+
+  /* auth modal */
+  const modal = useModal()
   const authModal = {
-    open: () => modal.open(<Auth onClose={modal.close} />),
-    close: modal.close
+    open: () => modal.open(<Auth />),
+    close: () => modal.close()
   }
 
-  /* provider: app */
-  const [goBack, setGoBack] = useState(initial.goBack) // Header
+  useEffect(() => {
+    const onSignIn = ({ address, ledger }: User) => {
+      const { recentAddresses = [] } = localSettings.get()
+      const next = [address, ...without([address], recentAddresses)]
+      localSettings.set({ address, ledger: !!ledger, recentAddresses: next })
+    }
 
-  const selectLang = (lang: string) => {
-    localSettings.set({ lang })
-    i18n.changeLanguage(lang)
-    setLang(lang)
-    refresh()
-  }
+    const onSignOut = () => {
+      localSettings.delete(['address', 'ledger'])
+    }
 
-  const selectChain = (chain: string) => {
-    localSettings.set({ chain })
-    changeChain(chain)
-    setChain(chain)
-    location.pathname.includes('/validator') && history.push('/staking')
-    location.pathname.includes('/proposal') && history.push('/governance')
-    refresh()
-  }
+    user ? onSignIn(user) : onSignOut()
+    authModal.close()
+    // eslint-disable-next-line
+  }, [user])
 
-  const isReady = !!key
-  const app = Object.assign(
-    { key, isReady, refresh, authModal },
-    { lang, selectLang, chain, selectChain, goBack, setGoBack }
-  )
+  /* render */
+  const key = [currentLang, currentChain, appKey].join()
+  const ready = !!(currentLang && currentChain && appKey > 0)
+  const value = { refresh, goBack, setGoBack, modal, authModal }
 
-  return disabled ? (
-    <>{disabled}</>
-  ) : isReady ? (
-    <AppContext.Provider value={app}>
-      <AuthContext.Provider value={auth}>
-        <Nav pathname={location.pathname} key={key} />
-        <section className={s.main}>
-          <Header className={s.header} />
-          <section className={s.content} key={key}>
-            <ErrorBoundary key={location.pathname}>{routes}</ErrorBoundary>
+  return disabled ?? !ready ? null : (
+    <AppProvider value={value} key={key}>
+      <ConfigProvider value={config}>
+        <AuthProvider value={auth}>
+          <Nav />
+          <section className={s.main}>
+            <Header className={s.header} />
+            <section className={s.content}>
+              <ErrorBoundary fallback={<ErrorComponent card />} key={pathname}>
+                {routes}
+              </ErrorBoundary>
+            </section>
           </section>
-        </section>
-        <Modal config={modal.config}>{modal.content}</Modal>
-        <ToastContainer {...ToastConfig} autoClose={false} />
-      </AuthContext.Provider>
-    </AppContext.Provider>
-  ) : null
+
+          <Modal config={modal.config}>{modal.content}</Modal>
+          <ToastContainer {...ToastConfig} autoClose={false} />
+        </AuthProvider>
+      </ConfigProvider>
+    </AppProvider>
+  )
 }
 
-export default withRouter(App)
+export default App
 
-/* Toast */
+/* toast */
 const ToastConfig = {
   position: toast.POSITION.TOP_RIGHT,
   transition: Slide,

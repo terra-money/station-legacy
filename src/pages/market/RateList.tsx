@@ -1,62 +1,57 @@
-import React, { useState, ChangeEvent } from 'react'
-import { useTranslation } from 'react-i18next'
+import React from 'react'
+import { useRate, RateItem, RateUI } from '@terra-money/use-station'
 import c from 'classnames'
-import { format } from '../../utils'
-import WithRequest from '../../components/WithRequest'
+import ErrorComponent from '../../components/ErrorComponent'
+import Loading from '../../components/Loading'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
-import NotAvailable from './NotAvailable'
-import variation from './Variation'
+import NotAvailable from '../../components/NotAvailable'
+import Variation from './Variation'
 import s from './RateList.module.scss'
 
 const RateList = ({ denoms }: { denoms: string[] }) => {
-  const { t } = useTranslation()
-  const [denom, setDenom] = useState(denoms[0])
-  const handleChange = (e: ChangeEvent<HTMLFieldElement>) =>
-    setDenom(e.target.value)
+  const { error, loading, title, message, unit, filter, ui } = useRate(denoms)
 
-  const renderRow = (r: Rate & Variation, index: number) => (
+  const renderFilter = () => {
+    const { value, set, options } = filter.denom
+    return (
+      <Select
+        value={value}
+        onChange={e => set(e.target.value)}
+        className={c('form-control', s.select)}
+      >
+        {options.map((attrs, index) => (
+          <option {...attrs} key={index} />
+        ))}
+      </Select>
+    )
+  }
+
+  const renderRow = ({ display, variation }: RateItem, index: number) => (
     <li className={s.row} key={index}>
       <header>
-        <span className={s.unit}>1 {format.denom(denom)} =</span>
+        <span className={s.unit}>1 {unit} =</span>
         <p className={s.price}>
-          {format.decimal(r.swaprate)} <strong>{format.denom(r.denom)}</strong>
+          {display.value} <strong>{display.unit}</strong>
         </p>
       </header>
-      <section>{variation({ ...r, render: ([h]) => h })}</section>
+      <section>
+        <Variation variation={variation} />
+      </section>
     </li>
   )
 
-  return (
-    <Card title={t('Terra exchange rate')} fixedHeight>
-      {!!denoms.length ? (
-        <>
-          <Select
-            name="denom"
-            value={denom}
-            onChange={handleChange}
-            className={c('form-control', s.select)}
-          >
-            {denoms.map((denom, index) => (
-              <option value={denom} key={index}>
-                {format.denom(denom)}
-              </option>
-            ))}
-          </Select>
+  const render = ({ message, list }: RateUI) =>
+    message ? (
+      <NotAvailable>{message}</NotAvailable>
+    ) : (
+      <ul>{list?.map(renderRow)}</ul>
+    )
 
-          <WithRequest url={`/v1/market/swaprate/${denom}`}>
-            {(rateList: RateList) =>
-              !!rateList.length ? (
-                <ul>{rateList.map(renderRow)}</ul>
-              ) : (
-                <NotAvailable>{t('Swapping is not available.')}</NotAvailable>
-              )
-            }
-          </WithRequest>
-        </>
-      ) : (
-        <NotAvailable>{t('Swapping is not available.')}</NotAvailable>
-      )}
+  return (
+    <Card title={title} fixedHeight>
+      {message ? <NotAvailable>{message}</NotAvailable> : renderFilter()}
+      {error ? <ErrorComponent /> : loading ? <Loading /> : ui && render(ui)}
     </Card>
   )
 }

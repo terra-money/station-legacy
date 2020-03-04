@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import c from 'classnames'
+import { useMenu } from '@terra-money/use-station'
+import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import Icon from '../components/Icon'
 import NavItem from './NavItem'
-import SelectLanguage from './SelectLanguage'
-import SelectChain from './SelectChain'
-import { ReactComponent as TerraStation } from '../helpers/TerraStation.svg'
+import Lang from './Lang'
+import Chain from './Chain'
+import Height from './Height'
 import s from './Nav.module.scss'
 
-const Nav = ({ pathname }: { pathname: string }) => {
-  const { t } = useTranslation()
+const Nav = () => {
+  const { pathname } = useLocation()
+  const name = useMenu()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggle = () => setIsOpen(!isOpen)
   const close = () => setIsOpen(false)
 
   const menu = [
-    { name: t('Dashboard'), to: '/', icon: 'dashboard' },
-    { name: t('Bank'), to: '/bank', icon: 'account_balance' },
-    { name: t('Transactions'), to: '/transactions', icon: 'swap_horiz' },
-    { name: t('Staking'), to: '/staking', icon: 'layers' },
-    { name: t('Market'), to: '/market', icon: 'timeline' },
-    { name: t('Governance'), to: '/governance', icon: 'how_to_vote' }
+    { name: name['Dashboard'], to: '/', icon: 'dashboard' },
+    { name: name['Bank'], to: '/bank', icon: 'account_balance' },
+    { name: name['Transactions'], to: '/transactions', icon: 'swap_horiz' },
+    { name: name['Staking'], to: '/staking', icon: 'layers' },
+    { name: name['Market'], to: '/market', icon: 'timeline' },
+    { name: name['Governance'], to: '/governance', icon: 'how_to_vote' }
   ]
 
   /* Close on change path (Android) */
@@ -51,8 +53,11 @@ const Nav = ({ pathname }: { pathname: string }) => {
         </ul>
 
         <footer className={s.footer}>
-          <SelectLanguage />
-          <SelectChain onChangeChain={close} />
+          <Lang />
+          <section className={s.chain}>
+            <Chain />
+            <Height />
+          </section>
         </footer>
       </section>
     </nav>

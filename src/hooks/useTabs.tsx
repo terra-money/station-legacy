@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import URLSearchParams from '@ungap/url-search-params'
 import c from 'classnames'
 
-export default (name: string, tabs: string[]) => {
-  const { t } = useTranslation()
+export default (name: string, tabs: { key: string; label: string }[]) => {
   const { search, pathname } = useLocation()
   const history = useHistory()
 
@@ -32,15 +30,15 @@ export default (name: string, tabs: string[]) => {
   }, [])
 
   /* render: tab */
-  const renderTab = (tab: string) => {
+  const renderTab = ({ key, label }: { key: string; label: string }) => {
     const next = getNextSearch([
-      [name, tab],
+      [name, key],
       ['page', '']
     ])
 
-    const isCurrent = tab === currentTab
+    const isCurrent = key === currentTab
     const className = c('badge', isCurrent && 'badge-primary')
-    const attrs = { className, children: t(tab) || t('all'), key: tab }
+    const attrs = { className, children: label, key }
     const to = { pathname, search: next }
     return isCurrent ? <span {...attrs} /> : <Link to={to} {...attrs} />
   }
@@ -49,11 +47,11 @@ export default (name: string, tabs: string[]) => {
   const currentTab = getSearch().get(name) || ''
   return {
     currentTab,
-    page: getSearch().get('page') || '1',
+    page: Number(getSearch().get('page')) || 1,
     renderTabs: () => <section className="tabs">{tabs.map(renderTab)}</section>,
-    getLink: (page: string) => ({
+    getLink: (page: number) => ({
       pathname,
-      search: getNextSearch([['page', page]])
+      search: getNextSearch([['page', String(page)]])
     })
   }
 }

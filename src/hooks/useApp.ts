@@ -1,3 +1,2 @@
-import { useContext } from 'react'
-import { AppContext } from '../layouts/App'
-export default () => useContext(AppContext)
+import { createContext } from '@terra-money/use-station'
+export const [useApp, AppProvider] = createContext<App>()

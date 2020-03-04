@@ -1,0 +1,15 @@
+.recent {
+  max-height: 240px;
+  overflow: auto;
+}
+
+.item {
+  text-align: left;
+}
+
+.contents {
+  strong {
+    display: inline-block;
+    width: 5em;
+  }
+}

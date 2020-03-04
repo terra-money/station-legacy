@@ -6,13 +6,14 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   size?: number
   color?: string
   variant?: object
+  center?: boolean
 }
 
-const ProgressCircle = (props: Props) => {
-  const { size = 18, color = '#2043b5', variant = {}, className } = props
+const ProgressCircle = ({ size = 18, color = '#2043b5', ...props }: Props) => {
+  const { variant = {}, className, center } = props
   return (
     <div
-      className={c(s.container, className)}
+      className={c(s.container, center && s.center, className)}
       style={{ width: size, height: size, ...variant }}
     >
       <div className={s.wrapper} style={{ borderColor: color }}>

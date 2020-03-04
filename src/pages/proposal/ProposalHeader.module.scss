@@ -1,0 +1,34 @@
+.title {
+  font-size: 24px;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.meta {
+  font-size: 12px;
+}
+
+.description {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.dl {
+  dt {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  dd {
+    font-size: 13px;
+    white-space: pre;
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  dt:not(:first-child) {
+    margin-top: 20px;
+  }
+}

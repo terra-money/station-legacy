@@ -1,29 +1,24 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { format } from '../../utils'
+import { RewardsTable } from '@terra-money/use-station'
 import Table from '../../components/Table'
-import Amount from '../../components/Amount'
+import Number from '../../components/Number'
 
-type Props = { rewards: Reward[] }
-
-const Rewards = ({ rewards }: Props) => {
-  const { t } = useTranslation()
-
+const Rewards = ({ headings, contents }: RewardsTable) => {
   return (
     <Table light small>
       <thead>
         <tr>
-          <th>{t('Coin')}</th>
-          <th className="text-right">{t('Amount')}</th>
+          <th>{headings['unit']}</th>
+          <th className="text-right">{headings['value']}</th>
         </tr>
       </thead>
 
       <tbody>
-        {rewards.map((u, index) => (
+        {contents.map((content, index) => (
           <tr key={index}>
-            <td>{format.denom(u.denom)}</td>
+            <td>{content['unit']}</td>
             <td className="text-right">
-              <Amount>{u.amount}</Amount>
+              <Number>{content['value']}</Number>
             </td>
           </tr>
         ))}

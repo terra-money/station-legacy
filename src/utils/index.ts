@@ -1,6 +1,2 @@
-export { default as format } from './format'
-export { default as sanitize } from './sanitize'
-export { default as is } from './is'
-export { default as find } from './find'
-export { default as report } from './error'
-export { default as getSize } from './size'
+export { default as electron } from './electron'
+export { default as report } from './report'

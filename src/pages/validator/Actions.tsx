@@ -1,97 +1,74 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { gte } from '../../api/math'
-import { useModal, useAuth } from '../../hooks'
+import { ValidatorUI, format } from '@terra-money/use-station'
+import { useApp } from '../../hooks'
 import Card from '../../components/Card'
-import Modal from '../../components/Modal'
-import Amount from '../../components/Amount'
+import Number from '../../components/Number'
 import Icon from '../../components/Icon'
 import Pop from '../../components/Pop'
 import ActionBar from '../../components/ActionBar'
-import ButtonWithName from '../../components/ButtonWithName'
-import Delegate from '../staking/Delegate'
-import Withdraw from '../staking/Withdraw'
-import Claim from '../staking/Claim'
+import ButtonWithAuth from '../../components/ButtonWithAuth'
 import DelegationTooltip from '../staking/DelegationTooltip'
+import Delegate from '../../post/Delegate'
+import Withdraw from '../../post/Withdraw'
 import s from './Actions.module.scss'
 
-const Actions = (v: Validator) => {
-  const { description, myRewards } = v
+const Actions = (v: ValidatorUI) => {
+  const { operatorAddress } = v
+  const { delegate, undelegate, withdraw } = v
+  const { myDelegations, myActionsTable, myRewards } = v
 
-  const { t } = useTranslation()
-  const modal = useModal()
-  const { address, name, withLedger } = useAuth()
+  const { modal } = useApp()
 
   /* tx */
-  const delegate = ({ undelegate }: { undelegate?: boolean }) =>
-    modal.open(
-      <Delegate
-        to={v.operatorAddress}
-        moniker={description.moniker}
-        max={(!undelegate ? v.myDelegatable : v.myDelegation) ?? 0}
-        onDelegating={modal.prevent}
-        onDelegate={modal.close}
-        undelegate={!!undelegate}
-      />
-    )
+  const open = {
+    delegate: ({ undelegate }: { undelegate?: boolean }) =>
+      modal.open(
+        <Delegate to={operatorAddress.address} undelegate={!!undelegate} />
+      ),
+    withdraw: () =>
+      myRewards.amounts &&
+      modal.open(
+        <Withdraw from={operatorAddress.address} amounts={myRewards.amounts} />
+      )
+  }
 
-  const withdraw = () =>
-    myRewards &&
-    modal.open(
-      <Withdraw
-        from={v.operatorAddress}
-        amounts={myRewards.denoms}
-        onWithdrawing={modal.prevent}
-        onWithdraw={modal.close}
-      />
-    )
-
-  const claim = () =>
-    modal.open(
-      <Claim {...v} onClaiming={modal.prevent} onClaim={modal.close} />
-    )
+  /* render */
+  const content = myActionsTable && <DelegationTooltip {...myActionsTable} />
+  const myDelegation =
+    myDelegations.display ?? format.display({ amount: '0', denom: 'uluna' })
 
   return (
     <div className="row text-center">
-      <Modal config={modal.config}>{modal.content}</Modal>
       <div className="col">
         <Card className={s.card}>
-          <h1>{t('My delegation')}</h1>
+          <h1>{myDelegations.title}</h1>
           <section className={s.content}>
-            <Pop
-              type="pop"
-              placement="bottom"
-              width={400}
-              content={<DelegationTooltip {...v} />}
-            >
-              {({ ref, iconRef, getAttrs }) => (
-                <span {...getAttrs({ className: s.pop })} ref={ref}>
-                  <Amount denom="uluna" fontSize={18}>
-                    {v.myDelegation}
-                  </Amount>
-                  <Icon name="arrow_drop_down" forwardRef={iconRef} />
-                </span>
-              )}
-            </Pop>
+            {content ? (
+              <Pop type="pop" placement="bottom" width={400} content={content}>
+                {({ ref, iconRef, getAttrs }) => (
+                  <span {...getAttrs({ className: s.pop })} ref={ref}>
+                    <Number {...myDelegation} fontSize={18} />
+                    <Icon name="arrow_drop_down" forwardRef={iconRef} />
+                  </span>
+                )}
+              </Pop>
+            ) : (
+              <Number {...myDelegation} fontSize={18} />
+            )}
           </section>
 
           <ActionBar
             list={[
-              <ButtonWithName
-                onClick={() => delegate({})}
+              <ButtonWithAuth
+                {...delegate}
+                onClick={() => open.delegate({})}
                 className="btn btn-sm btn-primary"
-                disabled={(!name && !withLedger) || v.status === 'jailed'}
-              >
-                {t('Delegate')}
-              </ButtonWithName>,
-
-              <ButtonWithName
-                onClick={() => delegate({ undelegate: true })}
+              />,
+              <ButtonWithAuth
+                {...undelegate}
+                onClick={() => open.delegate({ undelegate: true })}
                 className="btn btn-sm btn-sky"
-                disabled={(!name && !withLedger) || !v.myDelegation}
-              >
-                {t('Undelegate')}
-              </ButtonWithName>
+              />
             ]}
           />
         </Card>
@@ -99,37 +76,19 @@ const Actions = (v: Validator) => {
 
       <div className="col">
         <Card className={s.card}>
-          <h1>{t('My rewards')}</h1>
+          <h1>{myRewards.title}</h1>
           <section className={s.content}>
-            <Amount denom="uluna" fontSize={18} estimated>
-              {myRewards && myRewards.total}
-            </Amount>
+            <Number {...myRewards.display} fontSize={18} estimated />
           </section>
 
           <section className={s.actions}>
             <span className={s.action}>
-              <ButtonWithName
-                onClick={() => withdraw()}
+              <ButtonWithAuth
+                {...withdraw}
+                onClick={() => open.withdraw()}
                 className="btn btn-sky btn-sm"
-                disabled={
-                  (!name && !withLedger) ||
-                  !(myRewards && gte(myRewards.total, 1))
-                }
-              >
-                {t('Withdraw rewards')}
-              </ButtonWithName>
+              />
             </span>
-
-            {v.accountAddress === address && (name || withLedger) && (
-              <span className={s.action}>
-                <ButtonWithName
-                  onClick={() => claim()}
-                  className="btn btn-sky btn-sm"
-                >
-                  {t('Claim')}
-                </ButtonWithName>
-              </span>
-            )}
           </section>
         </Card>
       </div>

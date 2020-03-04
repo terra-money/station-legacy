@@ -31,7 +31,8 @@ export default (): Modal => {
     })
   }
 
-  const actions = { open, close, setContent, prevent }
+  const post = { onSubmitting: prevent, onSubmitted: close }
+  const actions = { open, close, setContent, prevent, post }
   const defaultConfig = { isOpen, onRequestClose: close, portalClassName }
   return { ...actions, content, config: { ...defaultConfig, ...config } }
 }

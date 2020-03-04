@@ -1,0 +1,10 @@
+@import '../styles/variables';
+
+.dl {
+  background: $bg;
+  border: 1px solid #cfd8ea;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-size: 12px;
+  margin-bottom: 20px;
+}

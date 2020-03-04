@@ -1,41 +1,27 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { format } from '../../utils'
-import Amount from '../../components/Amount'
+import { MyActionsTable } from '@terra-money/use-station'
+import Number from '../../components/Number'
 import Table from '../../components/Table'
 
-const DelegationTooltip = (v: Validator) => {
-  const { myDelegation, myUndelegation = [] } = v
-  const { t } = useTranslation()
-
+const DelegationTooltip = ({ headings, contents }: MyActionsTable) => {
   return (
     <Table light small>
       <thead>
         <tr>
-          <th>{t('Action')}</th>
-          <th className="text-right">
-            {t('Amount')} <small>(Luna)</small>
-          </th>
-          <th className="text-right">{t('Release time')}</th>
+          <th>{headings.action}</th>
+          <th className="text-right">{headings.display}</th>
+          <th className="text-right">{headings.date}</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr>
-          <td>{t('Delegated')}</td>
-          <td className="text-right">
-            <Amount>{myDelegation}</Amount>
-          </td>
-          <td className="text-right">-</td>
-        </tr>
-
-        {myUndelegation.map(({ amount, releaseTime }, index) => (
+        {contents.map(({ action, display, date }, index) => (
           <tr key={index}>
-            <td>{t('Undelegated')}</td>
+            <td>{action}</td>
             <td className="text-right">
-              <Amount>{amount}</Amount>
+              <Number>{display.value}</Number>
             </td>
-            <td className="text-right">{format.date(releaseTime)}</td>
+            <td className="text-right">{date}</td>
           </tr>
         ))}
       </tbody>

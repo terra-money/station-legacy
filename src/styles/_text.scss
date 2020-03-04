@@ -19,6 +19,10 @@
   color: $red;
 }
 
+.text-muted {
+  color: $gray;
+}
+
 /* alignments */
 .text-center {
   text-align: center;
@@ -31,4 +35,9 @@
 /* transform */
 .text-capitalize {
   text-transform: capitalize;
+}
+
+/* white-space */
+.pre-line {
+  white-space: pre-line;
 }

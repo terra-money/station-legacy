@@ -111,3 +111,14 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 .footer {
   color: white;
 }
+
+.chain {
+  @include flex(space-between);
+  background: darken($navy, 3%);
+  padding: 20px;
+
+  > div {
+    flex: auto;
+    margin-right: 10px;
+  }
+}

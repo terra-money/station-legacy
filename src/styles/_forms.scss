@@ -89,6 +89,7 @@ input {
 .form-control-sm {
   border-radius: 2px;
   height: 25px;
+  line-height: 25px;
   width: auto;
 }
 
@@ -152,6 +153,11 @@ textarea.form-control {
     font-size: 12px;
     padding: 0 15px;
     word-break: initial;
+  }
+
+  .form-control-sm + .input-group-append {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
 }
 

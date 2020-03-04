@@ -1,45 +1,33 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { format } from '../../utils'
-import { useAuth, useModal } from '../../hooks'
-import Modal from '../../components/Modal'
-import ButtonWithName from '../../components/ButtonWithName'
+import c from 'classnames'
+import { DisplayCoin } from '@terra-money/use-station'
+import { useApp } from '../../hooks'
+import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AmountCard from './AmountCard'
-import Send from './Send'
+import Send from '../../post/Send'
+import s from './Available.module.scss'
 
-const Available = ({ denom, available }: Balance) => {
-  const { t } = useTranslation()
-  const { name, withLedger } = useAuth()
-  const modal = useModal()
+interface Props {
+  denom: string
+  display: DisplayCoin
+  buttonLabel: string
+}
 
-  const openModal = () =>
-    modal.open(
-      <Send
-        initial={{ denom }}
-        max={available}
-        onSending={modal.prevent}
-        onSend={modal.close}
-      />
+const Available = ({ denom, display, buttonLabel }: Props) => {
+  const { modal } = useApp()
+
+  const renderButton = () => {
+    const openModal = () => modal.open(<Send denom={denom} />)
+    const className = c('btn btn-primary btn-sm', s.button)
+
+    return (
+      <ButtonWithAuth onClick={openModal} className={className}>
+        {buttonLabel}
+      </ButtonWithAuth>
     )
+  }
 
-  return (
-    <>
-      <AmountCard
-        denom={format.denom(denom)}
-        amount={available}
-        button={
-          <ButtonWithName
-            onClick={openModal}
-            className="btn btn-primary btn-sm btn-send"
-            disabled={!name && !withLedger}
-          >
-            {t('Send')}
-          </ButtonWithName>
-        }
-      />
-      <Modal config={modal.config}>{modal.content}</Modal>
-    </>
-  )
+  return <AmountCard {...display} button={renderButton()} />
 }
 
 export default Available

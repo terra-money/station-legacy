@@ -1,0 +1,14 @@
+@import '../styles/mixins';
+
+.height {
+  @include flex(flex-end);
+  color: #76a8f8;
+  font-size: 11px;
+  height: (11px * 1.5);
+  min-width: 75px;
+  white-space: nowrap;
+}
+
+.height i {
+  margin-left: 5px;
+}

@@ -1,0 +1,31 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.option {
+  padding: 4px;
+  width: (100% / 2);
+
+  @media (min-width: $breakpoint) {
+    width: (100% / 4);
+  }
+}
+
+.label {
+  @include flex();
+
+  cursor: pointer;
+  height: 100%;
+  padding: 10px 0;
+  text-align: center;
+
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+
+  white-space: pre-line;
+}

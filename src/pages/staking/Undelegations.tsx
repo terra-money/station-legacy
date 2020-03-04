@@ -1,34 +1,27 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { format } from '../../utils'
+import { UndelegationsTable } from '@terra-money/use-station'
 import Table from '../../components/Table'
-import Amount from '../../components/Amount'
+import Number from '../../components/Number'
 
-type Props = { undelegations: Undelegation[] }
-
-const Undelegations = ({ undelegations }: Props) => {
-  const { t } = useTranslation()
-
+const Undelegations = ({ headings, contents }: UndelegationsTable) => {
   return (
     <Table light small>
       <thead>
         <tr>
-          <th>{t('Validator')}</th>
-          <th className="text-right">
-            Amount <small>(Luna)</small>
-          </th>
-          <th className="text-right">Release time</th>
+          <th>{headings['name']}</th>
+          <th className="text-right">{headings['display']}</th>
+          <th className="text-right">{headings['date']}</th>
         </tr>
       </thead>
 
       <tbody>
-        {undelegations.map((u, index) => (
+        {contents.map((content, index) => (
           <tr key={index}>
-            <td>{u.validatorName}</td>
+            <td>{content['name']}</td>
             <td className="text-right">
-              <Amount>{u.amount}</Amount>
+              <Number>{content['display'].value}</Number>
             </td>
-            <td className="text-right">{format.date(u.releaseTime)}</td>
+            <td className="text-right">{content['date']}</td>
           </tr>
         ))}
       </tbody>

@@ -1,0 +1,24 @@
+.material-icons {
+  font-size: 16px;
+  width: 16px;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.Toastify__toast-container {
+  @media (min-width: 480px) {
+    width: 480px;
+  }
+}
+
+.Toastify__toast {
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  padding: 0;
+}
+
+.Toastify__toast-body {
+  margin: 0;
+}

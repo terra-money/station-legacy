@@ -1,29 +1,23 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import Icon from './Icon'
 import s from './Confirm.module.scss'
 
-type Props = {
+interface Props {
   icon?: string
-  title: string
-  actions?: { onClick: () => void; children: string; className: string }[]
+  title?: string
+  content?: ReactNode
+  footer?: ReactNode
 }
 
-const Confirm: FC<Props> = ({ icon, title, children, actions = [] }) => (
+const Confirm: FC<Props> = ({ icon, title, content, children, footer }) => (
   <article className={s.article}>
     <header className={s.header}>
       {icon && <Icon name={icon} size={50} />}
       <h1 className={s.title}>{title}</h1>
     </header>
 
-    <section className={s.main}>{children}</section>
-
-    {!!actions.length && (
-      <footer className={s.actions}>
-        {actions.map((attrs, index) => (
-          <button {...attrs} key={index} />
-        ))}
-      </footer>
-    )}
+    <section className={s.main}>{content ?? children}</section>
+    {!!footer && <footer className={s.actions}>{footer}</footer>}
   </article>
 )
 

@@ -1,32 +1,38 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import c from 'classnames'
-import { lt, percent, times } from '../../api/math'
-import { format } from '../../utils'
+import { Variation as VariationProps } from '@terra-money/use-station'
+import { gt, lt } from '@terra-money/use-station'
 import Icon from '../../components/Icon'
-import Amount from '../../components/Amount'
+import Number from '../../components/Number'
 import s from './Variation.module.scss'
 
-type Props = { inline?: boolean; render: (elements: ReactNode[]) => ReactNode }
-const Variation = ({ inline, render, ...variation }: Props & Variation) => {
-  const { oneDayVariation, oneDayVariationRate } = variation
-  const decreased = lt(oneDayVariation, 0)
+interface Props {
+  variation: VariationProps
+  showPercent?: boolean
+}
 
-  const icon = !decreased ? 'arrow_drop_up' : 'arrow_drop_down'
-  const color = !decreased ? 'text-success' : 'text-danger'
+const Variation = ({ variation, showPercent }: Props) => {
+  const { value, percent } = variation
+  const inc = gt(value, 0)
+  const dec = lt(value, 0)
 
-  const h = oneDayVariation
-  const t = `${!decreased ? '+' : ''}${percent(oneDayVariationRate)}`
+  const icon = inc ? 'arrow_drop_up' : dec ? 'arrow_drop_down' : undefined
+  const color = inc ? 'text-success' : dec ? 'text-danger' : 'text-muted'
 
-  return render([
-    <div className={c('flex', color, inline && s.inline)}>
-      {icon && <Icon name={icon} />}
-      {inline ? <Amount>{times(h, 1e6)}</Amount> : format.decimal(h)}
-    </div>,
+  const tail = `${inc ? '+' : ''}${percent}`
 
-    <span className={c('text-right', s.percent, color)}>
-      {inline ? `(${t})` : t}
-    </span>
-  ])
+  return (
+    <>
+      <div className={c('flex', color, showPercent && s.inline)}>
+        {icon && <Icon name={icon} />}
+        {showPercent ? <Number>{value}</Number> : value}
+      </div>
+
+      {showPercent && (
+        <span className={c('text-right', s.percent, color)}>({tail})</span>
+      )}
+    </>
+  )
 }
 
 export default Variation

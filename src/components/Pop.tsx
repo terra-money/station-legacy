@@ -64,6 +64,7 @@ const Pop = (props: Tooltip & Pop) => {
   const open = () => setIsOpen(true)
   const close = () => setIsOpen(false)
   const toggle = () => setIsOpen(!isOpen)
+  useOnClickOutside([ref, tooltipRef], close)
 
   /* position */
   const [tooltipWidth, setTooltipWidth] = useState<number>()
@@ -161,3 +162,26 @@ const Pop = (props: Tooltip & Pop) => {
 }
 
 export default Pop
+
+/* hook */
+const useOnClickOutside = (
+  refs: RefObject<HTMLElement>[],
+  handler: () => void
+) => {
+  useEffect(() => {
+    const listener = (event: MouseEvent | TouchEvent) => {
+      const notContains = ({ current }: RefObject<HTMLElement>) =>
+        current && !current.contains(event.target as Node)
+
+      refs.every(notContains) && handler()
+    }
+
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
+
+    return () => {
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+    }
+  }, [refs, handler])
+}

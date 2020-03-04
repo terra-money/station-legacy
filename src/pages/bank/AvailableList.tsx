@@ -1,35 +1,28 @@
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { gte } from '../../api/math'
+import React from 'react'
+import { AvailableUI } from '@terra-money/use-station'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'
 import Checkbox from '../../components/Checkbox'
 import Available from './Available'
 
-const AvailableList = ({ list }: { list: Balance[] }) => {
-  const { t } = useTranslation()
-  const { hideSmallBalances = false } = localSettings.get()
-  const [hide, setHide] = useState<boolean>(hideSmallBalances)
-
+const AvailableList = ({ title, list, hideSmall, send }: AvailableUI) => {
   const toggle = () => {
-    localSettings.set({ hideSmallBalances: !hide })
-    setHide(!hide)
+    localSettings.set({ hideSmallBalances: !hideSmall.checked })
+    hideSmall.toggle()
   }
 
   return (
     <Card
-      title={t('Available')}
+      title={title}
       actions={
-        <Checkbox onClick={toggle} checked={hide}>
-          {t('Hide small balances')}
+        <Checkbox onClick={toggle} checked={hideSmall.checked}>
+          {hideSmall.label}
         </Checkbox>
       }
     >
-      {list
-        .filter(({ available }) => !hide || gte(available, '100000'))
-        .map((a, i) => (
-          <Available {...a} key={i} />
-        ))}
+      {list.map((item, i) => (
+        <Available {...item} buttonLabel={send} key={i} />
+      ))}
     </Card>
   )
 }

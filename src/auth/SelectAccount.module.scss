@@ -1,0 +1,49 @@
+@import '../styles/variables';
+
+.item + .item {
+  margin-top: 20px;
+}
+
+.label {
+  display: block;
+  border: 2px solid #d2d9f0;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 20px;
+
+  &.active {
+    border-color: $brand;
+  }
+
+  &.muted {
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.meta {
+  margin-bottom: 10px;
+}
+
+.p {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.main {
+  font-size: 13px;
+}
+
+.available {
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    flex: none;
+    width: 50%;
+  }
+}

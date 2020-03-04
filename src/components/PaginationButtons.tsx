@@ -1,6 +1,6 @@
 import React from 'react'
-import s from './PaginationButtons.module.scss'
 import { Link } from 'react-router-dom'
+import s from './PaginationButtons.module.scss'
 
 type Props = {
   current: number

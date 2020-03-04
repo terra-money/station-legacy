@@ -1,0 +1,39 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.p {
+  @include flex(flex-start);
+  font-size: 13px;
+  margin-bottom: 20px;
+
+  i {
+    margin-right: 5px;
+  }
+}
+
+.form select {
+  margin-bottom: 20px;
+}
+
+.submit {
+  margin-top: 40px;
+}
+
+.arrow {
+  margin: 43px auto;
+  text-align: center;
+
+  svg {
+    fill: $brand;
+  }
+
+  @media (max-width: $breakpoint - 1) {
+    margin: 20px auto;
+    transform: rotate(90deg);
+
+    svg {
+      width: 50px;
+      height: 9px;
+    }
+  }
+}

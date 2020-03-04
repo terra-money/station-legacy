@@ -1,8 +1,7 @@
 import React from 'react'
 import { path } from 'ramda'
 import { ChartPoint, ChartTooltipCallback } from 'chart.js'
-import { percent, toNumber, gt } from '../../api/math'
-import { optionColors } from './constants'
+import { VoteOption, percent, toNumber, gt } from '@terra-money/use-station'
 import Chart from '../../components/Chart'
 import Orb from '../../components/Orb'
 
@@ -12,7 +11,7 @@ const VoteChart = ({ options }: { options: VoteOption[] }) => {
   return filtered.length ? (
     <Chart
       type="pie"
-      pieBackgroundColors={filtered.map(o => optionColors[o.label])}
+      pieBackgroundColors={filtered.map(o => o.color)}
       labels={filtered.map(o => o.label)}
       data={filtered.map(o => toNumber(o.ratio))}
       width={100}

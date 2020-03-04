@@ -1,8 +1,7 @@
 import React from 'react'
 import c from 'classnames'
-import { useTranslation } from 'react-i18next'
-import { percent, gt, gte, min } from '../api/math'
-import { ReactComponent as Tilde } from '../helpers/Tilde.svg'
+import { percent, gt, min } from '@terra-money/use-station'
+import { ReactComponent as Tilde } from '../images/Tilde.svg'
 import Icon from './Icon'
 import s from './Orb.module.scss'
 
@@ -10,11 +9,10 @@ interface Props {
   ratio?: string
   size: number
   className?: string
+  completed?: string
 }
 
-const Orb = ({ ratio = '0', size, className }: Props) => {
-  const { t } = useTranslation()
-
+const Orb = ({ ratio = '0', size, completed, className }: Props) => {
   return (
     <div className={c(s.orb, className)} style={{ width: size, height: size }}>
       <div className={s.bar} style={{ height: percent(min([ratio, 1])) }}>
@@ -26,10 +24,10 @@ const Orb = ({ ratio = '0', size, className }: Props) => {
           />
         )}
 
-        {gte(ratio, 1) && (
+        {completed && (
           <div>
             <Icon name="check_circle" size={36} />
-            <p>{t('Min deposit completed')}</p>
+            <p>{completed}</p>
           </div>
         )}
       </div>

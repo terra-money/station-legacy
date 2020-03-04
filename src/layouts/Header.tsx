@@ -1,41 +1,37 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { useApp, useAuth } from '../hooks'
+import { useAuth, useText } from '@terra-money/use-station'
+import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
-  const { t } = useTranslation()
-  const { authModal, refresh, goBack } = useApp()
-  const { name, address, signout } = useAuth()
+  const { user, signOut } = useAuth()
+  const { SIGN_IN } = useText()
+  const { goBack, refresh, authModal } = useApp()
 
   return (
     <header className={c(s.header, className)}>
       <div className={s.container}>
         <div className={s.user}>
-          {!address ? (
+          {!user ? (
             <button
-              onClick={authModal.open}
               className={c('btn btn-primary btn-sm', s.button)}
+              onClick={authModal.open}
             >
-              {t('Sign in')}
+              {SIGN_IN}
             </button>
           ) : (
             <>
               <Icon name="account_circle" />
-              <span className={s.username}>{name || address}</span>
+              <span className={s.username}>{user.name || user.address}</span>
             </>
           )}
         </div>
 
         <section
-          className={c(
-            'btn-icon-group',
-            s.actions,
-            !address && 'desktop-large'
-          )}
+          className={c('btn-icon-group', s.actions, !user && 'desktop-large')}
         >
           {goBack && (
             <Link to={goBack} className="btn-icon">
@@ -43,12 +39,12 @@ const Header = ({ className }: { className: string }) => {
             </Link>
           )}
 
-          <button onClick={refresh} className="btn-icon">
+          <button className="btn-icon" onClick={refresh}>
             <Icon name="refresh" size={20} />
           </button>
 
-          {address && (
-            <button onClick={signout} className="btn-icon">
+          {user && (
+            <button onClick={signOut} className="btn-icon">
               <Icon name="exit_to_app" size={20} />
             </button>
           )}

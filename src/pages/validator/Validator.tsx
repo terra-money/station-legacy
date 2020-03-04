@@ -1,67 +1,57 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useAuth, useGoBack } from '../../hooks'
-import WithRequest from '../../components/WithRequest'
-import Card from '../../components/Card'
+import { useParams } from 'react-router-dom'
+import { ValidatorUI } from '@terra-money/use-station'
+import { useValidator, useMenu, useAuth } from '@terra-money/use-station'
+import { useGoBack } from '../../hooks'
+import ErrorComponent from '../../components/ErrorComponent'
+import Loading from '../../components/Loading'
 import Page from '../../components/Page'
-import NotFound from '../NotFound'
+import Claims from '../../tables/Claims'
+import Delegations from '../../tables/Delegations'
+import Delegators from '../../tables/Delegators'
 import Header from './Header'
 import Actions from './Actions'
 import Informations from './Informations'
-import Claims from './Claims'
-import Delegations from './Delegations'
-import Delegators from './Delegators'
-import s from './Validator.module.scss'
 
-const Validator = ({ match }: RouteComponentProps<{ address: string }>) => {
+const Validator = () => {
   useGoBack('/staking')
-  const { t } = useTranslation()
-  const { address } = useAuth()
+  const { address } = useParams<{ address: string }>()
+
+  const { Validator: title } = useMenu()
+  const { user } = useAuth()
+  const { error, loading, ui, delegations } = useValidator(address, user)
+
+  const render = (ui: ValidatorUI, address: string) => (
+    <>
+      <Header {...ui} />
+      <Actions {...ui} />
+      <Informations {...ui} />
+
+      <h2>{delegations}</h2>
+      <div className="row">
+        <div className="col col-8">
+          <Delegations address={address} />
+        </div>
+
+        <div className="col col-4">
+          <Delegators address={address} />
+        </div>
+      </div>
+
+      <Claims address={address} />
+    </>
+  )
+
   return (
-    <WithRequest
-      url={`/v1/staking/validators/${match.params.address}`}
-      params={{ account: address }}
-      error={<NotFound />}
-    >
-      {(v: Validator) => (
-        <Page title={`${t('Validator')}${t(' details')}`}>
-          <Header {...v} />
-          {address && <Actions {...v} />}
-
-          <Card>
-            <Informations {...v} />
-          </Card>
-
-          <h2>{t('Delegations')}</h2>
-          <div className="row">
-            <div className="col col-8">
-              <Card
-                title={t('Event log')}
-                bodyClassName={s.delegation}
-                bordered
-              >
-                <Delegations address={v.operatorAddress} />
-              </Card>
-            </div>
-
-            <div className="col col-4">
-              <Card
-                title={t('Delegators')}
-                bodyClassName={s.delegation}
-                bordered
-              >
-                <Delegators address={v.operatorAddress} />
-              </Card>
-            </div>
-          </div>
-
-          <Card title={t('Claim log')} bordered>
-            <Claims address={v.operatorAddress} />
-          </Card>
-        </Page>
+    <Page title={title}>
+      {error ? (
+        <ErrorComponent />
+      ) : loading ? (
+        <Loading card />
+      ) : (
+        ui && address && render(ui, address)
       )}
-    </WithRequest>
+    </Page>
   )
 }
 

@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { format } from '../../utils'
+import { VestingItemUI } from '@terra-money/use-station'
 import Icon from '../../components/Icon'
 import AmountCard from './AmountCard'
 import Schedule from './Schedule'
 import s from './Vesting.module.scss'
 
-const Vesting = ({ denom, total, schedules }: Vesting) => {
+const Vesting = ({ display, schedule }: VestingItemUI) => {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(isOpen => !isOpen)
 
   return (
     <AmountCard
-      denom={format.denom(denom)}
-      amount={total}
+      {...display}
       button={
         <button onClick={toggle} className={s.button}>
           <Icon name={isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} />
@@ -21,8 +20,8 @@ const Vesting = ({ denom, total, schedules }: Vesting) => {
     >
       {isOpen && (
         <section className={s.schedules}>
-          {schedules.map((s, i) => (
-            <Schedule {...s} denom={denom} key={i} />
+          {schedule.map((s, i) => (
+            <Schedule {...s} key={i} />
           ))}
         </section>
       )}

@@ -1,0 +1,11 @@
+.select {
+  border-radius: 2px;
+  border: 1px solid #415e9f;
+  font-size: 12px;
+  padding: 0 25px 0 10px;
+  text-transform: capitalize;
+  height: 30px;
+  + i {
+    right: 5px;
+  }
+}

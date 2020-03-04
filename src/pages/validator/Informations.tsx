@@ -1,50 +1,37 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { percent } from '../../api/math'
-import { format } from '../../utils'
-import Finder from '../../components/Finder'
+import { ValidatorUI } from '@terra-money/use-station'
+import Card from '../../components/Card'
+import ExtLink from '../../components/ExtLink'
 import s from './Informations.module.scss'
 
-const Informations = (v: Validator) => {
-  const { t } = useTranslation()
+const Informations = (v: ValidatorUI) => {
+  const { accountAddress, operatorAddress } = v
+  const { maxRate, maxChangeRate, delegationReturn, updateTime } = v
 
-  /* render */
+  const link = (
+    <ExtLink href={accountAddress.link}>{accountAddress.address}</ExtLink>
+  )
+
   const list = [
-    {
-      label: t('Operator address'),
-      value: v.operatorAddress
-    },
-    {
-      label: t('Account address'),
-      value: <Finder q="account">{v.accountAddress}</Finder>
-    },
-    {
-      label: t('Max commission rate'),
-      value: percent(v.commissionInfo.maxRate)
-    },
-    {
-      label: t('Max daily commission change'),
-      value: percent(v.commissionInfo.maxChangeRate)
-    },
-    {
-      label: t('Delegation return'),
-      value: percent(v.stakingReturn)
-    },
-    {
-      label: t('Last commission change'),
-      value: format.date(v.commissionInfo.updateTime)
-    }
+    { label: operatorAddress.title, value: operatorAddress.address },
+    { label: accountAddress.title, value: link },
+    { label: maxRate.title, value: maxRate.percent },
+    { label: maxChangeRate.title, value: maxChangeRate.percent },
+    { label: delegationReturn.title, value: delegationReturn.percent },
+    { label: updateTime.title, value: updateTime.date }
   ]
 
   return (
-    <ul className={s.list}>
-      {list.map(({ label, value }) => (
-        <li key={label}>
-          <h1>{label}</h1>
-          <p>{value}</p>
-        </li>
-      ))}
-    </ul>
+    <Card>
+      <ul className={s.list}>
+        {list.map(({ label, value }) => (
+          <li key={label}>
+            <h1>{label}</h1>
+            <p>{value}</p>
+          </li>
+        ))}
+      </ul>
+    </Card>
   )
 }
 

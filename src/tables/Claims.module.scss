@@ -1,0 +1,10 @@
+@import '../styles/mixins';
+
+.empty {
+  @include flex(flex-start);
+  font-size: 14px;
+
+  i {
+    margin-right: 10px;
+  }
+}

@@ -1,33 +1,34 @@
 import React, { FC, ReactNode } from 'react'
-import { plus, minus, div, ceil, gt } from '../api/math'
 import PaginationButtons from './PaginationButtons'
+import { Pagination as PaginationParams } from '@terra-money/use-station'
+import { toNumber, ceil, div, minus, plus, gt } from '@terra-money/use-station'
 
 type Props = {
   title?: string
   empty?: ReactNode
-  link?: (page: string) => { pathname: string; search: string }
-  action?: (page: string) => void
+  link?: (page: number) => { pathname: string; search: string }
+  action?: (page: number) => void
 }
 
-const Pagination: FC<Pagination & Props> = props => {
+const Pagination: FC<PaginationParams & Props> = props => {
   const { title, empty, link, action, children, ...pagination } = props
   const { page, limit, totalCnt } = pagination
-  const total = Number(ceil(div(totalCnt, limit)))
+  const total = toNumber(ceil(div(totalCnt, limit)))
 
   const getLinks = () =>
     link && {
-      start: link('1'),
-      prev: link(minus(page, 1)),
-      next: link(plus(page, 1)),
-      end: link(String(total))
+      start: link(1),
+      prev: link(toNumber(minus(page, 1))),
+      next: link(toNumber(plus(page, 1))),
+      end: link(total)
     }
 
   const getActions = () =>
     action && {
-      start: () => action('1'),
-      prev: () => action(minus(page, 1)),
-      next: () => action(plus(page, 1)),
-      end: () => action(String(total))
+      start: () => action(1),
+      prev: () => action(toNumber(minus(page, 1))),
+      next: () => action(toNumber(plus(page, 1))),
+      end: () => action(total)
     }
 
   const renderEmpty = () =>
@@ -39,7 +40,7 @@ const Pagination: FC<Pagination & Props> = props => {
       <PaginationButtons
         links={getLinks()}
         actions={getActions()}
-        current={page}
+        current={toNumber(page)}
         total={total}
       />
     </>

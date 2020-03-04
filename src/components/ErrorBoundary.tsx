@@ -1,24 +1,26 @@
-import { Component, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react'
 import * as Sentry from '@sentry/browser'
-import { OOPS } from '../helpers/constants'
+import { ErrorBoundary as Component, useText } from '@terra-money/use-station'
 
-type Props = { fallback?: ReactNode }
-class ErrorBoundary extends Component<Props> {
-  state = { hasError: null }
-  static getDerivedStateFromError = () => ({ hasError: true })
+interface Props {
+  fallback?: ReactNode
+}
 
-  componentDidCatch(error: Error, errorInfo: { [key: string]: any }) {
+const ErrorBoundary: FC<Props> = ({ fallback, children }) => {
+  const { OOPS } = useText()
+
+  const handleError = (error: Error, errorInfo: object) => {
     Sentry.withScope(scope => {
       scope.setExtras(errorInfo)
       Sentry.captureException(error)
     })
   }
 
-  render() {
-    const { fallback = OOPS, children } = this.props
-    const { hasError } = this.state
-    return hasError ? fallback : children
-  }
+  return (
+    <Component fallback={fallback ?? OOPS} handleError={handleError}>
+      {children}
+    </Component>
+  )
 }
 
 export default ErrorBoundary

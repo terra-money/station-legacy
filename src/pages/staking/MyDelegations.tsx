@@ -1,73 +1,57 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import BigNumber from 'bignumber.js'
-import Amount from '../../components/Amount'
+import { MyDelegations as Item } from '@terra-money/use-station'
+import { MyDelegationsContent } from '@terra-money/use-station'
+import Card from '../../components/Card'
+import Number from '../../components/Number'
 import FlexTable from '../../components/FlexTable'
 import StakingChart from './StakingChart'
 
-const tabs: Tab[] = [
-  { label: 'Delegated', key: 'amountDelegated' },
-  { label: 'Rewards', key: 'totalReward' }
-]
+const MyDelegations = ({ list }: { list: Item[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-type Props = { myDelegations: StakingDelegation[] }
-const MyDelegations = ({ myDelegations }: Props) => {
-  const { t } = useTranslation()
-
-  /* Tab */
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-  const renderTab = (tab: Tab) => {
-    const { label, key } = tab
-    const badgeStyle = key === currentTab.key ? 'badge-primary' : 'badge-light'
-    const onClick = () => setCurrentTab(tab)
+  const renderTab = ({ title }: Item, index: number) => {
+    const badgeStyle = index === currentIndex ? 'badge-primary' : 'badge-light'
+    const onClick = () => setCurrentIndex(index)
 
     return (
-      <button onClick={onClick} className={c('badge', badgeStyle)} key={key}>
-        {t(label)}
+      <button onClick={onClick} className={c('badge', badgeStyle)} key={index}>
+        {title}
       </button>
     )
   }
 
   /* Table */
-  const getRow = (d: StakingDelegation) => [
-    <Link to={`/validator/${d.validatorAddress}`}>{d.validatorName}</Link>,
-    <Amount fontSize={16}>{d.amountDelegated}</Amount>,
-    <Amount fontSize={16} estimated>
-      {d.totalReward}
-    </Amount>
+  const getRow = (d: MyDelegationsContent) => [
+    <Link to={`/validator/${d.address}`}>{d.name}</Link>,
+    <Number fontSize={16}>{d.delegated.value}</Number>,
+    <Number fontSize={16} estimated>
+      {d.rewards.value}
+    </Number>
   ]
 
-  /* Sort */
-  const list = myDelegations.sort(compareWith(currentTab.key))
+  const current = list[currentIndex]
+  const { headings, contents } = current.table
 
   return (
-    <div className="row">
-      <div className="col col-6">
-        <StakingChart
-          list={list}
-          currentTab={currentTab}
-          renderTabs={() => tabs.map(renderTab)}
-        />
+    <Card>
+      <div className="row">
+        <div className="col col-6">
+          <StakingChart item={current} renderTabs={() => list.map(renderTab)} />
+        </div>
+        <div className="col col-6">
+          <FlexTable
+            attrs={[{}, { align: 'right' }, { align: 'right' }]}
+            head={[headings.name, headings.delegated, headings.rewards]}
+            body={contents.map(getRow)}
+            height={270}
+            borderless
+          />
+        </div>
       </div>
-      <div className="col col-6">
-        <FlexTable
-          attrs={[{}, { align: 'right' }, { align: 'right' }]}
-          head={[t('Validator'), t('Delegated'), t('Rewards')]}
-          body={list.map(getRow)}
-          height={270}
-          borderless
-        />
-      </div>
-    </div>
+    </Card>
   )
 }
 
 export default MyDelegations
-
-/* helpers */
-const compareWith = (key: Tab['key']) => {
-  return (a: StakingDelegation, b: StakingDelegation) =>
-    new BigNumber(b[key] || 0).minus(a[key] || 0).toNumber()
-}

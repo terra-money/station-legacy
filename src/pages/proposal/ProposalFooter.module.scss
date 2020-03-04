@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+
+.tallying {
+  @include flex();
+
+  article {
+    text-align: center;
+    width: (100% / 3);
+  }
+
+  h1 {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+}
