@@ -7,9 +7,8 @@
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
-    "@ledgerhq/hw-transport-u2f": "^5.3.0",
-    "@ledgerhq/hw-transport-webhid": "^5.3.3",
-    "@ledgerhq/hw-transport-webusb": "^5.3.0",
+    "@ledgerhq/hw-transport-webhid": "^5.9.0",
+    "@ledgerhq/hw-transport-webusb": "^5.9.0",
     "@sentry/browser": "^5.11.0",
     "@types/bech32": "^1.1.1",
     "@types/chart.js": "^2.9.8",
