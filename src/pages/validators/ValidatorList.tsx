@@ -9,13 +9,14 @@ import renderItem from './renderItem'
 type Attr = { align?: 'center' | 'right'; style: CSSProperties }
 
 const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
-  const { rank, moniker, votingPower, commission } = headings
+  const { rank, moniker, votingPower, selfDelegation, commission } = headings
   const { delegationReturn, uptime, myDelegation } = headings
 
   const Columns: [ValidatorListHeading | undefined, Attr][] = [
     [rank, { style: { width: 60 } }],
     [moniker, { style: { width: 240 } }],
     [votingPower, { align: 'right', style: { width: 120 } }],
+    [selfDelegation, { align: 'right', style: { width: 120 } }],
     [commission, { align: 'right', style: { width: 100, textAlign: 'right' } }],
     [
       delegationReturn,

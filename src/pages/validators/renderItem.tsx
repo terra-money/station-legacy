@@ -10,8 +10,8 @@ import s from './renderItem.module.scss'
 
 const renderItem = (props: ValidatorUI) => {
   const { rank, profile, operatorAddress, moniker } = props
-  const { votingPower, commission, delegationReturn, uptime } = props
-  const { myDelegations, myUndelegations, myActionsTable } = props
+  const { votingPower, selfDelegation, commission, delegationReturn } = props
+  const { uptime, myDelegations, myUndelegations, myActionsTable } = props
 
   const renderMyDelegation = () => {
     const number = (
@@ -70,6 +70,7 @@ const renderItem = (props: ValidatorUI) => {
       </Link>
     </h1>,
     <span className={s.percent}>{votingPower.percent}</span>,
+    <span className={s.percent}>{selfDelegation.percent}</span>,
     <span className={s.percent}>{commission.percent}</span>,
     <span className={s.percent}>{delegationReturn.percent}</span>,
     <span className={s.percent}>{uptime.percent}</span>,
