@@ -3,15 +3,12 @@ import c from 'classnames'
 import { LangKey, Languages } from '@terra-money/use-station'
 import { useConfig, getLang } from '@terra-money/use-station'
 import { localSettings } from '../utils/localStorage'
-import en from '../images/en.png'
-import zh from '../images/zh.png'
-import ko from '../images/ko.png'
 import Pop from '../components/Pop'
 import Icon from '../components/Icon'
 import s from './Lang.module.scss'
 
 interface LangProps {
-  icon: string
+  icon?: string
   label: string
   className?: string
   caret?: boolean
@@ -21,7 +18,7 @@ interface LangProps {
 const LangItem = ({ icon, label, caret, active, className }: LangProps) => (
   <div className={c(s.lang, className)}>
     <section>
-      <img src={icon} alt="" width={18} />
+      {icon && <Icon name={icon} className={s.icon} />}
       {label}
     </section>
 
@@ -32,8 +29,6 @@ const LangItem = ({ icon, label, caret, active, className }: LangProps) => (
     )}
   </div>
 )
-
-const LangIcon: { [key in LangKey]: string } = { en, zh, ko }
 
 const Lang = () => {
   const { lang } = useConfig()
@@ -47,11 +42,7 @@ const Lang = () => {
   const languages = list.map(key => (
     <li className={s.item} key={key}>
       <button className={s.button} onClick={() => handleClick(key)}>
-        <LangItem
-          icon={LangIcon[key]}
-          label={Languages[key]['name']}
-          active={key === current}
-        />
+        <LangItem label={Languages[key]['name']} active={key === current} />
       </button>
     </li>
   ))
@@ -73,7 +64,7 @@ const Lang = () => {
         {({ ref, getAttrs }) => (
           <span {...getAttrs({ className: s.wrapper })} ref={ref}>
             <LangItem
-              icon={LangIcon[current]}
+              icon="language"
               label={getLang(current)['name']}
               className={s.select}
               caret
