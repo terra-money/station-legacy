@@ -36,11 +36,15 @@ const Component = ({ actives, user }: Props & { user: User }) => {
   )
 
   const contents: ReactNode[] = [
-    <Table rows={[{ th: max.title, ...max.display }]} />,
     <Table
       rows={[
-        { th: spreadTitle, ...spread },
-        { th: receive.title, ...receive }
+        { heading: max.title, ...max.display, onClick: max.attrs.onClick }
+      ]}
+    />,
+    <Table
+      rows={[
+        { heading: spreadTitle, ...spread },
+        { heading: receive.title, ...receive }
       ]}
     />
   ]
@@ -77,13 +81,26 @@ const Swap = (props: Props) => (
 export default Swap
 
 /* helpers */
-type Row = { th: ReactNode; value: string; unit?: string }
+interface Row {
+  heading: ReactNode
+  value: string
+  unit?: string
+  onClick?: () => void
+}
+
 const Table = ({ rows }: { rows: Row[] }) => (
   <table className={s.table}>
     <tbody>
-      {rows.map(({ th, value, unit }, index) => (
-        <Row th={th} td={<Number unit={unit}>{value}</Number>} key={index} />
-      ))}
+      {rows.map(({ heading, value, unit, onClick }, index) => {
+        const number = <Number unit={unit}>{value}</Number>
+        const button = (
+          <button type="button" className="text-underline" onClick={onClick}>
+            {number}
+          </button>
+        )
+
+        return <Row th={heading} td={onClick ? button : number} key={index} />
+      })}
     </tbody>
   </table>
 )
