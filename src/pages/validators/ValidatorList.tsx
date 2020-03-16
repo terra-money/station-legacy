@@ -13,7 +13,7 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
   const { delegationReturn, uptime, myDelegation } = headings
 
   const Columns: [ValidatorListHeading | undefined, Attr][] = [
-    [rank, { style: { width: 60 } }],
+    [rank, { align: 'center', style: { width: 60, paddingRight: 20 } }],
     [moniker, { style: { width: 240 } }],
     [votingPower, { align: 'right', style: { width: 120 } }],
     [selfDelegation, { align: 'right', style: { width: 120 } }],
@@ -30,7 +30,7 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
   return (
     <Card>
       <FlexTable
-        head={Columns.map(([heading]) => {
+        head={Columns.map(([heading], index) => {
           const { current, set } = sorter
           const selected = current.prop === heading?.sorter?.prop
           const title = heading?.title ?? ''
@@ -49,7 +49,7 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
             </button>
           )
 
-          return !heading?.sorter ? title : button
+          return heading?.sorter ? button : index ? title : ''
         })}
         body={contents.map(content => renderItem(content))}
         attrs={Columns.map(([, attr]) => attr)}

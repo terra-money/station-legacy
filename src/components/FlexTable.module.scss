@@ -54,6 +54,10 @@
   @include flex(stretch);
   flex: none;
 
+  &.center {
+    justify-content: center;
+  }
+
   &.right {
     justify-content: flex-end;
   }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import c from 'classnames'
 import { ValidatorUI } from '@terra-money/use-station'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
+import { ReactComponent as New } from './New.svg'
 import Number from '../../components/Number'
 import Pop from '../../components/Pop'
 import DelegationTooltip from '../staking/DelegationTooltip'
@@ -54,7 +55,11 @@ const renderItem = (props: ValidatorUI) => {
 
   const thumbnail = { width: 26, height: 26, className: s.thumbnail }
   return [
-    <div className={c(s.rank, getClassName(rank!))}>{rank}</div>,
+    rank ? (
+      <div className={c(s.rank, getClassName(rank!))}>{rank}</div>
+    ) : (
+      <New />
+    ),
     <h1 className={s.name}>
       {profile ? (
         <img {...thumbnail} src={profile} alt="" />
