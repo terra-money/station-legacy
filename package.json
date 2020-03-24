@@ -3,14 +3,14 @@
   "engines": {
     "node": "12.x"
   },
-  "version": "3.5.3",
+  "version": "3.5.4",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
     "@ledgerhq/hw-transport-webhid": "^5.9.0",
     "@ledgerhq/hw-transport-webusb": "^5.9.0",
     "@sentry/browser": "^5.13.0",
-    "@terra-money/use-station": "^3.5.12",
+    "@terra-money/use-station": "^3.5.13",
     "@types/bech32": "^1.1.2",
     "@types/chart.js": "^2.9.15",
     "@types/classnames": "^2.2.9",

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { useSignUp, SignUpNext, Seed, Address } from '@terra-money/use-station'
+import { SignUpNext, Seed, Address, Wallet } from '@terra-money/use-station'
+import { useSignUp } from '@terra-money/use-station'
 import { electron } from '../utils'
-import { importKey, loadKeys } from '../utils/localStorage'
+import { importKey, loadKeys, Key } from '../utils/localStorage'
 import Form from '../components/Form'
 import ModalContent from '../components/ModalContent'
 import ErrorComponent from '../components/ErrorComponent'
@@ -17,13 +18,14 @@ const Recover = ({ generated }: { generated?: Seed }) => {
     generated,
     generateAddresses: async (phrase: string) =>
       await electron<Promise<[Address, Address]>>('generateAddresses', phrase),
-    isNameExists,
-    submit: async ({ name, password, phrase, bip }) => {
+    generateWallet: async (phrase, bip) => {
       const params = [phrase, bip]
       const wallet = await electron<Wallet>('generateWalletFromSeed', params)
-      await importKey({ name, password, wallet })
-      return wallet.terraAddress
-    }
+      return wallet
+    },
+    submit: importKey,
+    isNameExists: (name: string) => isExists('name', name),
+    isAddressExists: (address: string) => isExists('address', address)
   })
 
   /* warning */
@@ -62,7 +64,7 @@ const Recover = ({ generated }: { generated?: Seed }) => {
 export default Recover
 
 /* helper */
-const isNameExists = (name: string): boolean => {
+const isExists = (q: keyof Key, v: string): boolean => {
   const keys = loadKeys()
-  return !!keys.find(key => key.name === name)
+  return !!keys.find(key => key[q] === v)
 }

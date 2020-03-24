@@ -1,8 +1,9 @@
 import { mergeRight as merge, omit } from 'ramda'
+import { Wallet } from '@terra-money/use-station'
 import electron from './electron'
 
 /* keys */
-type Key = { name: string; address: string; wallet: string }
+export type Key = { name: string; address: string; wallet: string }
 
 export const loadKeys = (): Key[] =>
   JSON.parse(localStorage.getItem('keys') || '[]')
