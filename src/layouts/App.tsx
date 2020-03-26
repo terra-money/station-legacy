@@ -36,7 +36,7 @@ const App = () => {
 
   const initialState = {
     lang: lang as LangKey,
-    chain: Chains[chain ?? 'columbus']
+    chain: Chains[chain!] ?? Chains['columbus']
   }
 
   const initialUser = address
