@@ -7,8 +7,9 @@ import axios from 'axios'
 
 import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-station'
-import { LangKey, ChainKey } from '@terra-money/use-station'
+import { LangKey } from '@terra-money/use-station'
 
+import { Chains } from '../Chains'
 import { electron, report } from '../utils'
 import { isElectron } from '../utils/env'
 import { localSettings, findName } from '../utils/localStorage'
@@ -32,7 +33,12 @@ const App = () => {
 
   /* init app */
   const { lang, chain, address, ledger } = localSettings.get()
-  const initialState = { lang: lang as LangKey, chain: chain as ChainKey }
+
+  const initialState = {
+    lang: lang as LangKey,
+    chain: Chains[chain ?? 'columbus']
+  }
+
   const initialUser = address
     ? { name: findName(address), address, ledger }
     : undefined
@@ -83,7 +89,8 @@ const App = () => {
   const config = useConfigState(initialState)
   const auth = useAuthState(initialUser)
   const { current: currentLang = '' } = config.lang
-  const { current: currentChain = '' } = config.chain
+  const { current: currentChainOptions } = config.chain
+  const { key: currentChain = '' } = currentChainOptions
   const { user } = auth
 
   /* auth modal */

@@ -1,27 +1,27 @@
 import React, { ChangeEvent } from 'react'
 import c from 'classnames'
-import { useConfig, ChainKey, Chains } from '@terra-money/use-station'
-import { isProduction } from '../utils/env'
+import { useConfig } from '@terra-money/use-station'
+import { Chains, list } from '../Chains'
 import { localSettings } from '../utils/localStorage'
 import Select from '../components/Select'
 import s from './Chain.module.scss'
 
 const SelectChain = () => {
   const { chain } = useConfig()
-  const { current, list, set } = chain
+  const { current, set } = chain
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     localSettings.set({ chain: e.target.value })
-    set(e.target.value as ChainKey)
+    set(Chains[e.target.value])
   }
 
   return (
     <Select
-      value={current}
+      value={current['key']}
       onChange={handleChange}
       className={c('form-control', s.select)}
     >
-      {list.concat(!isProduction ? 'fitz' : []).map(key => (
+      {list.map(key => (
         <option value={key} key={key}>
           {Chains[key]['name']}
         </option>
