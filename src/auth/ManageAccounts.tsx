@@ -1,11 +1,13 @@
 import React, { useState, ReactNode } from 'react'
 import { cond, equals } from 'ramda'
+import c from 'classnames'
 import { useManageAccounts } from '@terra-money/use-station'
 import { electron } from '../utils'
 import { loadKeys, storeKeys, importKey } from '../utils/localStorage'
 import ModalContent from '../components/ModalContent'
 import Confirm from '../components/Confirm'
 import Icon from '../components/Icon'
+import Pop from '../components/Pop'
 import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import s from './ManageAccounts.module.scss'
@@ -16,7 +18,7 @@ type Props = {
 }
 
 const ManageAccounts = ({ modalActions, onFinish }: Props) => {
-  const { title } = useManageAccounts()
+  const { title, password } = useManageAccounts()
   const Page = { PW: 'ChangePassword', DEL: 'DeleteAccount' }
   const [accounts, setAccounts] = useState(loadKeys)
   const [currentPage, setCurrentPage] = useState<string>('')
@@ -50,8 +52,9 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
   const buttons = [
     {
       icon: 'lock',
+      tooltip: password,
       getAttrs: (index: number) => ({
-        className: 'btn-icon',
+        className: c('btn-icon', s.hover),
         onClick: () => {
           setCurrentPage(Page.PW)
           setCurrentIndex(index)
@@ -78,11 +81,23 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
             {name}
 
             <section className="btn-icon-group">
-              {buttons.map(({ icon, getAttrs }) => (
-                <button {...getAttrs(index)} type="button" key={icon}>
-                  <Icon name={icon} size={20} />
-                </button>
-              ))}
+              {buttons.map(({ icon, tooltip, getAttrs }) => {
+                const attrs = {
+                  ...getAttrs(index),
+                  children: <Icon name={icon} size={20} />,
+                  key: icon
+                }
+
+                return tooltip ? (
+                  <Pop type="tooltip" placement="top" content={tooltip}>
+                    {({ ref, getAttrs }) => (
+                      <span {...getAttrs(attrs)} ref={ref} />
+                    )}
+                  </Pop>
+                ) : (
+                  <button {...attrs} />
+                )
+              })}
             </section>
           </li>
         ))}
