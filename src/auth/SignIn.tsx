@@ -23,7 +23,7 @@ const SignIn = () => {
   return settings ? (
     <ManageAccounts
       modalActions={{ ...modal, goBack: () => setSettings(false) }}
-      onDeleteAll={modal.goBack}
+      onFinish={modal.goBack}
     />
   ) : (
     <ModalContent {...modal} actions={!!accounts.length ? actions : undefined}>

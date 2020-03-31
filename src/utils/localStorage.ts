@@ -3,8 +3,6 @@ import { Wallet } from '@terra-money/use-station'
 import electron from './electron'
 
 /* keys */
-export type Key = { name: string; address: string; wallet: string }
-
 export const loadKeys = (): Key[] =>
   JSON.parse(localStorage.getItem('keys') || '[]')
 

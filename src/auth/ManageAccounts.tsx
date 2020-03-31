@@ -1,19 +1,21 @@
 import React, { useState, ReactNode } from 'react'
 import { cond, equals } from 'ramda'
 import { useManageAccounts } from '@terra-money/use-station'
-import { loadKeys, storeKeys } from '../utils/localStorage'
+import { electron } from '../utils'
+import { loadKeys, storeKeys, importKey } from '../utils/localStorage'
 import ModalContent from '../components/ModalContent'
 import Confirm from '../components/Confirm'
 import Icon from '../components/Icon'
+import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import s from './ManageAccounts.module.scss'
 
 type Props = {
   modalActions: { goBack: () => void; close: () => void }
-  onDeleteAll: () => void
+  onFinish: () => void
 }
 
-const ManageAccounts = ({ modalActions, onDeleteAll }: Props) => {
+const ManageAccounts = ({ modalActions, onFinish }: Props) => {
   const { title } = useManageAccounts()
   const Page = { PW: 'ChangePassword', DEL: 'DeleteAccount' }
   const [accounts, setAccounts] = useState(loadKeys)
@@ -27,14 +29,35 @@ const ManageAccounts = ({ modalActions, onDeleteAll }: Props) => {
   }
 
   /* actions */
+  type Params = { current: string; password: string }
+  const account = accounts[currentIndex]
+  const changePassword = async ({ current, password }: Params) => {
+    const { name, wallet } = account
+    const decrypted = electron<string>('decrypt', [wallet, current])
+    const parsed = JSON.parse(decrypted)
+    deleteAccount()
+    await importKey({ name, password, wallet: parsed })
+    onFinish()
+  }
+
   const deleteAccount = () => {
     const next = accounts.filter((_, i) => i !== currentIndex)
     storeKeys(next)
-    next.length ? init() : onDeleteAll()
+    next.length ? init() : onFinish()
   }
 
   /* render */
   const buttons = [
+    {
+      icon: 'lock',
+      getAttrs: (index: number) => ({
+        className: 'btn-icon',
+        onClick: () => {
+          setCurrentPage(Page.PW)
+          setCurrentIndex(index)
+        }
+      })
+    },
     {
       icon: 'delete',
       getAttrs: (index: number) => ({
@@ -68,6 +91,10 @@ const ManageAccounts = ({ modalActions, onDeleteAll }: Props) => {
   )
 
   const renderPage = cond<string, ReactNode>([
+    [
+      equals(Page.PW),
+      () => <ChangePassword name={account['name']} onChange={changePassword} />
+    ],
     [
       equals(Page.DEL),
       () => <DeleteAccount onDelete={deleteAccount} onCancel={init} />
