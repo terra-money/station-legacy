@@ -2062,10 +2062,10 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@terra-money/use-station@^3.6.3":
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-3.6.3.tgz#55d8ae5dda57c600ca4e3eb650707c77d1f6b32d"
-  integrity sha512-4u824f62Tgy0Jk1KTjaDfQ24RpQlbbkZSCulRGsrYRV7lwS+fWjFP02V/wpMdVLyAWNos3gCjnEPrqddADmI7Q==
+"@terra-money/use-station@^3.6.4":
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-3.6.4.tgz#a7a4639eb26b62caac9834e7ce28fa0cef83303d"
+  integrity sha512-mI+10ql+pNGMyy2BBJyh3NpYKAPwlvXQ40O3DMCvkvDGG9Ze4UNKjdBldOt+YtHpKIAhQd+vPgDbESMsbXyzig==
   dependencies:
     "@types/bech32" "^1.1.2"
     "@types/jest" "^25.1.3"
