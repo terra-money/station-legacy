@@ -12,12 +12,12 @@ interface Props {
 }
 
 const Variation = ({ variation, showPercent }: Props) => {
-  const { value, percent } = variation
-  const inc = gt(value, 0)
-  const dec = lt(value, 0)
+  const { amount, value, percent } = variation
+  const inc = gt(amount, 0)
+  const dec = lt(amount, 0)
 
   const icon = inc ? 'arrow_drop_up' : dec ? 'arrow_drop_down' : undefined
-  const color = inc ? 'text-success' : dec ? 'text-danger' : 'text-muted'
+  const color = inc ? 'text-danger' : dec ? 'text-success' : 'text-muted'
 
   const tail = `${inc ? '+' : ''}${percent}`
 
