@@ -26,7 +26,10 @@ const ProposerHeader = ({ title, status, ...rest }: ProposalUI) => {
             </strong>
           </p>
 
-          <p className={s.description}>{description}</p>
+          <p
+            className={s.description}
+            dangerouslySetInnerHTML={{ __html: linkify(description) }}
+          />
         </Card>
       </div>
 
@@ -47,3 +50,10 @@ const ProposerHeader = ({ title, status, ...rest }: ProposalUI) => {
 }
 
 export default ProposerHeader
+
+/* helpers */
+const linkify = (text: string) =>
+  text.replace(
+    /(https?:\/\/[^\s]+)/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  )
