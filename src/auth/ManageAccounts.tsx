@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react'
+import { toast } from 'react-toastify'
 import { cond, equals } from 'ramda'
 import c from 'classnames'
 import { useManageAccounts } from '@terra-money/use-station'
@@ -8,6 +9,7 @@ import ModalContent from '../components/ModalContent'
 import Confirm from '../components/Confirm'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'
+import Toast from '../components/Toast'
 import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import s from './ManageAccounts.module.scss'
@@ -19,6 +21,7 @@ type Props = {
 
 const ManageAccounts = ({ modalActions, onFinish }: Props) => {
   const { title, password } = useManageAccounts()
+  const { tooltip, ...toastProps } = password
   const Page = { PW: 'ChangePassword', DEL: 'DeleteAccount' }
   const [accounts, setAccounts] = useState(loadKeys)
   const [currentPage, setCurrentPage] = useState<string>('')
@@ -37,8 +40,10 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
     const { name, wallet } = account
     const decrypted = electron<string>('decrypt', [wallet, current])
     const parsed = JSON.parse(decrypted)
+
     deleteAccount()
     await importKey({ name, password, wallet: parsed })
+    toast(<Toast {...toastProps} />, { autoClose: 3000 })
     onFinish()
   }
 
@@ -52,7 +57,7 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
   const buttons = [
     {
       icon: 'lock',
-      tooltip: password,
+      tooltip,
       getAttrs: (index: number) => ({
         className: c('btn-icon', s.hover),
         onClick: () => {
