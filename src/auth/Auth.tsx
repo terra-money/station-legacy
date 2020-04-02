@@ -73,7 +73,7 @@ const Auth = () => {
       {components[currentKey]['render']()}
     </AuthModalProvider>
   ) : (
-    <ModalContent close={() => {}}>
+    <ModalContent close={modalActions.close}>
       <AuthMenu list={list.map(getItem)} onSelect={setCurrentKey} />
       {!isElectron && <AuthFooter {...ui.web} onClick={handleClick} />}
     </ModalContent>
