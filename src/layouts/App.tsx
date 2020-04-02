@@ -151,5 +151,6 @@ const ToastConfig = {
   transition: Slide,
   draggable: false,
   closeButton: false,
-  closeOnClick: false
+  closeOnClick: false,
+  hideProgressBar: true
 }

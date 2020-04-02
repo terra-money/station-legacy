@@ -41,6 +41,18 @@
 }
 
 /* Themes */
+.success {
+  background: #f3fbf9;
+
+  header {
+    background: $green;
+  }
+
+  p {
+    color: $green;
+  }
+}
+
 .warn {
   background: #fffaf2;
 
