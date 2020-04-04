@@ -1,0 +1,19 @@
+.card {
+  font-size: 13px;
+}
+
+.desc i {
+  margin-right: 6px;
+}
+
+.item {
+  margin-top: 10px;
+
+  &:first-child {
+    margin-top: 20px;
+  }
+
+  strong {
+    margin-right: 10px;
+  }
+}

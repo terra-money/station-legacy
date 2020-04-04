@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useProposal, useMenu, ProposalUI } from '@terra-money/use-station'
+import { ProposalUI } from '@terra-money/use-station'
+import { useProposal, useMenu, useAuth } from '@terra-money/use-station'
 import { useGoBack } from '../../hooks'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
@@ -9,6 +10,7 @@ import ProposalHeader from './ProposalHeader'
 import ProposalFooter from './ProposalFooter'
 import Deposit from './Deposit'
 import Votes from './Votes'
+import NotVoted from './NotVoted'
 import Actions from './Actions'
 import VotesTable from '../../tables/VotesTable'
 import Depositors from '../../tables/Depositors'
@@ -18,7 +20,8 @@ const Proposal = () => {
 
   const { Proposal: title } = useMenu()
   const { id } = useParams<{ id: string }>()
-  const { error, loading, ui } = useProposal(id)
+  const { user } = useAuth()
+  const { error, loading, ui } = useProposal(id, user)
 
   const render = (ui: ProposalUI) => {
     const { vote, deposit, tallying } = ui
@@ -30,6 +33,7 @@ const Proposal = () => {
         {vote && (
           <>
             <Votes {...vote} />
+            {vote.notVoted && <NotVoted {...vote.notVoted} />}
             <VotesTable id={id} count={vote.count} />
           </>
         )}
