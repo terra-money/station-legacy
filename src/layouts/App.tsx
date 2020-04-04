@@ -9,7 +9,7 @@ import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-station'
 import { LangKey } from '@terra-money/use-station'
 
-import { Chains } from '../Chains'
+import { Chains } from '../chains'
 import { electron, report } from '../utils'
 import { isElectron } from '../utils/env'
 import { localSettings, findName } from '../utils/localStorage'

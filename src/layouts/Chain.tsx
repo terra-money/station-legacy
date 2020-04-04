@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import c from 'classnames'
 import { useConfig } from '@terra-money/use-station'
-import { Chains, list } from '../Chains'
+import { Chains, list } from '../chains'
 import { localSettings } from '../utils/localStorage'
 import Select from '../components/Select'
 import s from './Chain.module.scss'
