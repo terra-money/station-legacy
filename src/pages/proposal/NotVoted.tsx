@@ -7,7 +7,7 @@ import Icon from '../../components/Icon'
 import Flex from '../../components/Flex'
 import s from './NotVoted.module.scss'
 
-const NotVoted = ({ title, list }: Props) => (
+const NotVoted = ({ title, list, button }: Props) => (
   <Card className={s.card}>
     <Flex className={c('text-danger', s.desc)}>
       <Icon name="how_to_vote" size={24} />
@@ -20,7 +20,15 @@ const NotVoted = ({ title, list }: Props) => (
         return (
           <li className={s.item} key={operatorAddress}>
             <strong>{moniker}</strong>
-            {email && <a href={'mailto:' + email}>{email}</a>}
+
+            {email && (
+              <a
+                href={'mailto:' + email}
+                className={c('btn-outline-sky', s.button)}
+              >
+                {button}
+              </a>
+            )}
           </li>
         )
       })}
