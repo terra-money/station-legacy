@@ -4,16 +4,11 @@
 .link {
   color: unset;
 
-  .circle {
-    flex: none;
-  }
-
   &:hover {
     text-decoration: none;
 
-    .circle {
-      background: $brand;
-      color: white;
+    .card {
+      background: #f5f7fd;
     }
   }
 }
@@ -23,8 +18,8 @@
   height: 100%;
 }
 
-.main {
-  @include flex(space-between);
+.id {
+  font-size: 12px;
 }
 
 .title {
@@ -40,37 +35,41 @@
 
 .details {
   @include flex(flex-start, center);
+  font-size: 14px;
   margin-top: 20px;
-
-  article {
-    @include flex(space-between, flex-start);
-    flex-direction: column;
-    padding: 0 20px;
-  }
-
-  article + article {
-    border-left: 1px solid $line;
-  }
 
   h2 {
     font-size: 12px;
   }
 
   p {
+    margin-top: 5px;
+  }
+
+  strong {
     font-size: 18px;
   }
 
-  small {
-    font-size: 13.5px;
+  // mobile
+  @media (max-width: $breakpoint - 1) {
+    flex-direction: column;
+    text-align: center;
+
+    article {
+      margin-top: 20px;
+    }
   }
-}
 
-.circle {
-  @include flex();
+  // desktop
+  @media (min-width: $breakpoint) {
+    article {
+      @include flex(space-between, flex-start);
+      flex-direction: column;
+      padding: 0 20px;
+    }
 
-  background: white;
-  border: 1px solid $line;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+    article + article {
+      border-left: 1px solid $line;
+    }
+  }
 }
