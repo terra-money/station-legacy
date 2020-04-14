@@ -6,11 +6,12 @@ import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import Number from '../../components/Number'
 import ExtLink from '../../components/ExtLink'
+import ViewProfile from './ViewProfile'
 import s from './Header.module.scss'
 
 const thumbnail = { className: s.thumbnail, width: 80, height: 80 }
 const Header = (v: ValidatorUI) => {
-  const { profile, moniker, status, link, details } = v
+  const { profile, moniker, status, link, details, operatorAddress } = v
   const { votingPower, selfDelegation, commission, uptime } = v
 
   const title = (
@@ -32,6 +33,7 @@ const Header = (v: ValidatorUI) => {
         </p>
 
         <p className={s.p}>{details}</p>
+        <ViewProfile address={operatorAddress.address} />
       </section>
     </header>
   )
