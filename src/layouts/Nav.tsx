@@ -17,13 +17,14 @@ const Nav = () => {
   const toggle = () => setIsOpen(!isOpen)
   const close = () => setIsOpen(false)
 
+  // prettier-ignore
   const menu = [
-    { name: name['Dashboard'], to: '/', icon: 'dashboard' },
-    { name: name['Bank'], to: '/bank', icon: 'account_balance' },
+    { name: name['Dashboard'],    to: '/',             icon: 'dashboard' },
+    { name: name['Bank'],         to: '/bank',         icon: 'account_balance' },
     { name: name['Transactions'], to: '/transactions', icon: 'swap_horiz' },
-    { name: name['Staking'], to: '/staking', icon: 'layers' },
-    { name: name['Market'], to: '/market', icon: 'timeline' },
-    { name: name['Governance'], to: '/governance', icon: 'how_to_vote' }
+    { name: name['Staking'],      to: '/staking',      icon: 'layers',      submenu: ['/validator'] },
+    { name: name['Market'],       to: '/market',       icon: 'timeline' },
+    { name: name['Governance'],   to: '/governance',   icon: 'how_to_vote', submenu: ['/proposal'] }
   ]
 
   /* Close on change path (Android) */
