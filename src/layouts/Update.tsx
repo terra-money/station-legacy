@@ -7,7 +7,7 @@ const Update = ({ title, content, forceUpdate }: VersionWeb) => (
     icon="error"
     title={title}
     content={content}
-    button={{ onClick: window.location.reload, children: 'Refresh' }}
+    button={{ onClick: () => window.location.reload(), children: 'Refresh' }}
     shouldNotClose
   />
 )
