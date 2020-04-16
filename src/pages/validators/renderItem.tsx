@@ -4,6 +4,8 @@ import c from 'classnames'
 import { ValidatorUI } from '@terra-money/use-station'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import { ReactComponent as New } from './New.svg'
+import { ReactComponent as Check } from './Check.svg'
+import validators from '../../validators'
 import Number from '../../components/Number'
 import Pop from '../../components/Pop'
 import DelegationTooltip from '../staking/DelegationTooltip'
@@ -73,6 +75,8 @@ const renderItem = (props: ValidatorUI) => {
       >
         {moniker}
       </Link>
+
+      {!!validators[operatorAddress.address] && <Check className={s.check} />}
     </h1>,
     <span className={s.percent}>{votingPower.percent}</span>,
     <span className={s.percent}>{selfDelegation.percent}</span>,

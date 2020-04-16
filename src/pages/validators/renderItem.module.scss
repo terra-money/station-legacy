@@ -34,6 +34,10 @@
   @include flex(flex-start);
 }
 
+.check {
+  margin-left: 8px;
+}
+
 .thumbnail {
   background: $line;
   border-radius: 50%;

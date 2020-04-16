@@ -1,6 +1,6 @@
 import React from 'react'
 import validators from '../../validators'
-import src from '../../images/ViewProfile.png'
+import src from './ViewProfile.png'
 import ExtLink from '../../components/ExtLink'
 import styles from './ViewProfile.module.scss'
 
@@ -9,7 +9,7 @@ const PATH = '/tree/master/validators/'
 
 const ViewProfile = ({ address }: { address: string }) => {
   const link = [PROJECT, PATH, address].join('')
-  const size = { width: 190, height: 60 }
+  const size = { width: 170, height: 52 }
   const invalid = !validators[address]
 
   return invalid ? null : (
