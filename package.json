@@ -3,7 +3,7 @@
   "engines": {
     "node": "12.x"
   },
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
