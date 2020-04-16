@@ -4,10 +4,10 @@ import electron from './electron'
 
 /* keys */
 export const loadKeys = (): Key[] =>
-  JSON.parse(localStorage.getItem('keys') || '[]')
+  JSON.parse(localStorage?.getItem('keys') ?? '[]')
 
 export const storeKeys = (keys: Key[]) => {
-  localStorage.setItem('keys', JSON.stringify(keys))
+  localStorage?.setItem('keys', JSON.stringify(keys))
 }
 
 export const getStoredWallet = (name: string, password: string): Wallet => {
@@ -72,18 +72,18 @@ export const testPassword = (name: string, password: string) => {
 const SETTINGS = 'settings'
 
 const getSettings = (): Settings => {
-  const settings = localStorage.getItem(SETTINGS)
+  const settings = localStorage?.getItem(SETTINGS)
   return settings ? JSON.parse(settings) : {}
 }
 
 const setSettings = (next: Partial<Settings>): void => {
   const settings = getSettings()
-  localStorage.setItem(SETTINGS, JSON.stringify(merge(settings, next)))
+  localStorage?.setItem(SETTINGS, JSON.stringify(merge(settings, next)))
 }
 
 const deleteSettings = (keys: (keyof Settings)[]): void => {
   const settings = getSettings()
-  localStorage.setItem(SETTINGS, JSON.stringify(omit(keys, settings)))
+  localStorage?.setItem(SETTINGS, JSON.stringify(omit(keys, settings)))
 }
 
 export const localSettings = {
