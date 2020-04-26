@@ -4,10 +4,9 @@ import Card from '../../components/Card'
 import Number from '../../components/Number'
 import Select from '../../components/Select'
 
-const DisplaySelector = (props: Props) => {
-  const { title, defaultOption, options, displays } = props
-
-  const [current, setCurrent] = useState<string>(defaultOption)
+const DisplaySelector = ({ title, select, displays }: Props) => {
+  const { defaultValue, options } = select
+  const [current, setCurrent] = useState<string>(defaultValue)
 
   const selector = (
     <Select
@@ -16,10 +15,8 @@ const DisplaySelector = (props: Props) => {
       className="form-control form-control-md"
       width={80}
     >
-      {options.map((label, index) => (
-        <option value={label} key={index}>
-          {label}
-        </option>
+      {options.map((option, index) => (
+        <option {...option} key={index} />
       ))}
     </Select>
   )
