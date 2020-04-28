@@ -30,6 +30,7 @@ import s from './App.module.scss'
 const App = () => {
   useScrollToTop()
   const { pathname } = useLocation()
+  const modal = useModal()
 
   /* init app */
   const { lang, chain, address, ledger } = localSettings.get()
@@ -49,41 +50,10 @@ const App = () => {
   const refresh = () => setAppKey(k => k + 1)
 
   /* ready on electron version check */
-  const [disabled, setDisabled] = useState<ReactNode>()
-
-  useEffect(() => {
-    const checkVersion = async () => {
-      const onDeprecated = (data: Version) => {
-        const inner = <UpdateElectron {...data} />
-        const content = <ModalContent close={modal.close}>{inner}</ModalContent>
-        data.forceUpdate ? setDisabled(inner) : modal.open(content)
-      }
-
-      try {
-        const url = 'https://terra.money/station/version.json'
-        const { data } = await axios.get<Version>(url)
-        const version = electron<string>('version')
-        version !== data.version && onDeprecated(data)
-      } catch (error) {
-        report(error)
-      }
-    }
-
-    const ready = async () => {
-      isElectron && (await checkVersion())
-      refresh()
-    }
-
-    ready()
-    // eslint-disable-next-line
-  }, [])
+  const deprecatedUI = useCheckElectronVersion(modal, refresh)
 
   /* redirect on chain change */
-  const { push } = useHistory()
-  useEffect(() => {
-    goBack && push(goBack)
-    // eslint-disable-next-line
-  }, [chain])
+  useRedirectOnChainChange({ goBack, chain })
 
   /* provider */
   const config = useConfigState(initialState)
@@ -94,34 +64,14 @@ const App = () => {
   const { user } = auth
 
   /* auth modal */
-  const modal = useModal()
-  const authModal = {
-    open: () => modal.open(<Auth />),
-    close: () => modal.close()
-  }
-
-  useEffect(() => {
-    const onSignIn = ({ address, ledger }: User) => {
-      const { recentAddresses = [] } = localSettings.get()
-      const next = [address, ...without([address], recentAddresses)]
-      localSettings.set({ address, ledger: !!ledger, recentAddresses: next })
-    }
-
-    const onSignOut = () => {
-      localSettings.delete(['address', 'ledger'])
-    }
-
-    user ? onSignIn(user) : onSignOut()
-    authModal.close()
-    // eslint-disable-next-line
-  }, [user])
+  const authModal = useAuthModal(modal, user)
 
   /* render */
   const key = [currentLang, currentChain, appKey].join()
   const ready = !!(currentLang && currentChain && appKey > 0)
   const value = { refresh, goBack, setGoBack, modal, authModal }
 
-  return disabled ?? !ready ? null : (
+  return deprecatedUI ?? !ready ? null : (
     <AppProvider value={value} key={key}>
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
@@ -153,4 +103,77 @@ const ToastConfig = {
   closeButton: false,
   closeOnClick: false,
   hideProgressBar: true
+}
+
+/* hooks */
+const useCheckElectronVersion = (modal: Modal, onCheck: () => void) => {
+  const [deprecatedUI, setDeprecatedUI] = useState<ReactNode>()
+
+  useEffect(() => {
+    const checkVersion = async () => {
+      const onDeprecatedUI = (data: Version) => {
+        const inner = <UpdateElectron {...data} />
+        const content = <ModalContent close={modal.close}>{inner}</ModalContent>
+        data.forceUpdate ? setDeprecatedUI(inner) : modal.open(content)
+      }
+
+      try {
+        const url = 'https://terra.money/station/version.json'
+        const { data } = await axios.get<Version>(url)
+        const version = electron<string>('version')
+        version !== data.version && onDeprecatedUI(data)
+      } catch (error) {
+        report(error)
+      }
+    }
+
+    const ready = async () => {
+      isElectron && (await checkVersion())
+      onCheck()
+    }
+
+    ready()
+    // eslint-disable-next-line
+  }, [])
+
+  return deprecatedUI
+}
+
+const useRedirectOnChainChange = ({
+  goBack,
+  chain
+}: {
+  goBack?: string
+  chain?: string
+}) => {
+  const { push } = useHistory()
+  useEffect(() => {
+    goBack && push(goBack)
+    // eslint-disable-next-line
+  }, [chain])
+}
+
+const useAuthModal = (modal: Modal, user?: User) => {
+  const authModal = {
+    open: () => modal.open(<Auth />),
+    close: () => modal.close()
+  }
+
+  useEffect(() => {
+    const onSignIn = ({ address, ledger }: User) => {
+      const { recentAddresses = [] } = localSettings.get()
+      const next = [address, ...without([address], recentAddresses)]
+      localSettings.set({ address, ledger: !!ledger, recentAddresses: next })
+    }
+
+    const onSignOut = () => {
+      localSettings.delete(['address', 'ledger'])
+    }
+
+    user ? onSignIn(user) : onSignOut()
+    authModal.close()
+    // eslint-disable-next-line
+  }, [user])
+
+  return authModal
 }
