@@ -4,12 +4,21 @@ import c from 'classnames'
 import { useAuth, useText } from '@terra-money/use-station'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'
+import ModalContent from '../components/ModalContent'
+import Share from './Share'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
   const { user, signOut } = useAuth()
   const { SIGN_IN } = useText()
-  const { goBack, refresh, authModal } = useApp()
+  const { goBack, refresh, authModal, modal } = useApp()
+
+  const share = () =>
+    modal.open(
+      <ModalContent close={modal.close}>
+        <Share />
+      </ModalContent>
+    )
 
   return (
     <header className={c(s.header, className)}>
@@ -41,6 +50,10 @@ const Header = ({ className }: { className: string }) => {
 
           <button className="btn-icon" onClick={refresh}>
             <Icon name="refresh" size={20} />
+          </button>
+
+          <button className="btn-icon" onClick={share}>
+            <Icon name="share" size={20} />
           </button>
 
           {user && (
