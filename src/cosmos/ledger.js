@@ -114,9 +114,9 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
   }
 }
 
-const isWindows = platform => platform.indexOf('Win') > -1
+const isWindows = (platform) => platform.indexOf('Win') > -1
 
-const getBrowser = userAgent => {
+const getBrowser = (userAgent) => {
   const ua = userAgent.toLowerCase()
   const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
   const isBrave = isChrome && !window.google
@@ -135,9 +135,9 @@ export default {
     const pubKey = await getPubKey()
     return getTerraAddress(pubKey)
   },
-  sign: async signMessage => {
+  sign: async (signMessage) => {
     const { app, path } = await connect()
     const response = await app.sign(path, signMessage)
     return signatureImport(response.signature)
-  }
+  },
 }
