@@ -7,8 +7,8 @@
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "dependencies": {
-    "@ledgerhq/hw-transport-webhid": "^5.9.0",
-    "@ledgerhq/hw-transport-webusb": "^5.9.0",
+    "@ledgerhq/hw-transport-webhid": "^5.15.0",
+    "@ledgerhq/hw-transport-webusb": "^5.15.0",
     "@sentry/browser": "^5.13.0",
     "@terra-money/use-station": "^3.6.21",
     "@types/bech32": "^1.1.2",
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@babel/plugin-transform-react-jsx-development": "^7.9.0",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-info": "^5.3.14",
     "@storybook/addon-knobs": "^5.3.14",
