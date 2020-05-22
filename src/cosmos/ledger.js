@@ -12,7 +12,15 @@ let app = null
 let path = null
 
 const connect = async () => {
-  if (app && path) return { app, path }
+  if (app) {
+    const response = await app.appInfo()
+
+    if (['Terra', 'Cosmos'].includes(response.appName)) {
+      return { app, path }
+    } else {
+      app = path = null
+    }
+  }
 
   const getAppName = async () => {
     const response = await app.appInfo()
@@ -23,7 +31,7 @@ const connect = async () => {
   const isAppOpen = async () => {
     const appName = await getAppName()
     if (!['Terra', 'Cosmos'].includes(appName)) {
-      throw new Error(`Close ${appName} and open the Terra app`)
+      throw new Error(`Open the Terra app`)
     }
   }
 
@@ -51,8 +59,8 @@ const connect = async () => {
   }
 
   const isReady = async () => {
-    await isAppOpen()
     await isVersionUpdated()
+    await isAppOpen()
   }
 
   getBrowser(navigator.userAgent)
@@ -61,19 +69,56 @@ const connect = async () => {
   if (isWindows(navigator.platform)) {
     if (!navigator.hid) {
       throw new Error(
-        `Your browser doesn't have HID enabled. Please enable this feature by visiting: chrome://flags/#enable-experimental-web-platform-features`
+        `Your browser doesn't have HID enabled.\nPlease enable this feature by visiting:\nchrome://flags/#enable-experimental-web-platform-features`
       )
     }
 
     transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
   } else {
     // OSX / Linux
-    transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+    try {
+      transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+    } catch (err) {
+      /* istanbul ignore next: specific error rewrite */
+      if (
+        err.message
+          .trim()
+          .startsWith('No WebUSB interface found for your Ledger device')
+      ) {
+        throw new Error(
+          `Couldn't connect to a Ledger device. Please use Ledger Live to upgrade the Ledger firmware to version ${REQUIRED_APP_VERSION} or later.`
+        )
+      }
+      /* istanbul ignore next: specific error rewrite */
+      if (err.message.trim().startsWith('Unable to claim interface')) {
+        // apparently can't use it in several tabs in parallel
+        throw new Error(
+          'Could not access Ledger device. Is it being used in another tab?'
+        )
+      }
+      /* istanbul ignore next: specific error rewrite */
+      if (err.message.trim().startsWith('Not supported')) {
+        // apparently can't use it in several tabs in parallel
+        throw new Error(
+          "Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version."
+        )
+      }
+      /* istanbul ignore next: specific error rewrite */
+      if (err.message.trim().startsWith('No device selected')) {
+        // apparently can't use it in several tabs in parallel
+        throw new Error(
+          "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
+        )
+      }
+
+      // throw unknown error
+      throw err
+    }
   }
 
   app = new Cosmos(transport)
-  await isReady()
   path = await getPath()
+  await isReady()
 
   return { app, path }
 }
@@ -95,7 +140,7 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
       throw new Error('Could not find a connected and unlocked Ledger device')
 
     case 'Cosmos app does not seem to be open':
-      throw new Error('App is not open')
+      throw new Error('Please open Terra in your ledger')
 
     case 'Command not allowed':
       throw new Error('Transaction rejected')
@@ -108,8 +153,7 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
 
     case 'Instruction not supported':
       throw new Error(
-        'Your Ledger App is not up to date. ' +
-          `Please update to version ${REQUIRED_APP_VERSION}.`
+        'Please check your Ledger is running latest version of Terra.'
       )
 
     case 'No errors':
