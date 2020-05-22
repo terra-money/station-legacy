@@ -8,7 +8,12 @@ import { getTerraAddress } from './keys'
 const INTERACTION_TIMEOUT = 120
 const REQUIRED_APP_VERSION = '1.5.3'
 
+let app = null
+let path = null
+
 const connect = async () => {
+  if (app && path) return { app, path }
+
   const getAppName = async () => {
     const response = await app.appInfo()
     checkLedgerErrors(response)
@@ -66,10 +71,11 @@ const connect = async () => {
     transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
   }
 
-  const app = new Cosmos(transport)
+  app = new Cosmos(transport)
   await isReady()
+  path = await getPath()
 
-  return { app, path: await getPath() }
+  return { app, path }
 }
 
 const getPubKey = async () => {
@@ -115,7 +121,6 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
 }
 
 const isWindows = (platform) => platform.indexOf('Win') > -1
-
 const getBrowser = (userAgent) => {
   const ua = userAgent.toLowerCase()
   const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
