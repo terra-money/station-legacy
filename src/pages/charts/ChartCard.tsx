@@ -1,6 +1,7 @@
 import React from 'react'
 import { ChartDataSets, ChartOptions } from 'chart.js'
-import { ChartUI, ChartKey, CumulativeType } from '@terra-money/use-station'
+import { ChartUI, ChartKey } from '@terra-money/use-station'
+import { CumulativeType, AccountType } from '@terra-money/use-station'
 import { useChart } from '@terra-money/use-station'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import ErrorComponent from '../../components/ErrorComponent'
@@ -43,7 +44,7 @@ interface Props {
 const Component = ({ chartKey }: Props) => {
   const { scales, lineStyle, fixedYAxis } = chartProps[chartKey]
   const { filter, value, chart, ...rest } = useChart(chartKey)
-  const { type, denom, duration } = filter
+  const { type, denom, account, duration } = filter
 
   /* render */
   const title = (
@@ -71,6 +72,18 @@ const Component = ({ chartKey }: Props) => {
           className={className}
         >
           {denom.options.map((attrs, index) => (
+            <option {...attrs} key={index} />
+          ))}
+        </Select>
+      )}
+
+      {account && (
+        <Select
+          value={account.value}
+          onChange={e => account.set(e.target.value as AccountType)}
+          className={className}
+        >
+          {account.options.map((attrs, index) => (
             <option {...attrs} key={index} />
           ))}
         </Select>
