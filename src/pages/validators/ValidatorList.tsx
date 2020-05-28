@@ -1,6 +1,8 @@
 import React, { CSSProperties } from 'react'
+import { useHistory } from 'react-router-dom'
 import { StakingUI } from '@terra-money/use-station'
 import { ValidatorListHeading } from '@terra-money/use-station'
+import { useSearch } from '../../hooks'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
 import FlexTable from '../../components/FlexTable'
@@ -11,6 +13,8 @@ type Attr = { align?: 'center' | 'right'; style: CSSProperties }
 const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
   const { rank, moniker, votingPower, selfDelegation, commission } = headings
   const { delegationReturn, uptime, myDelegation } = headings
+  const { replace } = useHistory()
+  const [, getNextSearch] = useSearch()
 
   const Columns: [ValidatorListHeading | undefined, Attr][] = [
     [rank, { align: 'center', style: { width: 60, paddingRight: 20 } }],
@@ -40,6 +44,10 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
           const handleClick = () => {
             const asc = selected ? !current.asc : false
             heading?.sorter && set(heading?.sorter, asc)
+
+            const by = heading?.sorter?.prop ?? ''
+            const sort = asc ? 'asc' : ''
+            replace(getNextSearch(Object.entries({ by, sort })))
           }
 
           const button = (
