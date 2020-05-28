@@ -1,22 +1,12 @@
 import React, { useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
-import URLSearchParams from '@ungap/url-search-params'
 import c from 'classnames'
+import useSearch from './useSearch'
 
 export default (name: string, tabs: { key: string; label: string }[]) => {
-  const { search, pathname } = useLocation()
+  const { pathname } = useLocation()
   const history = useHistory()
-
-  /* helper: URL */
-  const getSearch = () => new URLSearchParams(search)
-  const getNextSearch = (entries: string[][]) => {
-    const sp = getSearch()
-    entries.forEach(([key, value]) =>
-      value ? sp.set(key, value) : sp.delete(key)
-    )
-
-    return `?${sp.toString()}`
-  }
+  const [sp, getNextSearch] = useSearch()
 
   /* unmount: init url */
   useEffect(() => {
@@ -44,10 +34,10 @@ export default (name: string, tabs: { key: string; label: string }[]) => {
   }
 
   /* return */
-  const currentTab = getSearch().get(name) || ''
+  const currentTab = sp.get(name) || ''
   return {
     currentTab,
-    page: Number(getSearch().get('page')) || 1,
+    page: Number(sp.get('page')) || 1,
     renderTabs: () => <section className="tabs">{tabs.map(renderTab)}</section>,
     getLink: (page: number) => ({
       pathname,
