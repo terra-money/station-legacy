@@ -1,7 +1,7 @@
 import React from 'react'
 import { useMenu, useStaking, useAuth } from '@terra-money/use-station'
 import { StakingPersonal } from '@terra-money/use-station'
-import { useApp } from '../../hooks'
+import { useApp, useSearch } from '../../hooks'
 import Withdraw from '../../post/Withdraw'
 import ValidatorList from '../validators/ValidatorList'
 import Page from '../../components/Page'
@@ -15,7 +15,15 @@ const Staking = () => {
   const { modal } = useApp()
   const { user } = useAuth()
   const { Staking: title } = useMenu()
-  const { error, loading, personal, ui } = useStaking(user)
+  const [sp] = useSearch()
+
+  const getInitialSorter = () => {
+    const by = sp.get('by')
+    const sort = sp.get('sort') ?? undefined
+    return by ? { by, sort } : undefined
+  }
+
+  const { error, loading, personal, ui } = useStaking(user, getInitialSorter())
 
   const renderButton = ({ withdrawAll }: StakingPersonal) => {
     const { attrs, amounts } = withdrawAll

@@ -10,7 +10,7 @@
     "@ledgerhq/hw-transport-webhid": "^5.15.0",
     "@ledgerhq/hw-transport-webusb": "^5.15.0",
     "@sentry/browser": "^5.13.0",
-    "@terra-money/use-station": "^3.6.23",
+    "@terra-money/use-station": "^3.6.24",
     "@types/bech32": "^1.1.2",
     "@types/chart.js": "^2.9.15",
     "@types/classnames": "^2.2.9",
