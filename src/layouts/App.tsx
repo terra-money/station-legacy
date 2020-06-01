@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { ToastContainer, toast, Slide } from 'react-toastify'
+import { ToastContainer, Slide } from 'react-toastify'
+import { ToastContainerProps } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { without } from 'ramda'
 import axios from 'axios'
@@ -96,8 +97,8 @@ const App = () => {
 export default App
 
 /* toast */
-const ToastConfig = {
-  position: toast.POSITION.TOP_RIGHT,
+const ToastConfig: ToastContainerProps = {
+  position: 'top-right' as const,
   transition: Slide,
   draggable: false,
   closeButton: false,

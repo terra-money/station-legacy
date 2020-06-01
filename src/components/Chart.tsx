@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { mergeDeepRight as mergeDeep, path } from 'ramda'
+import { path } from 'ramda'
+import mergeDeep from 'deepmerge'
 import debounce from 'lodash/fp/debounce'
-import ChartJS from 'chart.js'
+import ChartJS, { ChartOptions, ChartXAxe, ChartYAxe } from 'chart.js'
 import { times, format } from '@terra-money/use-station'
 
 type ChartType = 'doughnut' | 'line' | 'pie'
@@ -61,22 +62,19 @@ const ChartComponent = (props: Props) => {
         const getAxe = (axis: string) =>
           path<object>(['scales', `${axis}Axes`, 0])
 
-        const scales = {
-          xAxes: [
-            mergeDeep(
-              getAxe('x')(chart.options) || {},
-              getAxe('x')(options) || {}
-            )
-          ],
-          yAxes: [
-            mergeDeep(
-              getAxe('y')(chart.options) || {},
-              getAxe('y')(options) || {}
-            )
-          ]
-        }
+        const xAxe: ChartXAxe = mergeDeep<ChartXAxe>(
+          getAxe('x')(chart.options) || {},
+          getAxe('x')(options) || {}
+        )
 
-        chart.options = mergeDeep(
+        const yAxe: ChartYAxe = mergeDeep<ChartYAxe>(
+          getAxe('y')(chart.options) || {},
+          getAxe('y')(options) || {}
+        )
+
+        const scales: ChartOptions['scales'] = { xAxes: [xAxe], yAxes: [yAxe] }
+
+        chart.options = mergeDeep<ChartOptions>(
           chart.options,
           Object.assign({}, options, options.scales && { scales })
         )
@@ -155,7 +153,7 @@ const getOptions = (
     backgroundColor: BLUE,
     titleFontFamily: 'Gotham',
     titleFontSize: 13,
-    titleFontStyle: 700,
+    titleFontStyle: '700',
     titleMarginBottom: 4,
     bodyFontFamily: 'Gotham',
     bodyFontSize: 13,
@@ -168,12 +166,12 @@ const getOptions = (
       title: (
         [{ index }]: ChartJS.ChartTooltipItem[],
         { labels }: ChartJS.ChartData
-      ) => labels && typeof index === 'number' && labels[index],
+      ) => String(labels && typeof index === 'number' && labels[index]),
       label: getLabel
     }
   }
 
-  const options = {
+  const options: ChartOptions = {
     doughnut: {
       aspectRatio: 1,
       cutoutPercentage: 85,
@@ -186,12 +184,12 @@ const getOptions = (
     },
     line: {
       tooltips: {
-        mode: 'index',
         intersect: false,
+        mode: 'index' as const,
         backgroundColor: BLUE,
         titleFontFamily: 'Gotham',
         titleFontSize: 16,
-        titleFontStyle: 500,
+        titleFontStyle: '500',
         titleMarginBottom: 2,
         bodyFontFamily: 'Gotham',
         bodyFontSize: 11,
@@ -201,7 +199,7 @@ const getOptions = (
         caretSize: 6,
         displayColors: false,
         callbacks: {
-          title: ([{ value }]: ChartJS.ChartTooltipItem[]) => value,
+          title: ([{ value }]: ChartJS.ChartTooltipItem[]) => String(value),
           label: getLabel
         }
       },
@@ -210,7 +208,7 @@ const getOptions = (
           {
             type: 'time',
             ticks: {
-              source: 'data',
+              source: 'data' as const,
               autoSkip: true,
               fontColor: '#7282c9',
               fontSize: 11
