@@ -1,11 +1,12 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import Ledger from 'ledger-terra-js'
+import TerraLedger from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
 
 const INTERACTION_TIMEOUT = 120
+const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
 const REQUIRED_APP_VERSION = '1.0.0'
 
 let app = null
@@ -20,47 +21,6 @@ const connect = async () => {
     } else {
       app = path = null
     }
-  }
-
-  const getAppName = async () => {
-    const response = await app.appInfo()
-    checkLedgerErrors(response)
-    return response.appName
-  }
-
-  const isAppOpen = async () => {
-    const appName = await getAppName()
-    if (!['Terra', 'Cosmos'].includes(appName)) {
-      throw new Error(`Open the Terra app`)
-    }
-  }
-
-  const isVersionUpdated = async () => {
-    const getAppVersion = async () => {
-      const response = await app.getVersion()
-      checkLedgerErrors(response)
-      const { major, minor, patch } = response
-      return `${major}.${minor}.${patch}`
-    }
-
-    const version = await getAppVersion()
-
-    if (!semver.gte(version, REQUIRED_APP_VERSION)) {
-      throw new Error(
-        'Outdated version: Please update Ledger Terra App to the latest version.'
-      )
-    }
-  }
-
-  const getPath = async () => {
-    const appName = await getAppName()
-    const bip = { Cosmos: 118, Terra: 330 }[appName]
-    return [44, bip, 0, 0, 0]
-  }
-
-  const isReady = async () => {
-    await isVersionUpdated()
-    await isAppOpen()
   }
 
   getBrowser(navigator.userAgent)
@@ -116,15 +76,50 @@ const connect = async () => {
     }
   }
 
-  app = new Ledger(transport)
-  path = await getPath()
-  await isReady()
+  app = new TerraLedger(transport)
 
-  return { app, path }
+  const getAppName = async () => {
+    const response = await app.appInfo()
+    checkLedgerErrors(response)
+    return response.appName
+  }
+
+  const getAppVersion = async () => {
+    const response = await app.getVersion()
+    checkLedgerErrors(response)
+    const { major, minor, patch } = response
+    return `${major}.${minor}.${patch}`
+  }
+
+  const getPath = (appName) => {
+    const bip = { Cosmos: 118, Terra: 330 }[appName]
+    return [44, bip, 0, 0, 0]
+  }
+
+  const initialize = async () => {
+    const appName = await getAppName()
+
+    if (!['Terra', 'Cosmos'].includes(appName)) {
+      throw new Error(`Open the Terra app in your Ledger.`)
+    }
+
+    const version = await getAppVersion()
+
+    if ((appName === 'Terra' && !semver.gte(version, REQUIRED_APP_VERSION)) ||
+       (appName === 'Cosmos' && !semver.gte(version, REQUIRED_COSMOS_APP_VERSION))) {
+      throw new Error(
+        'Outdated version: Please update Ledger Terra App to the latest version.'
+      )
+    }
+
+    path = getPath(appName)
+  }
+
+  return initialize()
 }
 
 const getPubKey = async () => {
-  const { app, path } = await connect()
+  await connect()
   const response = await app.getAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
   return response.compressed_pk
@@ -137,19 +132,19 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
 
   switch (error_message) {
     case 'U2F: Timeout':
-      throw new Error('Could not find a connected and unlocked Ledger device')
+      throw new Error('Could not find a connected and unlocked Ledger device.')
 
     case 'Cosmos app does not seem to be open':
-      throw new Error('Please open Terra in your ledger')
+      throw new Error('Open the Terra app in your Ledger.')
 
     case 'Command not allowed':
-      throw new Error('Transaction rejected')
+      throw new Error('Transaction rejected.')
 
     case 'Transaction rejected':
-      throw new Error('User rejected the transaction')
+      throw new Error('User rejected the transaction.')
 
     case 'Unknown Status Code: 26628':
-      throw new Error(`Ledger's screensaver mode is on`)
+      throw new Error(`Ledger's screensaver mode is on.`)
 
     case 'Instruction not supported':
       throw new Error(

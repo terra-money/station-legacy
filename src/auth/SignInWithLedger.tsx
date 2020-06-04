@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSignInWithLedger } from '@terra-money/use-station'
-import ledger from '../cosmos/ledger'
+import ledger from '../wallet/ledger'
 import ModalContent from '../components/ModalContent'
 import { useAuthModal } from './useAuthModal'
 import ConfirmLedger from './ConfirmLedger'

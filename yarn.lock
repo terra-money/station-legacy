@@ -2201,6 +2201,16 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
+"@terra-money/ledger-terra-js@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@terra-money/ledger-terra-js/-/ledger-terra-js-1.0.3.tgz#9fe8eec8081e325ef5a007aaa9be0b77abd17575"
+  integrity sha512-2UgfRf1TC1Z4pA8TO7GtpxSH/5zrX6QrbdPcMut/AO5i1xyR0420Cn7c9XIphPSPX4cJPxxtfR1tkn/H2N6bvw==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+    "@ledgerhq/hw-transport" "^4.78.0"
+    bech32 "^1.1.3"
+    ripemd160 "^2.0.2"
+
 "@terra-money/use-station@^3.6.27":
   version "3.6.27"
   resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-3.6.27.tgz#d02fb220adc945d663589f95fea203e147baa545"
