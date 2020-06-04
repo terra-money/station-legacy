@@ -1,12 +1,12 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import Cosmos from 'ledger-cosmos-js'
+import Ledger from 'ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
 
 const INTERACTION_TIMEOUT = 120
-const REQUIRED_APP_VERSION = '1.5.3'
+const REQUIRED_APP_VERSION = '1.0.0'
 
 let app = null
 let path = null
@@ -116,7 +116,7 @@ const connect = async () => {
     }
   }
 
-  app = new Cosmos(transport)
+  app = new Ledger(transport)
   path = await getPath()
   await isReady()
 

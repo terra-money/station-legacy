@@ -34,7 +34,7 @@
     "crypto-js": "^4.0.0",
     "deepmerge": "^4.2.2",
     "intersection-observer": "^0.7.0",
-    "ledger-cosmos-js": "^2.1.7",
+    "ledger-terra-js": "https://github.com/terra-project/ledger-terra-js",
     "lodash": "^4.17.15",
     "node-sass": "^4.13.1",
     "ramda": "^0.27.0",
