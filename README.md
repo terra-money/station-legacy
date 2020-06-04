@@ -31,7 +31,7 @@ Add the following entry to your `/etc/hosts` file:
 ```sh
 git clone https://github.com/terra-project/station.git
 cd station
-cp src/Chains.sample.ts src/Chains.ts
+cp src/chains.sample.ts src/chains.ts
 yarn
 yarn start
 ```
