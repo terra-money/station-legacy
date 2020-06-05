@@ -75,18 +75,14 @@ const connect = async () => {
       )
     }
 
-    try {
-      transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
-    } catch (err) {
-      ledgerErrorHandler(err)
-    }
+    transport = await TransportWebHID
+      .create(INTERACTION_TIMEOUT * 1000)
+      .catch(ledgerErrorHandler)
   } else {
     // OSX / Linux
-    try {
-      transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
-    } catch (err) {
-      ledgerErrorHandler(err)
-    }
+    transport = await TransportWebUSB
+      .create(INTERACTION_TIMEOUT * 1000)
+      .catch(ledgerErrorHandler)
   }
 
   app = new TerraLedger(transport)
