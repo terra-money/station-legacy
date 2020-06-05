@@ -87,9 +87,13 @@
       "pre-commit": "lint-staged"
     }
   },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
+  },
   "lint-staged": {
     "src/**/*.{ts,tsx,json,scss}": [
-      "prettier --single-quote --no-semi --write"
+      "prettier --write"
     ]
   },
   "browserslist": {

@@ -12,6 +12,47 @@ const REQUIRED_APP_VERSION = '1.0.0'
 let app = null
 let path = null
 
+const ledgerErrorHandler = err => {
+  const message = err.message.trim()
+
+  /* istanbul ignore next: specific error rewrite */
+  if (message.startsWith('No WebUSB interface found for your Ledger device')) {
+    throw new Error(
+      `Couldn't connect to a Ledger device. Please use Ledger Live to upgrade the Ledger firmware to version ${REQUIRED_APP_VERSION} or later.`
+    )
+  }
+
+  /* istanbul ignore next: specific error rewrite */
+  if (message.startsWith('Unable to claim interface')) {
+    // apparently can't use it in several tabs in parallel
+    throw new Error(
+      'Could not access Ledger device. Is it being used in another tab?'
+    )
+  }
+
+  /* istanbul ignore next: specific error rewrite */
+  if (message.startsWith('Not supported')) {
+    // apparently can't use it in several tabs in parallel
+    throw new Error(
+      "Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version."
+    )
+  }
+
+  /* istanbul ignore next: specific error rewrite */
+  if (
+    message.startsWith('No device selected') ||
+    message.includes('productId') // special case for windows.
+  ) {
+    // apparently can't use it in several tabs in parallel
+    throw new Error(
+      "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
+    )
+  }
+
+  // throw unknown error
+  throw err
+}
+
 const connect = async () => {
   if (app) {
     const response = await app.appInfo()
@@ -26,6 +67,7 @@ const connect = async () => {
   getBrowser(navigator.userAgent)
 
   let transport
+
   if (isWindows(navigator.platform)) {
     if (!navigator.hid) {
       throw new Error(
@@ -33,46 +75,17 @@ const connect = async () => {
       )
     }
 
-    transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+    try {
+      transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+    } catch (err) {
+      ledgerErrorHandler(err)
+    }
   } else {
     // OSX / Linux
     try {
       transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
     } catch (err) {
-      /* istanbul ignore next: specific error rewrite */
-      if (
-        err.message
-          .trim()
-          .startsWith('No WebUSB interface found for your Ledger device')
-      ) {
-        throw new Error(
-          `Couldn't connect to a Ledger device. Please use Ledger Live to upgrade the Ledger firmware to version ${REQUIRED_APP_VERSION} or later.`
-        )
-      }
-      /* istanbul ignore next: specific error rewrite */
-      if (err.message.trim().startsWith('Unable to claim interface')) {
-        // apparently can't use it in several tabs in parallel
-        throw new Error(
-          'Could not access Ledger device. Is it being used in another tab?'
-        )
-      }
-      /* istanbul ignore next: specific error rewrite */
-      if (err.message.trim().startsWith('Not supported')) {
-        // apparently can't use it in several tabs in parallel
-        throw new Error(
-          "Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version."
-        )
-      }
-      /* istanbul ignore next: specific error rewrite */
-      if (err.message.trim().startsWith('No device selected')) {
-        // apparently can't use it in several tabs in parallel
-        throw new Error(
-          "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
-        )
-      }
-
-      // throw unknown error
-      throw err
+      ledgerErrorHandler(err)
     }
   }
 
@@ -91,7 +104,7 @@ const connect = async () => {
     return `${major}.${minor}.${patch}`
   }
 
-  const getPath = (appName) => {
+  const getPath = appName => {
     const bip = { Cosmos: 118, Terra: 330 }[appName]
     return [44, bip, 0, 0, 0]
   }
@@ -105,8 +118,11 @@ const connect = async () => {
 
     const version = await getAppVersion()
 
-    if ((appName === 'Terra' && !semver.gte(version, REQUIRED_APP_VERSION)) ||
-       (appName === 'Cosmos' && !semver.gte(version, REQUIRED_COSMOS_APP_VERSION))) {
+    if (
+      (appName === 'Terra' && !semver.gte(version, REQUIRED_APP_VERSION)) ||
+      (appName === 'Cosmos' &&
+        !semver.gte(version, REQUIRED_COSMOS_APP_VERSION))
+    ) {
       throw new Error(
         'Outdated version: Please update Ledger Terra App to the latest version.'
       )
@@ -159,8 +175,8 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
   }
 }
 
-const isWindows = (platform) => platform.indexOf('Win') > -1
-const getBrowser = (userAgent) => {
+const isWindows = platform => platform.indexOf('Win') > -1
+const getBrowser = userAgent => {
   const ua = userAgent.toLowerCase()
   const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
   const isBrave = isChrome && !window.google
@@ -179,9 +195,9 @@ export default {
     const pubKey = await getPubKey()
     return getTerraAddress(pubKey)
   },
-  sign: async (signMessage) => {
+  sign: async signMessage => {
     const { app, path } = await connect()
     const response = await app.sign(path, signMessage)
     return signatureImport(response.signature)
-  },
+  }
 }
