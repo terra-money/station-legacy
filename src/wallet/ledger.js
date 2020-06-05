@@ -12,7 +12,7 @@ const REQUIRED_APP_VERSION = '1.0.0'
 let app = null
 let path = null
 
-const ledgerErrorHandler = err => {
+const handleConnectError = err => {
   const message = err.message.trim()
 
   /* istanbul ignore next: specific error rewrite */
@@ -69,20 +69,17 @@ const connect = async () => {
   let transport
 
   if (isWindows(navigator.platform)) {
+    // For Windows
     if (!navigator.hid) {
       throw new Error(
         `Your browser doesn't have HID enabled.\nPlease enable this feature by visiting:\nchrome://flags/#enable-experimental-web-platform-features`
       )
     }
 
-    transport = await TransportWebHID
-      .create(INTERACTION_TIMEOUT * 1000)
-      .catch(ledgerErrorHandler)
+    transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
   } else {
-    // OSX / Linux
-    transport = await TransportWebUSB
-      .create(INTERACTION_TIMEOUT * 1000)
-      .catch(ledgerErrorHandler)
+    // For other than Windows
+    transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
   }
 
   app = new TerraLedger(transport)
@@ -131,7 +128,7 @@ const connect = async () => {
 }
 
 const getPubKey = async () => {
-  await connect()
+  await connect().catch(handleConnectError)
   const response = await app.getAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
   return response.compressed_pk
@@ -192,7 +189,7 @@ export default {
     return getTerraAddress(pubKey)
   },
   sign: async signMessage => {
-    const { app, path } = await connect()
+    await connect().catch(handleConnectError)
     const response = await app.sign(path, signMessage)
     return signatureImport(response.signature)
   }
