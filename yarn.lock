@@ -2119,9 +2119,9 @@
     loader-utils "^1.2.3"
 
 "@terra-money/ledger-terra-js@^1.0":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@terra-money/ledger-terra-js/-/ledger-terra-js-1.0.4.tgz#ee62b1d3d1fbd0ebff3d08e1dff279bd7df193a5"
-  integrity sha512-UwqIssy2u/lqpyTeQmKiZvupiuq6QXAoo6Zmmo61sXFu6WP+9YiyQjeNKIuKq2OzqXOU2qiPZWhFYc1Qfq3viw==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@terra-money/ledger-terra-js/-/ledger-terra-js-1.0.5.tgz#5803394f91c70f7d0bd402957f6beb229d161fe5"
+  integrity sha512-xLvpLjSVY7n443I8Hwh6cxEhQFxNfyGN3nw4OjP66CjU68a/6waQ7UdGBizRHc7MQnD01IZ5qWfDxymynLM88w==
   dependencies:
     "@babel/runtime" "^7.7.6"
     "@ledgerhq/hw-transport" "^4.78.0"
@@ -4157,9 +4157,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30000989, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001061:
-  version "1.0.30001077"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001077.tgz#5d7da6a120b08d9f4fd94823786ecb454aaa5626"
-  integrity sha512-AEzsGvjBJL0lby/87W96PyEvwN0GsYvk5LHsglLg9tW37K4BqvAvoSCdWIE13OZQ8afupqZ73+oL/1LkedN8hA==
+  version "1.0.30001078"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001078.tgz#e1b6e2ae327b6a1ec11f65ec7a0dde1e7093074c"
+  integrity sha512-sF12qXe9VMm32IEf/+NDvmTpwJaaU7N1igpiH2FdI4DyABJSsOqG3ZAcFvszLkoLoo1y6VJLMYivukUAxaMASw==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -5551,9 +5551,9 @@ ejs@^3.0.2:
     jake "^10.6.1"
 
 electron-to-chromium@^1.3.247, electron-to-chromium@^1.3.378, electron-to-chromium@^1.3.413:
-  version "1.3.461"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.461.tgz#9e87f8209b2a4918800839ac9a5fb4ff07a2600d"
-  integrity sha512-+mqXoHkp30WofnhiHNuy5KXBeOx6Jtqpgz42F/NHSTk0/GA1g5plDY0Cwy0A31NVs5V3rfskK18gKy6x2rElUw==
+  version "1.3.464"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.464.tgz#fe13feaa08f6f865d3c89d5d72e54c194f463aa5"
+  integrity sha512-Oo+0+CN9d2z6FToQW6Hwvi9ez09Y/usKwr0tsDsyg43a871zVJCi1nR0v03djLbRNcaCKjtrnVf2XJhTxEpPCg==
 
 element-resize-detector@^1.2.1:
   version "1.2.1"
@@ -13875,9 +13875,9 @@ url@^0.11.0:
     querystring "0.2.0"
 
 use-callback-ref@^1.2.1:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.3.tgz#9f939dfb5740807bbf9dd79cdd4e99d27e827756"
-  integrity sha512-DPBPh1i2adCZoIArRlTuKRy7yue7QogtEnfv0AKrWsY+GA+4EKe37zhRDouNnyWMoNQFYZZRF+2dLHsWE4YvJA==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.4.tgz#d86d1577bfd0b955b6e04aaf5971025f406bea3c"
+  integrity sha512-rXpsyvOnqdScyied4Uglsp14qzag1JIemLeTWGKbwpotWht57hbP78aNT+Q4wdFKQfQibbUX4fb6Qb4y11aVOQ==
 
 use-sidecar@^1.0.1:
   version "1.0.2"

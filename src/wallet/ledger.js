@@ -1,6 +1,6 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import TerraLedger from '@terra-money/ledger-terra-js'
+import TerraApp from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
@@ -82,7 +82,7 @@ const connect = async () => {
     transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
   }
 
-  app = new TerraLedger(transport)
+  app = new TerraApp(transport)
 
   const getAppName = async () => {
     const response = await app.appInfo()
@@ -103,6 +103,7 @@ const connect = async () => {
   }
 
   const initialize = async () => {
+    await app.initialize()
     const appName = await getAppName()
 
     if (!['Terra', 'Cosmos'].includes(appName)) {
