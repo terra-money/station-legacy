@@ -10,9 +10,13 @@ const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
 const REQUIRED_APP_VERSION = '1.0.0'
 
 let app = null
+let appName = null
 let path = null
+let transport = null
 
 const handleConnectError = err => {
+  app = path = appName = null
+
   const message = err.message.trim()
 
   /* istanbul ignore next: specific error rewrite */
@@ -53,20 +57,8 @@ const handleConnectError = err => {
   throw err
 }
 
-const connect = async () => {
-  if (app) {
-    const response = await app.appInfo()
-
-    if (['Terra', 'Cosmos'].includes(response.appName)) {
-      return { app, path }
-    } else {
-      app = path = null
-    }
-  }
-
+const connectTransport = async () => {
   getBrowser(navigator.userAgent)
-
-  let transport
 
   if (isWindows(navigator.platform)) {
     // For Windows
@@ -81,14 +73,39 @@ const connect = async () => {
     // For other than Windows
     transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
   }
+}
+
+const connect = async () => {
+  await connectTransport().catch(err => {
+    if (err.message.startsWith('The device is already open')) {
+      return
+    }
+
+    throw err
+  })
+
+  if (app) {
+    const response = await app.appInfo()
+
+    if (response.appName === appName) {
+      return { app, path }
+    }
+
+    // Need re-initalization.
+    app = path = appName = null
+  }
 
   app = new TerraApp(transport)
+
+  await app.initialize()
 
   const getAppName = async () => {
     const response = await app.appInfo()
     checkLedgerErrors(response)
     return response.appName
   }
+
+  appName = await getAppName()
 
   const getAppVersion = async () => {
     const response = await app.getVersion()
@@ -97,15 +114,7 @@ const connect = async () => {
     return `${major}.${minor}.${patch}`
   }
 
-  const getPath = appName => {
-    const bip = { Cosmos: 118, Terra: 330 }[appName]
-    return [44, bip, 0, 0, 0]
-  }
-
-  const initialize = async () => {
-    await app.initialize()
-    const appName = await getAppName()
-
+  const checkAppVersion = async () => {
     if (!['Terra', 'Cosmos'].includes(appName)) {
       throw new Error(`Open the Terra app in your Ledger.`)
     }
@@ -121,11 +130,16 @@ const connect = async () => {
         'Outdated version: Please update Ledger Terra App to the latest version.'
       )
     }
-
-    path = getPath(appName)
   }
 
-  return initialize()
+  await checkAppVersion()
+
+  const getPath = appName => {
+    const bip = { Cosmos: 118, Terra: 330 }[appName]
+    return [44, bip, 0, 0, 0]
+  }
+
+  path = getPath(appName)
 }
 
 const getPubKey = async () => {
