@@ -8,6 +8,7 @@
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "license": "ISC",
   "dependencies": {
+    "@ledgerhq/hw-transport-node-hid": "^5.16.0",
     "@ledgerhq/hw-transport-webhid": "^5.15.0",
     "@ledgerhq/hw-transport-webusb": "^5.15.0",
     "@sentry/browser": "^5.13.0",

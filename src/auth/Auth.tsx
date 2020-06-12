@@ -49,7 +49,7 @@ const Auth = () => {
   }
 
   const keys: AuthMenuKey[] = isElectron
-    ? ['signIn', 'signUp', 'recover']
+    ? ['signInWithLedger', 'signIn', 'signUp', 'recover']
     : ['signInWithLedger']
 
   const { ui, list } = useAuthMenu(keys)

@@ -1,9 +1,11 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
+import TransportNodeHID from '@ledgerhq/hw-transport-node-hid'
 import TerraApp from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
+import { isElectron } from '../utils/env'
 
 const INTERACTION_TIMEOUT = 120
 const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
@@ -58,20 +60,24 @@ const handleConnectError = err => {
 }
 
 const connectTransport = async () => {
-  getBrowser(navigator.userAgent)
-
-  if (isWindows(navigator.platform)) {
-    // For Windows
-    if (!navigator.hid) {
-      throw new Error(
-        `Your browser doesn't have HID enabled.\nPlease enable this feature by visiting:\nchrome://flags/#enable-experimental-web-platform-features`
-      )
-    }
-
-    transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+  if (isElectron) {
+    transport = await TransportNodeHID.create(INTERACTION_TIMEOUT * 1000)
   } else {
-    // For other than Windows
-    transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+    getBrowser(navigator.userAgent)
+
+    if (isWindows(navigator.platform)) {
+      // For Windows
+      if (!navigator.hid) {
+        throw new Error(
+          `Your browser doesn't have HID enabled.\nPlease enable this feature by visiting:\nchrome://flags/#enable-experimental-web-platform-features`
+        )
+      }
+
+      transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+    } else {
+      // For other than Windows
+      transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+    }
   }
 }
 
