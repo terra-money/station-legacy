@@ -43,10 +43,7 @@ const handleConnectError = err => {
   }
 
   /* istanbul ignore next: specific error rewrite */
-  if (
-    message.startsWith('No device selected') ||
-    message.includes('productId') // special case for windows.
-  ) {
+  if (message.startsWith('No device selected')) {
     // apparently can't use it in several tabs in parallel
     throw new Error(
       "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
@@ -76,6 +73,10 @@ const connectTransport = async () => {
 }
 
 const connect = async () => {
+  if (app) {
+    return
+  }
+
   await connectTransport().catch(err => {
     if (err.message.startsWith('The device is already open')) {
       return
@@ -83,17 +84,6 @@ const connect = async () => {
 
     throw err
   })
-
-  if (app) {
-    const response = await app.appInfo()
-
-    if (response.appName === appName) {
-      return { app, path }
-    }
-
-    // Need re-initalization.
-    app = path = appName = null
-  }
 
   app = new TerraApp(transport)
 
@@ -157,14 +147,21 @@ const showAddressInLedger = async () => {
 
 const checkLedgerErrors = ({ error_message, device_locked }) => {
   if (device_locked) {
-    throw new Error(`Ledger's screensaver mode is on`)
+    throw new Error(`Ledger's screensaver mode is on.`)
+  }
+
+  if (error_message.startsWith('TransportRaceCondition')) {
+    throw new Error('Please finish previous action in Ledger.')
+  } else if (error_message.startsWith('DisconnectedDeviceDuringOperation')) {
+    app = path = null
+    throw new Error('Open the Terra app in your Ledger.')
   }
 
   switch (error_message) {
     case 'U2F: Timeout':
       throw new Error('Could not find a connected and unlocked Ledger device.')
 
-    case 'Cosmos app does not seem to be open':
+    case 'App does not seem to be open':
       throw new Error('Open the Terra app in your Ledger.')
 
     case 'Command not allowed':
