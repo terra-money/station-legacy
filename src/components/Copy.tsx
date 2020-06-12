@@ -7,23 +7,50 @@ import { Tooltip } from './Pop'
 import tooltipStyle from './Pop.module.scss'
 import s from './Copy.module.scss'
 
-type Props = {
+interface Payload {
+  children: ReactNode
+  tooltip: string
+  clicked: boolean
+  onClick: () => void
+}
+
+interface Props {
   classNames?: { container?: string; text?: string; button?: string }
   text: string
   noLabel?: boolean
+  payload?: Payload
   children?: ReactNode
 }
 
-const Copy = ({ classNames = {}, text, noLabel, children }: Props) => {
+const DURATION = 1500
+
+const Copy = ({ classNames = {}, text, noLabel, payload, children }: Props) => {
   const { COPY, COPIED } = useText()
   const [copied, setCopied] = useState(false)
 
   const showTooltip = () => {
     setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    setTimeout(() => setCopied(false), DURATION)
   }
 
   const attrs = { text, onCopy: showTooltip }
+
+  const renderPayload = ({ children, tooltip, clicked, onClick }: Payload) => (
+    <section className={s.wrapper}>
+      <button className={classNames.button} onClick={onClick} type="button">
+        {children}
+      </button>
+
+      {clicked && (
+        <Tooltip
+          placement="top"
+          content={tooltip}
+          className={c(tooltipStyle.tooltip, s.tooltip)}
+          width={240}
+        />
+      )}
+    </section>
+  )
 
   return (
     <div className={classNames.container}>
@@ -49,6 +76,8 @@ const Copy = ({ classNames = {}, text, noLabel, children }: Props) => {
           />
         )}
       </section>
+
+      {payload && renderPayload(payload)}
     </div>
   )
 }

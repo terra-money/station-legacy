@@ -149,6 +149,12 @@ const getPubKey = async () => {
   return response.compressed_pk
 }
 
+const showAddressInLedger = async () => {
+  await connect().catch(handleConnectError)
+  const response = await app.showAddressAndPubKey(path, 'terra')
+  checkLedgerErrors(response)
+}
+
 const checkLedgerErrors = ({ error_message, device_locked }) => {
   if (device_locked) {
     throw new Error(`Ledger's screensaver mode is on`)
@@ -199,6 +205,7 @@ const getBrowser = userAgent => {
 
 export default {
   getPubKey,
+  showAddressInLedger,
   getTerraAddress: async () => {
     const pubKey = await getPubKey()
     return getTerraAddress(pubKey)
