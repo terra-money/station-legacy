@@ -12,7 +12,7 @@ const Modal: FC<Props> = ({ title, config, children }) => {
   const modal = {
     ...config,
     overlayClassName: s.overlay,
-    className: s.content
+    className: s.content,
   }
 
   return (

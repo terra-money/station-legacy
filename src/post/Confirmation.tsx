@@ -28,7 +28,7 @@ const Confirmation = ({ confirm, modal }: Props) => {
       const signer = await getSigner(type, { name, password })
       const signedTx = await signTx(tx, signer, base)
       return signedTx
-    }
+    },
   })
 
   /* prevent to close modal */
@@ -51,12 +51,12 @@ const Confirmation = ({ confirm, modal }: Props) => {
   const modalActions = {
     goBack: confirm.cancel,
     close: modal.close,
-    disabled: form.submitting
+    disabled: form.submitting,
   }
 
   const resultButtonAttrs = {
     className: 'btn btn-block btn-primary',
-    onClick: modal.close
+    onClick: modal.close,
   }
 
   const renderForm = () => (
@@ -89,9 +89,9 @@ const Confirmation = ({ confirm, modal }: Props) => {
                 <Select
                   {...fee.select.attrs}
                   className="form-control form-control-sm"
-                  onChange={e => fee.select.setValue(e.target.value)}
+                  onChange={(e) => fee.select.setValue(e.target.value)}
                 >
-                  {fee.select.options.map(option => (
+                  {fee.select.options.map((option) => (
                     <option {...option} key={option.value} />
                   ))}
                 </Select>
@@ -107,7 +107,7 @@ const Confirmation = ({ confirm, modal }: Props) => {
                     <input
                       {...fee.input.attrs}
                       className="form-control form-control-sm"
-                      onChange={e => fee.input.setValue(e.target.value)}
+                      onChange={(e) => fee.input.setValue(e.target.value)}
                     />
                     <div className="input-group-append">
                       <span className="input-group-text">

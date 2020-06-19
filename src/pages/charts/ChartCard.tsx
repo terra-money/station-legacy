@@ -23,18 +23,18 @@ interface ChartProps {
 const LINE = { backgroundColor: 'rgba(255, 255, 255, 0)' }
 const BG = {
   borderColor: 'rgba(32, 67, 181, 0.25)',
-  backgroundColor: 'rgba(32, 67, 181, 0.25)'
+  backgroundColor: 'rgba(32, 67, 181, 0.25)',
 }
 
 const chartProps: { [key in ChartKey]: ChartProps } = {
   TxVolume: { lineStyle: BG },
   StakingReturn: {
-    scales: { yAxes: [{ ticks: { callback: v => `${v}%` } }] },
+    scales: { yAxes: [{ ticks: { callback: (v) => `${v}%` } }] },
     lineStyle: BG,
-    fixedYAxis: true
+    fixedYAxis: true,
   },
   TaxRewards: { lineStyle: LINE },
-  TotalAccounts: { lineStyle: LINE }
+  TotalAccounts: { lineStyle: LINE },
 }
 
 interface Props {
@@ -68,7 +68,7 @@ const Component = ({ chartKey }: Props) => {
       {denom && (
         <Select
           value={denom.value}
-          onChange={e => denom.set(e.target.value)}
+          onChange={(e) => denom.set(e.target.value)}
           className={className}
         >
           {denom.options.map((attrs, index) => (
@@ -80,7 +80,7 @@ const Component = ({ chartKey }: Props) => {
       {account && (
         <Select
           value={account.value}
-          onChange={e => account.set(e.target.value as AccountType)}
+          onChange={(e) => account.set(e.target.value as AccountType)}
           className={className}
         >
           {account.options.map((attrs, index) => (
@@ -92,7 +92,7 @@ const Component = ({ chartKey }: Props) => {
       {type && (
         <Select
           value={type.value}
-          onChange={e => type.set(e.target.value as CumulativeType)}
+          onChange={(e) => type.set(e.target.value as CumulativeType)}
           className={className}
           style={{ minWidth: 120 }}
         >
@@ -117,16 +117,16 @@ const Component = ({ chartKey }: Props) => {
       scales: {
         xAxes: [{ time: { unit: 'day' } }],
         yAxes: [
-          { ticks: { min: fixedYAxis ? 0 : undefined, callback: formatTickY } }
+          { ticks: { min: fixedYAxis ? 0 : undefined, callback: formatTickY } },
         ],
-        ...scales
+        ...scales,
       },
       tooltips: {
         callbacks: {
           title: ([{ index }]) => chart.tooltips[index!]['title'],
-          label: ({ index }) => chart.tooltips[index!]['label']
-        }
-      }
+          label: ({ index }) => chart.tooltips[index!]['label'],
+        },
+      },
     }
 
     return (
@@ -149,7 +149,7 @@ const Component = ({ chartKey }: Props) => {
             data={chart.data}
             lineStyle={{
               ...lineStyle,
-              lineTension: type?.value === CumulativeType.C ? 0 : undefined
+              lineTension: type?.value === CumulativeType.C ? 0 : undefined,
             }}
             options={defaultOptions}
             height={260}

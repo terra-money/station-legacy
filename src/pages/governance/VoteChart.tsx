@@ -6,14 +6,14 @@ import Chart from '../../components/Chart'
 import Orb from '../../components/Orb'
 
 const VoteChart = ({ options }: { options: VoteOption[] }) => {
-  const filtered = options.filter(o => gt(o.ratio, 0))
+  const filtered = options.filter((o) => gt(o.ratio, 0))
 
   return filtered.length ? (
     <Chart
       type="pie"
-      pieBackgroundColors={filtered.map(o => o.color)}
-      labels={filtered.map(o => o.label)}
-      data={filtered.map(o => toNumber(o.ratio))}
+      pieBackgroundColors={filtered.map((o) => o.color)}
+      labels={filtered.map((o) => o.label)}
+      data={filtered.map((o) => toNumber(o.ratio))}
       width={100}
       height={100}
       options={{ tooltips: { callbacks: { label: getLabel } } }}

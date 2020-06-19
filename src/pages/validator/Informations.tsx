@@ -18,7 +18,7 @@ const Informations = (v: ValidatorUI) => {
     { label: maxRate.title, value: maxRate.percent },
     { label: maxChangeRate.title, value: maxChangeRate.percent },
     { label: delegationReturn.title, value: delegationReturn.percent },
-    { label: updateTime.title, value: updateTime.date }
+    { label: updateTime.title, value: updateTime.date },
   ]
 
   return (

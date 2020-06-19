@@ -7,7 +7,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   forwardRef?: RefObject<HTMLSpanElement>
 }
 
-const Icon: FC<Props> = props => {
+const Icon: FC<Props> = (props) => {
   const { name, size, className, style, forwardRef, ...attrs } = props
   return (
     <i

@@ -7,8 +7,8 @@ export const Chains: Dictionary<ChainOptions> = {
     name: 'columbus-3',
     hostname: 'fcd.terra.dev',
     port: 443,
-    secure: true
-  }
+    secure: true,
+  },
 }
 
 export const list: string[] = ['columbus']

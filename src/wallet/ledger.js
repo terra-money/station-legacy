@@ -1,15 +1,14 @@
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import TransportNodeHID from '@ledgerhq/hw-transport-node-hid'
 import TerraApp from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
+import { electron } from '../utils'
 import { isElectron } from '../utils/env'
 
 const INTERACTION_TIMEOUT = 120
 const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
 const REQUIRED_APP_VERSION = '1.0.0'
+const REQUIRED_ELECTRON_APP_VERSION = '1.1.0'
 
 let app = null
 let appName = null
@@ -45,10 +44,7 @@ const handleConnectError = err => {
   }
 
   /* istanbul ignore next: specific error rewrite */
-  if (
-    message.startsWith('No device selected') ||
-    message.includes('productId') // special case for windows.
-  ) {
+  if (message.startsWith('No device selected')) {
     // apparently can't use it in several tabs in parallel
     throw new Error(
       "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
@@ -59,9 +55,36 @@ const handleConnectError = err => {
   throw err
 }
 
-const connectTransport = async () => {
+const handleTransportError = err => {
+  if (err.message.startsWith('The device is already open')) {
+    return
+  }
+
+  throw err
+}
+
+const createTerraApp = async () => {
   if (isElectron) {
-    transport = await TransportNodeHID.create(INTERACTION_TIMEOUT * 1000)
+    const version = electron('version')
+
+    if (semver.lt(version, REQUIRED_ELECTRON_APP_VERSION)) {
+      throw new Error('Please update Station to use Ledger.')
+    }
+
+    transport = await electron('createLedgerApp', [INTERACTION_TIMEOUT * 1000])
+    app = {}
+    ;[
+      'appInfo',
+      'getVersion',
+      'getAppVersion',
+      'getAddressAndPubKey',
+      'showAddressAndPubKey',
+      'sign'
+    ].forEach(methodName => {
+      app[methodName] = function() {
+        return electron(methodName, Array.from(arguments))
+      }
+    })
   } else {
     getBrowser(navigator.userAgent)
 
@@ -73,37 +96,35 @@ const connectTransport = async () => {
         )
       }
 
-      transport = await TransportWebHID.create(INTERACTION_TIMEOUT * 1000)
+      const TransportWebHid = require('@ledgerhq/hw-transport-webhid').default
+      transport = await TransportWebHid.create(
+        INTERACTION_TIMEOUT * 1000
+      ).catch(handleTransportError)
     } else {
       // For other than Windows
-      transport = await TransportWebUSB.create(INTERACTION_TIMEOUT * 1000)
+      const TransportWebUsb = require('@ledgerhq/hw-transport-webusb').default
+      transport = await TransportWebUsb.create(
+        INTERACTION_TIMEOUT * 1000
+      ).catch(handleTransportError)
     }
+
+    app = new TerraApp(transport)
+    await app.initialize()
+  }
+
+  if (transport && typeof transport.on === 'function') {
+    transport.on('disconnect', () => {
+      app = path = appName = transport = null
+    })
   }
 }
 
 const connect = async () => {
-  await connectTransport().catch(err => {
-    if (err.message.startsWith('The device is already open')) {
-      return
-    }
-
-    throw err
-  })
-
   if (app) {
-    const response = await app.appInfo()
-
-    if (response.appName === appName) {
-      return { app, path }
-    }
-
-    // Need re-initalization.
-    app = path = appName = null
+    return
   }
 
-  app = new TerraApp(transport)
-
-  await app.initialize()
+  await createTerraApp()
 
   const getAppName = async () => {
     const response = await app.appInfo()
@@ -128,9 +149,8 @@ const connect = async () => {
     const version = await getAppVersion()
 
     if (
-      (appName === 'Terra' && !semver.gte(version, REQUIRED_APP_VERSION)) ||
-      (appName === 'Cosmos' &&
-        !semver.gte(version, REQUIRED_COSMOS_APP_VERSION))
+      (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
+      (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
     ) {
       throw new Error(
         'Outdated version: Please update Ledger Terra App to the latest version.'
@@ -155,16 +175,29 @@ const getPubKey = async () => {
   return response.compressed_pk
 }
 
+const showAddressInLedger = async () => {
+  await connect().catch(handleConnectError)
+  const response = await app.showAddressAndPubKey(path, 'terra')
+  checkLedgerErrors(response)
+}
+
 const checkLedgerErrors = ({ error_message, device_locked }) => {
   if (device_locked) {
-    throw new Error(`Ledger's screensaver mode is on`)
+    throw new Error(`Ledger's screensaver mode is on.`)
+  }
+
+  if (error_message.startsWith('TransportRaceCondition')) {
+    throw new Error('Please finish previous action in Ledger.')
+  } else if (error_message.startsWith('DisconnectedDeviceDuringOperation')) {
+    app = path = null
+    throw new Error('Open the Terra app in your Ledger.')
   }
 
   switch (error_message) {
     case 'U2F: Timeout':
       throw new Error('Could not find a connected and unlocked Ledger device.')
 
-    case 'Cosmos app does not seem to be open':
+    case 'App does not seem to be open':
       throw new Error('Open the Terra app in your Ledger.')
 
     case 'Command not allowed':
@@ -205,6 +238,7 @@ const getBrowser = userAgent => {
 
 export default {
   getPubKey,
+  showAddressInLedger,
   getTerraAddress: async () => {
     const pubKey = await getPubKey()
     return getTerraAddress(pubKey)
@@ -212,6 +246,6 @@ export default {
   sign: async signMessage => {
     await connect().catch(handleConnectError)
     const response = await app.sign(path, signMessage)
-    return signatureImport(response.signature)
+    return signatureImport(Buffer.from(response.signature))
   }
 }

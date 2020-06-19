@@ -13,7 +13,7 @@ const ConfirmSeed = (props: SignUpNext) => {
       onClick: () => {
         onClick(index)
         setIndex(index + 1)
-      }
+      },
     }))
 
     return <ButtonGroup buttons={buttons} />

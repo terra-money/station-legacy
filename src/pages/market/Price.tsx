@@ -32,7 +32,7 @@ const Price = ({ actives }: { actives: string[] }) => {
     !!options.length && (
       <Select
         value={value}
-        onChange={e => set(e.target.value)}
+        onChange={(e) => set(e.target.value)}
         className={c('form-control form-control-md', s.select)}
       >
         {options.map((option, index) => (
@@ -51,10 +51,7 @@ const Price = ({ actives }: { actives: string[] }) => {
 
   const renderGraph = (data: Point[]) => {
     const lineStyle = {
-      backgroundColor: helpers
-        .color('#e4e8f6')
-        .alpha(0.5)
-        .rgbString()
+      backgroundColor: helpers.color('#e4e8f6').alpha(0.5).rgbString(),
     }
 
     return (

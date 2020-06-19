@@ -17,7 +17,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
     return (
       <Select
         value={value}
-        onChange={e => set(e.target.value)}
+        onChange={(e) => set(e.target.value)}
         className={c('form-control', s.select)}
       >
         {options.map((attrs, index) => (

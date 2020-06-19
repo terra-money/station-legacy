@@ -36,7 +36,7 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
 
       <div className="row">
         <section className="col col-5">
-          {fields.slice(0, n).map(field => (
+          {fields.slice(0, n).map((field) => (
             <Field field={field} key={field.attrs.id} />
           ))}
 
@@ -50,7 +50,7 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
         </section>
 
         <section className="col col-5">
-          {fields.slice(n).map(field => (
+          {fields.slice(n).map((field) => (
             <Field field={field} key={field.attrs.id} />
           ))}
 

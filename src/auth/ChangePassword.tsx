@@ -12,7 +12,7 @@ const ChangePassword = ({ name, onChange }: Props) => {
   const form = useChangePassword({
     name,
     test: ({ name, password }) => testPassword(name, password),
-    changePassword: onChange
+    changePassword: onChange,
   })
 
   return <Form form={form} />

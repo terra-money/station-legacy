@@ -63,8 +63,8 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
         onClick: () => {
           setCurrentPage(Page.PW)
           setCurrentIndex(index)
-        }
-      })
+        },
+      }),
     },
     {
       icon: 'delete',
@@ -73,9 +73,9 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
         onClick: () => {
           setCurrentPage(Page.DEL)
           setCurrentIndex(index)
-        }
-      })
-    }
+        },
+      }),
+    },
   ]
 
   const main = (
@@ -90,7 +90,7 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
                 const attrs = {
                   ...getAttrs(index),
                   children: <Icon name={icon} size={20} />,
-                  key: icon
+                  key: icon,
                 }
 
                 return tooltip ? (
@@ -113,12 +113,12 @@ const ManageAccounts = ({ modalActions, onFinish }: Props) => {
   const renderPage = cond<string, ReactNode>([
     [
       equals(Page.PW),
-      () => <ChangePassword name={account['name']} onChange={changePassword} />
+      () => <ChangePassword name={account['name']} onChange={changePassword} />,
     ],
     [
       equals(Page.DEL),
-      () => <DeleteAccount onDelete={deleteAccount} onCancel={init} />
-    ]
+      () => <DeleteAccount onDelete={deleteAccount} onCancel={init} />,
+    ],
   ])(currentPage)
 
   return (

@@ -12,7 +12,7 @@ export default (name: string, tabs: { key: string; label: string }[]) => {
   useEffect(() => {
     const initial = getNextSearch([
       [name, ''],
-      ['page', '']
+      ['page', ''],
     ])
 
     return () => history.replace(initial)
@@ -23,7 +23,7 @@ export default (name: string, tabs: { key: string; label: string }[]) => {
   const renderTab = ({ key, label }: { key: string; label: string }) => {
     const next = getNextSearch([
       [name, key],
-      ['page', '']
+      ['page', ''],
     ])
 
     const isCurrent = key === currentTab
@@ -41,7 +41,7 @@ export default (name: string, tabs: { key: string; label: string }[]) => {
     renderTabs: () => <section className="tabs">{tabs.map(renderTab)}</section>,
     getLink: (page: number) => ({
       pathname,
-      search: getNextSearch([['page', String(page)]])
-    })
+      search: getNextSearch([['page', String(page)]]),
+    }),
   }
 }

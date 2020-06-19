@@ -12,7 +12,7 @@ interface ButtonProps {
   onFocusHidden: () => void
 }
 
-const Button: React.FC<ButtonProps> = props => {
+const Button: React.FC<ButtonProps> = (props) => {
   const { isFocused, attrs, onFocusHidden, children } = props
   const [ref, inView, entry] = useInView({ threshold: 0.99 })
 
@@ -36,7 +36,7 @@ interface Props {
   onSelect: (s: string) => void
 }
 
-const Mnemonic: React.FC<Props> = props => {
+const Mnemonic: React.FC<Props> = (props) => {
   const { label, attrs, onSelect, isFocused, suggest } = props
   const { value } = attrs
 
@@ -53,9 +53,9 @@ const Mnemonic: React.FC<Props> = props => {
   const [nextIndex, setNextIndex] = useState(0)
 
   const increase = () =>
-    setCurrentIndex(i => (i + 1 < suggestions.length ? i + 1 : 0))
+    setCurrentIndex((i) => (i + 1 < suggestions.length ? i + 1 : 0))
   const decrease = () =>
-    setCurrentIndex(i => (i - 1 >= 0 ? i - 1 : suggestions.length - 1))
+    setCurrentIndex((i) => (i - 1 >= 0 ? i - 1 : suggestions.length - 1))
 
   useEffect(() => {
     prevRef.current = currentIndex
@@ -79,7 +79,7 @@ const Mnemonic: React.FC<Props> = props => {
       ArrowDown: increase,
       ArrowUp: decrease,
       Enter: () => onSelect(suggestions[currentIndex]),
-      Tab: () => onSelect(suggestions[currentIndex])
+      Tab: () => onSelect(suggestions[currentIndex]),
     }
 
     if (next[e.key]) {
@@ -130,7 +130,7 @@ const Mnemonic: React.FC<Props> = props => {
               className: c(isFocused && s.active),
               style: { height: itemHeight },
               onClick: () => onSelect(w),
-              onMouseOver: () => setNextIndex(index)
+              onMouseOver: () => setNextIndex(index),
             }
 
             return (

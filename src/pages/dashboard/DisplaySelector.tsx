@@ -10,7 +10,7 @@ const DisplaySelector = ({ title, select, displays }: Props) => {
 
   const selector = (
     <Select
-      onChange={e => setCurrent(e.target.value)}
+      onChange={(e) => setCurrent(e.target.value)}
       value={current}
       className="form-control form-control-md"
       width={80}

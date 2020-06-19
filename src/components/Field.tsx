@@ -97,7 +97,7 @@ const Field = ({ field, focus, onFocus, render }: Props) => {
       <div className="form-group">
         {header}
         <Select {...attrs} onChange={handleChange} className="form-control">
-          {options?.map(option => (
+          {options?.map((option) => (
             <option {...option} key={option.value} />
           ))}
         </Select>
@@ -114,7 +114,7 @@ const Field = ({ field, focus, onFocus, render }: Props) => {
         />
         {error && <InvalidFeedback tooltip>{error}</InvalidFeedback>}
       </div>
-    )
+    ),
   }
 
   return <>{render?.(field) ?? elements[element]()}</>

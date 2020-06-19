@@ -18,9 +18,9 @@ const Send = ({ denom }: { denom: string }) => {
   const { error, loading, submitted, form, confirm, ui } = useSend(user!, denom)
 
   const renderRecent = ({ title, contents }: RecentSentUI) => {
-    const buttons = contents.map(content => ({
+    const buttons = contents.map((content) => ({
       onClick: content.onClick,
-      children: <RecentItem {...content} />
+      children: <RecentItem {...content} />,
     }))
 
     return (

@@ -46,7 +46,7 @@ const Nav = () => {
 
       <section className={c(s.main, isOpen && s.open)}>
         <ul className={s.menu}>
-          {menu.map(item => (
+          {menu.map((item) => (
             <li className={s.item} key={item.name}>
               <NavItem {...item} />
             </li>

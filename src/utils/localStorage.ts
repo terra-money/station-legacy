@@ -12,7 +12,7 @@ export const storeKeys = (keys: Key[]) => {
 
 export const getStoredWallet = (name: string, password: string): Wallet => {
   const keys = loadKeys()
-  const stored = keys.find(key => key.name === name)
+  const stored = keys.find((key) => key.name === name)
 
   if (!stored) throw new Error('Key with that name does not exist')
 
@@ -28,12 +28,12 @@ type Params = { name: string; password: string; wallet: Wallet }
 export const importKey = async ({ name, password, wallet }: Params) => {
   const keys = loadKeys()
 
-  if (keys.find(key => key.name === name))
+  if (keys.find((key) => key.name === name))
     throw new Error('Key with that name already exists')
 
   const encrypted = electron<string>('encrypt', [
     JSON.stringify(wallet),
-    password
+    password,
   ])
 
   if (!encrypted) throw new Error('Encryption error occurred')
@@ -41,7 +41,7 @@ export const importKey = async ({ name, password, wallet }: Params) => {
   const key: Key = {
     name,
     address: wallet.terraAddress,
-    wallet: encrypted
+    wallet: encrypted,
   }
 
   storeKeys([...keys, key])
@@ -49,13 +49,13 @@ export const importKey = async ({ name, password, wallet }: Params) => {
 
 export const findName = (address: string): string | undefined => {
   const keys = loadKeys()
-  const key = keys.find(key => key.address === address)
+  const key = keys.find((key) => key.address === address)
   return key ? key.name : undefined
 }
 
 export const testPassword = (name: string, password: string) => {
   const keys = loadKeys()
-  const key = keys.find(key => key.name === name)
+  const key = keys.find((key) => key.name === name)
 
   if (!key) throw new Error('Key with that name does not exist')
 
@@ -89,5 +89,5 @@ const deleteSettings = (keys: (keyof Settings)[]): void => {
 export const localSettings = {
   get: getSettings,
   set: setSettings,
-  delete: deleteSettings
+  delete: deleteSettings,
 }

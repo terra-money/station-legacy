@@ -16,7 +16,8 @@ const NavItem = ({ name, to, icon, submenu }: Props) => {
   const active =
     to === '/'
       ? pathname === '/'
-      : pathname.startsWith(to) || !!submenu?.some(p => pathname.startsWith(p))
+      : pathname.startsWith(to) ||
+        !!submenu?.some((p) => pathname.startsWith(p))
 
   return (
     <NavLink to={to} className={c(s.link, active && s.active)}>
