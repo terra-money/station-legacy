@@ -1,4 +1,11 @@
-import TerraApp from '@terra-money/ledger-terra-js'
+import TerraApp, {
+  CommonResponse,
+  PublicKeyResponse,
+  SignResponse,
+  VersionResponse,
+  DeviceInfoResponse,
+  AppInfoResponse,
+} from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
 import { getTerraAddress } from './keys'
@@ -10,13 +17,59 @@ const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
 const REQUIRED_APP_VERSION = '1.0.0'
 const REQUIRED_ELECTRON_APP_VERSION = '1.1.0'
 
-let app = null
-let appName = null
-let path = null
+declare global {
+  interface Window {
+    google: any
+  }
+  interface Navigator {
+    hid: any
+  }
+}
+
+class TerraElectronBridge extends TerraApp {
+  constructor() {
+    super({})
+  }
+
+  async initialize(): Promise<CommonResponse | null> {
+    return electron('initialize')
+  }
+
+  getInfo(): AppInfoResponse {
+    return electron('getInfo')
+  }
+
+  getVersion(): VersionResponse {
+    return electron('getVersion')
+  }
+
+  getDeviceInfo(): Promise<DeviceInfoResponse> {
+    return electron('getDeviceInfo')
+  }
+
+  getPublicKey(...args: any[]): Promise<PublicKeyResponse> {
+    return electron('getPublicKey', args)
+  }
+
+  getAddressAndPubKey(...args: any[]): Promise<PublicKeyResponse> {
+    return electron('getAddressAndPubKey', args)
+  }
+
+  showAddressAndPubKey(...args: any[]): Promise<PublicKeyResponse> {
+    return electron('showAddressAndPubKey', args)
+  }
+
+  sign(...args: any[]): Promise<SignResponse> {
+    return electron('sign', args)
+  }
+}
+
+let app: TerraApp | TerraElectronBridge | null = null
+let path: number[] | null = null
 let transport = null
 
-const handleConnectError = err => {
-  app = path = appName = null
+const handleConnectError = (err: Error) => {
+  app = path = null
 
   const message = err.message.trim()
 
@@ -55,7 +108,7 @@ const handleConnectError = err => {
   throw err
 }
 
-const handleTransportError = err => {
+const handleTransportError = (err: Error) => {
   if (err.message.startsWith('The device is already open')) {
     return
   }
@@ -63,28 +116,16 @@ const handleTransportError = err => {
   throw err
 }
 
-const createTerraApp = async () => {
+async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
   if (isElectron) {
-    const version = electron('version')
+    const version: string = electron('version')
 
     if (semver.lt(version, REQUIRED_ELECTRON_APP_VERSION)) {
-      throw new Error('Please update Station to use Ledger.')
+      throw new Error('Outdated version: Please update Station to use Ledger.')
     }
 
-    transport = await electron('createLedgerApp', [INTERACTION_TIMEOUT * 1000])
-    app = {}
-    ;[
-      'appInfo',
-      'getVersion',
-      'getAppVersion',
-      'getAddressAndPubKey',
-      'showAddressAndPubKey',
-      'sign'
-    ].forEach(methodName => {
-      app[methodName] = function() {
-        return electron(methodName, Array.from(arguments))
-      }
-    })
+    await electron('createLedgerApp', [INTERACTION_TIMEOUT * 1000])
+    app = new TerraElectronBridge()
   } else {
     getBrowser(navigator.userAgent)
 
@@ -108,15 +149,22 @@ const createTerraApp = async () => {
       ).catch(handleTransportError)
     }
 
+    if (transport && typeof transport.on === 'function') {
+      transport.on('disconnect', () => {
+        app = path = transport = null
+      })
+    }
+
     app = new TerraApp(transport)
-    await app.initialize()
   }
 
-  if (transport && typeof transport.on === 'function') {
-    transport.on('disconnect', () => {
-      app = path = appName = transport = null
-    })
+  const result = await app.initialize()
+
+  if (result) {
+    throw new Error(result.error_message)
   }
+
+  return app
 }
 
 const connect = async () => {
@@ -124,52 +172,35 @@ const connect = async () => {
     return
   }
 
-  await createTerraApp()
+  app = await createTerraApp()
+  const { app_name: appName } = app.getInfo()
 
-  const getAppName = async () => {
-    const response = await app.appInfo()
-    checkLedgerErrors(response)
-    return response.appName
+  if (!['Terra', 'Cosmos'].includes(appName)) {
+    throw new Error(`Open the Terra app in your Ledger.`)
   }
 
-  appName = await getAppName()
+  const { major, minor, patch } = app.getVersion()
+  const version = `${major}.${minor}.${patch}`
 
-  const getAppVersion = async () => {
-    const response = await app.getVersion()
-    checkLedgerErrors(response)
-    const { major, minor, patch } = response
-    return `${major}.${minor}.${patch}`
+  if (
+    (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
+    (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
+  ) {
+    throw new Error(
+      'Outdated version: Please update Ledger Terra App to the latest version.'
+    )
   }
 
-  const checkAppVersion = async () => {
-    if (!['Terra', 'Cosmos'].includes(appName)) {
-      throw new Error(`Open the Terra app in your Ledger.`)
-    }
-
-    const version = await getAppVersion()
-
-    if (
-      (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
-      (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
-    ) {
-      throw new Error(
-        'Outdated version: Please update Ledger Terra App to the latest version.'
-      )
-    }
-  }
-
-  await checkAppVersion()
-
-  const getPath = appName => {
-    const bip = { Cosmos: 118, Terra: 330 }[appName]
-    return [44, bip, 0, 0, 0]
-  }
-
-  path = getPath(appName)
+  path = [44, appName === 'Terra' ? 330 : 118, 0, 0, 0]
 }
 
 const getPubKey = async () => {
   await connect().catch(handleConnectError)
+
+  if (!app) {
+    return
+  }
+
   const response = await app.getAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
   return response.compressed_pk
@@ -177,11 +208,16 @@ const getPubKey = async () => {
 
 const showAddressInLedger = async () => {
   await connect().catch(handleConnectError)
+  if (!app) {
+    return
+  }
   const response = await app.showAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
 }
 
-const checkLedgerErrors = ({ error_message, device_locked }) => {
+const checkLedgerErrors = (response: CommonResponse) => {
+  const { error_message, device_locked } = response
+
   if (device_locked) {
     throw new Error(`Ledger's screensaver mode is on.`)
   }
@@ -222,8 +258,8 @@ const checkLedgerErrors = ({ error_message, device_locked }) => {
   }
 }
 
-const isWindows = platform => platform.indexOf('Win') > -1
-const getBrowser = userAgent => {
+const isWindows = (platform: string) => platform.indexOf('Win') > -1
+const getBrowser = (userAgent: string): string => {
   const ua = userAgent.toLowerCase()
   const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
   const isBrave = isChrome && !window.google
@@ -232,8 +268,7 @@ const getBrowser = userAgent => {
     throw new Error("Your browser doesn't support Ledger devices.")
   }
 
-  if (isBrave) return 'brave'
-  if (isChrome) return 'chrome'
+  return isChrome ? 'chrome' : 'brave'
 }
 
 export default {
@@ -243,9 +278,14 @@ export default {
     const pubKey = await getPubKey()
     return getTerraAddress(pubKey)
   },
-  sign: async signMessage => {
+  sign: async (signMessage: string) => {
     await connect().catch(handleConnectError)
-    const response = await app.sign(path, signMessage)
-    return signatureImport(Buffer.from(response.signature))
-  }
+
+    if (!app) {
+      return
+    }
+
+    const { signature } = await app.sign(path, signMessage)
+    return signatureImport(Buffer.from(signature))
+  },
 }
