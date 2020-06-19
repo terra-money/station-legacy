@@ -15,8 +15,13 @@
 }
 
 .button {
+  @include flex();
   background: #edf4fe;
   border-radius: 50%;
   width: 24px;
   height: 24px;
+
+  svg {
+    fill: $brand;
+  }
 }

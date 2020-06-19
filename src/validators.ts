@@ -4,6 +4,7 @@ import { Dictionary } from 'ramda'
 const list: Dictionary<string> = {
   terravaloper103ra79dl2un2ltknhyz7crm5y29g4vhmycfwv9: 'co_staking@neoply.com',
   terravaloper123gn6j23lmexu0qx5qhmgxgunmjcqsx8gmsyse: 'go@staking.fund',
+  terravaloper12jpzzmwthrljcvm48adncspxtchazkl8vah7u4: 'contact@synergynodes.com',
   terravaloper13kcwnlafvu4xvy2jr3vhdte9aq9tadwds3lx2d: 'hello@castlenode.com',
   terravaloper13ww603e55suhavpuyjft3htxca6g4tldt92pgf: 'contact@hashquark.io',
   terravaloper15urq2dtp9qce4fyc85m6upwm9xul30496sgk37: 'hello@chorus.one',

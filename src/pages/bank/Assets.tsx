@@ -10,7 +10,8 @@ import VestingList from './VestingList'
 
 const Assets = ({ user }: { user: User }) => {
   const { hideSmallBalances: hideSmall = false } = localSettings.get()
-  const { error, loading, address, ui } = useAssets(user, { hideSmall })
+  const { error, loading, ui, ...rest } = useAssets(user, { hideSmall })
+  const { address, viewAddress } = rest
 
   const render = ({ card, available, vesting }: AssetsUI) => (
     <>
@@ -22,7 +23,7 @@ const Assets = ({ user }: { user: User }) => {
 
   return (
     <>
-      {address && <Address {...address} />}
+      {address && <Address {...address} viewAddress={viewAddress} />}
 
       {error ? (
         <ErrorComponent />
