@@ -25,6 +25,7 @@ const list: Dictionary<string> = {
   terravaloper1kgddca7qj96z0qcxr2c45z73cfl0c75paknc5e: 'hello@chainlayer.io',
   terravaloper1khfcg09plqw84jxy5e7fj6ag4s2r9wqsgm7k94: 'hello@01node.com',
   terravaloper1kprce6kc08a6l03gzzh99hfpazfjeczfpzkkau: 'contact@certus.one',
+  terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy: 'info@terran.one',
   terravaloper1n7pkcal0jkp0ac9r338qp9cm5x6cakfnremtnt: 'hello@audit.one',
   terravaloper1nwrksgv2vuadma8ygs8rhwffu2ygk4j24w2mku: 'hello@posbakerz.com',
   terravaloper1pc0gs3n6803x7jqe9m7etegmyx29xw38aaf3u7: 'hello@staker.space',
