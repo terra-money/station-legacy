@@ -31,35 +31,35 @@ class TerraElectronBridge extends TerraApp {
   }
 
   async initialize(): Promise<CommonResponse | null> {
-    return electron('initialize')
+    return electron('ledger:initialize')
   }
 
   getInfo(): AppInfoResponse {
-    return electron('getInfo')
+    return electron('ledger:getInfo')
   }
 
   getVersion(): VersionResponse {
-    return electron('getVersion')
+    return electron('ledger:getVersion')
   }
 
   getDeviceInfo(): Promise<DeviceInfoResponse> {
-    return electron('getDeviceInfo')
+    return electron('ledger:getDeviceInfo')
   }
 
   getPublicKey(...args: any[]): Promise<PublicKeyResponse> {
-    return electron('getPublicKey', args)
+    return electron('ledger:getPublicKey', args)
   }
 
   getAddressAndPubKey(...args: any[]): Promise<PublicKeyResponse> {
-    return electron('getAddressAndPubKey', args)
+    return electron('ledger:getAddressAndPubKey', args)
   }
 
   showAddressAndPubKey(...args: any[]): Promise<PublicKeyResponse> {
-    return electron('showAddressAndPubKey', args)
+    return electron('ledger:showAddressAndPubKey', args)
   }
 
   sign(...args: any[]): Promise<SignResponse> {
-    return electron('sign', args)
+    return electron('ledger:sign', args)
   }
 }
 
@@ -168,6 +168,8 @@ const checkLedgerErrors = (response: CommonResponse | null) => {
 }
 
 async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
+  let app
+
   if (isElectron) {
     const version: string = electron('version')
 
@@ -175,7 +177,6 @@ async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
       throw new Error('Outdated version: Please update Station to use Ledger.')
     }
 
-    await electron('createLedgerApp', [INTERACTION_TIMEOUT * 1000])
     app = new TerraElectronBridge()
   } else {
     getBrowser(navigator.userAgent)
