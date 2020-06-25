@@ -8,7 +8,6 @@ import TerraApp, {
 } from '@terra-money/ledger-terra-js'
 import { signatureImport } from 'secp256k1'
 import semver from 'semver'
-import { getTerraAddress } from './keys'
 import { electron } from '../utils'
 import { isElectron } from '../utils/env'
 
@@ -66,7 +65,22 @@ class TerraElectronBridge extends TerraApp {
 
 let app: TerraApp | TerraElectronBridge | null = null
 let path: number[] | null = null
-let transport = null
+let transport: any = null
+
+const handleTransportError = (err: Error) => {
+  if (err.message.startsWith('The device is already open')) {
+    // ignore this error
+    return transport
+  }
+
+  if (err.name === 'TransportOpenUserCancelled') {
+    throw new Error(
+      `Couldn't find the Ledger. Check your Ledger is plugged in and unlocked.`
+    )
+  }
+
+  throw err
+}
 
 const handleConnectError = (err: Error) => {
   app = path = null
@@ -90,17 +104,15 @@ const handleConnectError = (err: Error) => {
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('Not supported')) {
-    // apparently can't use it in several tabs in parallel
     throw new Error(
-      "Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version."
+      `Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version.`
     )
   }
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('No device selected')) {
-    // apparently can't use it in several tabs in parallel
     throw new Error(
-      "Couldn't find the Ledger. Check your Ledger is plugged in and unlocked."
+      `Couldn't find the Ledger. Check your Ledger is plugged in and unlocked.`
     )
   }
 
@@ -108,12 +120,51 @@ const handleConnectError = (err: Error) => {
   throw err
 }
 
-const handleTransportError = (err: Error) => {
-  if (err.message.startsWith('The device is already open')) {
+const checkLedgerErrors = (response: CommonResponse | null) => {
+  if (!response) {
     return
   }
 
-  throw err
+  const { error_message, device_locked } = response
+
+  if (device_locked) {
+    throw new Error(`Ledger's screensaver mode is on.`)
+  }
+
+  if (error_message.startsWith('TransportRaceCondition')) {
+    throw new Error('Please finish previous action in Ledger.')
+  } else if (error_message.startsWith('DisconnectedDeviceDuringOperation')) {
+    app = path = null
+    throw new Error('Open the Terra app in your Ledger.')
+  }
+
+  switch (error_message) {
+    case 'U2F: Timeout':
+      throw new Error('Could not find a connected and unlocked Ledger device.')
+
+    case 'App does not seem to be open':
+      throw new Error('Open the Terra app in your Ledger.')
+
+    case 'Command not allowed':
+      throw new Error('Transaction rejected.')
+
+    case 'Transaction rejected':
+      throw new Error('User rejected the transaction.')
+
+    case 'Unknown Status Code: 26628':
+      throw new Error(`Ledger's screensaver mode is on.`)
+
+    case 'Instruction not supported':
+      throw new Error(
+        'Please check your Ledger is running latest version of Terra.'
+      )
+
+    case 'No errors':
+      break
+
+    default:
+      throw new Error(error_message)
+  }
 }
 
 async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
@@ -159,10 +210,7 @@ async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
   }
 
   const result = await app.initialize()
-
-  if (result) {
-    throw new Error(result.error_message)
-  }
+  checkLedgerErrors(result)
 
   return app
 }
@@ -203,59 +251,41 @@ const getPubKey = async () => {
 
   const response = await app.getAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
-  return response.compressed_pk
+  return Buffer.from(response.compressed_pk)
 }
 
 const showAddressInLedger = async () => {
   await connect().catch(handleConnectError)
+
   if (!app) {
     return
   }
+
   const response = await app.showAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
 }
 
-const checkLedgerErrors = (response: CommonResponse) => {
-  const { error_message, device_locked } = response
+const getTerraAddress = async () => {
+  await connect().catch(handleConnectError)
 
-  if (device_locked) {
-    throw new Error(`Ledger's screensaver mode is on.`)
+  if (!app) {
+    return ''
   }
 
-  if (error_message.startsWith('TransportRaceCondition')) {
-    throw new Error('Please finish previous action in Ledger.')
-  } else if (error_message.startsWith('DisconnectedDeviceDuringOperation')) {
-    app = path = null
-    throw new Error('Open the Terra app in your Ledger.')
+  const response = await app.getAddressAndPubKey(path, 'terra')
+  checkLedgerErrors(response)
+  return response.bech32_address
+}
+
+const sign = async (signMessage: string) => {
+  await connect().catch(handleConnectError)
+
+  if (!app) {
+    return
   }
 
-  switch (error_message) {
-    case 'U2F: Timeout':
-      throw new Error('Could not find a connected and unlocked Ledger device.')
-
-    case 'App does not seem to be open':
-      throw new Error('Open the Terra app in your Ledger.')
-
-    case 'Command not allowed':
-      throw new Error('Transaction rejected.')
-
-    case 'Transaction rejected':
-      throw new Error('User rejected the transaction.')
-
-    case 'Unknown Status Code: 26628':
-      throw new Error(`Ledger's screensaver mode is on.`)
-
-    case 'Instruction not supported':
-      throw new Error(
-        'Please check your Ledger is running latest version of Terra.'
-      )
-
-    case 'No errors':
-      break
-
-    default:
-      throw new Error(error_message)
-  }
+  const { signature } = await app.sign(path, signMessage)
+  return signatureImport(Buffer.from(signature))
 }
 
 const isWindows = (platform: string) => platform.indexOf('Win') > -1
@@ -273,19 +303,7 @@ const getBrowser = (userAgent: string): string => {
 
 export default {
   getPubKey,
+  getTerraAddress,
   showAddressInLedger,
-  getTerraAddress: async () => {
-    const pubKey = await getPubKey()
-    return getTerraAddress(pubKey)
-  },
-  sign: async (signMessage: string) => {
-    await connect().catch(handleConnectError)
-
-    if (!app) {
-      return
-    }
-
-    const { signature } = await app.sign(path, signMessage)
-    return signatureImport(Buffer.from(signature))
-  },
+  sign,
 }
