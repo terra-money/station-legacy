@@ -307,4 +307,5 @@ export default {
   getTerraAddress,
   showAddressInLedger,
   sign,
+  REQUIRED_ELECTRON_APP_VERSION,
 }

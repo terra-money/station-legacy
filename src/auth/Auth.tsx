@@ -1,7 +1,9 @@
 import React, { ReactNode, useState } from 'react'
 import { useAuthMenu } from '@terra-money/use-station'
 import { AuthMenuKey, AuthMenuItem } from '@terra-money/use-station'
+import semver from 'semver'
 import { isElectron } from '../utils/env'
+import { electron } from '../utils'
 import { loadKeys } from '../utils/localStorage'
 import { useApp } from '../hooks'
 import ModalContent from '../components/ModalContent'
@@ -13,6 +15,7 @@ import SignUp from './SignUp'
 import SignIn from './SignIn'
 import SignInWithAddress from './SignInWithAddress'
 import SignInWithLedger from './SignInWithLedger'
+import ledger from '../wallet/ledger'
 
 export interface Item {
   title: string
@@ -20,6 +23,20 @@ export interface Item {
   disabled?: boolean
   key: AuthMenuKey
   render: () => ReactNode
+}
+
+const getAuthMenuKeys = (): AuthMenuKey[] => {
+  if (isElectron) {
+    const version: string = electron('version')
+
+    if (semver.lt(version, ledger.REQUIRED_ELECTRON_APP_VERSION)) {
+      return ['signIn', 'signUp', 'recover']
+    }
+
+    return ['signInWithLedger', 'signIn', 'signUp', 'recover']
+  }
+
+  return ['signInWithLedger']
 }
 
 const Auth = () => {
@@ -48,10 +65,7 @@ const Auth = () => {
     },
   }
 
-  const keys: AuthMenuKey[] = isElectron
-    ? ['signInWithLedger', 'signIn', 'signUp', 'recover']
-    : ['signInWithLedger']
-
+  const keys: AuthMenuKey[] = getAuthMenuKeys()
   const { ui, list } = useAuthMenu(keys)
   const { authModal } = useApp()
   const [currentKey, setCurrentKey] = useState<AuthMenuKey>()
