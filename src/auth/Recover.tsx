@@ -25,18 +25,18 @@ const Recover = ({ generated }: { generated?: Seed }) => {
     },
     submit: importKey,
     isNameExists: (name: string) => isExists('name', name),
-    isAddressExists: (address: string) => isExists('address', address)
+    isAddressExists: (address: string) => isExists('address', address),
   })
 
   /* warning */
   const [checked, setChecked] = useState(false)
-  const toggle = () => setChecked(c => !c)
+  const toggle = () => setChecked((c) => !c)
 
   /* render */
   const renderNext = (next: SignUpNext) => {
     const components = {
       select: () => <SelectAccount {...next} />,
-      confirm: () => <ConfirmSeed {...next} />
+      confirm: () => <ConfirmSeed {...next} />,
     }
 
     return components[next.step]()
@@ -66,5 +66,5 @@ export default Recover
 /* helper */
 const isExists = (q: keyof Key, v: string): boolean => {
   const keys = loadKeys()
-  return !!keys.find(key => key[q] === v)
+  return !!keys.find((key) => key[q] === v)
 }

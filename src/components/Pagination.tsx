@@ -10,7 +10,7 @@ type Props = {
   action?: (page: number) => void
 }
 
-const Pagination: FC<PaginationParams & Props> = props => {
+const Pagination: FC<PaginationParams & Props> = (props) => {
   const { title, empty, link, action, children, ...pagination } = props
   const { page, limit, totalCnt } = pagination
   const total = toNumber(ceil(div(totalCnt, limit)))
@@ -20,7 +20,7 @@ const Pagination: FC<PaginationParams & Props> = props => {
       start: link(1),
       prev: link(toNumber(minus(page, 1))),
       next: link(toNumber(plus(page, 1))),
-      end: link(total)
+      end: link(total),
     }
 
   const getActions = () =>
@@ -28,7 +28,7 @@ const Pagination: FC<PaginationParams & Props> = props => {
       start: () => action(1),
       prev: () => action(toNumber(minus(page, 1))),
       next: () => action(toNumber(plus(page, 1))),
-      end: () => action(total)
+      end: () => action(total),
     }
 
   const renderEmpty = () =>

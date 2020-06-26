@@ -23,7 +23,7 @@ type Props = {
   fixedHeight?: boolean
 }
 
-const Card: FC<Props> = props => {
+const Card: FC<Props> = (props) => {
   const { title, footer, children, actions, onClick } = props
   const { className, headerClassName, mainClassName } = props
   const { bodyClassName, footerClassName } = props

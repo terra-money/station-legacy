@@ -21,7 +21,7 @@ const SelectChain = () => {
       onChange={handleChange}
       className={c('form-control', s.select)}
     >
-      {list.map(key => (
+      {list.map((key) => (
         <option value={key} key={key}>
           {Chains[key]['name']}
         </option>

@@ -55,5 +55,5 @@ export default Tx
 /* styles */
 const classNames = {
   headerClassName: s.header,
-  bodyClassName: s.body
+  bodyClassName: s.body,
 }

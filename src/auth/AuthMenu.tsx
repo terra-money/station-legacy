@@ -23,7 +23,7 @@ const AuthMenu = ({ list, onSelect }: Props) => (
             <h1>{title}</h1>
             <Icon name="chevron_right" className={s.chevron} />
           </>
-        )
+        ),
       }
 
       return disabled ? null : <button {...attrs} key={title} />

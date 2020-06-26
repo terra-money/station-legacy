@@ -102,7 +102,7 @@ const ChartComponent = (props: Props) => {
 const Chart = (props: Props) => {
   const [key, setKey] = useState<number>(0)
   useEffect(() => {
-    const refresh = debounce(300)(() => setKey(k => k + 1))
+    const refresh = debounce(300)(() => setKey((k) => k + 1))
     window.addEventListener('resize', refresh)
     return () => window.removeEventListener('resize', refresh)
   }, [])
@@ -123,30 +123,30 @@ const getOptions = (
 ): ChartJS.ChartConfiguration => {
   /* Dataset Properties */
   const defaultProps = {
-    borderWidth: 1
+    borderWidth: 1,
   }
 
   const props = {
     doughnut: {
-      backgroundColor: ['#6292ec', '#5152f3', '#a757f4', '#f19f4d', '#ce4a6f']
+      backgroundColor: ['#6292ec', '#5152f3', '#a757f4', '#f19f4d', '#ce4a6f'],
     },
     pie: {
-      backgroundColor: config.pieBackgroundColors
+      backgroundColor: config.pieBackgroundColors,
     },
     line: {
       borderColor: BLUE,
       pointBackgroundColor: BLUE,
       pointRadius: 0,
       pointHoverRadius: 0,
-      ...config.lineStyle
-    }
+      ...config.lineStyle,
+    },
   }[type]
 
   /* Options */
   const defaultOptions = {
     responsive: true,
     animation: { duration: 0 },
-    legend: { display: false }
+    legend: { display: false },
   }
 
   const tooltips = {
@@ -167,20 +167,20 @@ const getOptions = (
         [{ index }]: ChartJS.ChartTooltipItem[],
         { labels }: ChartJS.ChartData
       ) => String(labels && typeof index === 'number' && labels[index]),
-      label: getLabel
-    }
+      label: getLabel,
+    },
   }
 
   const options: ChartOptions = {
     doughnut: {
       aspectRatio: 1,
       cutoutPercentage: 85,
-      tooltips
+      tooltips,
     },
     pie: {
       aspectRatio: 1,
       cutoutPercentage: 0,
-      tooltips
+      tooltips,
     },
     line: {
       tooltips: {
@@ -200,8 +200,8 @@ const getOptions = (
         displayColors: false,
         callbacks: {
           title: ([{ value }]: ChartJS.ChartTooltipItem[]) => String(value),
-          label: getLabel
-        }
+          label: getLabel,
+        },
       },
       scales: {
         xAxes: [
@@ -211,25 +211,25 @@ const getOptions = (
               source: 'data' as const,
               autoSkip: true,
               fontColor: '#7282c9',
-              fontSize: 11
+              fontSize: 11,
             },
-            gridLines: { color: '#f0f0f0' }
-          }
+            gridLines: { color: '#f0f0f0' },
+          },
         ],
         yAxes: [
           {
             ticks: { fontColor: '#7282c9', fontSize: 11 },
-            gridLines: { color: '#f0f0f0' }
-          }
-        ]
-      }
-    }
+            gridLines: { color: '#f0f0f0' },
+          },
+        ],
+      },
+    },
   }[type]
 
   return {
     type,
     data: { datasets: [{ ...defaultProps, ...props }] },
-    options: Object.assign({}, defaultOptions, options)
+    options: Object.assign({}, defaultOptions, options),
   }
 }
 

@@ -15,7 +15,7 @@ const Share = () => {
   const icon: Dictionary<ReactNode> = {
     twitter: <Twitter />,
     telegram: <Telegram />,
-    mail: <Mail />
+    mail: <Mail />,
   }
 
   return (

@@ -84,7 +84,7 @@ const renderItem = (props: ValidatorUI) => {
     <span className={s.percent}>{delegationReturn.percent}</span>,
     <span className={s.percent}>{uptime.percent}</span>,
     null,
-    renderMyDelegation()
+    renderMyDelegation(),
   ]
 }
 

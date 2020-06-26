@@ -10,7 +10,7 @@ const SignIn = () => {
   const accounts = loadKeys()
   const { form } = useSignIn({
     list: accounts,
-    test: ({ name, password }) => testPassword(name, password)
+    test: ({ name, password }) => testPassword(name, password),
   })
 
   /* modal */

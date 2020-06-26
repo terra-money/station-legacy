@@ -38,15 +38,15 @@ const Component = ({ actives, user }: Props & { user: User }) => {
   const contents: ReactNode[] = [
     <Table
       rows={[
-        { heading: max.title, ...max.display, onClick: max.attrs.onClick }
+        { heading: max.title, ...max.display, onClick: max.attrs.onClick },
       ]}
     />,
     <Table
       rows={[
         { heading: spreadTitle, ...spread },
-        { heading: receive.title, ...receive }
+        { heading: receive.title, ...receive },
       ]}
-    />
+    />,
   ]
 
   const onSubmit = () => {
@@ -74,7 +74,7 @@ interface Props {
 
 const Swap = (props: Props) => (
   <Card title={props.title} bordered>
-    <WithAuth>{user => <Component {...props} user={user} />}</WithAuth>
+    <WithAuth>{(user) => <Component {...props} user={user} />}</WithAuth>
   </Card>
 )
 

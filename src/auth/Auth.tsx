@@ -26,30 +26,30 @@ const Auth = () => {
   const components: { [key in AuthMenuKey]: Omit<Item, 'title' | 'key'> } = {
     recover: {
       icon: 'settings_backup_restore',
-      render: () => <Recover />
+      render: () => <Recover />,
     },
     signUp: {
       icon: 'person_add',
-      render: () => <SignUp />
+      render: () => <SignUp />,
     },
     signIn: {
       icon: 'lock',
       disabled: !loadKeys().length,
-      render: () => <SignIn />
+      render: () => <SignIn />,
     },
     signInWithAddress: {
       icon: 'account_balance_wallet',
       disabled: true,
-      render: () => <SignInWithAddress />
+      render: () => <SignInWithAddress />,
     },
     signInWithLedger: {
       icon: 'usb',
-      render: () => <SignInWithLedger />
-    }
+      render: () => <SignInWithLedger />,
+    },
   }
 
   const keys: AuthMenuKey[] = isElectron
-    ? ['signIn', 'signUp', 'recover']
+    ? ['signInWithLedger', 'signIn', 'signUp', 'recover']
     : ['signInWithLedger']
 
   const { ui, list } = useAuthMenu(keys)
@@ -59,7 +59,7 @@ const Auth = () => {
   /* Modal */
   const modalActions = {
     close: authModal.close,
-    goBack: () => setCurrentKey(undefined)
+    goBack: () => setCurrentKey(undefined),
   }
 
   /* render */

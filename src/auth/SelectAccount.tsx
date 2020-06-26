@@ -28,7 +28,7 @@ const Account = ({ field, checkedSome }: Props) => {
         <section className={s.meta}>
           <Badge className="badge-secondary">BIP {bip}</Badge>
 
-          {badges.map(badge => (
+          {badges.map((badge) => (
             <Badge className="badge-secondary" key={badge}>
               {badge}
             </Badge>
@@ -60,7 +60,7 @@ const SelectAccount = (props: SignUpNext) => {
   return !form ? null : (
     <Form
       form={form}
-      renderField={field => (
+      renderField={(field) => (
         <Account
           field={field}
           checkedSome={form.fields.some(({ attrs }) => attrs.checked)}

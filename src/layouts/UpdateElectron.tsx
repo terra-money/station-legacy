@@ -5,7 +5,7 @@ const UpdateElectron = ({ version, title, message, ...rest }: Version) => {
   const { macUrl, windowsUrl } = rest
   const links = [
     ['Windows', windowsUrl],
-    ['Mac', macUrl]
+    ['Mac', macUrl],
   ]
 
   return (

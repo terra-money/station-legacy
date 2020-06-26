@@ -29,7 +29,7 @@ const Actions = (v: ValidatorUI) => {
       myRewards.amounts &&
       modal.open(
         <Withdraw from={operatorAddress.address} amounts={myRewards.amounts} />
-      )
+      ),
   }
 
   /* render */
@@ -68,7 +68,7 @@ const Actions = (v: ValidatorUI) => {
                 {...undelegate}
                 onClick={() => open.delegate({ undelegate: true })}
                 className="btn btn-sm btn-sky"
-              />
+              />,
             ]}
           />
         </Card>

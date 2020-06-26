@@ -39,7 +39,7 @@ const Lang = () => {
     set(key)
   }
 
-  const languages = list.map(key => (
+  const languages = list.map((key) => (
     <li className={s.item} key={key}>
       <button className={s.button} onClick={() => handleClick(key)}>
         <LangItem label={Languages[key]['name']} active={key === current} />

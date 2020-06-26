@@ -7,7 +7,7 @@ import s from './Vesting.module.scss'
 
 const Vesting = ({ display, schedule }: VestingItemUI) => {
   const [isOpen, setIsOpen] = useState(false)
-  const toggle = () => setIsOpen(isOpen => !isOpen)
+  const toggle = () => setIsOpen((isOpen) => !isOpen)
 
   return (
     <AmountCard

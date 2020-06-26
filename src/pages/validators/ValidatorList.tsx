@@ -24,11 +24,11 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
     [commission, { align: 'right', style: { width: 100, textAlign: 'right' } }],
     [
       delegationReturn,
-      { align: 'right', style: { width: 100, textAlign: 'right' } }
+      { align: 'right', style: { width: 100, textAlign: 'right' } },
     ],
     [uptime, { align: 'right', style: { width: 80 } }],
     [undefined, { style: { width: 20 } }],
-    [myDelegation, { align: 'right', style: { width: 200 } }]
+    [myDelegation, { align: 'right', style: { width: 200 } }],
   ]
 
   return (
@@ -59,7 +59,7 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
 
           return heading?.sorter ? button : index ? title : ''
         })}
-        body={contents.map(content => renderItem(content))}
+        body={contents.map((content) => renderItem(content))}
         attrs={Columns.map(([, attr]) => attr)}
         scrollX
         hover

@@ -46,7 +46,7 @@ const Columns = (props: StakingPersonal) => {
   const { available, delegated, undelegated, rewards } = props
   const tooltip = {
     u: undelegated?.table && <Undelegations {...undelegated.table} />,
-    r: rewards?.table && <Rewards {...rewards.table} />
+    r: rewards?.table && <Rewards {...rewards.table} />,
   }
 
   return (

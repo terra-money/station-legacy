@@ -27,7 +27,7 @@ export default (): Modal => {
     setPreventClose(prevent)
     appendConfig({
       shouldCloseOnOverlayClick: !prevent,
-      shouldCloseOnEsc: !prevent
+      shouldCloseOnEsc: !prevent,
     })
   }
 

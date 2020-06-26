@@ -9,7 +9,7 @@ const Bank = () => {
 
   return (
     <Page title={title}>
-      <WithAuth card>{user => <Assets user={user} />}</WithAuth>
+      <WithAuth card>{(user) => <Assets user={user} />}</WithAuth>
     </Page>
   )
 }

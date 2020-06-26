@@ -16,16 +16,16 @@ const Mnemonics = ({ title, fields, paste, suggest }: Props) => {
             attrs={{
               ...attrs,
               onFocus: () => setCurrentFocusIndex(index),
-              onChange: e => setValue?.(e.target.value),
-              onPaste: e => {
+              onChange: (e) => setValue?.(e.target.value),
+              onPaste: (e) => {
                 e.preventDefault()
                 const clipboard = e.clipboardData.getData('text')
                 paste(clipboard, index)
-              }
+              },
             }}
             isFocused={index === currentFocusIndex}
             suggest={suggest}
-            onSelect={w => {
+            onSelect={(w) => {
               setValue?.(w)
               setCurrentFocusIndex((i = 0) =>
                 i + 1 < fields.length ? i + 1 : i

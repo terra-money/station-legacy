@@ -38,7 +38,7 @@ const App = () => {
 
   const initialState = {
     lang: lang as LangKey,
-    chain: Chains[chain!] ?? Chains['columbus']
+    chain: Chains[chain!] ?? Chains['columbus'],
   }
 
   const initialUser = address
@@ -48,7 +48,7 @@ const App = () => {
   /* app state */
   const [appKey, setAppKey] = useState(0)
   const [goBack, setGoBack] = useState<string>()
-  const refresh = () => setAppKey(k => k + 1)
+  const refresh = () => setAppKey((k) => k + 1)
 
   /* ready on electron version check */
   const deprecatedUI = useCheckElectronVersion(modal, refresh)
@@ -103,7 +103,7 @@ const ToastConfig: ToastContainerProps = {
   draggable: false,
   closeButton: false,
   closeOnClick: false,
-  hideProgressBar: true
+  hideProgressBar: true,
 }
 
 /* hooks */
@@ -142,7 +142,7 @@ const useCheckElectronVersion = (modal: Modal, onCheck: () => void) => {
 
 const useRedirectOnChainChange = ({
   goBack,
-  chain
+  chain,
 }: {
   goBack?: string
   chain?: string
@@ -157,7 +157,7 @@ const useRedirectOnChainChange = ({
 const useAuthModal = (modal: Modal, user?: User) => {
   const authModal = {
     open: () => modal.open(<Auth />),
-    close: () => modal.close()
+    close: () => modal.close(),
   }
 
   useEffect(() => {

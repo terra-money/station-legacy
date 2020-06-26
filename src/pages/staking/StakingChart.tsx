@@ -16,8 +16,8 @@ const StakingChart = ({ item, renderTabs }: Props) => {
       <div style={{ width: 240, height: 240 }} className={s.chart}>
         <Chart
           type="doughnut"
-          labels={chart.map(c => c.label)}
-          data={chart.map(c => c.data)}
+          labels={chart.map((c) => c.label)}
+          data={chart.map((c) => c.data)}
           width={240}
           height={240}
         />

@@ -10,7 +10,7 @@ type Props = {
   actions?: { icon: string; onClick: () => void }[]
 }
 
-const ModalContent: FC<Props> = props => {
+const ModalContent: FC<Props> = (props) => {
   const { close, goBack, disabled, actions = [], children } = props
   return (
     <article className={s.container}>

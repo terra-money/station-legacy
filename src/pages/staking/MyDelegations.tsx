@@ -28,7 +28,7 @@ const MyDelegations = ({ list }: { list: Item[] }) => {
     <Number fontSize={16}>{d.delegated.value}</Number>,
     <Number fontSize={16} estimated>
       {d.rewards.value}
-    </Number>
+    </Number>,
   ]
 
   const current = list[currentIndex]

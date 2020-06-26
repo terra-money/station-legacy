@@ -22,7 +22,7 @@ export const Tooltip = (props: Tooltip) => {
   const arrowAttrs = Object.assign(
     { className: c(s.arrow, s[placement]) },
     arrowPosition && {
-      style: { marginLeft: arrowPosition, transform: 'translate(-50%, 0)' }
+      style: { marginLeft: arrowPosition, transform: 'translate(-50%, 0)' },
     }
   )
 
@@ -128,16 +128,16 @@ const Pop = (props: Tooltip & Pop) => {
           attrs.className,
           { tooltip: s.reference, pop: 'clickable' }[type]
         ),
-        style: attrs.style
+        style: attrs.style,
       },
       {
         tooltip: {
           onMouseEnter: !isOpen ? open : undefined,
-          onMouseLeave: isOpen ? close : undefined
+          onMouseLeave: isOpen ? close : undefined,
         },
         pop: {
-          onClick: toggle
-        }
+          onClick: toggle,
+        },
       }[type]
     )
 

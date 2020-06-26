@@ -44,7 +44,7 @@ const Txs = () => {
 
   return (
     <Page title={title}>
-      <WithAuth card>{user => <List user={user} />}</WithAuth>
+      <WithAuth card>{(user) => <List user={user} />}</WithAuth>
     </Page>
   )
 }

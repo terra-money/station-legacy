@@ -10,7 +10,7 @@ const ErrorBoundary: FC<Props> = ({ fallback, children }) => {
   const { OOPS } = useText()
 
   const handleError = (error: Error, errorInfo: object) => {
-    Sentry.withScope(scope => {
+    Sentry.withScope((scope) => {
       scope.setExtras(errorInfo)
       Sentry.captureException(error)
     })

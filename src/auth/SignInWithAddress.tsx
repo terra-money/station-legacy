@@ -11,7 +11,7 @@ const SignInWithAddress = () => {
 
   /* refresh */
   const [key, setKey] = useState(0)
-  const refresh = () => setKey(k => k + 1)
+  const refresh = () => setKey((k) => k + 1)
 
   return (
     <ModalContent {...modal}>

@@ -50,7 +50,7 @@ const useViewAddress = (viewAddress: string) => {
             setErrorMessage(error.message)
           }
         },
-        children: <Ledger width={12} height={12} />
+        children: <Ledger width={12} height={12} />,
       }
     : undefined
 }
