@@ -1,14 +1,15 @@
-import React, { FC, FormEvent, ReactNode, useState } from 'react'
+import React, { FormEvent, ReactNode, useState } from 'react'
 import c from 'classnames'
 import { FormUI, Field as FieldProps } from '@terra-money/use-station'
 import Field from './Field'
 import s from './Form.module.scss'
 
-interface Props {
+export interface Props {
   form: FormUI
   disabled?: boolean
   reversed?: boolean
   className?: string
+  children?: ReactNode
   renderField?: (field: FieldProps) => ReactNode
   render?: (params: State) => ReactNode
 }
@@ -18,7 +19,7 @@ export interface State {
   setIndex: (index: number) => void
 }
 
-const Form: FC<Props> = ({ form, renderField, render, children, ...props }) => {
+const Form = ({ form, renderField, render, children, ...props }: Props) => {
   const { reversed, className } = props
   const { title, fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled

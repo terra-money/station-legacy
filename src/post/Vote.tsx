@@ -1,39 +1,19 @@
 import React from 'react'
-import { useVote, useAuth, useInfo, Field } from '@terra-money/use-station'
-import { useApp } from '../hooks'
-import ModalContent from '../components/ModalContent'
-import Form from '../components/Form'
-import Confirm from '../components/Confirm'
-import ProgressCircle from '../components/ProgressCircle'
-import Confirmation from './Confirmation'
+import { useVote, useAuth, Field } from '@terra-money/use-station'
 import VoteItem from './VoteItem'
+import Post from './Post'
 import s from './Vote.module.scss'
 
 const Vote = ({ params }: { params: { id: string; title: string } }) => {
-  const { modal } = useApp()
   const { user } = useAuth()
-  const { ERROR } = useInfo()
-  const { error, loading, submitted, form, confirm } = useVote(user!, params)
+  const response = useVote(user!, params)
 
-  return error ? (
-    <Confirm {...ERROR} />
-  ) : loading ? (
-    <ProgressCircle center />
-  ) : !submitted ? (
-    <ModalContent close={modal.close}>
-      {form && (
-        <Form
-          form={form}
-          className={s.options}
-          renderField={(field: Field<{ color: string }>) => (
-            <VoteItem {...field} />
-          )}
-        />
-      )}
-    </ModalContent>
-  ) : confirm ? (
-    <Confirmation confirm={confirm} modal={modal} />
-  ) : null
+  const formProps = {
+    className: s.options,
+    renderField: (field: Field<{ color: string }>) => <VoteItem {...field} />,
+  }
+
+  return <Post post={response} formProps={formProps} />
 }
 
 export default Vote
