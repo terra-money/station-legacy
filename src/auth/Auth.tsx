@@ -16,6 +16,7 @@ import SignIn from './SignIn'
 import SignInWithAddress from './SignInWithAddress'
 import SignInWithLedger from './SignInWithLedger'
 import ledger from '../wallet/ledger'
+import Download from './Download'
 
 export interface Item {
   title: string
@@ -36,7 +37,7 @@ const getAuthMenuKeys = (): AuthMenuKey[] => {
     return ['signInWithLedger', 'signIn', 'signUp', 'recover']
   }
 
-  return ['signInWithLedger']
+  return ['signInWithLedger', 'download']
 }
 
 const Auth = () => {
@@ -63,6 +64,10 @@ const Auth = () => {
       icon: 'usb',
       render: () => <SignInWithLedger />,
     },
+    download: {
+      icon: 'cloud_download',
+      render: () => <Download />,
+    },
   }
 
   const keys: AuthMenuKey[] = getAuthMenuKeys()
@@ -80,7 +85,8 @@ const Auth = () => {
   const getItem = ({ label, key }: AuthMenuItem) =>
     Object.assign({}, { title: label, key }, components[key])
 
-  const handleClick = () => setCurrentKey('signInWithAddress')
+  const glance = () => setCurrentKey('signInWithAddress')
+  const download = () => setCurrentKey('download')
 
   return currentKey ? (
     <AuthModalProvider value={modalActions}>
@@ -89,7 +95,13 @@ const Auth = () => {
   ) : (
     <ModalContent close={modalActions.close}>
       <AuthMenu list={list.map(getItem)} onSelect={setCurrentKey} />
-      {!isElectron && <AuthFooter {...ui.web} onClick={handleClick} />}
+      {!isElectron && (
+        <AuthFooter
+          {...ui.web}
+          onClickGlance={glance}
+          onClickDownload={download}
+        />
+      )}
     </ModalContent>
   )
 }
