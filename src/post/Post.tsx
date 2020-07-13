@@ -18,7 +18,9 @@ const Post = ({ post, formProps }: Props) => {
   const { ERROR } = useInfo()
 
   return error ? (
-    <Confirm {...ERROR} />
+    <ModalContent close={modal.close}>
+      <Confirm {...ERROR} />
+    </ModalContent>
   ) : loading ? (
     <ProgressCircle center />
   ) : !submitted ? (
