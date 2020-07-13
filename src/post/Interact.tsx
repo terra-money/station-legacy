@@ -19,7 +19,7 @@ const Component = ({ address, denoms }: Props & { denoms: string[] }) => {
 
 const Interact = (props: Props) => (
   <WithActiveDenoms>
-    {(denoms) => <Component {...props} denoms={denoms} />}
+    {(denoms) => <Component {...props} denoms={['uluna', ...denoms]} />}
   </WithActiveDenoms>
 )
 

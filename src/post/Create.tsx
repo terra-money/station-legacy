@@ -15,7 +15,7 @@ const Component = ({ denoms }: { denoms: string[] }) => {
 
 const Create = () => (
   <WithActiveDenoms>
-    {(denoms) => <Component denoms={denoms} />}
+    {(denoms) => <Component denoms={['uluna', ...denoms]} />}
   </WithActiveDenoms>
 )
 
