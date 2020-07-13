@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, Fragment } from 'react'
 import c from 'classnames'
 import { useConfig } from '@terra-money/use-station'
 import { Chains, list } from '../chains'
@@ -21,10 +21,15 @@ const SelectChain = () => {
       onChange={handleChange}
       className={c('form-control', s.select)}
     >
-      {list.map((key) => (
-        <option value={key} key={key}>
-          {Chains[key]['name']}
-        </option>
+      {list.map(({ title, list }, index) => (
+        <Fragment key={title}>
+          {!!index && <option disabled>──────────</option>}
+          {list.map((key) => (
+            <option value={key} key={key}>
+              {Chains[key]['name']}
+            </option>
+          ))}
+        </Fragment>
       ))}
     </Select>
   )

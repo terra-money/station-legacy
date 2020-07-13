@@ -11,4 +11,6 @@ export const Chains: Dictionary<ChainOptions> = {
   },
 }
 
-export const list: string[] = ['columbus']
+export const list: { title: string; list: string[] }[] = [
+  { title: 'Mainnet', list: ['columbus'] },
+]
