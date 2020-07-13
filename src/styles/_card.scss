@@ -101,6 +101,9 @@ button.card-main {
 
     .card-small & {
       padding: $padding-small;
+    }
+
+    .card-small .card-header + & {
       padding-top: ($padding-small/ 2);
     }
   }

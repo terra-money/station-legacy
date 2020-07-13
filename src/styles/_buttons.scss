@@ -45,6 +45,17 @@ a.btn {
   }
 }
 
+.btn-outline-primary {
+  border: 1px solid $brand;
+  color: $brand;
+
+  &:hover:not(:disabled) {
+    border-color: darken($brand, 10%);
+    color: darken($brand, 10%);
+    text-decoration: none;
+  }
+}
+
 .btn-sky {
   background: $sky;
   color: white;

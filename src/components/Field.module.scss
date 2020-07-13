@@ -1,0 +1,16 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.file {
+  @include flex();
+
+  i {
+    margin-right: 6px;
+  }
+}
+
+.size {
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: right;
+}

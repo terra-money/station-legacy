@@ -24,7 +24,8 @@ const Nav = () => {
     { name: name['Transactions'], to: '/transactions', icon: 'swap_horiz' },
     { name: name['Staking'],      to: '/staking',      icon: 'layers',      submenu: ['/validator'] },
     { name: name['Market'],       to: '/market',       icon: 'timeline' },
-    { name: name['Governance'],   to: '/governance',   icon: 'how_to_vote', submenu: ['/proposal'] }
+    { name: name['Governance'],   to: '/governance',   icon: 'how_to_vote', submenu: ['/proposal'] },
+    { name: name['Contracts'],    to: '/contracts',    icon: 'device_hub' },
   ]
 
   /* Close on change path (Android) */

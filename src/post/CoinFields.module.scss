@@ -1,0 +1,17 @@
+.row:not(:first-child) {
+  margin-top: 10px;
+}
+
+.input {
+  flex: 1;
+}
+
+.prepend {
+  width: 100px;
+}
+
+.button {
+  flex: none;
+  width: 40px;
+  margin-left: 10px;
+}
