@@ -8,7 +8,7 @@ import axios from 'axios'
 
 import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-station'
-import { LangKey } from '@terra-money/use-station'
+import { LangKey, useNodeInfo } from '@terra-money/use-station'
 
 import { Chains } from '../chains'
 import { electron, report } from '../utils'
@@ -26,6 +26,7 @@ import Auth from '../auth/Auth'
 import Nav from './Nav'
 import Header from './Header'
 import UpdateElectron from './UpdateElectron'
+import LocalTerraError from './LocalTerraError'
 import s from './App.module.scss'
 
 const App = () => {
@@ -55,6 +56,9 @@ const App = () => {
 
   /* redirect on chain change */
   useRedirectOnChainChange({ goBack, chain })
+
+  /* check localterra status */
+  useCheckLocalTerra(() => modal.open(<LocalTerraError modal={modal} />), chain)
 
   /* provider */
   const config = useConfigState(initialState)
@@ -152,6 +156,17 @@ const useRedirectOnChainChange = ({
     goBack && push(goBack)
     // eslint-disable-next-line
   }, [chain])
+}
+
+const useCheckLocalTerra = (callback: () => void, chain?: string) => {
+  const { error } = useNodeInfo()
+  const hasError = !!error
+  const isLocal = chain === 'localterra'
+
+  useEffect(() => {
+    isLocal && hasError && callback()
+    // eslint-disable-next-line
+  }, [isLocal, hasError])
 }
 
 const useAuthModal = (modal: Modal, user?: User) => {
