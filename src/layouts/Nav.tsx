@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import c from 'classnames'
-import { useMenu, ErrorBoundary } from '@terra-money/use-station'
+import { useMenu, ErrorBoundary, useConfig } from '@terra-money/use-station'
 import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import Icon from '../components/Icon'
 import NavItem from './NavItem'
@@ -13,6 +13,10 @@ import s from './Nav.module.scss'
 const Nav = () => {
   const { pathname } = useLocation()
   const name = useMenu()
+  const { chain } = useConfig()
+  const isInvalidItem = (to: string) =>
+    to === '/contracts' && chain.current.key !== 'tequila'
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggle = () => setIsOpen(!isOpen)
   const close = () => setIsOpen(false)
@@ -47,11 +51,13 @@ const Nav = () => {
 
       <section className={c(s.main, isOpen && s.open)}>
         <ul className={s.menu}>
-          {menu.map((item) => (
-            <li className={s.item} key={item.name}>
-              <NavItem {...item} />
-            </li>
-          ))}
+          {menu.map((item) =>
+            isInvalidItem(item.to) ? null : (
+              <li className={s.item} key={item.name}>
+                <NavItem {...item} />
+              </li>
+            )
+          )}
         </ul>
 
         <footer className={s.footer}>

@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react'
 import { ContractsUI, is } from '@terra-money/use-station'
 import { useMenu, useContracts } from '@terra-money/use-station'
-import { useApp } from '../../hooks'
+import { useApp, useGoBack } from '../../hooks'
 import Page from '../../components/Page'
 import Info from '../../components/Info'
 import Card from '../../components/Card'
@@ -17,6 +17,7 @@ import Contract from './Contract'
 import Search from './Search'
 
 const Contracts = () => {
+  useGoBack('/')
   const [page, setPage] = useState(1)
   const [params, setParams] = useState<{ owner?: string; search?: string }>({})
   const { error, ui, create, upload } = useContracts({ page, ...params })
