@@ -104,6 +104,19 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
     </>
   )
 
+  const aceEditor = (
+    <AceEditor
+      {...attrs}
+      {...AceProps}
+      className="form-control"
+      onChange={setValue}
+      onLoad={(editor) => {
+        editor.renderer.setPadding(15)
+        editor.renderer.setScrollMargin(15, 15, 15, 15)
+      }}
+    />
+  )
+
   const fileGroup = (
     <>
       <label className="label" htmlFor={attrs.id}>
@@ -158,12 +171,7 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
       <>
         {header}
         {attrs.name === 'json' ? (
-          <AceEditor
-            {...attrs}
-            {...AceProps}
-            className="form-control"
-            onChange={setValue}
-          />
+          aceEditor
         ) : (
           <textarea
             {...attrs}
