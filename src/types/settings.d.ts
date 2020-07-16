@@ -1,8 +1,14 @@
-interface Settings {
-  address?: string
+interface User {
+  address: string
+  name?: strings
   ledger?: boolean
-  recentAddresses?: string[]
+  wallet?: string
+}
+
+interface Settings {
   lang?: string
   chain?: string
+  user?: User
+  recentAddresses?: string[]
   hideSmallBalances?: boolean
 }

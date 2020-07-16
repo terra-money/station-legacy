@@ -13,7 +13,7 @@ import { LangKey } from '@terra-money/use-station'
 import { Chains } from '../chains'
 import { electron, report } from '../utils'
 import { isElectron } from '../utils/env'
-import { localSettings, findName } from '../utils/localStorage'
+import { localSettings } from '../utils/localStorage'
 import { useScrollToTop, useModal, AppProvider } from '../hooks'
 import routes from './routes'
 
@@ -34,16 +34,12 @@ const App = () => {
   const modal = useModal()
 
   /* init app */
-  const { lang, chain, address, ledger } = localSettings.get()
+  const { lang, chain, user: initialUser } = localSettings.get()
 
   const initialState = {
     lang: lang as LangKey,
     chain: Chains[chain!] ?? Chains['columbus'],
   }
-
-  const initialUser = address
-    ? { name: findName(address), address, ledger }
-    : undefined
 
   /* app state */
   const [appKey, setAppKey] = useState(0)
@@ -161,14 +157,15 @@ const useAuthModal = (modal: Modal, user?: User) => {
   }
 
   useEffect(() => {
-    const onSignIn = ({ address, ledger }: User) => {
+    const onSignIn = (user: User) => {
+      const { address } = user
       const { recentAddresses = [] } = localSettings.get()
       const next = [address, ...without([address], recentAddresses)]
-      localSettings.set({ address, ledger: !!ledger, recentAddresses: next })
+      localSettings.set({ user, recentAddresses: next })
     }
 
     const onSignOut = () => {
-      localSettings.delete(['address', 'ledger'])
+      localSettings.delete(['user'])
     }
 
     user ? onSignIn(user) : onSignOut()
