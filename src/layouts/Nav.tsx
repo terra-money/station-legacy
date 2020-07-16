@@ -15,7 +15,8 @@ const Nav = () => {
   const name = useMenu()
   const { chain } = useConfig()
   const isInvalidItem = (to: string) =>
-    to === '/contracts' && chain.current.key !== 'tequila'
+    to === '/contracts' &&
+    !['tequila', 'localterra'].includes(chain.current.key)
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggle = () => setIsOpen(!isOpen)
