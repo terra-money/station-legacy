@@ -1,17 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { useAuth, useText } from '@terra-money/use-station'
+import { useAuth, useText, useConfig } from '@terra-money/use-station'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import ModalContent from '../components/ModalContent'
 import Share from './Share'
+import Preconfigured from './Preconfigured'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
   const { user, signOut } = useAuth()
   const { SIGN_IN } = useText()
   const { goBack, refresh, authModal, modal } = useApp()
+  const { chain } = useConfig()
+  const isLocal = chain.current.key === 'localterra'
 
   const share = () =>
     modal.open(
@@ -25,12 +28,20 @@ const Header = ({ className }: { className: string }) => {
       <div className={s.container}>
         <div className={s.user}>
           {!user ? (
-            <button
-              className={c('btn btn-primary btn-sm', s.button)}
-              onClick={authModal.open}
-            >
-              {SIGN_IN}
-            </button>
+            <>
+              <button
+                className={c('btn btn-primary btn-sm', s.button)}
+                onClick={authModal.open}
+              >
+                {SIGN_IN}
+              </button>
+
+              {isLocal && (
+                <Preconfigured
+                  className={c('btn btn-sm', s.button, s.select)}
+                />
+              )}
+            </>
           ) : (
             <>
               <Icon name="account_circle" />

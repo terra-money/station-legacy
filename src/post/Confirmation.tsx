@@ -10,6 +10,7 @@ import Select from '../components/Select'
 import InvalidFeedback from '../components/InvalidFeedback'
 import Confirm from '../components/Confirm'
 import ConfirmLedger from '../auth/ConfirmLedger'
+import { PW, isPreconfigured } from '../layouts/Preconfigured'
 import s from './Confirmation.module.scss'
 
 interface Props {
@@ -22,10 +23,12 @@ const Confirmation = ({ confirm, modal }: Props) => {
 
   const { contents, fee, form, ledger, result } = useConfirm(confirm, {
     user: user!,
+    password: isPreconfigured(user!) ? PW : '',
     sign: async ({ tx, base, password }) => {
       const { ledger, name } = user!
       const type = ledger ? 'ledger' : 'local'
-      const signer = await getSigner(type, { name, password })
+      const params = { name, password }
+      const signer = await getSigner(type, params, user?.wallet)
       const signedTx = await signTx(tx, signer, base)
       return signedTx
     },

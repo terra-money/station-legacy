@@ -39,7 +39,7 @@ $border: 1px solid fade-out(black, 0.95);
   flex: 1;
   overflow: hidden;
 
-  i {
+  i:first-child {
     margin-right: 8px;
     font-size: 20px;
   }
@@ -49,15 +49,20 @@ $border: 1px solid fade-out(black, 0.95);
     font-size: 12px;
     font-weight: 500;
   }
+}
 
+.button {
   @media (max-width: $breakpoint-large - 1) {
-    .button {
-      border-radius: 5px;
-      font-size: 13px;
-      height: 40px;
-      width: 100%;
-    }
+    border-radius: 5px;
+    font-size: 13px;
+    height: 40px;
+    width: 100%;
   }
+}
+
+.select {
+  border: 1px solid #cfd8ea;
+  margin-left: 12px;
 }
 
 .actions {
