@@ -3,13 +3,13 @@ import { useAuth, useDelegate } from '@terra-money/use-station'
 import Post from './Post'
 
 interface Props {
-  to: string
-  undelegate: boolean
+  address: string
+  isUndelegation: boolean
 }
 
-const Delegate = ({ to, undelegate }: Props) => {
+const Delegate = ({ address: validatorAddress, isUndelegation }: Props) => {
   const { user } = useAuth()
-  const response = useDelegate(user!, { to, undelegate })
+  const response = useDelegate(user!, { validatorAddress, isUndelegation })
   return <Post post={response} />
 }
 

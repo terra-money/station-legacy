@@ -23,7 +23,10 @@ const Actions = (v: ValidatorUI) => {
   const open = {
     delegate: ({ undelegate }: { undelegate?: boolean }) =>
       modal.open(
-        <Delegate to={operatorAddress.address} undelegate={!!undelegate} />
+        <Delegate
+          address={operatorAddress.address}
+          isUndelegation={!!undelegate}
+        />
       ),
     withdraw: () =>
       myRewards.amounts &&
