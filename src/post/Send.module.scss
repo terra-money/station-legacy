@@ -1,6 +1,9 @@
+@import '../styles/mixins';
+
 .recent {
   max-height: 240px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .item {
@@ -8,8 +11,16 @@
 }
 
 .contents {
+  li {
+    @include flex(flex-start, flex-start);
+  }
+
   strong {
-    display: inline-block;
     width: 5em;
+    flex: none;
+  }
+
+  span {
+    white-space: normal;
   }
 }

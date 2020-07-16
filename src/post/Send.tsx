@@ -19,7 +19,7 @@ const Send = ({ denom }: { denom: string }) => {
     return (
       <section className={c('form-group', s.recent)}>
         <label className="label">{title}</label>
-        <ButtonGroup buttons={buttons} />
+        <ButtonGroup buttons={buttons} column />
       </section>
     )
   }

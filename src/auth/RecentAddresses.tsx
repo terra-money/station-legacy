@@ -27,7 +27,7 @@ const RecentAddresses = ({ onDeleteAll }: { onDeleteAll: () => void }) => {
         </button>
       </header>
 
-      <ButtonGroup buttons={buttons} truncate />
+      <ButtonGroup buttons={buttons} truncate wrap />
     </section>
   )
 }

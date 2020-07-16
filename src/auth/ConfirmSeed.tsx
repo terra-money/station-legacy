@@ -16,7 +16,7 @@ const ConfirmSeed = (props: SignUpNext) => {
       },
     }))
 
-    return <ButtonGroup buttons={buttons} />
+    return <ButtonGroup buttons={buttons} wrap />
   }
 
   return <Form form={form} className={s.form} render={renderButtonGroup} />

@@ -4,16 +4,27 @@
 .list {
   margin: 0 -5px;
   @include flex();
+}
+
+.wrap {
   flex-wrap: wrap;
+
+  .item {
+    flex: 1 0 30%;
+
+    @media (max-width: $breakpoint - 1) {
+      flex: 1 0 40%;
+    }
+  }
+}
+
+.column {
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .item {
-  flex: 1 0 30%;
   margin: 5px;
-
-  @media (max-width: $breakpoint - 1) {
-    flex: 1 0 40%;
-  }
 
   button {
     background: #e9edf8;
