@@ -10,27 +10,26 @@ export const storeKeys = (keys: Key[]) => {
   localStorage?.setItem('keys', JSON.stringify(keys))
 }
 
-export const getStoredWallet = (name: string, password: string): Wallet => {
-  const keys = loadKeys()
-  const stored = keys.find((key) => key.name === name)
-
-  if (!stored) throw new Error('Key with that name does not exist')
-
+export const decryptWallet = (wallet: string, password: string) => {
   try {
-    const decrypted = electron<string>('decrypt', [stored.wallet, password])
+    const decrypted = electron<string>('decrypt', [wallet, password])
     return JSON.parse(decrypted)
   } catch (err) {
     throw new Error('Incorrect password')
   }
 }
 
-type Params = { name: string; password: string; wallet: Wallet }
-export const importKey = async ({ name, password, wallet }: Params) => {
+export const getStoredWallet = (name: string, password: string): Wallet => {
   const keys = loadKeys()
+  const stored = keys.find((key) => key.name === name)
 
-  if (keys.find((key) => key.name === name))
-    throw new Error('Key with that name already exists')
+  if (!stored) throw new Error('Key with that name does not exist')
+  return decryptWallet(stored.wallet, password)
+}
 
+type Params = { name: string; password: string; wallet: Wallet }
+
+export const encryptWallet = ({ name, password, wallet }: Params): Key => {
   const encrypted = electron<string>('encrypt', [
     JSON.stringify(wallet),
     password,
@@ -38,11 +37,20 @@ export const importKey = async ({ name, password, wallet }: Params) => {
 
   if (!encrypted) throw new Error('Encryption error occurred')
 
-  const key: Key = {
+  return {
     name,
     address: wallet.terraAddress,
     wallet: encrypted,
   }
+}
+
+export const importKey = async (params: Params) => {
+  const keys = loadKeys()
+
+  if (keys.find((key) => key.name === params.name))
+    throw new Error('Key with that name already exists')
+
+  const key = encryptWallet(params)
 
   storeKeys([...keys, key])
 }
