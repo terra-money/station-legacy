@@ -28,25 +28,21 @@ const Header = ({ className }: { className: string }) => {
       <div className={s.container}>
         <div className={s.user}>
           {!user ? (
-            <>
-              <button
-                className={c('btn btn-primary btn-sm', s.button)}
-                onClick={authModal.open}
-              >
-                {SIGN_IN}
-              </button>
-
-              {isLocal && (
-                <Preconfigured
-                  className={c('btn btn-sm', s.button, s.select)}
-                />
-              )}
-            </>
+            <button
+              className={c('btn btn-primary btn-sm', s.button)}
+              onClick={authModal.open}
+            >
+              {SIGN_IN}
+            </button>
           ) : (
             <>
               <Icon name="account_circle" />
               <span className={s.username}>{user.name || user.address}</span>
             </>
+          )}
+
+          {isLocal && (
+            <Preconfigured className={c('btn btn-sm', s.button, s.select)} />
           )}
         </div>
 
