@@ -25,7 +25,7 @@
     "deepmerge": "^4.2.2",
     "i18next": "^19.4.5",
     "intersection-observer": "^0.7.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "numeral": "^2.0.6",
     "ramda": "^0.27.0",
     "react": "^16.13.0",
