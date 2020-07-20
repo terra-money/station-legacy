@@ -68,3 +68,27 @@
     width: 80px;
   }
 }
+
+/* contracts */
+.address {
+  font-size: 15px;
+}
+
+.dl {
+  $margin: 2px;
+  margin: -($margin);
+  line-height: (14px * 1.5);
+
+  dt {
+    font-size: 11px;
+  }
+
+  dd {
+    font-size: 14px;
+  }
+
+  dt,
+  dd {
+    padding: $margin;
+  }
+}
