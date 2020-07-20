@@ -74,21 +74,16 @@
   font-size: 15px;
 }
 
-.dl {
-  $margin: 2px;
-  margin: -($margin);
-  line-height: (14px * 1.5);
+.meta {
+  li {
+    @include flex(flex-start);
+  }
 
-  dt {
+  strong {
     font-size: 11px;
   }
 
-  dd {
+  span {
     font-size: 14px;
-  }
-
-  dt,
-  dd {
-    padding: $margin;
   }
 }

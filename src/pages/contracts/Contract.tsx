@@ -28,12 +28,16 @@ const Contract = ({ address, date, ...props }: ContractUI) => {
   return (
     <Card title={title} {...classNames} bordered>
       <Flex className="space-between">
-        <dl className={c('dl-wrap', s.dl)}>
-          <dt>{code.label}</dt>
-          <dd>{code.value}</dd>
-          <dt>{contract.label}</dt>
-          <dd>{contract.value}</dd>
-        </dl>
+        <ul className={c(s.details, s.meta)}>
+          <li>
+            <strong>{code.label}</strong>
+            <span>{code.value}</span>
+          </li>
+          <li>
+            <strong>{contract.label}</strong>
+            <span>{contract.value}</span>
+          </li>
+        </ul>
 
         <ActionBar
           list={[
