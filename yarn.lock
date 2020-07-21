@@ -2099,10 +2099,10 @@
     bech32 "^1.1.3"
     ripemd160 "^2.0.2"
 
-"@terra-money/use-station@^3.8.4":
-  version "3.8.4"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-3.8.4.tgz#bc903f6f75d40904f74e1f196c6ecbdffe49a1ba"
-  integrity sha512-QvG4z26IujVDZwRrjmlQLFVnolPAgxmdCFClMvQi8E7lII8G81SKKDX03fzQVBX6mnv/G+gxjtSSNHPj/mrB8w==
+"@terra-money/use-station@^3.8.5":
+  version "3.8.5"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-3.8.5.tgz#4a0759edf56a93e0fb3c069912faf575a8d60533"
+  integrity sha512-MdunFPNFuhT3BTg1/XMLdPml5tLrIZB8HlewhqO60+/4J0fV0N4apbKe1gWED8guWqPU1XVfL8E2/C6XllCkJw==
   dependencies:
     axios "^0.19.2"
     bech32 "^1.1.3"

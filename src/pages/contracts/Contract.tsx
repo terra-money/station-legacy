@@ -4,6 +4,7 @@ import { ContractUI } from '@terra-money/use-station'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import ActionBar from '../../components/ActionBar'
+import ExtLink from '../../components/ExtLink'
 import Card from '../../components/Card'
 import Flex from '../../components/Flex'
 import Icon from '../../components/Icon'
@@ -11,13 +12,15 @@ import Interact from '../../post/Interact'
 import Query from '../../post/Query'
 import s from '../txs/Tx.module.scss'
 
-const Contract = ({ address, date, ...props }: ContractUI) => {
+const Contract = ({ address, link, date, ...props }: ContractUI) => {
   const { contract, code, interact, query } = props
   const { modal } = useApp()
 
   const title = (
     <>
-      <span className={s.address}>{address}</span>
+      <ExtLink href={link} className={s.address}>
+        {address}
+      </ExtLink>
       <section className={s.date}>
         <Icon name="date_range" />
         {date}
