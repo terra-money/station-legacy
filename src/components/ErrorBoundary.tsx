@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, ErrorInfo } from 'react'
 import * as Sentry from '@sentry/browser'
 import { ErrorBoundary as Component, useText } from '@terra-money/use-station'
 
@@ -9,9 +9,9 @@ interface Props {
 const ErrorBoundary: FC<Props> = ({ fallback, children }) => {
   const { OOPS } = useText()
 
-  const handleError = (error: Error, errorInfo: object) => {
+  const handleError = (error: Error, errorInfo: ErrorInfo) => {
     Sentry.withScope((scope) => {
-      scope.setExtras(errorInfo)
+      scope.setExtras(errorInfo as any)
       Sentry.captureException(error)
     })
   }
