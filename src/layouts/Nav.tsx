@@ -5,6 +5,7 @@ import { useMenu, ErrorBoundary, useConfig } from '@terra-money/use-station'
 import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import Icon from '../components/Icon'
 import NavItem from './NavItem'
+import Guide from './Guide'
 import Lang from './Lang'
 import Chain from './Chain'
 import Height from './Height'
@@ -62,7 +63,11 @@ const Nav = () => {
         </ul>
 
         <footer className={s.footer}>
-          <Lang />
+          <section className={s.container}>
+            <Guide />
+            <Lang />
+          </section>
+
           <section className={s.chain}>
             <Chain />
             <ErrorBoundary>

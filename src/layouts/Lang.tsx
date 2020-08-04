@@ -48,31 +48,29 @@ const Lang = () => {
   ))
 
   return !current ? null : (
-    <article className={s.container}>
-      <Pop
-        type="pop"
-        placement="top"
-        width={200}
-        content={
-          <article>
-            <h1>Select your language</h1>
-            <ul className={s.list}>{languages}</ul>
-          </article>
-        }
-        fixed
-      >
-        {({ ref, getAttrs }) => (
-          <span {...getAttrs({ className: s.wrapper })} ref={ref}>
-            <LangItem
-              icon="language"
-              label={getLang(current)['name']}
-              className={s.select}
-              caret
-            />
-          </span>
-        )}
-      </Pop>
-    </article>
+    <Pop
+      type="pop"
+      placement="top"
+      width={200}
+      content={
+        <article>
+          <h1>Select your language</h1>
+          <ul className={s.list}>{languages}</ul>
+        </article>
+      }
+      fixed
+    >
+      {({ ref, getAttrs }) => (
+        <span {...getAttrs({ className: s.wrapper })} ref={ref}>
+          <LangItem
+            icon="language"
+            label={getLang(current)['name']}
+            className={s.select}
+            caret
+          />
+        </span>
+      )}
+    </Pop>
   )
 }
 

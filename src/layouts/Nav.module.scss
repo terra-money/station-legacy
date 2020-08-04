@@ -112,6 +112,14 @@ $border-bottom: 1px solid fade-out(white, 0.9);
   color: white;
 }
 
+.container {
+  padding: 20px;
+
+  i {
+    margin-right: 5px;
+  }
+}
+
 .chain {
   @include flex(space-between);
   background: darken($navy, 3%);
