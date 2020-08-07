@@ -4,14 +4,12 @@ import { localSettings } from '../../utils/localStorage'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Info from '../../components/Info'
-import Address from './Address'
 import AvailableList from './AvailableList'
 import VestingList from './VestingList'
 
 const Assets = ({ user }: { user: User }) => {
   const { hideSmallBalances: hideSmall = false } = localSettings.get()
-  const { error, loading, ui, ...rest } = useAssets(user, { hideSmall })
-  const { address, viewAddress } = rest
+  const { error, loading, ui } = useAssets(user, { hideSmall })
 
   const render = ({ card, available, vesting }: AssetsUI) => (
     <>
@@ -21,19 +19,13 @@ const Assets = ({ user }: { user: User }) => {
     </>
   )
 
-  return (
-    <>
-      {address && <Address {...address} viewAddress={viewAddress} />}
-
-      {error ? (
-        <ErrorComponent />
-      ) : loading ? (
-        <Loading card />
-      ) : (
-        ui && render(ui)
-      )}
-    </>
-  )
+  return error ? (
+    <ErrorComponent />
+  ) : loading ? (
+    <Loading card />
+  ) : ui ? (
+    render(ui)
+  ) : null
 }
 
 export default Assets

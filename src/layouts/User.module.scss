@@ -1,0 +1,49 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.user {
+  @include flex(flex-start);
+  font-size: 12px;
+}
+
+.name {
+  border-right: 1px solid #d2d9f0;
+  margin-right: 10px;
+  padding-right: 10px;
+
+  font-weight: bold;
+}
+
+/* address */
+.copy {
+  @include flex(flex-start);
+}
+
+.text {
+  margin-right: 5px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: $breakpoint - 1) {
+    width: 12em;
+  }
+}
+
+.button {
+  @include flex();
+  background: #edf4fe;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    fill: $brand;
+  }
+}
+
+/* ledger */
+.ledger {
+  transform: translate(-50%, 0);
+}

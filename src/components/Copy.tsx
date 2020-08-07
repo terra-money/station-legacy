@@ -17,6 +17,7 @@ interface Payload {
 interface Props {
   classNames?: { container?: string; text?: string; button?: string }
   text: string
+  placement?: 'top' | 'bottom'
   noLabel?: boolean
   payload?: Payload
   children?: ReactNode
@@ -24,7 +25,8 @@ interface Props {
 
 const DURATION = 1500
 
-const Copy = ({ classNames = {}, text, noLabel, payload, children }: Props) => {
+const Copy = ({ classNames = {}, text, noLabel, payload, ...props }: Props) => {
+  const { children, placement = 'top' } = props
   const { COPY, COPIED } = useText()
   const [copied, setCopied] = useState(false)
 
@@ -43,7 +45,7 @@ const Copy = ({ classNames = {}, text, noLabel, payload, children }: Props) => {
 
       {clicked && (
         <Tooltip
-          placement="top"
+          placement={placement}
           content={tooltip}
           className={c(tooltipStyle.tooltip, s.tooltip)}
           width={240}
@@ -70,9 +72,9 @@ const Copy = ({ classNames = {}, text, noLabel, payload, children }: Props) => {
 
         {copied && (
           <Tooltip
-            placement="top"
+            placement={placement}
             content={COPIED}
-            className={c(tooltipStyle.tooltip, s.tooltip)}
+            className={c(tooltipStyle.tooltip, s.tooltip, s[placement])}
           />
         )}
       </section>

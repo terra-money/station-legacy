@@ -6,12 +6,13 @@ import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import ModalContent from '../components/ModalContent'
 import Share from './Share'
+import User from './User'
 import Preconfigured from './Preconfigured'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
   const { user, signOut } = useAuth()
-  const { SIGN_IN } = useText()
+  const { CONNECT } = useText()
   const { goBack, refresh, authModal, modal } = useApp()
   const { chain } = useConfig()
   const isLocal = chain.current.key === 'localterra'
@@ -32,13 +33,10 @@ const Header = ({ className }: { className: string }) => {
               className={c('btn btn-primary btn-sm', s.button)}
               onClick={authModal.open}
             >
-              {SIGN_IN}
+              {CONNECT}
             </button>
           ) : (
-            <>
-              <Icon name="account_circle" />
-              <span className={s.username}>{user.name || user.address}</span>
-            </>
+            <User {...user} />
           )}
 
           {isLocal && (

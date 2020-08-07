@@ -20,7 +20,7 @@ export const Tooltip = (props: Tooltip) => {
   const { content, forwardRef } = props
 
   const arrowAttrs = Object.assign(
-    { className: c(s.arrow, s[placement]) },
+    { className: s.arrow },
     arrowPosition && {
       style: { marginLeft: arrowPosition, transform: 'translate(-50%, 0)' },
     }

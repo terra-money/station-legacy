@@ -9,6 +9,14 @@
 .tooltip {
   top: 0;
   left: 50%;
-  transform: translate(-50%, -100%);
   text-align: center;
+}
+
+.top {
+  transform: translate(-50%, -100%);
+}
+
+.bottom {
+  transform: translate(-50%, 0);
+  margin-top: 20px;
 }
