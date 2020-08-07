@@ -6,6 +6,7 @@ import s from './Form.module.scss'
 
 export interface Props {
   form: FormUI
+  h2?: ReactNode
   disabled?: boolean
   reversed?: boolean
   className?: string
@@ -19,7 +20,7 @@ export interface State {
   setIndex: (index: number) => void
 }
 
-const Form = ({ form, renderField, render, children, ...props }: Props) => {
+const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
   const { reversed, className } = props
   const { title, fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled
@@ -32,7 +33,11 @@ const Form = ({ form, renderField, render, children, ...props }: Props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>{title}</h1>
+      <header>
+        <h1>{title}</h1>
+        {h2 && <h2>{h2}</h2>}
+      </header>
+
       {reversed && children}
 
       <section className={className}>

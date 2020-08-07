@@ -4,11 +4,13 @@ import { loadKeys, testPassword } from '../utils/localStorage'
 import { useAuthModal } from './useAuthModal'
 import ModalContent from '../components/ModalContent'
 import Form from '../components/Form'
+import Icon from '../components/Icon'
 import ManageAccounts from './ManageAccounts'
+import s from './SignIn.module.scss'
 
 const SignIn = () => {
   const accounts = loadKeys()
-  const { form } = useSignIn({
+  const { form, manage } = useSignIn({
     list: accounts,
     test: ({ name, password }) => testPassword(name, password),
   })
@@ -18,7 +20,12 @@ const SignIn = () => {
 
   /* settings */
   const [settings, setSettings] = useState(false)
-  const actions = [{ icon: 'settings', onClick: () => setSettings(true) }]
+  const h2 = !!accounts.length ? (
+    <button className={s.manage} onClick={() => setSettings(true)}>
+      <Icon name="settings" />
+      <strong>{manage[0]}</strong>({manage[1]})
+    </button>
+  ) : undefined
 
   return settings ? (
     <ManageAccounts
@@ -26,8 +33,8 @@ const SignIn = () => {
       onFinish={modal.goBack}
     />
   ) : (
-    <ModalContent {...modal} actions={!!accounts.length ? actions : undefined}>
-      <Form form={form} />
+    <ModalContent {...modal}>
+      <Form form={form} h2={h2} />
     </ModalContent>
   )
 }

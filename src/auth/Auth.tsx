@@ -47,11 +47,11 @@ const Auth = () => {
       render: () => <Recover />,
     },
     signUp: {
-      icon: 'person_add',
+      icon: 'add_circle_outline',
       render: () => <SignUp />,
     },
     signIn: {
-      icon: 'lock',
+      icon: 'radio_button_checked',
       disabled: !loadKeys().length,
       render: () => <SignIn />,
     },

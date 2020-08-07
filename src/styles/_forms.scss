@@ -1,10 +1,13 @@
 $border: fade-out($navy, 0.8);
 
-form {
-  > h1 {
-    font-size: 20px;
-    margin-bottom: 40px;
-    text-align: center;
+form > header {
+  font-size: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+
+  > h2 {
+    font-size: 12px;
+    margin-top: 12px;
   }
 }
 
