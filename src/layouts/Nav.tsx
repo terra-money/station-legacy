@@ -26,8 +26,8 @@ const Nav = () => {
   // prettier-ignore
   const menu = [
     { name: name['Dashboard'],    to: '/',             icon: 'dashboard' },
-    { name: name['Bank'],         to: '/bank',         icon: 'account_balance' },
-    { name: name['Transactions'], to: '/transactions', icon: 'swap_horiz' },
+    { name: name['Wallet'],       to: '/wallet',       icon: 'account_balance_wallet' },
+    { name: name['History'],      to: '/history',      icon: 'subject' },
     { name: name['Staking'],      to: '/staking',      icon: 'layers',      submenu: ['/validator'] },
     { name: name['Market'],       to: '/market',       icon: 'timeline' },
     { name: name['Governance'],   to: '/governance',   icon: 'how_to_vote', submenu: ['/proposal'] },

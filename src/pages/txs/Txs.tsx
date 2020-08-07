@@ -40,7 +40,7 @@ const List = ({ user }: { user: User }) => {
 }
 
 const Txs = () => {
-  const { Transactions: title } = useMenu()
+  const { History: title } = useMenu()
 
   return (
     <Page title={title}>

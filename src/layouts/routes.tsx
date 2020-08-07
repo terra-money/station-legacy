@@ -14,8 +14,8 @@ import Contracts from '../pages/contracts/Contracts'
 export default (
   <Switch>
     <Route path="/" component={Dashboard} exact />
-    <Route path="/bank" component={Bank} />
-    <Route path="/transactions" component={Txs} />
+    <Route path="/wallet" component={Bank} />
+    <Route path="/history" component={Txs} />
     <Route path="/staking" component={Staking} />
     <Route path="/validator/:address" component={Validator} />
     <Route path="/market" component={Market} />
