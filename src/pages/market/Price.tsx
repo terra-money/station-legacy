@@ -1,6 +1,6 @@
 import React from 'react'
 import { Filter, Point } from '@terra-money/use-station'
-import { Variation as VariationProps, PriceUI } from '@terra-money/use-station'
+import { PriceUI } from '@terra-money/use-station'
 import { usePrice, format } from '@terra-money/use-station'
 import c from 'classnames'
 import { helpers } from 'chart.js'
@@ -14,18 +14,12 @@ import Variation from './Variation'
 import NotAvailable from '../../components/NotAvailable'
 import s from './Price.module.scss'
 
-const Price = ({ actives }: { actives: string[] }) => {
-  const { error, loading, title, filter, ui } = usePrice(actives)
+const Price = () => {
+  const { error, loading, title, filter, ui } = usePrice()
 
   const renderActions = () => {
-    const { denom, interval } = filter
-
-    return (
-      <>
-        {denom && renderFilter(denom)}
-        {interval && renderFilter(interval)}
-      </>
-    )
+    const { interval } = filter
+    return interval && renderFilter(interval)
   }
 
   const renderFilter = ({ value, set, options }: Filter) =>
@@ -41,10 +35,11 @@ const Price = ({ actives }: { actives: string[] }) => {
       </Select>
     )
 
-  type Header = { price: number; variation: VariationProps }
-  const renderHeader = ({ price, variation }: Header) => (
+  const renderHeader = ({ price, unit, variation }: PriceUI) => (
     <header className={s.header}>
-      <Number fontSize={24}>{format.decimal(String(price))}</Number>
+      <Number fontSize={24} unit={unit}>
+        {format.decimal(String(price))}
+      </Number>
       <Variation variation={variation} showPercent />
     </header>
   )

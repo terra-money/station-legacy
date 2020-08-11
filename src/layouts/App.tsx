@@ -34,10 +34,11 @@ const App = () => {
   const modal = useModal()
 
   /* init app */
-  const { lang, chain, user: initialUser } = localSettings.get()
+  const { lang, currency, chain, user: initialUser } = localSettings.get()
 
   const initialState = {
     lang: lang as LangKey,
+    currency,
     chain: Chains[chain!] ?? Chains['columbus'],
   }
 
@@ -56,7 +57,9 @@ const App = () => {
   const config = useConfigState(initialState)
   const auth = useAuthState(initialUser)
   const { current: currentLang = '' } = config.lang
+  const { current: currentCurrencyItem } = config.currency
   const { current: currentChainOptions } = config.chain
+  const { key: currentCurrency = '' } = currentCurrencyItem || {}
   const { key: currentChain = '' } = currentChainOptions
   const { user } = auth
 
@@ -64,8 +67,8 @@ const App = () => {
   const authModal = useAuthModal(modal, user)
 
   /* render */
-  const key = [currentLang, currentChain, appKey].join()
-  const ready = !!(currentLang && currentChain && appKey > 0)
+  const key = [currentLang, currentChain, currentCurrency, appKey].join()
+  const ready = !!(currentLang && currentChain && currentCurrency && appKey > 0)
   const value = { refresh, goBack, setGoBack, modal, authModal }
 
   return deprecatedUI ?? !ready ? null : (

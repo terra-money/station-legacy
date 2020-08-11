@@ -15,7 +15,7 @@ const Market = () => {
     <>
       <div className="row">
         <div className="col col-6">
-          <Price actives={actives} />
+          <Price />
         </div>
 
         <div className="col col-6">

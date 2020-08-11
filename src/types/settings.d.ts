@@ -7,6 +7,7 @@ interface User {
 
 interface Settings {
   lang?: string
+  currency?: string
   chain?: string
   user?: User
   recentAddresses?: string[]

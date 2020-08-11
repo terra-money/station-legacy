@@ -130,3 +130,14 @@ $border-bottom: 1px solid fade-out(white, 0.9);
     margin-right: 10px;
   }
 }
+
+.config {
+  @include flex(space-between);
+
+  margin: -5px;
+
+  > * {
+    margin: 5px;
+    width: 50%;
+  }
+}

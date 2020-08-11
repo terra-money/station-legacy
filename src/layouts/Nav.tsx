@@ -7,6 +7,7 @@ import Icon from '../components/Icon'
 import NavItem from './NavItem'
 import Guide from './Guide'
 import Lang from './Lang'
+import Currency from './Currency'
 import Chain from './Chain'
 import Height from './Height'
 import s from './Nav.module.scss'
@@ -65,7 +66,10 @@ const Nav = () => {
         <footer className={s.footer}>
           <section className={s.container}>
             <Guide />
-            <Lang />
+            <div className={s.config}>
+              <Lang />
+              <Currency />
+            </div>
           </section>
 
           <section className={s.chain}>
