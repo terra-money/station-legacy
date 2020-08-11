@@ -21,7 +21,11 @@ const SignIn = () => {
   /* settings */
   const [settings, setSettings] = useState(false)
   const h2 = !!accounts.length ? (
-    <button className={s.manage} onClick={() => setSettings(true)}>
+    <button
+      type="button"
+      className={s.manage}
+      onClick={() => setSettings(true)}
+    >
       <Icon name="settings" />
       <strong>{manage[0]}</strong>({manage[1]})
     </button>
