@@ -1,29 +1,25 @@
 import React from 'react'
 import { AuthMenuUI, Trans } from '@terra-money/use-station'
+import { useAuthModal } from './useAuthModal'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'
 import s from './AuthFooter.module.scss'
 
-interface Props extends AuthMenuUI {
-  onClickGlance: () => void
-  onClickDownload: () => void
-}
-
-const AuthFooter = ({ signInWithLedger, tooltip, ...props }: Props) => {
-  const { onClickGlance, onClickDownload } = props
+const AuthFooter = ({ signInWithLedger, tooltip }: AuthMenuUI) => {
+  const { actions } = useAuthModal()
   const [p, button] = signInWithLedger
   const { label, i18nKey } = tooltip
 
   const content = (
     <Trans i18nKey={i18nKey}>
-      <button className={s.link} onClick={onClickDownload} />
+      <button className={s.link} onClick={actions.download} />
     </Trans>
   )
 
   return (
     <footer className={s.footer}>
       <p className={s.address}>
-        {p} <button onClick={onClickGlance}>{button}</button>
+        {p} <button onClick={actions.glance}>{button}</button>
       </p>
 
       <Pop type="pop" placement="top" width={380} content={content}>

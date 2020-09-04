@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import c from 'classnames'
 import { useAuth, useText } from '@terra-money/use-station'
 import { ReactComponent as Ledger } from '../images/Ledger.svg'
+import { isExtension } from '../utils/env'
 import { useModal } from '../hooks'
 import ledger from '../wallet/ledger'
-import Icon from '../components/Icon'
-import Copy from '../components/Copy'
-import Modal from '../components/Modal'
 import ManageWallet from '../auth/ManageWallet'
+import Copy from '../components/Copy'
+import Icon from '../components/Icon'
+import Modal from '../components/Modal'
 import s from './User.module.scss'
 
 const Name = ({ children: name }: { children: string }) => {
@@ -14,13 +16,19 @@ const Name = ({ children: name }: { children: string }) => {
 
   return (
     <div className={s.name}>
+      {isExtension && <Icon name="account_balance_wallet" size={16} />}
       {name}
-      <button className={s.settings} onClick={modal.open}>
-        <Icon name="settings" />
-      </button>
-      <Modal config={modal.config}>
-        <ManageWallet name={name} modalActions={modal} onFinish={modal.close} />
-      </Modal>
+      {!isExtension && (
+        <>
+          <button className={s.settings} onClick={modal.open}>
+            <Icon name="settings" />
+          </button>
+
+          <Modal config={modal.config}>
+            <ManageWallet modalActions={modal} onFinish={modal.close} />
+          </Modal>
+        </>
+      )}
     </div>
   )
 }
@@ -44,7 +52,7 @@ const Address = ({ children }: { children: string }) => {
 
 const User = ({ name, address }: User) => {
   return (
-    <div className={s.user}>
+    <div className={c(s.user, isExtension ? s.extension : s.flex)}>
       {name && <Name>{name}</Name>}
       {address && <Address>{address}</Address>}
     </div>

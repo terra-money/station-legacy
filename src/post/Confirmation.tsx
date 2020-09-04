@@ -1,24 +1,20 @@
-import React, { useEffect, Fragment } from 'react'
-import c from 'classnames'
+import React, { useEffect } from 'react'
 import { ConfirmProps, format } from '@terra-money/use-station'
 import { useConfirm, useAuth } from '@terra-money/use-station'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import ModalContent from '../components/ModalContent'
-import Form from '../components/Form'
 import Select from '../components/Select'
-import InvalidFeedback from '../components/InvalidFeedback'
-import Confirm from '../components/Confirm'
-import ConfirmLedger from '../auth/ConfirmLedger'
 import { PW, isPreconfigured } from '../layouts/Preconfigured'
-import s from './Confirmation.module.scss'
+import ConfirmationComponent from './ConfirmationComponent'
 
 interface Props {
   confirm: ConfirmProps
   modal: Modal
+  onResult?: () => void
 }
 
-const Confirmation = ({ confirm, modal }: Props) => {
+const Confirmation = ({ confirm, modal, onResult }: Props) => {
   const { user } = useAuth()
 
   const { contents, fee, form, ledger, result } = useConfirm(confirm, {
@@ -57,105 +53,71 @@ const Confirmation = ({ confirm, modal }: Props) => {
     disabled: form.submitting,
   }
 
-  const resultButtonAttrs = {
-    className: 'btn btn-block btn-primary',
-    onClick: modal.close,
-  }
+  const contentsDl = contents.map(({ name, text, displays }) => ({
+    dt: renderName(name),
+    dd:
+      text ??
+      displays?.map(({ value, unit }, index) => (
+        <>
+          <span>{value}</span>
+          <span>{unit}</span>
+        </>
+      )),
+  }))
 
-  const renderForm = () => (
-    <Form form={form} reversed>
-      <dl className={c('dl-wrap', s.dl)}>
-        {contents.map(({ name, text, displays }) =>
-          text ? (
-            <Fragment key={name}>
-              <dt>{renderName(name)}</dt>
-              <dd>{text}</dd>
-            </Fragment>
-          ) : (
-            displays?.map(({ value, unit }, index) => (
-              <Fragment key={index}>
-                <dt>{!index && renderName(name)}</dt>
-                <dd>
-                  <span>{value}</span>
-                  <span>{unit}</span>
-                </dd>
-              </Fragment>
-            ))
-          )
+  const feeDl = (fee.status || fee.select.attrs.value) && {
+    dt: (
+      <>
+        <span className="form-control-sm">{fee.label}</span>
+        {!fee.status && (
+          <Select
+            {...fee.select.attrs}
+            className="form-control form-control-sm"
+            onChange={(e) => fee.select.setValue(e.target.value)}
+          >
+            {fee.select.options.map((option) => (
+              <option {...option} key={option.value} />
+            ))}
+          </Select>
         )}
+      </>
+    ),
 
-        {(fee.status || fee.select.attrs.value) && (
-          <>
-            <dt>
-              <span className="form-control-sm">{fee.label}</span>
-              {!fee.status && (
-                <Select
-                  {...fee.select.attrs}
-                  className="form-control form-control-sm"
-                  onChange={(e) => fee.select.setValue(e.target.value)}
-                >
-                  {fee.select.options.map((option) => (
-                    <option {...option} key={option.value} />
-                  ))}
-                </Select>
-              )}
-            </dt>
+    dd: fee.status ? (
+      <span className="form-control-sm">{fee.status}</span>
+    ) : fee.select.attrs.value ? (
+      <>
+        <div className="input-group">
+          <input
+            {...fee.input.attrs}
+            className="form-control form-control-sm"
+            onChange={(e) => fee.input.setValue(e.target.value)}
+          />
+          <div className="input-group-append">
+            <span className="input-group-text">
+              {format.denom(fee.select.attrs.value)}
+            </span>
+          </div>
+        </div>
 
-            <dd>
-              {fee.status ? (
-                <span className="form-control-sm">{fee.status}</span>
-              ) : (
-                fee.select.attrs.value && (
-                  <div className="input-group">
-                    <input
-                      {...fee.input.attrs}
-                      className="form-control form-control-sm"
-                      onChange={(e) => fee.input.setValue(e.target.value)}
-                    />
-                    <div className="input-group-append">
-                      <span className="input-group-text">
-                        {format.denom(fee.select.attrs.value)}
-                      </span>
-                    </div>
-                  </div>
-                )
-              )}
-            </dd>
-          </>
-        )}
-      </dl>
-
-      <section className={s.feedback}>
         {fee.message && (
           <p className="text-right pre-line">
             <small>{fee.message}</small>
           </p>
         )}
-
-        {form.errors?.map((error, index) => (
-          <InvalidFeedback key={index}>{error}</InvalidFeedback>
-        ))}
-      </section>
-    </Form>
-  )
+      </>
+    ) : null,
+  }
 
   return (
     <ModalContent {...modalActions}>
-      {result ? (
-        <Confirm
-          {...result}
-          icon="check_circle"
-          footer={
-            result.button && (
-              <button {...resultButtonAttrs}>{result.button}</button>
-            )
-          }
-        />
-      ) : ledger ? (
-        <ConfirmLedger {...ledger} />
-      ) : (
-        renderForm()
-      )}
+      <ConfirmationComponent
+        dl={feeDl ? [...contentsDl, feeDl] : [...contentsDl]}
+        form={form}
+        ledger={ledger}
+        result={result}
+        onFinish={modal.close}
+      />
     </ModalContent>
   )
 }

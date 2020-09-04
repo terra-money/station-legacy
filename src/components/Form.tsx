@@ -1,13 +1,14 @@
 import React, { FormEvent, ReactNode, useState } from 'react'
-import c from 'classnames'
 import { FormUI, Field as FieldProps } from '@terra-money/use-station'
 import Field from './Field'
 import s from './Form.module.scss'
 
 export interface Props {
   form: FormUI
+  actions?: ReactNode
   h2?: ReactNode
   disabled?: boolean
+  cancel?: { onClick: () => void; children: string }
   reversed?: boolean
   className?: string
   children?: ReactNode
@@ -21,7 +22,7 @@ export interface State {
 }
 
 const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
-  const { reversed, className } = props
+  const { actions, cancel, reversed, className } = props
   const { title, fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled
   const [currentFieldIndex, setCurrentFieldIndex] = useState<number>(-1)
@@ -33,8 +34,9 @@ const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <header>
+      <header className={s.header}>
         <h1>{title}</h1>
+        {actions}
         {h2 && <h2>{h2}</h2>}
       </header>
 
@@ -55,13 +57,15 @@ const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
       {!reversed && children}
       {render?.({ index: currentFieldIndex, setIndex: setCurrentFieldIndex })}
 
-      <button
-        type="submit"
-        className={c('btn btn-block btn-primary', s.submit)}
-        disabled={disabled}
-      >
-        {submitLabel}
-      </button>
+      <footer className={s.submit}>
+        <button type="submit" className="btn btn-primary" disabled={disabled}>
+          {submitLabel}
+        </button>
+
+        {cancel && (
+          <button type="button" className="btn btn-danger" {...cancel} />
+        )}
+      </footer>
     </form>
   )
 }

@@ -13,6 +13,14 @@
   }
 }
 
+.extension {
+  padding: 20px;
+
+  &:not(:first-child) {
+    border-top: 1px solid #e9edf8;
+  }
+}
+
 .article {
   white-space: nowrap;
 }

@@ -1,21 +1,14 @@
 import React from 'react'
 import { useSignInWithLedger } from '@terra-money/use-station'
 import ledger from '../wallet/ledger'
-import ModalContent from '../components/ModalContent'
-import { useAuthModal } from './useAuthModal'
 import ConfirmLedger from './ConfirmLedger'
 
 const SignInWithLedger = () => {
-  const modal = useAuthModal()
   const confirm = useSignInWithLedger(
     async () => await ledger.getTerraAddress()
   )
 
-  return (
-    <ModalContent {...modal}>
-      <ConfirmLedger {...confirm} />
-    </ModalContent>
-  )
+  return <ConfirmLedger {...confirm} />
 }
 
 export default SignInWithLedger

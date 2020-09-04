@@ -1,0 +1,9 @@
+$border: #e9edf8;
+
+.dl {
+  background: fade-out($border, 0.5);
+  border: 1px solid $border;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 20px;
+}

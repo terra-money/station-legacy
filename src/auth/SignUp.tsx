@@ -1,9 +1,7 @@
 import React from 'react'
-import { electron } from '../utils'
+import { generateSeed } from '../utils'
 import Recover from './Recover'
 
-const SignUp = () => (
-  <Recover generated={electron<string>('generateSeed').split(' ')} />
-)
+const SignUp = () => <Recover generated={generateSeed().split(' ')} />
 
 export default SignUp

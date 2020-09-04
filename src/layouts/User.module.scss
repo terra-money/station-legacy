@@ -2,18 +2,35 @@
 @import '../styles/variables';
 
 .user {
-  @include flex(flex-start);
   font-size: 12px;
 }
 
+.flex {
+  @include flex(flex-start);
+
+  .name {
+    border-right: 1px solid #d2d9f0;
+    margin-right: 10px;
+    padding-right: 10px;
+  }
+
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: $breakpoint - 1) {
+      width: 12em;
+    }
+  }
+}
+
 .name {
-  @include flex;
-
-  border-right: 1px solid #d2d9f0;
-  margin-right: 10px;
-  padding-right: 10px;
-
+  @include flex(flex-start);
   font-weight: bold;
+
+  i {
+    margin-right: 5px;
+  }
 
   .settings {
     line-height: 1;
@@ -27,23 +44,24 @@
 }
 
 .text {
-  margin-right: 5px;
   text-align: left;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-right: 5px;
 
-  @media (max-width: $breakpoint - 1) {
-    width: 12em;
+  .extension & {
+    margin-right: 2px;
   }
 }
 
 .button {
   @include flex();
-  background: #edf4fe;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
+
+  .flex & {
+    background: #edf4fe;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+  }
 
   svg {
     fill: $brand;

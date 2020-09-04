@@ -1,0 +1,58 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+$border: 1px solid #e9edf8;
+
+.message {
+  border: $border;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px 0 fade-out(black, 0.95);
+  font-size: 12px;
+
+  & + & {
+    margin-top: 20px;
+  }
+}
+
+.header {
+  @include flex(space-between);
+  cursor: pointer;
+  padding: 15px;
+  line-height: 1.75;
+
+  .badge {
+    background: $brand;
+    border-radius: 5px;
+    color: white;
+    padding: 0 5px;
+  }
+
+  .button {
+    @include flex();
+    border-radius: 3px;
+    border: solid 1px $sky;
+    color: $sky;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 0 6px;
+  }
+}
+
+.dl {
+  padding: 20px;
+  padding-top: 0;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dt:not(:first-child) {
+    border-top: $border;
+    padding-top: 10px;
+  }
+
+  dd {
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+}

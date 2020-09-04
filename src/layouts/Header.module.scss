@@ -8,7 +8,9 @@ $border: 1px solid fade-out(black, 0.95);
 
   background: white;
   border-bottom: $border;
+}
 
+.header:not(.extension) {
   @media (min-width: $breakpoint-large) {
     position: sticky;
     top: 0;
@@ -18,11 +20,21 @@ $border: 1px solid fade-out(black, 0.95);
   }
 }
 
+$padding-sm: 15px 20px;
+
+.extension {
+  background: $bg;
+
+  .container {
+    padding: $padding-sm;
+  }
+}
+
 .container {
   @include flex(space-between);
 
   @media (max-width: $breakpoint-large - 1) {
-    padding: 15px 20px;
+    padding: $padding-sm;
   }
 
   @media (min-width: $breakpoint-large) {
@@ -33,7 +45,7 @@ $border: 1px solid fade-out(black, 0.95);
   }
 }
 
-.user {
+.connect {
   @include flex(flex-start);
   flex: 1;
 
@@ -53,6 +65,10 @@ $border: 1px solid fade-out(black, 0.95);
   }
 }
 
+.signout {
+  padding: 10px 0;
+}
+
 .select {
   border: 1px solid #cfd8ea;
   margin-left: 12px;
@@ -60,4 +76,8 @@ $border: 1px solid fade-out(black, 0.95);
 
 .actions {
   flex: none;
+}
+
+.link {
+  color: $brand;
 }

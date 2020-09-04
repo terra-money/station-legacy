@@ -1,87 +1,76 @@
-import React, { useState, ReactNode } from 'react'
-import { toast } from 'react-toastify'
-import { cond, equals } from 'ramda'
+import React, { useEffect, useState } from 'react'
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 import { useAuth, useManageAccounts } from '@terra-money/use-station'
-import { electron } from '../utils'
-import { loadKeys, storeKeys, importKey } from '../utils/localStorage'
+import { isExtension } from '../utils/env'
 import ModalContent from '../components/ModalContent'
-import Toast from '../components/Toast'
 import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import AuthMenu from './AuthMenu'
 
-type Props = {
-  name: string
+interface Props {
   modalActions: { close: () => void }
-  onFinish: () => void
+  onFinish?: () => void
 }
 
-const ManageWallet = ({ name, modalActions, onFinish }: Props) => {
+const ManageWallet = ({ modalActions, onFinish }: Props) => {
+  const { user, signOut } = useAuth()
+  const { push } = useHistory()
+  const { path, url } = useRouteMatch()
   const manage = useManageAccounts()
-  const { signOut } = useAuth()
-  const Page = { PW: 'ChangePassword', DEL: 'DeleteAccount' }
-  const [accounts, setAccounts] = useState(loadKeys)
-  const [currentPage, setCurrentPage] = useState<string>('')
 
-  const init = () => {
-    setAccounts(loadKeys)
-    setCurrentPage('')
-  }
+  const [currentIndex, setCurrentIndex] = useState(-1)
 
-  /* actions */
-  type Params = { current: string; password: string }
-  const account = accounts.find((account) => account.name === name)!
-
-  const changePassword = async ({ current, password }: Params) => {
-    const { name, wallet } = account
-    const decrypted = electron<string>('decrypt', [wallet, current])
-    const parsed = JSON.parse(decrypted)
-
-    deleteAccount()
-    await importKey({ name, password, wallet: parsed })
-    toast(<Toast {...manage.password} />, { autoClose: 3000 })
-    onFinish()
-  }
-
-  const deleteAccount = () => {
-    const next = accounts.filter((account) => account.name !== name)
-    signOut()
-    storeKeys(next)
-    next.length ? init() : onFinish()
-  }
+  useEffect(() => {
+    !user && push('/')
+  }, [user, push])
 
   /* render */
-  const buttons = [
+  const list = [
     {
       title: manage.password.tooltip,
       icon: 'lock',
-      onClick: () => setCurrentPage(Page.PW),
+      path: '/password',
+      render: () => <ChangePassword onFinish={() => setCurrentIndex(-1)} />,
     },
     {
       title: manage.delete.title!,
       icon: 'delete',
-      onClick: () => setCurrentPage(Page.DEL),
+      path: '/delete',
+      render: () => <DeleteAccount />,
+    },
+    {
+      title: 'Disconnect',
+      icon: 'exit_to_app',
+      onClick: () => signOut(),
     },
   ]
 
-  const main = <AuthMenu list={buttons} />
+  const renderMenu = () => (
+    <AuthMenu
+      list={list.map((item, index) => ({
+        ...item,
+        onClick:
+          item.onClick ??
+          (() =>
+            isExtension ? push(url + item.path) : setCurrentIndex(index)),
+      }))}
+    />
+  )
 
-  const renderPage = cond<string, ReactNode>([
-    [
-      equals(Page.PW),
-      () => <ChangePassword name={account['name']} onChange={changePassword} />,
-    ],
-    [
-      equals(Page.DEL),
-      () => <DeleteAccount onDelete={deleteAccount} onCancel={init} />,
-    ],
-  ])(currentPage)
+  const modal = {
+    ...modalActions,
+    goBack: currentIndex > -1 ? () => setCurrentIndex(-1) : undefined,
+  }
 
-  return (
-    <ModalContent
-      {...Object.assign({}, modalActions, currentPage && { goBack: init })}
-    >
-      {renderPage || main}
+  return isExtension ? (
+    <Switch>
+      <Route path={path + '/'} exact render={renderMenu} />
+      <Route path={path + '/password'} component={ChangePassword} />
+      <Route path={path + '/delete'} component={DeleteAccount} />
+    </Switch>
+  ) : (
+    <ModalContent {...modal}>
+      {list[currentIndex]?.render?.() ?? renderMenu()}
     </ModalContent>
   )
 }

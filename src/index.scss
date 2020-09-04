@@ -4,8 +4,12 @@
 @import './styles/reboot';
 @import './styles/components';
 
-body {
+body:not(.extension) {
   @media (min-width: $breakpoint-large) {
     padding-left: $nav-width-large;
   }
+}
+
+.extension {
+  @include flex;
 }

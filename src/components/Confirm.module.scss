@@ -18,3 +18,12 @@
 .actions {
   margin-top: 60px;
 }
+
+.footer {
+  display: flex;
+  flex: 1;
+
+  > button {
+    min-width: unset;
+  }
+}

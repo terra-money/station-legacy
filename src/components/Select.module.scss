@@ -1,20 +1,38 @@
+@import '../styles/variables';
+
 .container {
   position: relative;
+
+  & + & {
+    margin-left: 10px;
+  }
 
   i {
     position: absolute;
     top: 50%;
-    right: 10px;
-    transform: translate(0, -50%);
     pointer-events: none;
   }
 
-  & + & {
-    margin-left: 10px;
+  .icon {
+    left: 0;
+    transform: translate(0, -50%);
+  }
+
+  .caret {
+    right: 10px;
+    transform: translate(0, -50%);
   }
 }
 
 .select {
   appearance: none;
-  padding-right: 35px;
+  padding-right: 25px;
+
+  @media (min-width: $breakpoint) {
+    padding-right: 35px;
+  }
+
+  &.pl {
+    padding-left: 25px;
+  }
 }

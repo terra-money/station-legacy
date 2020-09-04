@@ -9,14 +9,20 @@ type Attrs = DetailedHTMLProps<
 >
 
 interface Props extends Attrs {
+  icon?: string
   width?: number
+  containerClassName?: string
 }
 
-const Select = ({ width, className, ...attrs }: Props) => (
-  <div className={s.container} style={{ width }}>
-    <select {...attrs} className={c(className, s.select)} />
-    <Icon name="arrow_drop_down" size={20} />
-  </div>
-)
+const Select = ({ icon, width, className, ...props }: Props) => {
+  const { containerClassName, ...attrs } = props
+  return (
+    <div className={c(s.container, containerClassName)} style={{ width }}>
+      {icon && <Icon name={icon} size={16} className={s.icon} />}
+      <select {...attrs} className={c(className, s.select, icon && s.pl)} />
+      <Icon name="arrow_drop_down" size={20} className={s.caret} />
+    </div>
+  )
+}
 
 export default Select

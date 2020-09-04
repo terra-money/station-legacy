@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react'
 import { Dictionary } from 'ramda'
 import { DisplayCoin } from '@terra-money/use-station'
+import { isExtension } from '../../utils/env'
 import { ReactComponent as Luna } from '../../images/Luna.svg'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import SDT from '../../images/SDT.png'
@@ -45,7 +46,11 @@ const AmountCard: FC<Props> = ({ unit, value, button, children }) => {
     </article>
   )
 
-  return <Card bodyClassName={s.card}>{content}</Card>
+  return isExtension ? (
+    <div className={s.extension}>{content}</div>
+  ) : (
+    <Card bodyClassName={s.card}>{content}</Card>
+  )
 }
 
 export default AmountCard

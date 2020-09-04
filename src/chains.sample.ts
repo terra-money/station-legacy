@@ -4,7 +4,7 @@ import { ChainOptions } from '@terra-money/use-station'
 export const Chains: Dictionary<ChainOptions> = {
   columbus: {
     key: 'columbus',
-    name: 'columbus-3',
+    name: 'columbus-4',
     lcd: 'https://lcd.terra.dev',
     fcd: 'https://fcd.terra.dev',
     ws: { hostname: 'fcd.terra.dev', port: 443, secure: true },

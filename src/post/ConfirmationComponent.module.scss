@@ -1,0 +1,53 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.dl {
+  font-size: 14px;
+  margin-bottom: 20px;
+
+  dd {
+    > :last-child {
+      flex: none;
+      width: 40px;
+    }
+
+    > :first-child {
+      flex: 1;
+    }
+
+    input {
+      text-align: right;
+    }
+
+    input {
+      font-size: 13px;
+    }
+  }
+
+  select {
+    font-size: 12px;
+    margin-left: 5px;
+    padding-left: 15px;
+    padding-right: 30px;
+  }
+}
+
+.feedback {
+  @media (min-width: $breakpoint) {
+    min-height: 120px;
+  }
+
+  margin-bottom: 20px;
+}
+
+.ledger {
+  text-align: center;
+
+  section {
+    margin: 100px 0 70px;
+  }
+
+  p {
+    margin-top: 15px;
+  }
+}

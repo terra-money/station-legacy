@@ -1,6 +1,6 @@
 import { mergeRight as merge, omit } from 'ramda'
 import { Wallet } from '@terra-money/use-station'
-import electron from './electron'
+import { encrypt, decrypt } from './terra-keystore'
 
 /* keys */
 export const loadKeys = (): Key[] =>
@@ -12,7 +12,7 @@ export const storeKeys = (keys: Key[]) => {
 
 export const decryptWallet = (wallet: string, password: string) => {
   try {
-    const decrypted = electron<string>('decrypt', [wallet, password])
+    const decrypted = decrypt(wallet, password)
     return JSON.parse(decrypted)
   } catch (err) {
     throw new Error('Incorrect password')
@@ -30,10 +30,7 @@ export const getStoredWallet = (name: string, password: string): Wallet => {
 type Params = { name: string; password: string; wallet: Wallet }
 
 export const encryptWallet = ({ name, password, wallet }: Params): Key => {
-  const encrypted = electron<string>('encrypt', [
-    JSON.stringify(wallet),
-    password,
-  ])
+  const encrypted = encrypt(JSON.stringify(wallet), password)
 
   if (!encrypted) throw new Error('Encryption error occurred')
 
@@ -68,7 +65,7 @@ export const testPassword = (name: string, password: string) => {
   if (!key) throw new Error('Key with that name does not exist')
 
   try {
-    const decrypted = electron<string>('decrypt', [key.wallet, password])
+    const decrypted = decrypt(key.wallet, password)
     JSON.parse(decrypted)
     return true
   } catch (error) {

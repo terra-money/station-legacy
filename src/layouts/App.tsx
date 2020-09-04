@@ -3,8 +3,10 @@ import { useLocation, useHistory } from 'react-router-dom'
 import { ToastContainer, Slide } from 'react-toastify'
 import { ToastContainerProps } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import extension from 'extensionizer'
 import { without } from 'ramda'
 import axios from 'axios'
+import c from 'classnames'
 
 import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-station'
@@ -12,7 +14,7 @@ import { LangKey } from '@terra-money/use-station'
 
 import { Chains } from '../chains'
 import { electron, report } from '../utils'
-import { isElectron } from '../utils/env'
+import { isElectron, isExtension } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
 import { useScrollToTop, useModal, AppProvider } from '../hooks'
 import routes from './routes'
@@ -21,7 +23,11 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import ErrorComponent from '../components/ErrorComponent'
 import ModalContent from '../components/ModalContent'
 import Modal from '../components/Modal'
-import Auth from '../auth/Auth'
+import AuthModal from '../auth/AuthModal'
+
+import Extension from '../extension/Extension'
+import { useExtensionRequested } from '../extension/useExtension'
+import { ExtensionProvider } from '../extension/useExtension'
 
 import Nav from './Nav'
 import Header from './Header'
@@ -66,30 +72,44 @@ const App = () => {
   /* auth modal */
   const authModal = useAuthModal(modal, user)
 
+  /* extension */
+  const extension = useExtensionRequested()
+
   /* render */
+  const [padding, setPadding] = useState<boolean>(true)
   const key = [currentLang, currentChain, currentCurrency, appKey].join()
   const ready = !!(currentLang && currentChain && currentCurrency && appKey > 0)
-  const value = { refresh, goBack, setGoBack, modal, authModal }
+  const value = { setPadding, refresh, goBack, setGoBack, modal, authModal }
 
   return deprecatedUI ?? !ready ? null : (
-    <AppProvider value={value} key={key}>
-      <ConfigProvider value={config}>
-        <AuthProvider value={auth}>
-          <Nav />
-          <section className={s.main}>
-            <Header className={s.header} />
-            <section className={s.content}>
-              <ErrorBoundary fallback={<ErrorComponent card />} key={pathname}>
-                {routes}
-              </ErrorBoundary>
+    <ExtensionProvider value={extension}>
+      <AppProvider value={value} key={key}>
+        <ConfigProvider value={config}>
+          <AuthProvider value={auth}>
+            <Nav />
+            <section className={s.main}>
+              <Header className={s.header} />
+              <section
+                className={c(
+                  isExtension ? s.extension : s.content,
+                  isExtension && padding && s.padding
+                )}
+              >
+                <ErrorBoundary
+                  fallback={<ErrorComponent card />}
+                  key={pathname}
+                >
+                  {isExtension ? <Extension /> : routes}
+                </ErrorBoundary>
+              </section>
             </section>
-          </section>
 
-          <Modal config={modal.config}>{modal.content}</Modal>
-          <ToastContainer {...ToastConfig} autoClose={false} />
-        </AuthProvider>
-      </ConfigProvider>
-    </AppProvider>
+            <Modal config={modal.config}>{modal.content}</Modal>
+            <ToastContainer {...ToastConfig} autoClose={false} />
+          </AuthProvider>
+        </ConfigProvider>
+      </AppProvider>
+    </ExtensionProvider>
   )
 }
 
@@ -155,7 +175,7 @@ const useRedirectOnChainChange = ({
 
 const useAuthModal = (modal: Modal, user?: User) => {
   const authModal = {
-    open: () => modal.open(<Auth />),
+    open: () => modal.open(<AuthModal />),
     close: () => modal.close(),
   }
 
@@ -165,10 +185,12 @@ const useAuthModal = (modal: Modal, user?: User) => {
       const { recentAddresses = [] } = localSettings.get()
       const next = [address, ...without([address], recentAddresses)]
       localSettings.set({ user, recentAddresses: next })
+      extension.storage?.local.set({ wallet: { address } })
     }
 
     const onSignOut = () => {
       localSettings.delete(['user'])
+      extension.storage?.local.remove(['wallet'])
     }
 
     user ? onSignIn(user) : onSignOut()

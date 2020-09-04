@@ -1,6 +1,7 @@
 import React, { ChangeEvent, Fragment, useEffect } from 'react'
 import c from 'classnames'
 import { useConfig, useNodeInfo } from '@terra-money/use-station'
+import { isExtension } from '../utils/env'
 import { Chains, list } from '../chains'
 import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'
@@ -8,8 +9,9 @@ import Select from '../components/Select'
 import Modal from '../components/Modal'
 import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
+import NavStyles from './Nav.module.scss'
 
-const SelectChain = () => {
+const SelectChain = ({ disabled }: { disabled?: boolean }) => {
   const { chain } = useConfig()
   const modal = useModal()
   const { current, set } = chain
@@ -31,10 +33,13 @@ const SelectChain = () => {
         value={current['key']}
         onChange={handleChange}
         className={c('form-control', s.select)}
+        containerClassName={isExtension ? NavStyles.select : undefined}
+        icon={isExtension ? 'wifi_tethering' : undefined}
+        disabled={disabled}
       >
         {list.map(({ title, list }, index) => (
           <Fragment key={title}>
-            {!!index && <option disabled>──────────</option>}
+            {!!index && <option disabled>────────</option>}
             {list.map((key) => (
               <option value={key} key={key}>
                 {Chains[key]?.['name']}

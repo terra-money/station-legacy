@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useAuth, Wallet } from '@terra-money/use-station'
-import { electron } from '../utils'
+import { useAuth } from '@terra-money/use-station'
+import { generateWallet } from '../utils'
 import { encryptWallet } from '../utils/localStorage'
 import Select from '../components/Select'
 import accounts from '../accounts.local.json'
@@ -14,8 +14,7 @@ const Preconfigured = ({ className }: { className?: string }) => {
   useEffect(() => {
     const configure = async (i: number) => {
       const { name, mnemonic } = accounts[i]
-      const params = [mnemonic, 330]
-      const wallet = await electron<Wallet>('generateWalletFromSeed', params)
+      const wallet = await generateWallet(mnemonic, 330)
       const key = encryptWallet({ name, password: PW, wallet })
       signIn(key)
     }

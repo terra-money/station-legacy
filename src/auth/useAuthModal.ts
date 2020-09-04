@@ -1,8 +1,15 @@
 import { createContext } from '@terra-money/use-station'
 
-interface ModalActions {
-  close: () => void
-  goBack: () => void
+interface AuthModal {
+  modalActions: {
+    close: () => void
+    goBack?: () => void
+  }
+
+  actions: {
+    glance: () => void
+    download: () => void
+  }
 }
 
-export const [useAuthModal, AuthModalProvider] = createContext<ModalActions>()
+export const [useAuthModal, AuthModalProvider] = createContext<AuthModal>()

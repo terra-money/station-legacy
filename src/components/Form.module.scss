@@ -1,3 +1,23 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.header {
+  @include flex(space-between);
+
+  @media (min-width: $breakpoint) {
+    justify-content: center;
+  }
+}
+
 .submit {
-  margin-top: 40px;
+  @include flex;
+  margin-top: 20px;
+
+  @media (min-width: $breakpoint) {
+    margin-top: 40px;
+  }
+
+  > button {
+    flex: 1;
+  }
 }

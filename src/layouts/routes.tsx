@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import ErrorComponent from '../components/ErrorComponent'
+
 import Dashboard from '../pages/dashboard/Dashboard'
 import Bank from '../pages/bank/Bank'
 import Txs from '../pages/txs/Txs'
@@ -10,6 +10,8 @@ import Market from '../pages/market/Market'
 import Governance from '../pages/governance/Governance'
 import Proposal from '../pages/proposal/Proposal'
 import Contracts from '../pages/contracts/Contracts'
+
+import ErrorComponent from '../components/ErrorComponent'
 
 export default (
   <Switch>

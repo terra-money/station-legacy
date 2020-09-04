@@ -1,9 +1,18 @@
 $border: fade-out($navy, 0.8);
 
 form > header {
-  font-size: 20px;
-  margin-bottom: 40px;
+  font-size: 18px;
+  margin-bottom: 20px;
   text-align: center;
+
+  @media (min-width: $breakpoint) {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  > h1 {
+    font-weight: bold;
+  }
 
   > h2 {
     font-size: 12px;

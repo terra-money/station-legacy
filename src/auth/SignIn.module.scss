@@ -1,0 +1,23 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.manage {
+  @include flex(flex-start);
+
+  font-weight: normal;
+  color: $sky;
+  text-decoration: none;
+
+  i {
+    margin-right: 5px;
+  }
+
+  strong {
+    margin-right: 0.2em;
+  }
+}
+
+.center {
+  @include flex();
+  margin: 0 auto;
+}

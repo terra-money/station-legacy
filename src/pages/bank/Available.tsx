@@ -1,6 +1,7 @@
 import React from 'react'
 import c from 'classnames'
 import { DisplayCoin } from '@terra-money/use-station'
+import { isExtension } from '../../utils/env'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AmountCard from './AmountCard'
@@ -27,7 +28,12 @@ const Available = ({ denom, display, buttonLabel }: Props) => {
     )
   }
 
-  return <AmountCard {...display} button={renderButton()} />
+  return (
+    <AmountCard
+      {...display}
+      button={isExtension ? undefined : renderButton()}
+    />
+  )
 }
 
 export default Available

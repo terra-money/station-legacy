@@ -11,3 +11,17 @@
     max-width: $max-width;
   }
 }
+
+.extension {
+  background: white;
+  width: 420px;
+  min-height: 540px;
+
+  form > header {
+    text-align: left;
+  }
+}
+
+.padding {
+  padding: 20px;
+}

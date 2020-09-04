@@ -6,7 +6,9 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 .nav {
   @include drag();
   background: $navy;
+}
 
+.nav:not(.extension) {
   @media (min-width: $breakpoint-large) {
     width: $nav-width-large;
     display: flex;
@@ -31,9 +33,18 @@ $border-bottom: 1px solid fade-out(white, 0.9);
     }
   }
 
+  .extension & svg {
+    width: 90px;
+    height: 12px;
+  }
+
   @media (min-width: $breakpoint-large) {
     border-bottom: $border-bottom;
     height: $nav-height-large;
+  }
+
+  .extension & {
+    height: $nav-height-extension;
   }
 
   .logo,
@@ -60,6 +71,7 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 
   .logo {
     flex: 1;
+    color: white;
 
     @media (max-width: $breakpoint-large - 1) {
       justify-content: flex-start;
@@ -67,6 +79,10 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 
     @media (min-width: $breakpoint-large) {
       justify-content: center;
+
+      .extension & {
+        justify-content: flex-start;
+      }
     }
   }
 
@@ -110,6 +126,14 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 
 .footer {
   color: white;
+
+  .extension & {
+    @include flex();
+  }
+
+  .extension & > * {
+    margin-left: 0;
+  }
 }
 
 .container {
@@ -139,5 +163,18 @@ $border-bottom: 1px solid fade-out(white, 0.9);
   > * {
     margin: 5px;
     width: 50%;
+  }
+}
+
+.select {
+  opacity: 0.75;
+
+  select {
+    border: 0;
+    font-size: 12px;
+  }
+
+  &:hover {
+    opacity: 1;
   }
 }

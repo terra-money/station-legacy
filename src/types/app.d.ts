@@ -1,4 +1,5 @@
 interface App {
+  setPadding: (padding: boolean) => void
   refresh: () => void
 
   goBack?: string
