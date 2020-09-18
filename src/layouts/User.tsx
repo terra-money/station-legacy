@@ -1,12 +1,28 @@
 import React, { useState } from 'react'
 import { useAuth, useText } from '@terra-money/use-station'
 import { ReactComponent as Ledger } from '../images/Ledger.svg'
+import { useModal } from '../hooks'
 import ledger from '../wallet/ledger'
+import Icon from '../components/Icon'
 import Copy from '../components/Copy'
+import Modal from '../components/Modal'
+import ManageWallet from '../auth/ManageWallet'
 import s from './User.module.scss'
 
-const Name = ({ children }: { children: string }) => {
-  return <div className={s.name}>{children}</div>
+const Name = ({ children: name }: { children: string }) => {
+  const modal = useModal()
+
+  return (
+    <div className={s.name}>
+      {name}
+      <button className={s.settings} onClick={modal.open}>
+        <Icon name="settings" />
+      </button>
+      <Modal config={modal.config}>
+        <ManageWallet name={name} modalActions={modal} onFinish={modal.close} />
+      </Modal>
+    </div>
+  )
 }
 
 const Address = ({ children }: { children: string }) => {

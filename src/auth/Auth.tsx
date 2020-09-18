@@ -18,14 +18,6 @@ import SignInWithLedger from './SignInWithLedger'
 import ledger from '../wallet/ledger'
 import Download from './Download'
 
-export interface Item {
-  title: string
-  icon: string
-  disabled?: boolean
-  key: AuthMenuKey
-  render: () => ReactNode
-}
-
 const getAuthMenuKeys = (): AuthMenuKey[] => {
   if (isElectron) {
     const version: string = electron('version')
@@ -38,6 +30,14 @@ const getAuthMenuKeys = (): AuthMenuKey[] => {
   }
 
   return ['signInWithLedger', 'download']
+}
+
+export interface Item {
+  title: string
+  icon: string
+  disabled?: boolean
+  key: AuthMenuKey
+  render: () => ReactNode
 }
 
 const Auth = () => {
@@ -83,7 +83,10 @@ const Auth = () => {
 
   /* render */
   const getItem = ({ label, key }: AuthMenuItem) =>
-    Object.assign({}, { title: label, key }, components[key])
+    Object.assign(
+      { title: label, onClick: () => setCurrentKey(key), key },
+      components[key]
+    )
 
   const glance = () => setCurrentKey('signInWithAddress')
   const download = () => setCurrentKey('download')
@@ -94,7 +97,7 @@ const Auth = () => {
     </AuthModalProvider>
   ) : (
     <ModalContent close={modalActions.close}>
-      <AuthMenu list={list.map(getItem)} onSelect={setCurrentKey} />
+      <AuthMenu list={list.map(getItem)} />
       {!isElectron && (
         <AuthFooter
           {...ui.web}

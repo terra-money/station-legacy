@@ -7,11 +7,18 @@
 }
 
 .name {
+  @include flex;
+
   border-right: 1px solid #d2d9f0;
   margin-right: 10px;
   padding-right: 10px;
 
   font-weight: bold;
+
+  .settings {
+    line-height: 1;
+    padding: 5px;
+  }
 }
 
 /* address */
