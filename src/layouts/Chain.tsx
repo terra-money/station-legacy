@@ -37,7 +37,7 @@ const SelectChain = () => {
             {!!index && <option disabled>──────────</option>}
             {list.map((key) => (
               <option value={key} key={key}>
-                {Chains[key]['name']}
+                {Chains[key]?.['name']}
               </option>
             ))}
           </Fragment>
