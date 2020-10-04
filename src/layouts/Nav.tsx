@@ -15,10 +15,6 @@ import s from './Nav.module.scss'
 const Nav = () => {
   const { pathname } = useLocation()
   const name = useMenu()
-  const { chain } = useConfig()
-  const isInvalidItem = (to: string) =>
-    to === '/contracts' &&
-    !['tequila', 'localterra'].includes(chain.current.key)
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggle = () => setIsOpen(!isOpen)
@@ -54,13 +50,11 @@ const Nav = () => {
 
       <section className={c(s.main, isOpen && s.open)}>
         <ul className={s.menu}>
-          {menu.map((item) =>
-            isInvalidItem(item.to) ? null : (
-              <li className={s.item} key={item.name}>
-                <NavItem {...item} />
-              </li>
-            )
-          )}
+          {menu.map((item) => (
+            <li className={s.item} key={item.name}>
+              <NavItem {...item} />
+            </li>
+          ))}
         </ul>
 
         <footer className={s.footer}>
