@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { SignUpNext, Seed, Address, Wallet } from '@terra-money/use-station'
 import { useSignUp } from '@terra-money/use-station'
 import { electron } from '../utils'
-import { importKey, loadKeys } from '../utils/localStorage'
+import { importKey, loadKeys, storeKeys } from '../utils/localStorage'
 import Form from '../components/Form'
 import ModalContent from '../components/ModalContent'
 import ErrorComponent from '../components/ErrorComponent'
@@ -23,9 +23,13 @@ const Recover = ({ generated }: { generated?: Seed }) => {
       const wallet = await electron<Wallet>('generateWalletFromSeed', params)
       return wallet
     },
-    submit: importKey,
-    isNameExists: (name: string) => isExists('name', name),
-    isAddressExists: (address: string) => isExists('address', address),
+    submit: async (params) => {
+      const keys = loadKeys()
+      const exists = findExistsIndex('address', params.wallet.terraAddress)
+      exists > -1 && storeKeys(keys.filter((_, i) => i !== exists))
+      await importKey(params)
+    },
+    isNameExists: (name: string) => findExistsIndex('name', name) > -1,
   })
 
   /* warning */
@@ -64,7 +68,7 @@ const Recover = ({ generated }: { generated?: Seed }) => {
 export default Recover
 
 /* helper */
-const isExists = (q: keyof Key, v: string): boolean => {
+const findExistsIndex = (q: keyof Key, v: string): number => {
   const keys = loadKeys()
-  return !!keys.find((key) => key[q] === v)
+  return keys.findIndex((key) => key[q] === v)
 }
