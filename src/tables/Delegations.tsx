@@ -16,10 +16,10 @@ const Delegations = ({ address }: { address: string }) => {
   const { error, title, ui } = useDelegations(address, { page })
 
   const renderHeadings = (headings: DelegationsTable['headings']) => {
-    const { height, type, change, date } = headings
+    const { hash, type, change, date } = headings
     return (
       <tr>
-        <th>{height}</th>
+        <th>{hash}</th>
         <th>{type}</th>
         <th className="text-right">{change}</th>
         <th className="text-right">{date}</th>
@@ -28,11 +28,11 @@ const Delegations = ({ address }: { address: string }) => {
   }
 
   const renderRow = ({ link, ...rest }: DelegationContent, index: number) => {
-    const { height, type, display, date } = rest
+    const { hash, type, display, date } = rest
     return (
       <tr key={index}>
         <td>
-          <ExtLink href={link}>{height}</ExtLink>
+          <ExtLink href={link}>{hash}</ExtLink>
         </td>
 
         <td>{type}</td>

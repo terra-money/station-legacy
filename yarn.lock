@@ -2140,10 +2140,10 @@
     bech32 "^1.1.3"
     ripemd160 "^2.0.2"
 
-"@terra-money/use-station@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.0.tgz#8707a67eb439094a8aa6d2f2072ef5ff30829be1"
-  integrity sha512-HdNGaoXovO97+w0EYe3jCDWYmnhSAGO+hZTTA9vPUOrQusGnydITW/x+/OjQH2ZlDHY6gevXTEKvyAFbZo4P4Q==
+"@terra-money/use-station@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.1.tgz#525fa2c6db964bac61b5dfeeb5dfe64a84690874"
+  integrity sha512-t6gcaaN2xRS8OkZLA+hfDGiSJaUePPpcOeMHdbRxe+o9aiKXLcbGKspJ/4KGB1AzX/6uYrLuiBxizKTE+JF1Cw==
   dependencies:
     axios "^0.19.2"
     bech32 "^1.1.3"
