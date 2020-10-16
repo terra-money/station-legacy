@@ -7,6 +7,7 @@ const list: Dictionary<string> = {
   terravaloper12jpzzmwthrljcvm48adncspxtchazkl8vah7u4: 'contact@synergynodes.com',
   terravaloper13kcwnlafvu4xvy2jr3vhdte9aq9tadwds3lx2d: 'hello@castlenode.com',
   terravaloper13ww603e55suhavpuyjft3htxca6g4tldt92pgf: 'contact@hashquark.io',
+  terravaloper15s5d4lm0n75af9jxwawqzl73trnrypdslajxz4: 'hcpark@gion.co.kr',
   terravaloper15urq2dtp9qce4fyc85m6upwm9xul30496sgk37: 'hello@chorus.one',
   terravaloper15zcjduavxc5mkp8qcqs9eyhwlqwdlrzy6jln3m: 'contact@bharvest.io',
   terravaloper16jsypha5lv6e3mc24veqzfw3rznfqu92d58yfg: 'frank@eosio.sg',
