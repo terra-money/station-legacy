@@ -2438,9 +2438,9 @@
     ripemd160 "^2.0.2"
 
 "@terra-money/use-station@^4.1.2":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.4.tgz#910e735c5c809d08c97ed6971a4f81bb9d584067"
-  integrity sha512-bdYoxDTw4Xas39H7PMH/1SYh2RQXDicme3NCyYfrHANWq2E400ZkaQhCnua0Ac6WAhkFWgi5qBIxcFfYBs0OsA==
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.5.tgz#4ed6ca1e24cb07b644721cebcbbffa32c8c49115"
+  integrity sha512-XHS8lipMRKDcDvowSi3QLKNkQIaWlcIZexVNAnAWo0CrDHbnCbFoOovWv51Q+JkEJvxgiiaS5MZZxtSItloM0g==
   dependencies:
     axios "^0.19.2"
     bech32 "^1.1.3"
