@@ -1,5 +1,5 @@
 import * as bech32 from 'bech32'
-import * as secp256k1 from 'secp256k1'
+import { ecdsaSign } from 'secp256k1'
 import * as CryptoJS from 'crypto-js'
 
 export const getTerraAddress = publicKey => {
@@ -20,7 +20,7 @@ export const signWithPrivateKey = (signMessage, privateKey) => {
     CryptoJS.SHA256(signMessageString).toString(),
     `hex`
   )
-  const { signature } = secp256k1.sign(signHash, privateKey)
+  const { signature } = ecdsaSign(signHash, privateKey)
 
-  return signature
+  return Buffer.from(signature)
 }
