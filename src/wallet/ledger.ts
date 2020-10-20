@@ -286,7 +286,7 @@ const sign = async (signMessage: string) => {
   }
 
   const { signature } = await app.sign(path, signMessage)
-  return signatureImport(Buffer.from(signature))
+  return Buffer.from(signatureImport(Buffer.from(signature)))
 }
 
 const isWindows = (platform: string) => platform.indexOf('Win') > -1
