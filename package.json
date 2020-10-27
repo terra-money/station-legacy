@@ -1,7 +1,7 @@
 {
   "name": "station",
   "engines": {
-    "node": "12.x"
+    "node": ">=12.x"
   },
   "version": "4.0.0",
   "description": "A desktop application to interact with Terra Core.",
@@ -12,7 +12,7 @@
     "@ledgerhq/hw-transport-webusb": "^5.15.0",
     "@sentry/browser": "^5.26.0",
     "@terra-money/ledger-terra-js": "^1.1",
-    "@terra-money/use-station": "^4.1.2",
+    "@terra-money/use-station": "^4.1.6",
     "@types/numeral": "^0.0.28",
     "@ungap/url-search-params": "^0.2",
     "ace-builds": "^1.4.12",
