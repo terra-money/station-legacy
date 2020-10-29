@@ -81,14 +81,14 @@ const Swap = (props: Props) => (
 export default Swap
 
 /* helpers */
-interface Row {
+interface RowItem {
   heading: ReactNode
   value: string
   unit?: string
   onClick?: () => void
 }
 
-const Table = ({ rows }: { rows: Row[] }) => (
+const Table = ({ rows }: { rows: RowItem[] }) => (
   <table className={s.table}>
     <tbody>
       {rows.map(({ heading, value, unit, onClick }, index) => {

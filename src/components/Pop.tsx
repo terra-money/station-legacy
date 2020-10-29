@@ -4,7 +4,7 @@ import s from './Pop.module.scss'
 
 const GUTTER = 20
 
-type Tooltip = {
+interface TooltipProps {
   placement: 'top' | 'bottom'
   width?: number
   transform?: string
@@ -15,7 +15,7 @@ type Tooltip = {
   fixed?: boolean
 }
 
-export const Tooltip = (props: Tooltip) => {
+export const Tooltip = (props: TooltipProps) => {
   const { placement, width, className, transform, arrowPosition } = props
   const { content, forwardRef } = props
 
@@ -41,7 +41,7 @@ export const Tooltip = (props: Tooltip) => {
 
 type Attrs = React.HTMLAttributes<HTMLElement>
 
-type Pop = {
+interface PopProps {
   type: 'pop' | 'tooltip'
   fullWidth?: boolean
   children: (Params: {
@@ -51,7 +51,7 @@ type Pop = {
   }) => ReactNode
 }
 
-const Pop = (props: Tooltip & Pop) => {
+const Pop = (props: TooltipProps & PopProps) => {
   const { type, children, fullWidth, width, fixed, ...tooltipProps } = props
 
   /* refs */

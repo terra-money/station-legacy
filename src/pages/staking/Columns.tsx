@@ -9,7 +9,7 @@ import Undelegations from './Undelegations'
 import Rewards from './Rewards'
 import s from './Columns.module.scss'
 
-type Column = {
+interface ColumnProps {
   title: string
   display: DisplayCoin
   tooltip?: ReactNode
@@ -17,7 +17,7 @@ type Column = {
   estimated?: boolean
 }
 
-const Column = (column: Column) => {
+const Column = (column: ColumnProps) => {
   const { title, display, tooltip, width, estimated } = column
   const content = <div className={s.tooltip}>{tooltip}</div>
   const children = <Number fontSize={18} {...display} estimated={estimated} />
