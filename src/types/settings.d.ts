@@ -12,4 +12,13 @@ interface Settings {
   user?: User
   recentAddresses?: string[]
   hideSmallBalances?: boolean
+  customNetworks?: CustomNetwork[]
+}
+
+interface CustomNetwork {
+  key: string
+  name: string
+  lcd: string
+  fcd: string
+  ws: { hostname: string; port: number; secure: boolean }
 }

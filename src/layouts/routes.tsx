@@ -10,6 +10,7 @@ import Market from '../pages/market/Market'
 import Governance from '../pages/governance/Governance'
 import Proposal from '../pages/proposal/Proposal'
 import Contracts from '../pages/contracts/Contracts'
+import Network from '../pages/settings/Network'
 
 import ErrorComponent from '../components/ErrorComponent'
 
@@ -24,6 +25,7 @@ export default (
     <Route path="/governance" component={Governance} />
     <Route path="/proposal/:id" component={Proposal} />
     <Route path="/contracts" component={Contracts} />
+    <Route path="/network" component={Network} />
     <Route render={() => <ErrorComponent card />} />
   </Switch>
 )

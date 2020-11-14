@@ -1,12 +1,13 @@
 import React, { ChangeEvent, Fragment, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import c from 'classnames'
 import { useConfig, useNodeInfo } from '@terra-money/use-station'
 import { isExtension } from '../utils/env'
-import { Chains, list } from '../chains'
 import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'
 import Select from '../components/Select'
 import Modal from '../components/Modal'
+import useMergeChains from '../pages/settings/useMergeChains'
 import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
 import NavStyles from './Nav.module.scss'
@@ -15,6 +16,7 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
   const { chain } = useConfig()
   const modal = useModal()
   const { current, set } = chain
+  const { chains, list } = useMergeChains()
 
   /* check localterra status */
   useCheckLocalTerra(
@@ -22,9 +24,12 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
     chain.current.key
   )
 
+  const { push } = useHistory()
+
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    localSettings.set({ chain: e.target.value })
-    set(Chains[e.target.value])
+    const key = e.target.value
+    localSettings.set({ chain: key })
+    key ? set(chains[key]) : push('/network')
   }
 
   return (
@@ -39,14 +44,16 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
       >
         {list.map(({ title, list }, index) => (
           <Fragment key={title}>
-            {!!index && <option disabled>────────</option>}
             {list.map((key) => (
               <option value={key} key={key}>
-                {Chains[key]?.['name']}
+                {chains[key]?.['name']}
               </option>
             ))}
+            {<option disabled>──────────</option>}
           </Fragment>
         ))}
+
+        <option value="">Add a network...</option>
       </Select>
       <Modal config={modal.config}>{modal.content}</Modal>
     </>
