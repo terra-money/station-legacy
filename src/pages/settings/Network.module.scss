@@ -1,4 +1,5 @@
-@import '../../styles/variables';
+@import 'mixins';
+@import 'variables';
 
 .component {
   @media (min-width: $breakpoint) {
@@ -7,7 +8,12 @@
 
   .nav {
     flex: none;
-    margin-right: $gutter;
+    margin-bottom: 40px;
+
+    @media (min-width: $breakpoint) {
+      margin-right: 50px;
+      width: 250px;
+    }
   }
 
   .main {
@@ -15,6 +21,52 @@
   }
 }
 
-.item:not(.selected) {
-  opacity: 0.5;
+/* nav */
+.item {
+  $border: 1px solid #e4e8f6;
+  border-top: $border;
+  border-bottom: $border;
+
+  &:not(:first-child) {
+    margin-top: -1px;
+  }
+
+  &.selected {
+    background: fade-out($brand, 0.95);
+  }
+
+  &:not(.selected) .button {
+    opacity: 0.4;
+  }
+}
+
+.button {
+  @include flex;
+  font-size: 14px;
+  padding: 15px;
+  width: 100%;
+
+  .id {
+    flex: 1;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  i {
+    margin-left: 10px;
+  }
+}
+
+/* main */
+.pre {
+  border-radius: 5px;
+  background-color: #0b132f;
+  color: white;
+  font-size: 13px;
+  padding: $gutter;
+}
+
+.actions {
+  margin-top: 20px;
+  text-align: right;
 }

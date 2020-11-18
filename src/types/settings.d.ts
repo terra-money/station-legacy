@@ -20,5 +20,11 @@ interface CustomNetwork {
   name: string
   lcd: string
   fcd: string
-  ws: { hostname: string; port: number; secure: boolean }
+  ws: WebSocketOption
+}
+
+interface WebSocketOption {
+  hostname: string
+  port: number
+  secure: boolean
 }

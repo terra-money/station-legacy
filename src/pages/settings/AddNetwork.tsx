@@ -4,15 +4,36 @@ import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
 import { useApp } from '../../hooks'
 import Form from '../../components/Form'
+import useMergeChains from './useMergeChains'
+
+interface Values {
+  key: string
+  name: string
+  lcd: string
+  fcd: string
+  ws: string
+}
 
 const AddNetwork = () => {
+  const { chains } = useMergeChains()
+
   const initial = { key: '', name: '', lcd: '', fcd: '', ws: '' }
-  const validate = () => ({ key: '', name: '', lcd: '', fcd: '', ws: '' })
+  const validate = ({ key, name, fcd, ws }: Values) => ({
+    key: !key
+      ? 'Reqruied'
+      : Object.keys(chains).includes(key)
+      ? 'Already exists'
+      : '',
+    name: !name ? 'Required' : '',
+    lcd: '',
+    fcd: !fcd ? 'Required' : '',
+    ws: !ws ? 'Required' : !parseWS(ws) ? 'Invalid' : '',
+  })
 
   const { refresh } = useApp()
 
   const form = useForm(initial, validate)
-  const { values, getDefaultAttrs, getDefaultProps } = form
+  const { values, invalid, getDefaultAttrs, getDefaultProps } = form
 
   const sample = Chains['columbus']
 
@@ -50,14 +71,15 @@ const AddNetwork = () => {
   const formUI = {
     title: 'Add a new network',
     fields,
-    disabled: false,
+    disabled: invalid,
     submitLabel: 'Add',
     onSubmit: () => {
-      const ws = JSON.parse(values.ws)
+      const ws = parseWS(values.ws)
       const { customNetworks = [] } = localSettings.get()
-      localSettings.set({
-        customNetworks: [...customNetworks, { ...values, ws }],
-      })
+      ws &&
+        localSettings.set({
+          customNetworks: [...customNetworks, { ...values, ws }],
+        })
       refresh()
     },
   }
@@ -66,3 +88,12 @@ const AddNetwork = () => {
 }
 
 export default AddNetwork
+
+/* helpers */
+const parseWS = (str: string): WebSocketOption | undefined => {
+  try {
+    return JSON.parse(str)
+  } catch {
+    return
+  }
+}

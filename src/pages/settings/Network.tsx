@@ -5,6 +5,7 @@ import { Chains } from '../../chains'
 import { useApp } from '../../hooks'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
+import Icon from '../../components/Icon'
 import AddNetwork from './AddNetwork'
 import useMergeChains from './useMergeChains'
 import styles from './Network.module.scss'
@@ -40,32 +41,44 @@ const Network = () => {
       <Card>
         <div className={styles.component}>
           <nav className={styles.nav}>
-            {list.map(({ title, list }) =>
-              list.map((key) => (
-                <li key={key}>
-                  <button
+            <ul className={styles.list}>
+              {list.map(({ title, list }) =>
+                list.map((key) => (
+                  <li
                     className={cx(styles.item, { selected: key === selected })}
-                    onClick={() => setSelected(key)}
+                    key={key}
                   >
-                    {key} ({title})
-                  </button>
-                </li>
-              ))
-            )}
+                    <button
+                      className={styles.button}
+                      onClick={() => setSelected(key)}
+                    >
+                      <span className={styles.id}>{key}</span>
+                      {title}
+                      <Icon name="chevron_right" size={16} />
+                    </button>
+                  </li>
+                ))
+              )}
+            </ul>
           </nav>
 
           <section className={styles.main}>
             {selected ? (
               <>
-                <pre>{JSON.stringify(chains[selected], null, 2)}</pre>
-                {!Object.keys(Chains).includes(selected) && (
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deleteNetwork(selected)}
-                  >
-                    Delete
-                  </button>
-                )}
+                <pre className={styles.pre}>
+                  {JSON.stringify(chains[selected], null, 2)}
+                </pre>
+
+                <div className={styles.actions}>
+                  {!Object.keys(Chains).includes(selected) && (
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => deleteNetwork(selected)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               </>
             ) : (
               <AddNetwork />
