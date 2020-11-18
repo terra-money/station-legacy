@@ -7,6 +7,7 @@ import { useExtension } from './useExtension'
 import AuthRoute from '../auth/AuthRoute'
 import ManageWallet from '../auth/ManageWallet'
 import Bank from '../pages/bank/Bank'
+import Network from '../pages/settings/Network'
 import Connect from '../extension/Connect'
 import Confirm from '../extension/Confirm'
 
@@ -34,6 +35,7 @@ const Extension = () => {
       <Route path="/" exact component={Bank} />
       <Route path="/auth" component={AuthRoute} />
       <Route path="/settings" component={ManageWallet} />
+      <Route path="/network" component={Network} />
       <Route path="/connect" component={Connect} />
       <Route path="/confirm" component={Confirm} />
     </Switch>

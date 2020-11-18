@@ -24,6 +24,7 @@ import ErrorComponent from '../components/ErrorComponent'
 import ModalContent from '../components/ModalContent'
 import Modal from '../components/Modal'
 import AuthModal from '../auth/AuthModal'
+import useMergeChains from '../pages/settings/useMergeChains'
 
 import Extension from '../extension/Extension'
 import { useExtensionRequested } from '../extension/useExtension'
@@ -41,11 +42,12 @@ const App = () => {
 
   /* init app */
   const { lang, currency, chain, user: initialUser } = localSettings.get()
+  const { chains } = useMergeChains()
 
   const initialState = {
     lang: lang as LangKey,
     currency,
-    chain: Chains[chain!] ?? Chains['columbus'],
+    chain: chains[chain!] ?? Chains['columbus'],
   }
 
   /* app state */

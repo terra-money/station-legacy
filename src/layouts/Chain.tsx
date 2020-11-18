@@ -28,8 +28,14 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const key = e.target.value
-    localSettings.set({ chain: key })
-    key ? set(chains[key]) : push('/network')
+
+    if (!key) {
+      // redirect to add a new network
+      push('/network')
+    } else {
+      localSettings.set({ chain: key })
+      set(chains[key])
+    }
   }
 
   return (
@@ -49,7 +55,8 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
                 {chains[key]?.['name']}
               </option>
             ))}
-            {<option disabled>──────────</option>}
+
+            <option disabled>──────────</option>
           </Fragment>
         ))}
 

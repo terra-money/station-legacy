@@ -1,8 +1,8 @@
 import React from 'react'
-import { useForm } from '@terra-money/use-station'
+import { useHistory } from 'react-router-dom'
+import { useForm, useConfig } from '@terra-money/use-station'
 import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
-import { useApp } from '../../hooks'
 import Form from '../../components/Form'
 import useMergeChains from './useMergeChains'
 
@@ -16,7 +16,10 @@ interface Values {
 
 const AddNetwork = () => {
   const { chains } = useMergeChains()
+  const { chain } = useConfig()
+  const { push } = useHistory()
 
+  /* form */
   const initial = { key: '', name: '', lcd: '', fcd: '', ws: '' }
   const validate = ({ key, name, fcd, ws }: Values) => ({
     key: !key
@@ -30,13 +33,10 @@ const AddNetwork = () => {
     ws: !ws ? 'Required' : !parseWS(ws) ? 'Invalid' : '',
   })
 
-  const { refresh } = useApp()
-
   const form = useForm(initial, validate)
   const { values, invalid, getDefaultAttrs, getDefaultProps } = form
 
   const sample = Chains['columbus']
-
   const fields = [
     {
       label: 'key',
@@ -75,12 +75,19 @@ const AddNetwork = () => {
     submitLabel: 'Add',
     onSubmit: () => {
       const ws = parseWS(values.ws)
-      const { customNetworks = [] } = localSettings.get()
-      ws &&
+
+      if (ws) {
+        const { customNetworks = [] } = localSettings.get()
+        const next = { ...values, ws }
+
         localSettings.set({
-          customNetworks: [...customNetworks, { ...values, ws }],
+          customNetworks: [...customNetworks, next],
+          chain: values.key,
         })
-      refresh()
+
+        chain.set(next)
+        push('/')
+      }
     },
   }
 
