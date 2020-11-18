@@ -2380,10 +2380,10 @@
     utf-8-validate "^5.0.2"
     ws "^7.3.1"
 
-"@terra-money/use-station@^4.1.8":
-  version "4.1.8"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.8.tgz#d4b633c8ef02ce5dda2a391672b04c9446d9d0d3"
-  integrity sha512-VUKReYWqjroJFaWp34BAVU0IIpEQaIIP8mIBXmA/OrSZtfjlpHSdEbRAbd17M6Dl4Sa8I2vyhVqSzMTTu9d7Vg==
+"@terra-money/use-station@^4.1.9":
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.1.9.tgz#d439e7b76246a8a2c31727ea5fcba9d0f28c89c3"
+  integrity sha512-wPIc3LKZU9A31fdHp2kD/IPnHoRKGSyGi9Vet80ZivsVLPQCS6acrfbXS6HEtSMDapPvdu0baJ6F/9mUOzyqVA==
   dependencies:
     axios "^0.21.0"
     bech32 "^1.1.4"
