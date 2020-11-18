@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isNil } from 'ramda'
+import '@ledgerhq/hw-transport-webusb' // include in bundle
 import { useAuth } from '@terra-money/use-station'
 import { useExtension } from './useExtension'
 import AuthRoute from '../auth/AuthRoute'

@@ -14,7 +14,7 @@ import { isElectron } from '../utils/env'
 const INTERACTION_TIMEOUT = 120
 const REQUIRED_COSMOS_APP_VERSION = '2.12.0'
 const REQUIRED_APP_VERSION = '1.0.0'
-const REQUIRED_ELECTRON_APP_VERSION = '1.1.0'
+export const REQUIRED_ELECTRON_APP_VERSION = '1.1.0'
 
 declare global {
   interface Window {
@@ -179,7 +179,7 @@ async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
 
     app = new TerraElectronBridge()
   } else {
-    getBrowser(navigator.userAgent)
+    checkBrowser(navigator.userAgent)
 
     if (isWindows(navigator.platform)) {
       // For Windows
@@ -243,7 +243,7 @@ const connect = async () => {
   path = [44, appName === 'Terra' ? 330 : 118, 0, 0, 0]
 }
 
-const getPubKey = async () => {
+export const getPubKey = async () => {
   await connect().catch(handleConnectError)
 
   if (!app) {
@@ -255,7 +255,7 @@ const getPubKey = async () => {
   return Buffer.from(response.compressed_pk)
 }
 
-const showAddressInLedger = async () => {
+export const showAddressInLedger = async () => {
   await connect().catch(handleConnectError)
 
   if (!app) {
@@ -266,7 +266,7 @@ const showAddressInLedger = async () => {
   checkLedgerErrors(response)
 }
 
-const getTerraAddress = async () => {
+export const getTerraAddress = async () => {
   await connect().catch(handleConnectError)
 
   if (!app) {
@@ -278,7 +278,7 @@ const getTerraAddress = async () => {
   return response.bech32_address
 }
 
-const sign = async (signMessage: string) => {
+export const sign = async (signMessage: string) => {
   await connect().catch(handleConnectError)
 
   if (!app) {
@@ -290,7 +290,7 @@ const sign = async (signMessage: string) => {
 }
 
 const isWindows = (platform: string) => platform.indexOf('Win') > -1
-const getBrowser = (userAgent: string): string => {
+const checkBrowser = (userAgent: string): string => {
   const ua = userAgent.toLowerCase()
   const isChrome = /chrome|crios/.test(ua) && !/edge|opr\//.test(ua)
   const isBrave = isChrome && !window.google
@@ -300,12 +300,4 @@ const getBrowser = (userAgent: string): string => {
   }
 
   return isChrome ? 'chrome' : 'brave'
-}
-
-export default {
-  getPubKey,
-  getTerraAddress,
-  showAddressInLedger,
-  sign,
-  REQUIRED_ELECTRON_APP_VERSION,
 }

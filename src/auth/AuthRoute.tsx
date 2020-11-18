@@ -10,6 +10,7 @@ import AuthMenu from './AuthMenu'
 import Recover from './Recover'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
+import SignInWithLedger from './SignInWithLedger'
 
 const AuthRoute = () => {
   const { user } = useAuth()
@@ -34,10 +35,18 @@ const AuthRoute = () => {
             title: label,
             disabled: key === 'signIn' && !loadKeys().length,
             onClick: () => {
-              const next = extension.runtime?.getURL?.(`index.html#${url}/new`)
-              key === 'signUp' && next
-                ? window.open(next)
-                : push(url + item.path)
+              const next: { [key: string]: string } = {
+                signUp: extension.runtime?.getURL?.(`index.html#${url}/new`),
+                signInWithLedger: extension.runtime?.getURL?.(
+                  `index.html#${url}/ledger`
+                ),
+              }
+
+              if (key in next) {
+                window.open(next[key])
+              } else {
+                push(url + item.path)
+              }
             },
             key,
           },
@@ -50,6 +59,7 @@ const AuthRoute = () => {
   return (
     <Switch>
       <Route path={path + '/'} exact render={render} />
+      <Route path={path + '/ledger'} component={SignInWithLedger} />
       <Route path={path + '/select'} component={SignIn} />
       <Route path={path + '/new'} component={SignUp} />
       <Route path={path + '/recover'} component={Recover} />
