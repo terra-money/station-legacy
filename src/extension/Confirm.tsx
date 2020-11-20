@@ -5,7 +5,7 @@ import { CreateTxOptions, Msg, TxInfo, StdFee } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { useAuth, useConfig } from '@terra-money/use-station'
-import { Field, ChainOptions } from '@terra-money/use-station'
+import { Field } from '@terra-money/use-station'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
 import { useExtension } from './useExtension'
 import { ExtSign, RecordedExtSign, TxOptionsData } from './useExtension'
@@ -32,7 +32,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   /* chain */
   const { chain } = useConfig()
-  const lcd = new LCDClient(lcdClientConfig ?? getConfig(chain.current))
+  const { chainID, lcd: URL } = chain.current
+  const lcd = new LCDClient({ chainID, URL })
 
   /* sign tx */
   const signTx = async () => {
@@ -267,11 +268,6 @@ const usePage = (total: number) => {
 }
 
 /* helpers */
-const getConfig = ({ name, lcd }: ChainOptions) => ({
-  chainID: name,
-  URL: lcd!,
-})
-
 const parseCreateTxOptions = (params: TxOptionsData): CreateTxOptions => {
   const { msgs, fee } = params
   return {

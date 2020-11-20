@@ -1,7 +1,7 @@
 import { Dictionary } from 'ramda'
 import { ChainOptions } from '@terra-money/use-station'
 import { localSettings } from '../../utils/localStorage'
-import { Chains, list } from '../../chains'
+import { Chains } from '../../chains'
 
 export default () => {
   const { customNetworks = [] } = localSettings.get()
@@ -9,15 +9,15 @@ export default () => {
   const mergedChains = {
     ...Chains,
     ...customNetworks.reduce<Dictionary<ChainOptions>>(
-      (acc, item) => ({ ...acc, [item.key]: item }),
+      (acc, item) =>
+        Object.assign({}, acc, validateNetwork(item) && { [item.name]: item }),
       {}
     ),
   }
 
-  const mergedList = [
-    ...list,
-    { title: 'Custom', list: customNetworks.map(({ key }) => key) },
-  ]
-
-  return { chains: mergedChains, list: mergedList }
+  return mergedChains
 }
+
+const keys: (keyof ChainOptions)[] = ['name', 'chainID', 'lcd', 'fcd', 'ws']
+export const validateNetwork = (item: ChainOptions) =>
+  keys.every((key) => typeof item[key] === 'string')
