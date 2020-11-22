@@ -74,7 +74,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   /* chain */
   const { chain } = useConfig()
   const { chainID, lcd: URL } = chain.current
-  const lcd = new LCDClient({ chainID, URL })
+  const lcd = new LCDClient(lcdClientConfig ?? { chainID, URL })
 
   /* sign tx */
   const signTx = async () => {
