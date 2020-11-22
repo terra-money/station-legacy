@@ -16,7 +16,7 @@ const Header = ({ className }: { className: string }) => {
   const { CONNECT } = useText()
   const { goBack, refresh, authModal, modal } = useApp()
   const { chain } = useConfig()
-  const isLocal = chain.current.key === 'localterra'
+  const isLocal = chain.current.name === 'localterra'
 
   const share = () =>
     modal.open(

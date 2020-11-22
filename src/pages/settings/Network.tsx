@@ -14,17 +14,17 @@ const cx = classNames.bind(styles)
 
 const Network = () => {
   const { refresh } = useApp()
-  const { chains, list } = useMergeChains()
+  const chains = useMergeChains()
   const [selected, setSelected] = useState<string | undefined>()
 
   const addNetwork = () => {
     setSelected(undefined)
   }
 
-  const deleteNetwork = (key: string) => {
+  const deleteNetwork = (name: string) => {
     const { customNetworks = [] } = localSettings.get()
     localSettings.set({
-      customNetworks: customNetworks.filter((item) => item.key !== key),
+      customNetworks: customNetworks.filter((item) => item.name !== name),
     })
     refresh()
   }
@@ -42,23 +42,21 @@ const Network = () => {
         <div className={styles.component}>
           <nav className={styles.nav}>
             <ul className={styles.list}>
-              {list.map(({ title, list }) =>
-                list.map((key) => (
-                  <li
-                    className={cx(styles.item, { selected: key === selected })}
-                    key={key}
+              {Object.entries(chains).map(([key, { name, chainID }]) => (
+                <li
+                  className={cx(styles.item, { selected: key === selected })}
+                  key={key}
+                >
+                  <button
+                    className={styles.button}
+                    onClick={() => setSelected(key)}
                   >
-                    <button
-                      className={styles.button}
-                      onClick={() => setSelected(key)}
-                    >
-                      <span className={styles.id}>{key}</span>
-                      {title}
-                      <Icon name="chevron_right" size={16} />
-                    </button>
-                  </li>
-                ))
-              )}
+                    <span className={styles.id}>{name}</span>
+                    {chainID}
+                    <Icon name="chevron_right" size={16} />
+                  </button>
+                </li>
+              ))}
             </ul>
           </nav>
 

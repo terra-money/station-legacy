@@ -42,12 +42,12 @@ const App = () => {
 
   /* init app */
   const { lang, currency, chain, user: initialUser } = localSettings.get()
-  const { chains } = useMergeChains()
+  const chains = useMergeChains()
 
   const initialState = {
     lang: lang as LangKey,
     currency,
-    chain: chains[chain!] ?? Chains['columbus'],
+    chain: chains[chain!] ?? Chains['mainnet'],
   }
 
   /* app state */
@@ -68,7 +68,7 @@ const App = () => {
   const { current: currentCurrencyItem } = config.currency
   const { current: currentChainOptions } = config.chain
   const { key: currentCurrency = '' } = currentCurrencyItem || {}
-  const { key: currentChain = '' } = currentChainOptions
+  const { name: currentChain = '' } = currentChainOptions
   const { user } = auth
 
   /* auth modal */

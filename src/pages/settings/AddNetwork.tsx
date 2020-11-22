@@ -4,49 +4,45 @@ import { useForm, useConfig } from '@terra-money/use-station'
 import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
 import Form from '../../components/Form'
-import useMergeChains from './useMergeChains'
+import useMergeChains, { validateNetwork } from './useMergeChains'
 
 interface Values {
-  key: string
   name: string
+  chainID: string
   lcd: string
   fcd: string
   ws: string
 }
 
 const AddNetwork = () => {
-  const { chains } = useMergeChains()
+  const chains = useMergeChains()
   const { chain } = useConfig()
   const { push } = useHistory()
 
   /* form */
-  const initial = { key: '', name: '', lcd: '', fcd: '', ws: '' }
-  const validate = ({ key, name, fcd, ws }: Values) => ({
-    key: !key
-      ? 'Reqruied'
-      : Object.keys(chains).includes(key)
-      ? 'Already exists'
-      : '',
-    name: !name ? 'Required' : '',
-    lcd: '',
+  const initial = { name: '', chainID: '', lcd: '', fcd: '', ws: '' }
+  const validate = ({ name, chainID, lcd, fcd, ws }: Values) => ({
+    name: !name ? 'Required' : chains[name] ? 'Already exists' : '',
+    chainID: !chainID ? 'Required' : '',
+    lcd: !lcd ? 'Required' : '',
     fcd: !fcd ? 'Required' : '',
-    ws: !ws ? 'Required' : !parseWS(ws) ? 'Invalid' : '',
+    ws: !ws ? 'Required' : '',
   })
 
   const form = useForm(initial, validate)
   const { values, invalid, getDefaultAttrs, getDefaultProps } = form
 
-  const sample = Chains['columbus']
+  const sample = Chains['mainnet']
   const fields = [
     {
-      label: 'key',
-      ...getDefaultProps('key'),
-      attrs: { ...getDefaultAttrs('key'), placeholder: sample['key'] },
+      label: 'name',
+      ...getDefaultProps('name'),
+      attrs: { ...getDefaultAttrs('name'), placeholder: sample['name'] },
     },
     {
       label: 'chain id',
-      ...getDefaultProps('name'),
-      attrs: { ...getDefaultAttrs('name'), placeholder: sample['name'] },
+      ...getDefaultProps('chainID'),
+      attrs: { ...getDefaultAttrs('chainID'), placeholder: sample['chainID'] },
     },
     {
       label: 'lcd',
@@ -61,10 +57,7 @@ const AddNetwork = () => {
     {
       label: 'ws',
       ...getDefaultProps('ws'),
-      attrs: {
-        ...getDefaultAttrs('ws'),
-        placeholder: JSON.stringify(sample['ws']),
-      },
+      attrs: { ...getDefaultAttrs('ws'), placeholder: sample['ws'] },
     },
   ]
 
@@ -74,20 +67,16 @@ const AddNetwork = () => {
     disabled: invalid,
     submitLabel: 'Add',
     onSubmit: () => {
-      const ws = parseWS(values.ws)
+      const { customNetworks = [] } = localSettings.get()
+      const next = values
 
-      if (ws) {
-        const { customNetworks = [] } = localSettings.get()
-        const next = { ...values, ws }
+      localSettings.set({
+        customNetworks: [...customNetworks.filter(validateNetwork), next],
+        chain: values.name,
+      })
 
-        localSettings.set({
-          customNetworks: [...customNetworks, next],
-          chain: values.key,
-        })
-
-        chain.set(next)
-        push('/')
-      }
+      chain.set(next)
+      push('/')
     },
   }
 
@@ -95,12 +84,3 @@ const AddNetwork = () => {
 }
 
 export default AddNetwork
-
-/* helpers */
-const parseWS = (str: string): WebSocketOption | undefined => {
-  try {
-    return JSON.parse(str)
-  } catch {
-    return
-  }
-}

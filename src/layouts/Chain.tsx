@@ -16,12 +16,12 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
   const { chain } = useConfig()
   const modal = useModal()
   const { current, set } = chain
-  const { chains, list } = useMergeChains()
+  const chains = useMergeChains()
 
   /* check localterra status */
   useCheckLocalTerra(
     () => modal.open(<LocalTerraError modal={modal} />),
-    chain.current.key
+    chain.current.name
   )
 
   const { push } = useHistory()
@@ -41,23 +41,17 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
   return (
     <>
       <Select
-        value={current['key']}
+        value={current['name']}
         onChange={handleChange}
         className={c('form-control', s.select)}
         containerClassName={isExtension ? NavStyles.select : undefined}
         icon={isExtension ? 'wifi_tethering' : undefined}
         disabled={disabled}
       >
-        {list.map(({ title, list }, index) => (
-          <Fragment key={title}>
-            {list.map((key) => (
-              <option value={key} key={key}>
-                {chains[key]?.['name']}
-              </option>
-            ))}
-
-            <option disabled>──────────</option>
-          </Fragment>
+        {Object.keys(chains).map((key) => (
+          <option value={key} key={key}>
+            {key}
+          </option>
         ))}
 
         <option value="">Add a network...</option>

@@ -16,15 +16,9 @@ interface Settings {
 }
 
 interface CustomNetwork {
-  key: string
   name: string
+  chainID: string
   lcd: string
   fcd: string
-  ws: WebSocketOption
-}
-
-interface WebSocketOption {
-  hostname: string
-  port: number
-  secure: boolean
+  ws: string
 }
