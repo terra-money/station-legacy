@@ -12,7 +12,7 @@
     "@ledgerhq/hw-transport-webusb": "^5.29.0",
     "@sentry/browser": "^5.27.4",
     "@terra-money/ledger-terra-js": "^1.1",
-    "@terra-money/terra.js": "^1.0.1",
+    "@terra-money/terra.js": "^1.1.1",
     "@terra-money/use-station": "^4.2.0",
     "@types/chrome": "^0.0.126",
     "@types/numeral": "^0.0.28",

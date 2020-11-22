@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { without, uniq, update, isNil } from 'ramda'
 import extension from 'extensionizer'
 import { createContext } from '@terra-money/use-station'
-import { LCDClientConfig } from '@terra-money/terra.js'
 
 /* request & response */
 export interface TxOptionsData {
@@ -19,7 +18,6 @@ export interface ExtSign extends TxOptionsData {
   /* request */
   id: number
   origin: string
-  lcdClientConfig?: LCDClientConfig
   purgeQueue?: boolean
   waitForConfirmation?: boolean
 
