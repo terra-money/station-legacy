@@ -243,6 +243,13 @@ const connect = async () => {
   path = [44, appName === 'Terra' ? 330 : 118, 0, 0, 0]
 }
 
+export const close = async () => {
+  if (transport) {
+    transport.close()
+    app = path = null
+  }
+}
+
 export const getPubKey = async () => {
   await connect().catch(handleConnectError)
 
