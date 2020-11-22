@@ -1,10 +1,8 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useAuth } from '@terra-money/use-station'
 import { useChangePassword, useManageAccounts } from '@terra-money/use-station'
 import { decrypt } from '../utils'
-import { isExtension } from '../utils/env'
 import { importKey, loadKeys, storeKeys } from '../utils/localStorage'
 import { testPassword } from '../utils/localStorage'
 import Form from '../components/Form'
@@ -13,7 +11,6 @@ import Toast from '../components/Toast'
 const ChangePassword = ({ onFinish }: { onFinish?: () => void }) => {
   const accounts = loadKeys()
   const { user } = useAuth()
-  const { push } = useHistory()
   const { password: toastText } = useManageAccounts()
 
   const changePassword = async ({
@@ -31,7 +28,7 @@ const ChangePassword = ({ onFinish }: { onFinish?: () => void }) => {
     storeKeys(next)
     await importKey({ name, password, wallet: parsed })
     toast(<Toast {...toastText} />, { autoClose: 3000 })
-    isExtension ? push('/') : onFinish?.()
+    onFinish?.()
   }
 
   const form = useChangePassword({
