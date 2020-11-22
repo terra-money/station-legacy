@@ -4,6 +4,7 @@ import extension from 'extensionizer'
 import { useAuthMenu, useAuth } from '@terra-money/use-station'
 import { AuthMenuKey } from '@terra-money/use-station'
 import { loadKeys } from '../utils/localStorage'
+import * as ledger from '../wallet/ledger'
 import { menu } from './getAuthMenu'
 import getAuthMenuKeys from './getAuthMenuKeys'
 import AuthMenu from './AuthMenu'
@@ -18,6 +19,11 @@ const AuthRoute = () => {
   const { path, url } = useRouteMatch()
 
   useEffect(() => {
+    // Close connection to Ledger. It is not allowed to be accessed from multiple tabs.
+    if (user && user.ledger) {
+      ledger.close()
+    }
+
     user && replace('/')
   }, [user, replace])
 
