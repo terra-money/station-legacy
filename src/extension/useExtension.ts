@@ -145,9 +145,7 @@ const recordKey = (
   list.map((details: ExtSign) => ({ requestType, details }))
 
 const sortByTimestamp = (list: RecordedExtSign[]) =>
-  list.sort(({ details: { id: a } }, { details: { id: b } }) =>
-    a === b ? 0 : a > b ? 1 : -1
-  )
+  list.sort(({ details: { id: a } }, { details: { id: b } }) => a - b)
 
 const sort = ({ sign, post }: RequestList) =>
   sortByTimestamp([...recordKey('sign', sign), ...recordKey('post', post)])
