@@ -43,15 +43,17 @@ const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
       {reversed && children}
 
       <section className={className}>
-        {fields.map((field, index) => (
-          <Field
-            field={field}
-            focus={index === currentFieldIndex}
-            onFocus={() => setCurrentFieldIndex(index)}
-            render={renderField}
-            key={field.attrs.id}
-          />
-        ))}
+        {fields.map((field, index) =>
+          field.attrs.hidden ? null : (
+            <Field
+              field={field}
+              focus={index === currentFieldIndex}
+              onFocus={() => setCurrentFieldIndex(index)}
+              render={renderField}
+              key={field.attrs.id}
+            />
+          )
+        )}
       </section>
 
       {!reversed && children}
