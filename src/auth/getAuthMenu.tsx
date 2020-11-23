@@ -31,15 +31,15 @@ export const menu: Record<AuthMenuKey, Item> = {
     path: '/select',
     render: () => <SignIn />,
   },
+  signInWithLedger: {
+    icon: 'usb',
+    path: '/ledger',
+    render: () => <SignInWithLedger />,
+  },
   signInWithAddress: {
     icon: 'account_balance_wallet',
     disabled: isExtension,
     render: () => <SignInWithAddress />,
-  },
-  signInWithLedger: {
-    icon: 'usb',
-    disabled: isExtension,
-    render: () => <SignInWithLedger />,
   },
   download: {
     icon: 'cloud_download',

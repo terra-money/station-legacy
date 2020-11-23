@@ -1,6 +1,6 @@
 import { getStoredWallet, decryptWallet } from '../utils/localStorage'
 import { signWithPrivateKey } from './keys'
-import ledger from './ledger'
+import * as ledger from './ledger'
 
 export default async (submitType = '', { name, password } = {}, wallet) => {
   if (submitType === 'local') {

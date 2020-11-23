@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=12.x"
   },
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "license": "ISC",
@@ -13,7 +13,7 @@
     "@sentry/browser": "^5.27.4",
     "@terra-money/ledger-terra-js": "^1.1",
     "@terra-money/terra.js": "^1.1.1",
-    "@terra-money/use-station": "^4.2.0",
+    "@terra-money/use-station": "^4.2.1",
     "@types/chrome": "^0.0.126",
     "@types/numeral": "^0.0.28",
     "@ungap/url-search-params": "^0.2",
@@ -37,6 +37,7 @@
     "react": "^17.0.1",
     "react-ace": "^9.2.0",
     "react-app-polyfill": "^2.0.0",
+    "react-app-rewired": "^2.1.6",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^17.0.1",
     "react-i18next": "^11",
@@ -90,7 +91,7 @@
     "build-storybook": "build-storybook -s public",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build-extension": "webpack --config extension/webpack.config.js",
-    "ext": "REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false GENERATE_SOURCEMAP=false react-scripts build && yarn build-extension"
+    "ext": "REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false react-app-rewired build && npm run build-extension"
   },
   "eslintConfig": {
     "extends": "react-app",

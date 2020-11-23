@@ -1,12 +1,23 @@
 import React, { useState, Fragment, ReactNode } from 'react'
 import c from 'classnames'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import { CreateTxOptions, Msg, TxInfo, StdFee } from '@terra-money/terra.js'
+import {
+  CreateTxOptions,
+  Msg,
+  TxInfo,
+  StdFee,
+  Key,
+  PublicKey,
+  StdSignMsg,
+  StdSignature,
+  StdTx,
+} from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { useAuth, useConfig } from '@terra-money/use-station'
 import { Field } from '@terra-money/use-station'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
+import * as ledger from '../wallet/ledger'
 import { useExtension } from './useExtension'
 import { ExtSign, RecordedExtSign, TxOptionsData } from './useExtension'
 import ConfirmationComponent from '../post/ConfirmationComponent'
@@ -20,6 +31,36 @@ interface Props extends RecordedExtSign {
   user: User
   pagination: ReactNode
   onFinish: (params: Partial<ExtSign>) => void
+}
+
+class LedgerKey extends Key {
+  public sign(): Promise<Buffer> {
+    throw new Error(
+      'LedgerKey does not use sign() -- use createSignature() directly.'
+    )
+  }
+
+  public async createSignature(tx: StdSignMsg): Promise<StdSignature> {
+    const pubkeyBuffer = await ledger.getPubKey()
+
+    if (!pubkeyBuffer) {
+      throw new Error('failed getting public key from ledger')
+    }
+
+    const signatureBuffer = await ledger.sign(tx.toJSON())
+
+    if (!signatureBuffer) {
+      throw new Error('failed signing from ledger')
+    }
+
+    return new StdSignature(
+      signatureBuffer.toString('base64'),
+      PublicKey.fromData({
+        type: 'tendermint/PubKeySecp256k1',
+        value: pubkeyBuffer.toString('base64'),
+      })
+    )
+  }
 }
 
 const Component = ({ requestType, details, ...props }: Props) => {
@@ -41,18 +82,34 @@ const Component = ({ requestType, details, ...props }: Props) => {
     setSubmitting(true)
 
     try {
-      const { privateKey } = getStoredWallet(name, password)
-      const key = new RawKey(Buffer.from(privateKey, 'hex'))
-      const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
-      const { signature, recid } = key.ecdsaSign(
-        Buffer.from(stdSignMsg.toJSON())
-      )
+      let result
 
-      const result = {
-        recid,
-        signature: Buffer.from(signature).toString('base64'),
-        public_key: key.publicKey?.toString('base64'),
-        stdSignMsgData: stdSignMsg.toData(),
+      if (user.ledger) {
+        // ledger
+        const key = new LedgerKey(await ledger.getPubKey())
+        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
+        const stdSignature = await key.createSignature(stdSignMsg)
+
+        result = {
+          recid: 0,
+          signature: stdSignature.signature,
+          public_key: stdSignature.pub_key,
+          stdSignMsgData: stdSignMsg.toData(),
+        }
+      } else {
+        const { privateKey } = getStoredWallet(name, password)
+        const key = new RawKey(Buffer.from(privateKey, 'hex'))
+        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
+        const { signature, recid } = key.ecdsaSign(
+          Buffer.from(stdSignMsg.toJSON())
+        )
+
+        result = {
+          recid,
+          signature: Buffer.from(signature).toString('base64'),
+          public_key: key.publicKey?.toString('base64'),
+          stdSignMsgData: stdSignMsg.toData(),
+        }
       }
 
       onFinish({ result, success: true })
@@ -71,9 +128,17 @@ const Component = ({ requestType, details, ...props }: Props) => {
     setSubmitting(true)
 
     try {
-      const { privateKey } = getStoredWallet(name, password)
-      const key = new RawKey(Buffer.from(privateKey, 'hex'))
-      const signed = await lcd.wallet(key).createAndSignTx(txOptions)
+      let signed: StdTx
+
+      if (user.ledger) {
+        const key = new LedgerKey(await ledger.getPubKey())
+        signed = await lcd.wallet(key).createAndSignTx(txOptions)
+      } else {
+        const { privateKey } = getStoredWallet(name, password)
+        const key = new RawKey(Buffer.from(privateKey, 'hex'))
+        signed = await lcd.wallet(key).createAndSignTx(txOptions)
+      }
+
       const data = await lcd.tx.broadcastSync(signed)
       const { raw_log, txhash } = data
       const code = isTxError(data) ? data.code : undefined
@@ -108,7 +173,9 @@ const Component = ({ requestType, details, ...props }: Props) => {
         success: false,
         error: {
           code: 3,
-          /* Error on estimated fee */ message: error.response?.data?.error,
+          message: error.response
+            ? error.response.data?.error /* error on tx */
+            : error.message,
         },
       })
     }
@@ -164,17 +231,17 @@ const Component = ({ requestType, details, ...props }: Props) => {
     error: passwordError,
   }
 
-  const disabled = !password
+  const disabled = !user.ledger && !password
 
   const submit = () => {
-    testPassword(name, password)
+    user.ledger || testPassword(name, password)
       ? { post: postTx, sign: signTx }[requestType]()
       : setPasswordError('Incorrect password')
   }
 
   const form = {
     title: 'Confirm',
-    fields: [passwordField],
+    fields: !user.ledger ? [passwordField] : [],
     disabled,
     submitLabel: 'Submit',
     onSubmit: disabled ? undefined : submit,

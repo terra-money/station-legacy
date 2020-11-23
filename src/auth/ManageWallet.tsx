@@ -14,36 +14,54 @@ interface Props {
 
 const ManageWallet = ({ modalActions, onFinish }: Props) => {
   const { user, signOut } = useAuth()
-  const { push } = useHistory()
+  const { push, goBack, replace } = useHistory()
   const { path, url } = useRouteMatch()
   const manage = useManageAccounts()
 
   const [currentIndex, setCurrentIndex] = useState(-1)
 
   useEffect(() => {
-    !user && push('/')
-  }, [user, push])
+    !user && replace('/')
+  }, [user, replace])
+
+  const onFinishSubmenu = isExtension
+    ? () => goBack()
+    : () => setCurrentIndex(-1)
+
+  const renderChangePassword = () => (
+    <ChangePassword onFinish={onFinishSubmenu} />
+  )
+  const renderDeleteAccount = () => <DeleteAccount onFinish={onFinishSubmenu} />
 
   /* render */
-  const list = [
-    {
-      title: manage.password.tooltip,
-      icon: 'lock',
-      path: '/password',
-      render: () => <ChangePassword onFinish={() => setCurrentIndex(-1)} />,
-    },
-    {
-      title: manage.delete.title!,
-      icon: 'delete',
-      path: '/delete',
-      render: () => <DeleteAccount />,
-    },
-    {
-      title: 'Disconnect',
-      icon: 'exit_to_app',
-      onClick: () => signOut(),
-    },
-  ]
+  const list: {
+    title: string
+    icon: string
+    path?: string
+    render?: () => JSX.Element
+    onClick?: () => void
+  }[] = !user?.ledger
+    ? [
+        {
+          title: manage.password.tooltip,
+          icon: 'lock',
+          path: '/password',
+          render: renderChangePassword,
+        },
+        {
+          title: manage.delete.title!,
+          icon: 'delete',
+          path: '/delete',
+          render: renderDeleteAccount,
+        },
+      ]
+    : []
+
+  list.push({
+    title: 'Disconnect',
+    icon: 'exit_to_app',
+    onClick: () => signOut(),
+  })
 
   const renderMenu = () => (
     <AuthMenu
@@ -65,8 +83,8 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
   return isExtension ? (
     <Switch>
       <Route path={path + '/'} exact render={renderMenu} />
-      <Route path={path + '/password'} component={ChangePassword} />
-      <Route path={path + '/delete'} component={DeleteAccount} />
+      <Route path={path + '/password'} render={renderChangePassword} />
+      <Route path={path + '/delete'} render={renderDeleteAccount} />
     </Switch>
   ) : (
     <ModalContent {...modal}>
