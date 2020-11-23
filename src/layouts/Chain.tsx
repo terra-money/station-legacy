@@ -12,7 +12,7 @@ import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
 import NavStyles from './Nav.module.scss'
 
-const SelectChain = ({ disabled }: { disabled?: boolean }) => {
+const Chain = ({ disabled }: { disabled?: boolean }) => {
   const { chain } = useConfig()
   const modal = useModal()
   const { current, set } = chain
@@ -61,7 +61,7 @@ const SelectChain = ({ disabled }: { disabled?: boolean }) => {
   )
 }
 
-export default SelectChain
+export default Chain
 
 /* hook */
 const useCheckLocalTerra = (callback: () => void, chain?: string) => {

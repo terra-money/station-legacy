@@ -79,6 +79,13 @@ const connectRemote = (remotePort) => {
     }
 
     switch (type) {
+      case 'info':
+        extension.storage.local.get(['network'], ({ network }) => {
+          sendResponse('onInfo', network)
+        })
+
+        break
+
       case 'connect':
         const handleChangeConnect = (changes, namespace) => {
           // It is recursive.

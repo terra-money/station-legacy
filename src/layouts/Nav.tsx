@@ -17,8 +17,7 @@ import s from './Nav.module.scss'
 const Nav = () => {
   const { pathname } = useLocation()
   const history = useHistory()
-  const { request, goBack } = useExtension()
-  const disableChainSelector = request.sorted.length > 0
+  const { goBack } = useExtension()
 
   /* Menu */
   const name = useMenu()
@@ -61,7 +60,7 @@ const Nav = () => {
         )}
 
         <div className={s.footer}>
-          <Chain disabled={disableChainSelector} />
+          <Chain />
           <Lang />
         </div>
       </header>

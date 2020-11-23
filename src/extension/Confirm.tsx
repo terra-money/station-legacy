@@ -66,7 +66,7 @@ class LedgerKey extends Key {
 const Component = ({ requestType, details, ...props }: Props) => {
   const { user, pagination, onFinish } = props
   const { name } = user
-  const { id, origin, lcdClientConfig, ...rest } = details
+  const { id, origin, gasPrices, fee, ...rest } = details
   const { waitForConfirmation, ...txOptionsData } = rest
   const txOptions = parseCreateTxOptions(txOptionsData)
   const { msgs, memo } = txOptions
@@ -74,7 +74,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
   /* chain */
   const { chain } = useConfig()
   const { chainID, lcd: URL } = chain.current
-  const lcd = new LCDClient(lcdClientConfig ?? { chainID, URL })
+  const lcdClientConfig = { chainID, URL, gasPrices, fee }
+  const lcd = new LCDClient(lcdClientConfig)
 
   /* sign tx */
   const signTx = async () => {
@@ -254,13 +255,6 @@ const Component = ({ requestType, details, ...props }: Props) => {
     ? { content: 'Success!', ...defaultResultProps }
     : undefined
 
-  const renderDl = ({ dt, dd }: { dt: string; dd: string }) => (
-    <Fragment key={dt}>
-      <dt>{dt}</dt>
-      <dd>{dd}</dd>
-    </Fragment>
-  )
-
   return submitting ? (
     <Submitting />
   ) : (
@@ -276,7 +270,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
         <dd>{origin}</dd>
         <dt>timestamp</dt>
         <dd>{formatDistanceToNow(new Date(id))} ago</dd>
-        {lcdClientConfig && getDl(lcdClientConfig).map(renderDl)}
+
         {memo && (
           <>
             <dt>Memo</dt>

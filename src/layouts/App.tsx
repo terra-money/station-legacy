@@ -59,7 +59,7 @@ const App = () => {
   const deprecatedUI = useCheckElectronVersion(modal, refresh)
 
   /* redirect on chain change */
-  useRedirectOnChainChange({ goBack, chain })
+  useOnChainChange({ goBack, chain })
 
   /* provider */
   const config = useConfigState(initialState)
@@ -161,7 +161,7 @@ const useCheckElectronVersion = (modal: Modal, onCheck: () => void) => {
   return deprecatedUI
 }
 
-const useRedirectOnChainChange = ({
+const useOnChainChange = ({
   goBack,
   chain,
 }: {
@@ -169,8 +169,10 @@ const useRedirectOnChainChange = ({
   chain?: string
 }) => {
   const { push } = useHistory()
+  const chains = useMergeChains()
   useEffect(() => {
     goBack && push(goBack)
+    extension.storage?.local.set({ network: chains[chain ?? 'mainnet'] })
     // eslint-disable-next-line
   }, [chain])
 }
