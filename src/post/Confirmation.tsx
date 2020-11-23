@@ -58,10 +58,9 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
     dd:
       text ??
       displays?.map(({ value, unit }, index) => (
-        <>
-          <span>{value}</span>
-          <span>{unit}</span>
-        </>
+        <div key={index}>
+          <span>{value}</span> <span>{unit}</span>
+        </div>
       )),
   }))
 
