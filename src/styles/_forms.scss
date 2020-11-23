@@ -149,6 +149,7 @@ textarea.form-control {
 
 .input-group {
   @include flex(flex-start, stretch);
+  width: 100%;
 
   .form-control:first-child {
     border-top-right-radius: 0;

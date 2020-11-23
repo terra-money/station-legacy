@@ -5,6 +5,7 @@ import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import ModalContent from '../components/ModalContent'
 import Select from '../components/Select'
+import Flex from '../components/Flex'
 import { PW, isPreconfigured } from '../layouts/Preconfigured'
 import ConfirmationComponent from './ConfirmationComponent'
 
@@ -66,7 +67,7 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
 
   const feeDl = (fee.status || fee.select.attrs.value) && {
     dt: (
-      <>
+      <Flex>
         <span className="form-control-sm">{fee.label}</span>
         {!fee.status && (
           <Select
@@ -79,13 +80,13 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
             ))}
           </Select>
         )}
-      </>
+      </Flex>
     ),
 
     dd: fee.status ? (
       <span className="form-control-sm">{fee.status}</span>
     ) : fee.select.attrs.value ? (
-      <>
+      <Flex>
         <div className="input-group">
           <input
             {...fee.input.attrs}
@@ -104,7 +105,7 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
             <small>{fee.message}</small>
           </p>
         )}
-      </>
+      </Flex>
     ) : null,
   }
 
