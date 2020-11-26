@@ -74,7 +74,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
   /* chain */
   const { chain } = useConfig()
   const { chainID, lcd: URL } = chain.current
-  const lcdClientConfig = { chainID, URL, gasPrices, fee }
+  const lcdClientConfig = Object.assign(
+    { chainID, URL },
+    gasPrices && { gasPrices },
+    fee && { fee }
+  )
   const lcd = new LCDClient(lcdClientConfig)
 
   /* sign tx */
