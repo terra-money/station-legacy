@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react'
-import { ContractsUI, is } from '@terra-money/use-station'
-import { useMenu, useContracts } from '@terra-money/use-station'
+import { ContractsUI, ContractUI, is } from '@terra-money/use-station'
+import { useMenu, useContract, useContracts } from '@terra-money/use-station'
 import { useApp, useGoBack } from '../../hooks'
 import Page from '../../components/Page'
 import Info from '../../components/Info'
@@ -19,13 +19,16 @@ import Search from './Search'
 const Contracts = () => {
   useGoBack('/')
   const [page, setPage] = useState(1)
+  const [param, setParam] = useState<string>('') // For searching with contract address
   const [params, setParams] = useState<{ owner?: string; search?: string }>({})
   const { error, ui, create, upload } = useContracts({ page, ...params })
+  const contract: ContractUI | undefined = useContract(param)
   const { Contracts: title } = useMenu()
   const { modal } = useApp()
 
   const submit = (value: string) => {
     setParams(!value ? {} : { [is.address(value) ? 'owner' : 'search']: value })
+    setParam(value)
   }
 
   /* render */
@@ -49,18 +52,24 @@ const Contracts = () => {
   )
 
   const render = ({ pagination, card, list, search: attrs }: ContractsUI) => {
-    const empty = card && <Info {...card} icon="info_outline" />
-
     return (
       <>
         <Search submit={submit} placeholder={attrs?.placeholder} />
-        <Pagination {...pagination} empty={empty} action={setPage}>
-          {list?.map((contract, index) => (
-            <ErrorBoundary fallback={<ErrorComponent />} key={index}>
-              <Contract {...contract} />
-            </ErrorBoundary>
-          ))}
-        </Pagination>
+        {contract ? (
+          <Contract {...contract} />
+        ) : (
+          <Pagination
+            {...pagination}
+            empty={card && <Info {...card} icon="info_outline" />}
+            action={setPage}
+          >
+            {list?.map((contract, index) => (
+              <ErrorBoundary fallback={<ErrorComponent />} key={index}>
+                <Contract {...contract} />
+              </ErrorBoundary>
+            ))}
+          </Pagination>
+        )}
       </>
     )
   }
