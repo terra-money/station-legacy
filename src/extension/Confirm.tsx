@@ -66,7 +66,7 @@ class LedgerKey extends Key {
 const Component = ({ requestType, details, ...props }: Props) => {
   const { user, pagination, onFinish } = props
   const { name } = user
-  const { id, origin, gasPrices, fee, ...rest } = details
+  const { id, origin, gasPrices, ...rest } = details
   const { waitForConfirmation, ...txOptionsData } = rest
   const txOptions = parseCreateTxOptions(txOptionsData)
   const { msgs, memo } = txOptions
@@ -76,9 +76,9 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { chainID, lcd: URL } = chain.current
   const lcdClientConfig = Object.assign(
     { chainID, URL },
-    gasPrices && { gasPrices },
-    fee && { fee }
+    gasPrices && { gasPrices }
   )
+
   const lcd = new LCDClient(lcdClientConfig)
 
   /* sign tx */
