@@ -5,6 +5,7 @@ const list: Dictionary<string> = {
   terravaloper103ra79dl2un2ltknhyz7crm5y29g4vhmycfwv9: 'co_staking@neoply.com',
   terravaloper123gn6j23lmexu0qx5qhmgxgunmjcqsx8gmsyse: 'go@staking.fund',
   terravaloper12jpzzmwthrljcvm48adncspxtchazkl8vah7u4: 'contact@synergynodes.com',
+  terravaloper12kfeqrflptmlz5qj8agrm2ze6dzss3crm7uevf: 'huobipool@huobi.com',
   terravaloper13kcwnlafvu4xvy2jr3vhdte9aq9tadwds3lx2d: 'hello@castlenode.com',
   terravaloper13ww603e55suhavpuyjft3htxca6g4tldt92pgf: 'contact@hashquark.io',
   terravaloper15s5d4lm0n75af9jxwawqzl73trnrypdslajxz4: 'hcpark@gion.co.kr',
@@ -14,8 +15,8 @@ const list: Dictionary<string> = {
   terravaloper16tc3c9u6yj5uuhru32pvs0pahfwraurpypz7vj: 'office@block42.tech',
   terravaloper175hhkyxmkp8hf2zrzka7cnn7lk6mudtv4uuu64: 'contact@dsrvlabs.com',
   terravaloper1alpf6snw2d76kkwjv3dp4l7pcl6cn9uyt0tcj9: 'aionsmartstake@gmail.com',
-  terravaloper1audgfvmgt0js54p3s8kj3r40uwej6vy2tv6rrw: 'info@mitera.net',
   terravaloper1aw0znxtlq0wrayyz7wppz3qnw94hfrmnnrcxja: 'support@rockx.com',
+  terravaloper1c6gve6zhye5690563wxmvns7mugz6plu4aj7d3: 'contact@arringtonxrpcapital.com',
   terravaloper1c9ye54e3pzwm3e0zpdlel6pnavrj9qqvq89r3r: 'Earn@StakeWith.Us',
   terravaloper1fjuvyccn8hfmn5r7wc2t3kwqy09zzp6tyjcf50: 'contact@delightlabs.io',
   terravaloper1gh7wpfpsjrqnash5uc84z4njt95y9g5nh3uqzx: 'team@genesislab.net',
@@ -31,6 +32,7 @@ const list: Dictionary<string> = {
   terravaloper1kl9alpr77qfjze4quf62ycngg6fkka0ttcl8nf: 'support@bitrue.com',
   terravaloper1kprce6kc08a6l03gzzh99hfpazfjeczfpzkkau: 'contact@certus.one',
   terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy: 'info@terran.one',
+  terravaloper1m8jxvxkhuu07u4hrv484rkq9wetk4lmde44z87: 'staking@karpos.network',
   terravaloper1n7pkcal0jkp0ac9r338qp9cm5x6cakfnremtnt: 'hello@audit.one',
   terravaloper1nwrksgv2vuadma8ygs8rhwffu2ygk4j24w2mku: 'hello@posbakerz.com',
   terravaloper1pc0gs3n6803x7jqe9m7etegmyx29xw38aaf3u7: 'hello@staker.space',
@@ -39,6 +41,7 @@ const list: Dictionary<string> = {
   terravaloper1u3gcqh4xqcdfkcu82nrk9u75x8vtvcz7xafgpy: 'contact@infinitystones.io',
   terravaloper1uhjx34pfsxk9xh34yn8p2w4469uqdz067rqu5g: 'hello@umbrellavalidator.com',
   terravaloper1vse7mfah2hmfaruum40hwnskkca3ygmmff86xr: 'jooddang@gmail.com',
+  terravaloper1x4ce4fhqdnu8j7hrp64qmthumsvuhlq8y0kvx4: 'support@mcontrol.ml',
   terravaloper1ya23p5cxtxwcfdrq4dmd2h0p5nc0vcl96yhjra: 'team@btcsecure.io',
 }
 
