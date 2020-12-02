@@ -6,11 +6,13 @@ import Icon from '../../components/Icon'
 import Pop from '../../components/Pop'
 import Number from '../../components/Number'
 import Undelegations from './Undelegations'
+import RewardTip from './RewardTip'
 import Rewards from './Rewards'
 import s from './Columns.module.scss'
 
 interface ColumnProps {
   title: string
+  description?: ReactNode
   display: DisplayCoin
   tooltip?: ReactNode
   width?: number
@@ -18,13 +20,35 @@ interface ColumnProps {
 }
 
 const Column = (column: ColumnProps) => {
-  const { title, display, tooltip, width, estimated } = column
+  const { title, description, display, tooltip, width, estimated } = column
+  const heading = (
+    <Flex>
+      {title}
+      {description && (
+        <Pop
+          type="tooltip"
+          placement="bottom"
+          width={380}
+          content={description}
+        >
+          {({ ref, getAttrs }) => (
+            <Icon
+              name="info"
+              forwardRef={ref}
+              {...getAttrs({ style: { marginLeft: 5 } })}
+            />
+          )}
+        </Pop>
+      )}
+    </Flex>
+  )
+
   const content = <div className={s.tooltip}>{tooltip}</div>
   const children = <Number fontSize={18} {...display} estimated={estimated} />
 
   return (
     <div className="col col-6-1280" key={title}>
-      <Card title={title} className={s.card} headerClassName={s.header} small>
+      <Card title={heading} className={s.card} headerClassName={s.header} small>
         {tooltip ? (
           <Pop type="pop" placement="bottom" width={width} content={content}>
             {({ ref, iconRef, getAttrs }) => (
@@ -56,7 +80,14 @@ const Columns = (props: StakingPersonal) => {
       {undelegated && (
         <Column {...undelegated} tooltip={tooltip.u} width={540} />
       )}
-      {rewards && <Column {...rewards} tooltip={tooltip.r} estimated />}
+      {rewards && (
+        <Column
+          {...rewards}
+          description={<RewardTip {...rewards.desc} />}
+          tooltip={tooltip.r}
+          estimated
+        />
+      )}
     </div>
   )
 }
