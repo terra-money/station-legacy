@@ -9,3 +9,19 @@
 .tooltip {
   padding: 20px 25px;
 }
+
+.rewardtip {
+  padding: 10px;
+
+  ul {
+    list-style-type: disc;
+    background-color: fade-out(white, 0.9);
+    border-radius: 5px;
+    margin: 20px 0px;
+    padding: 10px 20px;
+
+    li {
+      margin: 10px;
+    }
+  }
+}
