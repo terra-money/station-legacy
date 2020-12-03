@@ -33,7 +33,7 @@ const Nav = () => {
     { name: name['Wallet'],       to: '/wallet',       icon: 'account_balance_wallet' },
     { name: name['History'],      to: '/history',      icon: 'subject' },
     { name: name['Staking'],      to: '/staking',      icon: 'layers',      submenu: ['/validator'] },
-    { name: name['Market'],       to: '/market',       icon: 'timeline' },
+    { name: name['Swap'],         to: '/swap',         icon: 'timeline' },
     { name: name['Governance'],   to: '/governance',   icon: 'how_to_vote', submenu: ['/proposal'] },
     { name: name['Contracts'],    to: '/contracts',    icon: 'device_hub' },
   ]

@@ -14,7 +14,7 @@ const Prices = ({ title, display }: PricesUI) => {
     </Badge>
   )
 
-  const onClick = () => history.push('/market')
+  const onClick = () => history.push('/swap')
 
   return (
     <Card title={title} footer={badge} onClick={onClick} small>
