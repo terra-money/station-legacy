@@ -150,8 +150,16 @@ extension.runtime.onConnect.addListener(connectRemote)
 let tabId = undefined
 extension.tabs.onRemoved.addListener(() => (tabId = undefined))
 
+const POPUP_WIDTH = 420
+const POPUP_HEIGHT = 640
+
 const openPopup = () => {
-  const popup = { type: 'popup', focused: true, width: 480, height: 640 }
+  const popup = {
+    type: 'popup',
+    focused: true,
+    width: POPUP_WIDTH,
+    height: POPUP_HEIGHT,
+  }
   !tabId &&
     extension.tabs.create(
       { url: extension.extension.getURL('index.html'), active: false },
@@ -159,7 +167,8 @@ const openPopup = () => {
         tabId = tab.id
         extension.windows.getCurrent((window) => {
           const top = Math.max(window.top, 0) || 0
-          const left = Math.max(window.left + (window.width - 480), 0) || 0
+          const left =
+            Math.max(window.left + (window.width - POPUP_WIDTH), 0) || 0
 
           const config = { ...popup, tabId: tab.id, top, left }
           extension.windows.create(config)
