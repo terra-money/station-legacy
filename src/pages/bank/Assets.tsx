@@ -15,10 +15,11 @@ const Assets = ({ user }: { user: User }) => {
   const { hideSmallBalances: hideSmall = false } = localSettings.get()
   const { error, loading, ui } = useAssets(user, { hideSmall })
 
-  const render = ({ card, available, vesting }: AssetsUI) => (
+  const render = ({ card, available, tokens, vesting }: AssetsUI) => (
     <>
       {card && <Info icon="info_outline" {...card} card={!isExtension} />}
       {available && <AvailableList {...available} />}
+      {tokens && <AvailableList {...tokens} />}
       {vesting && <VestingList {...vesting} />}
     </>
   )

@@ -1,23 +1,21 @@
 import React from 'react'
 import c from 'classnames'
-import { DisplayCoin } from '@terra-money/use-station'
+import { AvailableItem } from '@terra-money/use-station'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AmountCard from './AmountCard'
 import Send from '../../post/Send'
 import s from './Available.module.scss'
 
-interface Props {
-  denom: string
-  display: DisplayCoin
+interface Props extends AvailableItem {
   buttonLabel: string
 }
 
-const Available = ({ denom, display, buttonLabel }: Props) => {
+const Available = ({ icon, denom, token, display, buttonLabel }: Props) => {
   const { modal } = useApp()
 
   const renderButton = () => {
-    const openModal = () => modal.open(<Send denom={denom} />)
+    const openModal = () => modal.open(<Send denom={denom || token || ''} />)
     const className = c('btn btn-primary btn-sm', s.button)
 
     return (
@@ -27,7 +25,7 @@ const Available = ({ denom, display, buttonLabel }: Props) => {
     )
   }
 
-  return <AmountCard {...display} button={renderButton()} />
+  return <AmountCard icon={icon} {...display} button={renderButton()} />
 }
 
 export default Available

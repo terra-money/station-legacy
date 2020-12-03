@@ -16,12 +16,15 @@ const TerraIcon: Dictionary<string> = { SDT, UST, KRT, MNT }
 
 interface Props extends DisplayCoin {
   button: ReactNode
+  icon?: string
 }
 
-const AmountCard: FC<Props> = ({ unit, value, button, children }) => {
+const AmountCard: FC<Props> = ({ unit, value, button, children, ...props }) => {
   const size = { width: 24, height: 24 }
 
-  const icon = TerraIcon[unit] ? (
+  const icon = props.icon ? (
+    <img src={props.icon} className={s.icon} alt="" {...size} />
+  ) : TerraIcon[unit] ? (
     <img src={TerraIcon[unit]} alt="" {...size} />
   ) : unit === 'Luna' ? (
     <Luna {...size} />
