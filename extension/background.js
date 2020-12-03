@@ -158,7 +158,10 @@ const openPopup = () => {
       (tab) => {
         tabId = tab.id
         extension.windows.getCurrent((window) => {
-          const config = { ...popup, tabId: tab.id, top: window.top }
+          const top = Math.max(window.top, 0) || 0
+          const left = Math.max(window.left + (window.width - 480), 0) || 0
+
+          const config = { ...popup, tabId: tab.id, top, left }
           extension.windows.create(config)
         })
       }
