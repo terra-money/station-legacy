@@ -21,7 +21,7 @@ export default (
     <Route path="/history" component={Txs} />
     <Route path="/staking" component={Staking} />
     <Route path="/validator/:address" component={Validator} />
-    <Route path="/market" component={Market} />
+    <Route path="/swap" component={Market} />
     <Route path="/governance" component={Governance} />
     <Route path="/proposal/:id" component={Proposal} />
     <Route path="/contracts" component={Contracts} />

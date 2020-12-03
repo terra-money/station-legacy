@@ -8,7 +8,7 @@ import Price from './Price'
 import RateList from './RateList'
 
 const Market = () => {
-  const { Market: title } = useMenu()
+  const { Swap: title } = useMenu()
   const { error, loading, ui, swap } = useMarket()
 
   const render = (actives: string[]) => (
