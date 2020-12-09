@@ -49,7 +49,7 @@ const Recover = ({ generated }: { generated?: Seed }) => {
       {generated ? (
         <Warning {...warning} attrs={{ checked, onChange: toggle }} />
       ) : (
-        <Mnemonics {...mnemonics} />
+        <Mnemonics {...mnemonics}  />
       )}
     </Form>
   )

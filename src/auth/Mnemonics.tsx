@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Mnemonics as Props } from '@terra-money/use-station'
+import InvalidFeedback from '../components/InvalidFeedback'
 import Mnemonic from './Mnemonic'
 import s from './Mnemonics.module.scss'
 
-const Mnemonics = ({ title, fields, paste, suggest }: Props) => {
+const Mnemonics = ({ title, fields, warning, paste, suggest }: Props) => {
   const [currentFocusIndex, setCurrentFocusIndex] = useState<number>()
 
   return (
@@ -35,6 +36,10 @@ const Mnemonics = ({ title, fields, paste, suggest }: Props) => {
           />
         ))}
       </ul>
+
+      {warning && (
+        <InvalidFeedback className={s.warning}>{warning}</InvalidFeedback>
+      )}
     </section>
   )
 }
