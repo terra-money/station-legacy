@@ -177,9 +177,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
         success: false,
         error: {
           code: 3,
-          message: error.response
-            ? error.response.data?.error /* error on tx */
-            : error.message,
+          message:
+            error.response?.data?.error /* error on tx */ ?? error.message,
         },
       })
     }
