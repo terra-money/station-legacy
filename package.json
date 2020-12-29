@@ -13,7 +13,7 @@
     "@sentry/browser": "^5.27.4",
     "@terra-money/ledger-terra-js": "^1.1",
     "@terra-money/terra.js": "^1.2.1",
-    "@terra-money/use-station": "^4.5.7",
+    "@terra-money/use-station": "^4.5.8",
     "@types/chrome": "^0.0.126",
     "@types/numeral": "^0.0.28",
     "@ungap/url-search-params": "^0.2",
