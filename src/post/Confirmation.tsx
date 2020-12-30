@@ -92,6 +92,7 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
             {...fee.input.attrs}
             className="form-control form-control-sm"
             onChange={(e) => fee.input.setValue(e.target.value)}
+            readOnly
           />
           <div className="input-group-append">
             <span className="input-group-text">
