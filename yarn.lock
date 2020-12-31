@@ -2740,10 +2740,10 @@
     utf-8-validate "^5.0.2"
     ws "^7.3.1"
 
-"@terra-money/use-station@^4.5.9":
-  version "4.5.9"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.5.9.tgz#c830595d988c1a94f588deff1888aca43692cb3f"
-  integrity sha512-ApQFijppp0T/7SD+w2AcNI562t2R/BlH/31DhvghOiQEwg4Id/bagkOkCm1uKJGFF2GjLIBbxrbagxqkX8aUKw==
+"@terra-money/use-station@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.5.10.tgz#1c012aabddcbf49c7b7598ac99a58a5fb41502b6"
+  integrity sha512-2gIUFZ4T9BhGG66GaofyU5WfAYR9YRhddD5kPxxXjushTfxnH3ldqVsZ04sSV+x3IZPCG/xHG5HxuPqd8nmMGA==
   dependencies:
     "@apollo/client" "^3.2.7"
     axios "^0.21.0"
