@@ -15,7 +15,7 @@ interface Props {
   renderField?: (field: FieldProps) => ReactNode
 }
 
-const Form: FC<Props> = ({ form, message, contents, ...props }) => {
+const FormSwap: FC<Props> = ({ form, message, contents, ...props }) => {
   const { fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled
 
@@ -24,7 +24,6 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
     onSubmit?.()
   }
 
-  const n = 2
   const [left, right] = contents
 
   return (
@@ -36,7 +35,7 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
 
       <div className="row">
         <section className="col col-5">
-          {fields.slice(0, n).map((field) => (
+          {fields.slice(0, 2).map((field) => (
             <Field field={field} key={field.attrs.id} />
           ))}
 
@@ -50,7 +49,7 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
         </section>
 
         <section className="col col-5">
-          {fields.slice(n).map((field) => (
+          {fields.slice(2, 4).map((field) => (
             <Field field={field} key={field.attrs.id} />
           ))}
 
@@ -69,4 +68,4 @@ const Form: FC<Props> = ({ form, message, contents, ...props }) => {
   )
 }
 
-export default Form
+export default FormSwap

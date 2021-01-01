@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react'
-import { useSwap, useInfo, User } from '@terra-money/use-station'
+import c from 'classnames'
+import { last } from 'ramda'
+import { useSwap, useInfo, User, Field } from '@terra-money/use-station'
 import { useApp } from '../hooks'
 import WithAuth from '../auth/WithAuth'
 import Confirm from '../components/Confirm'
@@ -13,25 +15,34 @@ import Pop from '../components/Pop'
 import Confirmation from './Confirmation'
 import s from './Swap.module.scss'
 
-const Component = ({ actives, user }: Props & { user: User }) => {
+interface ComponentProps extends Props {
+  title: string
+  user: User
+}
+
+const Component = ({ actives, user, title }: ComponentProps) => {
   const { modal } = useApp()
   const { ERROR } = useInfo()
   const { error, loading, form, confirm, ui } = useSwap(user, actives)
-  const { message, max, spread, receive } = ui!
+  const { message, max, spread } = ui!
 
   /* render */
+  const pop = (
+    <Pop type="tooltip" placement="top" width={340} content={spread.text}>
+      {({ ref, getAttrs }) => (
+        <Icon
+          name="info"
+          forwardRef={ref}
+          {...getAttrs({ className: s.icon })}
+        />
+      )}
+    </Pop>
+  )
+
   const spreadTitle = (
     <Flex>
       {spread.title}
-      <Pop type="tooltip" placement="top" width={340} content={spread.text}>
-        {({ ref, getAttrs }) => (
-          <Icon
-            name="info"
-            forwardRef={ref}
-            {...getAttrs({ className: s.icon })}
-          />
-        )}
-      </Pop>
+      {spread.text && pop}
     </Flex>
   )
 
@@ -41,12 +52,7 @@ const Component = ({ actives, user }: Props & { user: User }) => {
         { heading: max.title, ...max.display, onClick: max.attrs.onClick },
       ]}
     />,
-    <Table
-      rows={[
-        { heading: spreadTitle, ...spread },
-        { heading: receive.title, ...receive },
-      ]}
-    />,
+    <Table rows={[{ heading: spreadTitle, ...spread }]} />,
   ]
 
   const onSubmit = () => {
@@ -54,16 +60,33 @@ const Component = ({ actives, user }: Props & { user: User }) => {
     confirm && modal.open(<Confirmation confirm={confirm} modal={modal} />)
   }
 
+  const renderRadio = ({ attrs, options, setValue }: Field) => {
+    return (
+      !attrs.hidden &&
+      options!.map(({ value, children }) => (
+        <button
+          className={c('badge', value === attrs.value && 'badge-primary')}
+          onClick={() => setValue!(value)}
+          key={value}
+        >
+          {children}
+        </button>
+      ))
+    )
+  }
+
   return error ? (
     <Confirm {...ERROR} />
   ) : loading ? (
     <Loading />
   ) : form ? (
-    <FormSwap
-      form={{ ...form, onSubmit }}
-      message={message}
-      contents={contents}
-    />
+    <Card title={title} actions={renderRadio(last(form.fields)!)} bordered>
+      <FormSwap
+        form={{ ...form, onSubmit }}
+        message={message}
+        contents={contents}
+      />
+    </Card>
   ) : null
 }
 
@@ -73,9 +96,7 @@ interface Props {
 }
 
 const Swap = (props: Props) => (
-  <Card title={props.title} bordered>
-    <WithAuth>{(user) => <Component {...props} user={user} />}</WithAuth>
-  </Card>
+  <WithAuth>{(user) => <Component {...props} user={user} />}</WithAuth>
 )
 
 export default Swap
