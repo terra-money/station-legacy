@@ -20,6 +20,7 @@ const list: Dictionary<string> = {
   terravaloper1c9ye54e3pzwm3e0zpdlel6pnavrj9qqvq89r3r: 'Earn@StakeWith.Us',
   terravaloper1fhx7y75643tze8dxf4m9gwhkxn955q8r7vxjel: 'enquiry@solidstake.io',
   terravaloper1fjuvyccn8hfmn5r7wc2t3kwqy09zzp6tyjcf50: 'contact@delightlabs.io',
+  terravaloper1g6g0v23c6tv75ygk5za4s2ewwestdfj0k2cy2x: 'contact@sabai.finance',
   terravaloper1gh7wpfpsjrqnash5uc84z4njt95y9g5nh3uqzx: 'team@genesislab.net',
   terravaloper1h6rf7y2ar5vz64q8rchz5443s3tqnswrpf4846: 'staked@staked.us',
   terravaloper1hz754zdldnrrhp3qpfan3l2dxkcv5cgkuzqq9v: 'info@consensusnetworks.com',
