@@ -2763,10 +2763,10 @@
     utf-8-validate "^5.0.2"
     ws "^7.4.2"
 
-"@terra-money/use-station@^4.8.0":
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.8.0.tgz#12697e13ac78bf261dee513ed94e61dd4ad82d13"
-  integrity sha512-euck8o+/Hn2/2f9NA+1H84l8mb2SUcq8+u/7vuVKSMwnbEs3NBBn+CaAzKixE1HuJaZma/yU2OQvJhpxaERRsQ==
+"@terra-money/use-station@^4.8.1":
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.8.1.tgz#040a6d6a5e3febc40286979aaf5c6c49ec66a52a"
+  integrity sha512-/tQyqyw9cHscDCIbcyGBEYe5a1tnMKTfiUP2zyizcfXZkTw/ZL5UFZh3LpxvATEM8KRzSC+jseeoQU34h4mH1g==
   dependencies:
     "@apollo/client" "^3.3.6"
     "@mirror-protocol/mirror.js" "^1.1.2"
