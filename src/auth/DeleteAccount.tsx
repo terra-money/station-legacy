@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth, useManageAccounts } from '@terra-money/use-station'
+import { useAuth, useManageAccounts } from '../use-station/src'
 import { loadKeys, storeKeys } from '../utils/localStorage'
 import Confirm from '../components/Confirm'
 

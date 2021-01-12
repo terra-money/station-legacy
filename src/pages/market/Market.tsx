@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMarket, useMenu } from '@terra-money/use-station'
+import { useMarket, useMenu } from '../../use-station/src'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Page from '../../components/Page'

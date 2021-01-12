@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useAuth, User } from '@terra-money/use-station'
+import { useAuth, User } from '../use-station/src'
 import PleaseSignIn from '../components/PleaseSignIn'
 
 interface Props {

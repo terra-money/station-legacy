@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInfo, PostPage } from '@terra-money/use-station'
+import { useInfo, PostPage } from '../use-station/src'
 import { useApp } from '../hooks'
 import Form, { Props as FormProps } from '../components/Form'
 import ModalContent from '../components/ModalContent'

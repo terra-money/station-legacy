@@ -1,5 +1,5 @@
 import React from 'react'
-import { ConfirmLedger as Props } from '@terra-money/use-station'
+import { ConfirmLedger as Props } from '../use-station/src'
 import ProgressCircle from '../components/ProgressCircle'
 import Icon from '../components/Icon'
 import Copy from '../components/Copy'

@@ -1,5 +1,5 @@
 import semver from 'semver'
-import { AuthMenuKey } from '@terra-money/use-station'
+import { AuthMenuKey } from '../use-station/src'
 import { electron } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
 import { REQUIRED_ELECTRON_APP_VERSION } from '../wallet/ledger'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSignIn } from '@terra-money/use-station'
+import { useSignIn } from '../use-station/src'
 import { loadKeys, testPassword } from '../utils/localStorage'
 import Form from '../components/Form'
 

@@ -1,5 +1,5 @@
 import React, { InputHTMLAttributes } from 'react'
-import { Trans, SignUpWarning } from '@terra-money/use-station'
+import { Trans, SignUpWarning } from '../use-station/src'
 import Pop from '../components/Pop'
 import Flex from '../components/Flex'
 import Icon from '../components/Icon'

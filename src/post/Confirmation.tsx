@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { ConfirmProps, format } from '@terra-money/use-station'
-import { useConfirm, useAuth } from '@terra-money/use-station'
+import { ConfirmProps, format } from '../use-station/src'
+import { useConfirm, useAuth } from '../use-station/src'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import ModalContent from '../components/ModalContent'

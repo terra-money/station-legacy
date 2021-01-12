@@ -1,6 +1,6 @@
 import React, { ReactNode, CSSProperties } from 'react'
 import c from 'classnames'
-import { percent, sum, gt } from '@terra-money/use-station'
+import { percent, sum, gt } from '../use-station/src'
 import s from './FlexTable.module.scss'
 
 type Props = {

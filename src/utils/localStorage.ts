@@ -1,5 +1,5 @@
 import { mergeRight as merge, omit } from 'ramda'
-import { Wallet } from '@terra-money/use-station'
+import { Wallet } from '../use-station/src'
 import { encrypt, decrypt } from './terra-keystore'
 
 /* keys */

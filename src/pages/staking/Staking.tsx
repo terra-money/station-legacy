@@ -1,6 +1,6 @@
 import React from 'react'
-import { useMenu, useStaking, useAuth } from '@terra-money/use-station'
-import { StakingPersonal } from '@terra-money/use-station'
+import { useMenu, useStaking, useAuth } from '../../use-station/src'
+import { StakingPersonal } from '../../use-station/src'
 import { useApp, useSearch } from '../../hooks'
 import Withdraw from '../../post/Withdraw'
 import ValidatorList from '../validators/ValidatorList'

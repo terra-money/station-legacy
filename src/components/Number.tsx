@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { format, DisplayCoin } from '@terra-money/use-station'
+import { format, DisplayCoin } from '../use-station/src'
 
 interface Props extends Partial<DisplayCoin> {
   children?: string

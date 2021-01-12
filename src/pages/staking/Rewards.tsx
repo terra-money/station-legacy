@@ -1,5 +1,5 @@
 import React from 'react'
-import { RewardsTable } from '@terra-money/use-station'
+import { RewardsTable } from '../../use-station/src'
 import Table from '../../components/Table'
 import Number from '../../components/Number'
 

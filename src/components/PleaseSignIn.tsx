@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { useInfo, Trans } from '@terra-money/use-station'
+import { useInfo, Trans } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import { useApp } from '../hooks'
 import Info from './Info'

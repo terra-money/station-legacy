@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { ContractUI } from '@terra-money/use-station'
+import { ContractUI } from '../../use-station/src'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import ActionBar from '../../components/ActionBar'

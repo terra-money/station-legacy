@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery } from '@terra-money/use-station'
+import { useQuery } from '../use-station/src'
 import { useApp } from '../hooks'
 import ModalContent from '../components/ModalContent'
 import Confirm from '../components/Confirm'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { ValidatorUI } from '@terra-money/use-station'
+import { ValidatorUI } from '../../use-station/src'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import { ReactComponent as New } from './New.svg'
 import { ReactComponent as Check } from './Check.svg'

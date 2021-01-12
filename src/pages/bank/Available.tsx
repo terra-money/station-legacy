@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { AvailableItem } from '@terra-money/use-station'
+import { AvailableItem } from '../../use-station/src'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AmountCard from './AmountCard'

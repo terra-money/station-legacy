@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AuthMenuKey } from '@terra-money/use-station'
+import { AuthMenuKey } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import Recover from './Recover'
 import SignUp from './SignUp'

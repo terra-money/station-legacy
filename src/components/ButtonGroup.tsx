@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react'
 import c from 'classnames'
-import { format } from '@terra-money/use-station'
+import { format } from '../use-station/src'
 import s from './ButtonGroup.module.scss'
 
 interface Props {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import semver from 'semver'
-import { useSocket, Block } from '@terra-money/use-station'
+import { useSocket, Block } from '../use-station/src'
 import Flex from '../components/Flex'
 import ExtLink from '../components/ExtLink'
 import Icon from '../components/Icon'

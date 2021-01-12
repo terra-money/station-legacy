@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react'
 import PaginationButtons from './PaginationButtons'
-import { Pagination as PaginationParams } from '@terra-money/use-station'
-import { toNumber, ceil, div, minus, plus, gt } from '@terra-money/use-station'
+import { Pagination as PaginationParams } from '../use-station/src'
+import { toNumber, ceil, div, minus, plus, gt } from '../use-station/src'
 
 type Props = {
   title?: string

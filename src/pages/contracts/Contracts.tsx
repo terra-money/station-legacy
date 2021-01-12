@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react'
-import { ContractsUI, ContractUI, is } from '@terra-money/use-station'
-import { useMenu, useContract, useContracts } from '@terra-money/use-station'
+import { ContractsUI, ContractUI, is } from '../../use-station/src'
+import { useMenu, useContract, useContracts } from '../../use-station/src'
 import { useApp, useGoBack } from '../../hooks'
 import Page from '../../components/Page'
 import Info from '../../components/Info'

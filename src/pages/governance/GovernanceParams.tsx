@@ -1,5 +1,5 @@
 import React from 'react'
-import { GovernanceParamUI } from '@terra-money/use-station'
+import { GovernanceParamUI } from '../../use-station/src'
 import Displays from '../../components/Displays'
 
 const Footer = ({ list }: { list: GovernanceParamUI[] }) => (

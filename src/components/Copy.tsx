@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import c from 'classnames'
-import { useText } from '@terra-money/use-station'
+import { useText } from '../use-station/src'
 import Icon from './Icon'
 import { Tooltip } from './Pop'
 import tooltipStyle from './Pop.module.scss'

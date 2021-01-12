@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import c from 'classnames'
-import { useMenu, ErrorBoundary } from '@terra-money/use-station'
+import { useMenu, ErrorBoundary } from '../use-station/src'
 import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import { isExtension } from '../utils/env'
 import { useExtension } from '../extension/useExtension'

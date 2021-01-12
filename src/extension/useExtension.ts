@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { without, uniq, update, isNil } from 'ramda'
 import extension from 'extensionizer'
-import { createContext } from '@terra-money/use-station'
+import { createContext } from '../use-station/src'
 
 /* request & response */
 export interface TxOptionsData {

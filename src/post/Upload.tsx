@@ -1,5 +1,5 @@
 import React from 'react'
-import { useUpload, useAuth } from '@terra-money/use-station'
+import { useUpload, useAuth } from '../use-station/src'
 import Post from './Post'
 
 const Upload = () => {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { WithdrawProps } from '@terra-money/use-station'
-import { useWithdraw, useAuth } from '@terra-money/use-station'
+import { WithdrawProps } from '../use-station/src'
+import { useWithdraw, useAuth } from '../use-station/src'
 import Post from './Post'
 
 const Withdraw = ({ amounts, from }: WithdrawProps) => {

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import c from 'classnames'
-import { ProposalUI } from '@terra-money/use-station'
+import { ProposalUI } from '../../use-station/src'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import { getBadgeColor } from '../governance/helpers'

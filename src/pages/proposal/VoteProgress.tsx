@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import c from 'classnames'
-import { VoteProgressBar } from '@terra-money/use-station'
+import { VoteProgressBar } from '../../use-station/src'
 import s from './VoteProgress.module.scss'
 
 const Flag: FC<{ left: string }> = ({ left, children }) => {

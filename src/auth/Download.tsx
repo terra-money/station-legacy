@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useDownload } from '@terra-money/use-station'
+import { useDownload } from '../use-station/src'
 import { ReactComponent as Mac } from './Mac.svg'
 import { ReactComponent as Windows } from './Windows.svg'
 import s from './Download.module.scss'

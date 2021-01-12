@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { DisplaySelector as Props } from '@terra-money/use-station'
+import { DisplaySelector as Props } from '../../use-station/src'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import Select from '../../components/Select'

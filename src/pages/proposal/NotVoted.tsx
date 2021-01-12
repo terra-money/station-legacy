@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { NotVoted as Props } from '@terra-money/use-station'
+import { NotVoted as Props } from '../../use-station/src'
 import validators from '../../validators'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'

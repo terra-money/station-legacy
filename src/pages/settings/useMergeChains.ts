@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda'
-import { ChainOptions } from '@terra-money/use-station'
+import { ChainOptions } from '../../use-station/src'
 import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
 

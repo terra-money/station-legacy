@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VestingItemUI } from '@terra-money/use-station'
+import { VestingItemUI } from '../../use-station/src'
 import Icon from '../../components/Icon'
 import AmountCard from './AmountCard'
 import Schedule from './Schedule'

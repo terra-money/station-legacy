@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDashboard, DashboardUI } from '@terra-money/use-station'
+import { useDashboard, DashboardUI } from '../../use-station/src'
 import Prices from './Prices'
 import TaxRate from './TaxRate'
 import DisplaySelector from './DisplaySelector'

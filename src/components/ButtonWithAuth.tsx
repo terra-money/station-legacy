@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import c from 'classnames'
-import { useAuth, useText } from '@terra-money/use-station'
+import { useAuth, useText } from '../use-station/src'
 import Pop from './Pop'
 import s from './ButtonWithName.module.scss'
 

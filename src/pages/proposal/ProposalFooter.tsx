@@ -1,5 +1,5 @@
 import React from 'react'
-import { TallyingUI } from '@terra-money/use-station'
+import { TallyingUI } from '../../use-station/src'
 import Card from '../../components/Card'
 import s from './ProposalFooter.module.scss'
 

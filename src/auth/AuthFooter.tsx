@@ -1,5 +1,5 @@
 import React from 'react'
-import { AuthMenuUI, Trans } from '@terra-money/use-station'
+import { AuthMenuUI, Trans } from '../use-station/src'
 import { useAuthModal } from './useAuthModal'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'

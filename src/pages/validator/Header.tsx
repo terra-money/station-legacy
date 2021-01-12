@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { ValidatorUI } from '@terra-money/use-station'
+import { ValidatorUI } from '../../use-station/src'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'

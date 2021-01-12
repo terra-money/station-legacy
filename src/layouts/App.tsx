@@ -8,9 +8,9 @@ import { without } from 'ramda'
 import axios from 'axios'
 import c from 'classnames'
 
-import { useConfigState, ConfigProvider, User } from '@terra-money/use-station'
-import { useAuthState, AuthProvider } from '@terra-money/use-station'
-import { LangKey } from '@terra-money/use-station'
+import { useConfigState, ConfigProvider, User } from '../use-station/src'
+import { useAuthState, AuthProvider } from '../use-station/src'
+import { LangKey } from '../use-station/src'
 
 import { Chains } from '../chains'
 import { electron, report } from '../utils'

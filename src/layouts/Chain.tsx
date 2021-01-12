@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Fragment, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import c from 'classnames'
-import { useConfig, useNodeInfo } from '@terra-money/use-station'
+import { useConfig, useNodeInfo } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'

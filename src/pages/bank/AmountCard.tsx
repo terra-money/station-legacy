@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react'
 import { Dictionary } from 'ramda'
-import { DisplayCoin } from '@terra-money/use-station'
+import { DisplayCoin } from '../../use-station/src'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Luna } from '../../images/Luna.svg'
 import { ReactComponent as Terra } from '../../images/Terra.svg'

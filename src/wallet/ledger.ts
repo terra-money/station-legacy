@@ -259,7 +259,7 @@ export const getPubKey = async () => {
 
   const response = await app.getAddressAndPubKey(path, 'terra')
   checkLedgerErrors(response)
-  return Buffer.from(response.compressed_pk)
+  return Buffer.from(response.compressed_pk as any)
 }
 
 export const showAddressInLedger = async () => {
@@ -293,7 +293,7 @@ export const sign = async (signMessage: string) => {
   }
 
   const { signature } = await app.sign(path, signMessage)
-  return Buffer.from(signatureImport(Buffer.from(signature)))
+  return Buffer.from(signatureImport(Buffer.from(signature as any)))
 }
 
 const isWindows = (platform: string) => platform.indexOf('Win') > -1

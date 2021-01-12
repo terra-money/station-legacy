@@ -1,4 +1,4 @@
-import { createContext } from '@terra-money/use-station'
+import { createContext } from '../use-station/src'
 
 interface AuthModal {
   modalActions: {

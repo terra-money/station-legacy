@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { useInfo } from '@terra-money/use-station'
+import { useInfo } from '../use-station/src'
 import Info from './Info'
 
 const ErrorComponent: FC<{ card?: boolean }> = ({ card, children }) => {

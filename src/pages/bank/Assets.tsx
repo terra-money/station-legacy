@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAssets, AssetsUI, User } from '@terra-money/use-station'
+import { useAssets, AssetsUI, User } from '../../use-station/src'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import { useRemovePadding } from '../../hooks'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { UndelegationsTable } from '@terra-money/use-station'
+import { UndelegationsTable } from '../../use-station/src'
 import Table from '../../components/Table'
 import Number from '../../components/Number'
 

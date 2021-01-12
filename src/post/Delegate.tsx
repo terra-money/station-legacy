@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth, useDelegate } from '@terra-money/use-station'
+import { useAuth, useDelegate } from '../use-station/src'
 import Post from './Post'
 
 interface Props {

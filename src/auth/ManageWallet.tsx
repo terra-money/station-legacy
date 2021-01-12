@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
-import { useAuth, useManageAccounts } from '@terra-money/use-station'
+import { useAuth, useManageAccounts } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import ModalContent from '../components/ModalContent'
 import ChangePassword from './ChangePassword'

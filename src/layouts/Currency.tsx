@@ -1,5 +1,5 @@
 import React from 'react'
-import { useConfig } from '@terra-money/use-station'
+import { useConfig } from '../use-station/src'
 import { localSettings } from '../utils/localStorage'
 import ConfigSelector from './ConfigSelector'
 

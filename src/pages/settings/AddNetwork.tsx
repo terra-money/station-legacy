@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useForm, useConfig } from '@terra-money/use-station'
+import { useForm, useConfig } from '../../use-station/src'
 import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
 import Form from '../../components/Form'

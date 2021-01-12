@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import c from 'classnames'
-import { Card } from '@terra-money/use-station'
+import { Card } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import { useRemovePadding } from '../hooks'
 import Icon from '../components/Icon'

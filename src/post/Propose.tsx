@@ -1,5 +1,5 @@
 import React from 'react'
-import { usePropose, useAuth } from '@terra-money/use-station'
+import { usePropose, useAuth } from '../use-station/src'
 import Post from './Post'
 
 const Propose = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignInWithAddress } from '@terra-money/use-station'
+import { useSignInWithAddress } from '../use-station/src'
 import Form from '../components/Form'
 import RecentAddresses from './RecentAddresses'
 

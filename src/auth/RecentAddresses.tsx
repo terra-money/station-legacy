@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRecentAddresses } from '@terra-money/use-station'
+import { useRecentAddresses } from '../use-station/src'
 import { localSettings } from '../utils/localStorage'
 import Icon from '../components/Icon'
 import ButtonGroup from '../components/ButtonGroup'

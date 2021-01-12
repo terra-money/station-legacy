@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { useAuth, useText, useConfig } from '@terra-money/use-station'
+import { useAuth, useText, useConfig } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'

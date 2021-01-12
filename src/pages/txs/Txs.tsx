@@ -1,6 +1,6 @@
 import React from 'react'
-import { TxType, TxsUI, User } from '@terra-money/use-station'
-import { useMenu, useTxs, useTxTypes } from '@terra-money/use-station'
+import { TxType, TxsUI, User } from '../../use-station/src'
+import { useMenu, useTxs, useTxTypes } from '../../use-station/src'
 import { useTabs } from '../../hooks'
 import WithAuth from '../../auth/WithAuth'
 import Page from '../../components/Page'

@@ -3,7 +3,7 @@ import { path } from 'ramda'
 import mergeDeep from 'deepmerge'
 import debounce from 'lodash/fp/debounce'
 import ChartJS, { ChartOptions, ChartXAxe, ChartYAxe } from 'chart.js'
-import { times, format } from '@terra-money/use-station'
+import { times, format } from '../use-station/src'
 
 type ChartType = 'doughnut' | 'line' | 'pie'
 export type Props = {

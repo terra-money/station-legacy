@@ -1,5 +1,5 @@
 import React from 'react'
-import { VoteUI, percent } from '@terra-money/use-station'
+import { VoteUI, percent } from '../../use-station/src'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import VoteChart from '../governance/VoteChart'

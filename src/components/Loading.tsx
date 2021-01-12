@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInfo } from '@terra-money/use-station'
+import { useInfo } from '../use-station/src'
 import Info from './Info'
 import ProgressCircle from './ProgressCircle'
 import { isExtension } from '../utils/env'

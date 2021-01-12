@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
-import { SignUpNext, Seed } from '@terra-money/use-station'
-import { useSignUp } from '@terra-money/use-station'
+import { SignUpNext, Seed } from '../use-station/src'
+import { useSignUp } from '../use-station/src'
 import { generateAddresses, generateWallet } from '../utils'
 import { importKey, loadKeys } from '../utils/localStorage'
 import { useExtensionGoBack } from '../extension/useExtension'
@@ -49,7 +49,7 @@ const Recover = ({ generated }: { generated?: Seed }) => {
       {generated ? (
         <Warning {...warning} attrs={{ checked, onChange: toggle }} />
       ) : (
-        <Mnemonics {...mnemonics}  />
+        <Mnemonics {...mnemonics} />
       )}
     </Form>
   )

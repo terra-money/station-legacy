@@ -1,5 +1,5 @@
 import React from 'react'
-import { ValidatorUI } from '@terra-money/use-station'
+import { ValidatorUI } from '../../use-station/src'
 import Card from '../../components/Card'
 import ExtLink from '../../components/ExtLink'
 import s from './Informations.module.scss'

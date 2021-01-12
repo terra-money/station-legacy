@@ -1,7 +1,7 @@
 import React from 'react'
 import { path } from 'ramda'
 import { ChartPoint, ChartTooltipCallback } from 'chart.js'
-import { VoteOption, percent, toNumber, gt } from '@terra-money/use-station'
+import { VoteOption, percent, toNumber, gt } from '../../use-station/src'
 import Chart from '../../components/Chart'
 import Orb from '../../components/Orb'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { percent, gt, min } from '@terra-money/use-station'
+import { percent, gt, min } from '../use-station/src'
 import { ReactComponent as Tilde } from '../images/Tilde.svg'
 import Icon from './Icon'
 import s from './Orb.module.scss'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StakingRatioUI } from '@terra-money/use-station'
+import { StakingRatioUI } from '../../use-station/src'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 

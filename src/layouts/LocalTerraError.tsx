@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInfo } from '@terra-money/use-station'
+import { useInfo } from '../use-station/src'
 import Logo from '../images/LocalTerraLogo.png'
 import ModalContent from '../components/ModalContent'
 import Confirm from '../components/Confirm'

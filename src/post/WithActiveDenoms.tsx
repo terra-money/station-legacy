@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useActiveDenoms } from '@terra-money/use-station'
+import { useActiveDenoms } from '../use-station/src'
 
 interface Props {
   children: (denoms: string[]) => ReactNode

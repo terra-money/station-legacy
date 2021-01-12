@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Mnemonics as Props } from '@terra-money/use-station'
+import { Mnemonics as Props } from '../use-station/src'
 import InvalidFeedback from '../components/InvalidFeedback'
 import Mnemonic from './Mnemonic'
 import s from './Mnemonics.module.scss'

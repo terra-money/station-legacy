@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { VoterUI, format } from '@terra-money/use-station'
+import { VoterUI, format } from '../../use-station/src'
 import ExtLink from '../../components/ExtLink'
 
 interface Props {

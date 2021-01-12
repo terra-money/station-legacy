@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, ErrorInfo } from 'react'
 import * as Sentry from '@sentry/browser'
-import { ErrorBoundary as Component, useText } from '@terra-money/use-station'
+import { ErrorBoundary as Component, useText } from '../use-station/src'
 
 interface Props {
   fallback?: ReactNode

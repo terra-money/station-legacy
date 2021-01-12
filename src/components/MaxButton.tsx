@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react'
-import { DisplayCoin } from '@terra-money/use-station'
+import { DisplayCoin } from '../use-station/src'
 import Number from './Number'
 
 interface Props {
