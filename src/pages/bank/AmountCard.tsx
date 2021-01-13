@@ -8,11 +8,12 @@ import SDT from '../../images/SDT.png'
 import UST from '../../images/UST.png'
 import KRT from '../../images/KRT.png'
 import MNT from '../../images/MNT.png'
+import EUT from '../../images/EUT.png'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import s from './AmountCard.module.scss'
 
-const TerraIcon: Dictionary<string> = { SDT, UST, KRT, MNT }
+const TerraIcon: Dictionary<string> = { SDT, UST, KRT, MNT, EUT }
 
 interface Props extends DisplayCoin {
   button: ReactNode
