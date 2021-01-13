@@ -35,9 +35,11 @@ const FormSwap: FC<Props> = ({ form, message, contents, ...props }) => {
 
       <div className="row">
         <section className="col col-5">
-          {fields.slice(0, 2).map((field) => (
-            <Field field={field} key={field.attrs.id} />
-          ))}
+          <div style={{ position: 'relative' }}>
+            {fields.slice(0, 2).map((field) => (
+              <Field field={field} key={field.attrs.id} />
+            ))}
+          </div>
 
           {left}
         </section>
