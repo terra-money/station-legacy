@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda'
-import { ChainOptions } from '@terra-money/use-station'
+import { ChainOptions } from './use-station/src'
 
 export const Chains: Dictionary<ChainOptions> = {
   mainnet: {
