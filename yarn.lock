@@ -2842,7 +2842,7 @@
     bech32 "^1.1.3"
     ripemd160 "^2.0.2"
 
-"@terra-money/terra.js@^1.3.3", "@terra-money/terra.js@^1.3.4":
+"@terra-money/terra.js@^1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@terra-money/terra.js/-/terra.js-1.3.4.tgz#61c92a0459183d941a4cee56e4ab6719116aceb1"
   integrity sha512-jLOeifQXexNvzz3Hrcxfzvlzg3roD/G6k50ft90uVfcxfgTrugJi449Gg5YbwkAZt4XSfn7DXI6OfoAcv1I+Xw==
@@ -2859,29 +2859,6 @@
     tmp "^0.2.1"
     utf-8-validate "^5.0.2"
     ws "^7.3.1"
-
-"@terra-money/use-station@^4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@terra-money/use-station/-/use-station-4.8.1.tgz#040a6d6a5e3febc40286979aaf5c6c49ec66a52a"
-  integrity sha512-/tQyqyw9cHscDCIbcyGBEYe5a1tnMKTfiUP2zyizcfXZkTw/ZL5UFZh3LpxvATEM8KRzSC+jseeoQU34h4mH1g==
-  dependencies:
-    "@apollo/client" "^3.3.6"
-    "@mirror-protocol/mirror.js" "^1.1.2"
-    "@terra-money/terra.js" "^1.3.3"
-    axios "^0.21.1"
-    bech32 "^1.1.4"
-    bignumber.js "^9.0.1"
-    date-fns "^2.16.1"
-    ethers "^5.0.21"
-    graphql "^15.4.0"
-    i18next "^19.8.3"
-    i18next-browser-languagedetector "^6.0.1"
-    luxon "^1.25.0"
-    numeral "^2.0.6"
-    qs "^6.9.4"
-    ramda "^0.27.1"
-    socketcluster-client "^14"
-    tiny-invariant "^1.1.0"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -7233,7 +7210,7 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-ethers@^5.0.21, ethers@^5.0.25:
+ethers@^5.0.25:
   version "5.0.25"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.0.25.tgz#584b17bf51ee37b21ca43026ad34b1212bf165f9"
   integrity sha512-KDbqCgTpOJADHZYVdBPOf/XD3o+BFhqbtXuIOvWhNTzGYrkIYgLIEoRQCFVZBtw+GvyV/poSXk0cBD+Rn0+/AA==
@@ -8706,7 +8683,7 @@ i18next-browser-languagedetector@^6.0.1:
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-i18next@^19.8.3, i18next@^19.8.4:
+i18next@^19.8.4:
   version "19.8.4"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.4.tgz#447718f2a26319b8debdbcc6fbc1a9761be7316b"
   integrity sha512-FfVPNWv+felJObeZ6DSXZkj9QM1Ivvh7NcFCgA8XPtJWHz0iXVa9BUy+QY8EPrCLE+vWgDfV/sc96BgXVo6HAA==
