@@ -5,6 +5,11 @@
   margin-bottom: 25px;
 }
 
+.list {
+  height: 240px;
+  overflow-y: scroll;
+}
+
 .row {
   @include flex(space-between);
   font-size: 14px;
