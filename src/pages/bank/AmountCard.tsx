@@ -1,19 +1,10 @@
-import React, { FC, ReactNode } from 'react'
-import { Dictionary } from 'ramda'
+import React, { FC, ReactNode, useState } from 'react'
 import { DisplayCoin } from '../../use-station/src'
 import { isExtension } from '../../utils/env'
-import { ReactComponent as Luna } from '../../images/Luna.svg'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
-import SDT from '../../images/SDT.png'
-import UST from '../../images/UST.png'
-import KRT from '../../images/KRT.png'
-import MNT from '../../images/MNT.png'
-import EUT from '../../images/EUT.png'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import s from './AmountCard.module.scss'
-
-const TerraIcon: Dictionary<string> = { SDT, UST, KRT, MNT, EUT }
 
 interface Props extends DisplayCoin {
   button: ReactNode
@@ -21,14 +12,15 @@ interface Props extends DisplayCoin {
 }
 
 const AmountCard: FC<Props> = ({ unit, value, button, children, ...props }) => {
+  const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
+
+  const src = `https://assets.terra.money/icon/60/${unit}.png`
 
   const icon = props.icon ? (
     <img src={props.icon} className={s.icon} alt="" {...size} />
-  ) : TerraIcon[unit] ? (
-    <img src={TerraIcon[unit]} alt="" {...size} />
-  ) : unit === 'Luna' ? (
-    <Luna {...size} />
+  ) : !iconError ? (
+    <img src={src} onError={() => setIconError(true)} alt="" {...size} />
   ) : (
     <Terra {...size} />
   )
