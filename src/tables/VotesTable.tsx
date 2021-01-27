@@ -2,14 +2,13 @@ import React from 'react'
 import { Dictionary } from 'ramda'
 import { VotesTable, VoteContent } from '../use-station/src'
 import { TableUI } from '../use-station/src'
-import { useVotes, useVoteOptions, format } from '../use-station/src'
+import { useVotes, useVoteOptions } from '../use-station/src'
 import { useTabs } from '../hooks'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
 import Card from '../components/Card'
 import Table from '../components/Table'
-import ExtLink from '../components/ExtLink'
 import Voter from '../pages/proposal/Voter'
 
 const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
@@ -18,17 +17,16 @@ const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
   const { error, ui } = useVotes({ id, option: currentTab, page })
 
   const renderHeadings = (headings: VotesTable['headings']) => {
-    const { voter, answer, hash } = headings
+    const { voter, answer } = headings
     return (
       <tr>
         <th>{voter}</th>
         <th>{answer}</th>
-        <th className="text-right">{hash}</th>
       </tr>
     )
   }
 
-  const renderRow = ({ voter, answer, hash }: VoteContent, index: number) => {
+  const renderRow = ({ voter, answer }: VoteContent, index: number) => {
     return (
       <tr key={index}>
         <td>
@@ -36,12 +34,6 @@ const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
         </td>
 
         <td>{answer}</td>
-
-        <td className="text-right">
-          <ExtLink href={hash.link}>
-            {format.truncate(hash.text, [14, 13])}
-          </ExtLink>
-        </td>
       </tr>
     )
   }
