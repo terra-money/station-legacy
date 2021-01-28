@@ -22,7 +22,7 @@ const ProposerHeader = ({ title, status, ...rest }: ProposalUI) => {
           <p className={s.meta}>
             {meta}
             <strong>
-              <Voter voter={proposer} noTruncate />
+              <Voter voter={proposer} />
             </strong>
           </p>
 

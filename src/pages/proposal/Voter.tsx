@@ -1,14 +1,13 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { VoterUI, format } from '../../use-station/src'
+import { VoterUI } from '../../use-station/src'
 import ExtLink from '../../components/ExtLink'
 
 interface Props {
   voter: VoterUI
-  noTruncate?: boolean
 }
 
-const Voter = ({ voter, noTruncate }: Props) => {
+const Voter = ({ voter }: Props) => {
   const { pathname: from } = useLocation()
   const { address } = voter
 
@@ -17,9 +16,7 @@ const Voter = ({ voter, noTruncate }: Props) => {
       {voter.moniker}
     </Link>
   ) : (
-    <ExtLink href={voter.link}>
-      {noTruncate ? address : format.truncate(address, [7, 6])}
-    </ExtLink>
+    <ExtLink href={voter.link}>{address}</ExtLink>
   )
 }
 
