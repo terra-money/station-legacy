@@ -3,6 +3,7 @@ import { Dictionary } from 'ramda'
 // prettier-ignore
 const list: Dictionary<string> = {
   terravaloper103ra79dl2un2ltknhyz7crm5y29g4vhmycfwv9: 'co_staking@neoply.com',
+  terravaloper12079m57cew2v02zs624zvyed5479an9wxh03fy: '0@0base.vc',
   terravaloper123gn6j23lmexu0qx5qhmgxgunmjcqsx8gmsyse: 'go@staking.fund',
   terravaloper12jpzzmwthrljcvm48adncspxtchazkl8vah7u4: 'contact@synergynodes.com',
   terravaloper12kfeqrflptmlz5qj8agrm2ze6dzss3crm7uevf: 'huobipool@huobi.com',
