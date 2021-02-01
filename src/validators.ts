@@ -41,6 +41,7 @@ const list: Dictionary<string> = {
   terravaloper1nwrksgv2vuadma8ygs8rhwffu2ygk4j24w2mku: 'hello@stakin.com',
   terravaloper1pc0gs3n6803x7jqe9m7etegmyx29xw38aaf3u7: 'hello@staker.space',
   terravaloper1sym8gyehrdsm03vdc44rg9sflg8zeuqwfzavhx: 'support@syncnode.ro',
+  terravaloper1t90gxaawul292g2vvqnr3g0p39tw5v6vsk5p96: 'hello@terrabit.es',
   terravaloper1tusfpgvjrplqg2fm7wacy4slzjmnzswcfufuvp: 'contact@nodeateam.com',
   terravaloper1u3gcqh4xqcdfkcu82nrk9u75x8vtvcz7xafgpy: 'contact@infinitystones.io',
   terravaloper1uhjx34pfsxk9xh34yn8p2w4469uqdz067rqu5g: 'hello@umbrellavalidator.com',
