@@ -6,6 +6,7 @@ import ModalContent from '../components/ModalContent'
 import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import AuthMenu from './AuthMenu'
+import GenerateQRCode from './GenerateQRCode'
 
 interface Props {
   modalActions: { close: () => void }
@@ -28,9 +29,11 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
     ? () => goBack()
     : () => setCurrentIndex(-1)
 
+  const renderQRCode = () => <GenerateQRCode />
   const renderChangePassword = () => (
     <ChangePassword onFinish={onFinishSubmenu} />
   )
+
   const renderDeleteAccount = () => <DeleteAccount onFinish={onFinishSubmenu} />
 
   /* render */
@@ -42,6 +45,12 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
     onClick?: () => void
   }[] = !user?.ledger
     ? [
+        {
+          title: 'Export with QR code',
+          icon: 'qr_code',
+          path: '/qrcode',
+          render: renderQRCode,
+        },
         {
           title: manage.password.tooltip,
           icon: 'lock',
@@ -85,6 +94,7 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
       <Route path={path + '/'} exact render={renderMenu} />
       <Route path={path + '/password'} render={renderChangePassword} />
       <Route path={path + '/delete'} render={renderDeleteAccount} />
+      <Route path={path + '/qrcode'} render={renderQRCode} />
     </Switch>
   ) : (
     <ModalContent {...modal}>
