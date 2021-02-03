@@ -57,6 +57,12 @@ const GenerateQRCode = () => {
     },
   }
 
+  const data = JSON.stringify({
+    name: user!.name,
+    address: user!.address,
+    privateKey: key,
+  })
+
   return !key ? (
     <Form form={formProps} />
   ) : (
@@ -64,7 +70,7 @@ const GenerateQRCode = () => {
       <h1 className={styles.title}>Export with QR code</h1>
 
       <Component
-        value={key}
+        value={data}
         size={320}
         bgColor="#f4f5fb"
         fgColor="#2043b5"
