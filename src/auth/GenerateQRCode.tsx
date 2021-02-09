@@ -7,7 +7,7 @@ import { getStoredWallet } from '../utils/localStorage'
 import { encrypt } from '../utils/terra-keystore'
 import Form from '../components/Form'
 import styles from './GenerateQRCode.module.scss'
-
+import { encode } from 'js-base64'
 interface Values {
   password: string
 }
@@ -57,11 +57,13 @@ const GenerateQRCode = () => {
     },
   }
 
-  const data = JSON.stringify({
-    name: user!.name,
-    address: user!.address,
-    privateKey: key,
-  })
+  const data = `terrastation://wallet_recover/?payload=${encode(
+    JSON.stringify({
+      name: user!.name,
+      address: user!.address,
+      encrypted_key: key,
+    })
+  )}`
 
   return !key ? (
     <Form form={formProps} />

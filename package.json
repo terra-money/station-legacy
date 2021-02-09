@@ -3,7 +3,7 @@
   "engines": {
     "node": ">=14.x"
   },
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "A desktop application to interact with Terra Core.",
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "license": "ISC",
@@ -36,6 +36,7 @@
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "intersection-observer": "^0.11.0",
+    "js-base64": "^3.6.0",
     "lodash": "^4.17.20",
     "luxon": "^1.25.0",
     "numeral": "^2.0.6",
