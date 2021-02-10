@@ -1,7 +1,7 @@
 {
   "name": "station",
   "engines": {
-    "node": "14.x"
+    "node": ">=14.x"
   },
   "version": "4.1.0",
   "description": "A desktop application to interact with Terra Core.",
