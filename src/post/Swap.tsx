@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react'
-import c from 'classnames'
-import { last } from 'ramda'
-import { useSwap, useInfo, User, Field } from '../use-station/src'
+import { useSwap, useInfo, User } from '../use-station/src'
 import { useApp } from '../hooks'
 import WithAuth from '../auth/WithAuth'
 import Confirm from '../components/Confirm'
@@ -24,7 +22,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
   const { modal } = useApp()
   const { ERROR } = useInfo()
   const { error, loading, form, confirm, ui } = useSwap(user, actives)
-  const { message, max, spread } = ui!
+  const { mode, expectedPrice, message, max, spread } = ui!
 
   /* render */
   const pop = (
@@ -52,7 +50,12 @@ const Component = ({ actives, user, title }: ComponentProps) => {
         { heading: max.title, ...max.display, onClick: max.attrs.onClick },
       ]}
     />,
-    <Table rows={[{ heading: spreadTitle, ...spread }]} />,
+    <Table
+      rows={[
+        { heading: expectedPrice.title, content: expectedPrice.text },
+        { heading: spreadTitle, ...spread },
+      ]}
+    />,
   ]
 
   const onSubmit = () => {
@@ -60,27 +63,14 @@ const Component = ({ actives, user, title }: ComponentProps) => {
     confirm && modal.open(<Confirmation confirm={confirm} modal={modal} />)
   }
 
-  const renderRadio = ({ attrs, options, setValue }: Field) => {
-    return (
-      !attrs.hidden &&
-      options!.map(({ value, children }) => (
-        <button
-          className={c('badge', value === attrs.value && 'badge-primary')}
-          onClick={() => setValue!(value)}
-          key={value}
-        >
-          {children}
-        </button>
-      ))
-    )
-  }
+  const renderMode = () => <span className="badge">{mode}</span>
 
   return error ? (
     <Confirm {...ERROR} />
   ) : loading ? (
     <Loading />
   ) : form ? (
-    <Card title={title} actions={renderRadio(last(form.fields)!)} bordered>
+    <Card title={title} actions={renderMode()} bordered>
       <FormSwap
         form={{ ...form, onSubmit }}
         message={message}
@@ -104,15 +94,16 @@ export default Swap
 /* helpers */
 interface RowItem {
   heading: ReactNode
-  value: string
+  value?: string
   unit?: string
+  content?: string
   onClick?: () => void
 }
 
 const Table = ({ rows }: { rows: RowItem[] }) => (
   <table className={s.table}>
     <tbody>
-      {rows.map(({ heading, value, unit, onClick }, index) => {
+      {rows.map(({ heading, value, unit, content, onClick }, index) => {
         const number = <Number unit={unit}>{value}</Number>
         const button = (
           <button type="button" className="text-underline" onClick={onClick}>
@@ -120,7 +111,13 @@ const Table = ({ rows }: { rows: RowItem[] }) => (
           </button>
         )
 
-        return <Row th={heading} td={onClick ? button : number} key={index} />
+        return (
+          <Row
+            th={heading}
+            td={content ?? (onClick ? button : number)}
+            key={index}
+          />
+        )
       })}
     </tbody>
   </table>
