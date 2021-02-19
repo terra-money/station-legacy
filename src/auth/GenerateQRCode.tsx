@@ -78,6 +78,10 @@ const GenerateQRCode = () => {
         fgColor="#2043b5"
         includeMargin
       />
+
+      <p className={styles.warn}>
+        {t('Auth:Manage:Keep this QR code private')}
+      </p>
     </div>
   )
 }
