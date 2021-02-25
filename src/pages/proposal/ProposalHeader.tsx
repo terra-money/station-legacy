@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import c from 'classnames'
+import xss from 'xss'
 import { ProposalUI } from '../../use-station/src'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
@@ -53,7 +54,9 @@ export default ProposerHeader
 
 /* helpers */
 const linkify = (text: string) =>
-  text.replace(
-    /(https?:\/\/[^\s]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  xss(
+    text.replace(
+      /(https?:\/\/[^\s]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
   )
