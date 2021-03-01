@@ -26,7 +26,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
 
   /* render */
   const pop = (
-    <Pop type="tooltip" placement="top" width={340} content={spread.text}>
+    <Pop type="tooltip" placement="top" width={340} content={spread?.tooltip}>
       {({ ref, getAttrs }) => (
         <Icon
           name="info"
@@ -39,22 +39,27 @@ const Component = ({ actives, user, title }: ComponentProps) => {
 
   const spreadTitle = (
     <Flex>
-      {spread.title}
-      {spread.text && pop}
+      {spread?.title}
+      {spread?.tooltip && pop}
     </Flex>
   )
 
   const contents: ReactNode[] = [
     <Table
-      rows={[
-        { heading: max.title, ...max.display, onClick: max.attrs.onClick },
-      ]}
+      rows={
+        max
+          ? [{ heading: max.title, ...max.display, onClick: max.attrs.onClick }]
+          : []
+      }
     />,
     <Table
-      rows={[
-        { heading: expectedPrice.title, content: expectedPrice.text },
-        { heading: spreadTitle, ...spread },
-      ]}
+      rows={([] as RowItem[])
+        .concat(
+          expectedPrice
+            ? { heading: expectedPrice.title, content: expectedPrice.text }
+            : []
+        )
+        .concat(spread ? { heading: spreadTitle, ...spread } : [])}
     />,
   ]
 
@@ -94,6 +99,7 @@ export default Swap
 /* helpers */
 interface RowItem {
   heading: ReactNode
+  text?: string
   value?: string
   unit?: string
   content?: string
@@ -103,8 +109,8 @@ interface RowItem {
 const Table = ({ rows }: { rows: RowItem[] }) => (
   <table className={s.table}>
     <tbody>
-      {rows.map(({ heading, value, unit, content, onClick }, index) => {
-        const number = <Number unit={unit}>{value}</Number>
+      {rows.map(({ heading, text, value, unit, content, onClick }, index) => {
+        const number = text ?? <Number unit={unit}>{value}</Number>
         const button = (
           <button type="button" className="text-underline" onClick={onClick}>
             {number}
