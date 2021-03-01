@@ -34,6 +34,10 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
     focus && inputRef.current!.focus()
   }, [focus])
 
+  const handleWheel = () => {
+    inputRef.current?.blur()
+  }
+
   /* event */
   type InputElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   const handleChange = (e: ChangeEvent<InputElement>) => {
@@ -81,6 +85,7 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
       className="form-control"
       onChange={handleChange}
       onFocus={onFocus}
+      onWheel={handleWheel}
       ref={inputRef}
     />
   )
