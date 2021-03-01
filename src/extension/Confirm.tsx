@@ -1,17 +1,8 @@
 import React, { useState, Fragment, ReactNode } from 'react'
 import c from 'classnames'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import {
-  CreateTxOptions,
-  Msg,
-  TxInfo,
-  StdFee,
-  Key,
-  PublicKey,
-  StdSignMsg,
-  StdSignature,
-  StdTx,
-} from '@terra-money/terra.js'
+import { CreateTxOptions } from '@terra-money/terra.js'
+import { Msg, TxInfo, StdFee, StdTx } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { useAuth, useConfig } from '../use-station/src'
@@ -25,42 +16,13 @@ import { PW, isPreconfigured } from '../layouts/Preconfigured'
 import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
+import LedgerKey from './LedgerKey'
 import s from './Confirm.module.scss'
 
 interface Props extends RecordedExtSign {
   user: User
   pagination: ReactNode
   onFinish: (params: Partial<ExtSign>) => void
-}
-
-class LedgerKey extends Key {
-  public sign(): Promise<Buffer> {
-    throw new Error(
-      'LedgerKey does not use sign() -- use createSignature() directly.'
-    )
-  }
-
-  public async createSignature(tx: StdSignMsg): Promise<StdSignature> {
-    const pubkeyBuffer = await ledger.getPubKey()
-
-    if (!pubkeyBuffer) {
-      throw new Error('failed getting public key from ledger')
-    }
-
-    const signatureBuffer = await ledger.sign(tx.toJSON())
-
-    if (!signatureBuffer) {
-      throw new Error('failed signing from ledger')
-    }
-
-    return new StdSignature(
-      signatureBuffer.toString('base64'),
-      PublicKey.fromData({
-        type: 'tendermint/PubKeySecp256k1',
-        value: pubkeyBuffer.toString('base64'),
-      })
-    )
-  }
 }
 
 const Component = ({ requestType, details, ...props }: Props) => {
