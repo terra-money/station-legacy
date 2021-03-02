@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react'
 import { useHistory } from 'react-router-dom'
 import { StakingUI } from '../../use-station/src'
 import { ValidatorListHeading } from '../../use-station/src'
+import useValidators from '../../use-station/src/hooks/useValidators'
 import { useSearch } from '../../hooks'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
@@ -11,6 +12,7 @@ import renderItem from './renderItem'
 type Attr = { align?: 'center' | 'right'; style: CSSProperties }
 
 const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
+  const { data: validators } = useValidators()
   const { rank, moniker, votingPower, selfDelegation, commission } = headings
   const { delegationReturn, uptime, myDelegation } = headings
   const { replace } = useHistory()
@@ -59,7 +61,7 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
 
           return heading?.sorter ? button : index ? title : ''
         })}
-        body={contents.map((content) => renderItem(content))}
+        body={contents.map((content) => renderItem(content, validators))}
         attrs={Columns.map(([, attr]) => attr)}
         scrollX
         hover

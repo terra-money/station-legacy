@@ -1,17 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
+import { Dictionary } from 'ramda'
 import { ValidatorUI } from '../../use-station/src'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import { ReactComponent as New } from './New.svg'
 import { ReactComponent as Check } from './Check.svg'
-import validators from '../../validators'
 import Number from '../../components/Number'
 import Pop from '../../components/Pop'
 import DelegationTooltip from '../staking/DelegationTooltip'
 import s from './renderItem.module.scss'
 
-const renderItem = (props: ValidatorUI) => {
+const renderItem = (props: ValidatorUI, validators?: Dictionary<string>) => {
   const { rank, profile, operatorAddress, moniker } = props
   const { votingPower, selfDelegation, commission, delegationReturn } = props
   const { uptime, myDelegations, myUndelegations, myActionsTable } = props
@@ -76,7 +76,7 @@ const renderItem = (props: ValidatorUI) => {
         {moniker}
       </Link>
 
-      {!!validators[operatorAddress.address] && <Check className={s.check} />}
+      {!!validators?.[operatorAddress.address] && <Check className={s.check} />}
     </h1>,
     <span className={s.percent}>{votingPower.percent}</span>,
     <span className={s.percent}>{selfDelegation.percent}</span>,
