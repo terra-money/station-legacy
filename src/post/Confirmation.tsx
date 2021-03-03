@@ -31,6 +31,11 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
     },
   })
 
+  const onFinish = () => {
+    onResult?.()
+    modal.close()
+  }
+
   /* prevent to close modal */
   useEffect(() => {
     modal.prevent(!!form.submitting)
@@ -117,7 +122,7 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
         form={form}
         ledger={ledger}
         result={result}
-        onFinish={modal.close}
+        onFinish={onFinish}
       />
     </ModalContent>
   )

@@ -21,7 +21,7 @@ interface ComponentProps extends Props {
 const Component = ({ actives, user, title }: ComponentProps) => {
   const { modal } = useApp()
   const { ERROR } = useInfo()
-  const { error, loading, form, confirm, ui } = useSwap(user, actives)
+  const { error, load, loading, form, confirm, ui } = useSwap(user, actives)
   const { mode, expectedPrice, message, max, spread } = ui!
 
   /* render */
@@ -65,7 +65,10 @@ const Component = ({ actives, user, title }: ComponentProps) => {
 
   const onSubmit = () => {
     form?.onSubmit?.()
-    confirm && modal.open(<Confirmation confirm={confirm} modal={modal} />)
+    confirm &&
+      modal.open(
+        <Confirmation confirm={confirm} modal={modal} onResult={load} />
+      )
   }
 
   const renderMode = () => <span className="badge">{mode}</span>
