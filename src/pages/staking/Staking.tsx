@@ -26,11 +26,13 @@ const Staking = () => {
   const { error, loading, personal, ui } = useStaking(user, getInitialSorter())
 
   const renderButton = ({ withdrawAll }: StakingPersonal) => {
-    const { attrs, amounts } = withdrawAll
+    const { attrs, amounts, validators } = withdrawAll
     return (
       <ButtonWithAuth
         {...attrs}
-        onClick={() => modal.open(<Withdraw amounts={amounts} />)}
+        onClick={() =>
+          modal.open(<Withdraw amounts={amounts} validators={validators} />)
+        }
         placement="bottom"
         className="btn btn-primary btn-sm"
       />

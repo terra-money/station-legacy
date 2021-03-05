@@ -31,7 +31,10 @@ const Actions = (v: ValidatorUI) => {
     withdraw: () =>
       myRewards.amounts &&
       modal.open(
-        <Withdraw from={operatorAddress.address} amounts={myRewards.amounts} />
+        <Withdraw
+          amounts={myRewards.amounts}
+          validators={[operatorAddress.address]}
+        />
       ),
   }
 
