@@ -54,7 +54,7 @@ const Depositors = ({ id }: { id: string }) => {
 
   return (
     <Card title={title} bordered fixedHeight>
-      {error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}
+      {error ? <ErrorComponent error={error} /> : ui ? render(ui) : <Loading />}
     </Card>
   )
 }

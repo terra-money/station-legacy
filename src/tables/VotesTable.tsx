@@ -51,7 +51,7 @@ const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
 
   return (
     <Card title={renderTabs()} bordered fixedHeight>
-      {error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}
+      {error ? <ErrorComponent error={error} /> : ui ? render(ui) : <Loading />}
     </Card>
   )
 }

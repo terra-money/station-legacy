@@ -57,7 +57,7 @@ const Proposal = () => {
   return (
     <Page title={title} action={ui && <Actions {...ui} />}>
       {error ? (
-        <ErrorComponent card />
+        <ErrorComponent error={error} card />
       ) : loading ? (
         <Loading card />
       ) : (

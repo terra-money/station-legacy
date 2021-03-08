@@ -45,7 +45,7 @@ const Validator = () => {
   return (
     <Page title={title}>
       {error ? (
-        <ErrorComponent />
+        <ErrorComponent error={error} />
       ) : loading ? (
         <Loading card />
       ) : (

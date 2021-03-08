@@ -1,12 +1,12 @@
-import React from 'react'
 import { useDashboard, DashboardUI } from '../../use-station/src'
+import ErrorComponent from '../../components/ErrorComponent'
 import Prices from './Prices'
 import TaxRate from './TaxRate'
 import DisplaySelector from './DisplaySelector'
 import StakingRatio from './StakingRatio'
 
 const Columns = () => {
-  const { ui } = useDashboard()
+  const { ui, error } = useDashboard()
 
   const render = (ui: DashboardUI) => (
     <div className="row">
@@ -32,7 +32,7 @@ const Columns = () => {
     </div>
   )
 
-  return ui ? render(ui) : null
+  return error ? <ErrorComponent error={error} /> : ui ? render(ui) : null
 }
 
 export default Columns

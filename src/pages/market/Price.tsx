@@ -79,7 +79,13 @@ const Price = () => {
       actions={renderActions()}
       bodyClassName={c(ui?.price && s.body)}
     >
-      {error ? <ErrorComponent /> : ui ? render(ui) : loading && <Loading />}
+      {error ? (
+        <ErrorComponent error={error} />
+      ) : ui ? (
+        render(ui)
+      ) : (
+        loading && <Loading />
+      )}
     </Card>
   )
 }

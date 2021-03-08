@@ -30,7 +30,7 @@ const Market = () => {
   return (
     <Page title={title}>
       {error ? (
-        <ErrorComponent card />
+        <ErrorComponent error={error} card />
       ) : loading ? (
         <Loading card />
       ) : (

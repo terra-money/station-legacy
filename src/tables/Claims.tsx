@@ -75,7 +75,7 @@ const Claims = ({ address }: { address: string }) => {
 
   return (
     <Card title={title} bordered>
-      {error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}
+      {error ? <ErrorComponent error={error} /> : ui ? render(ui) : <Loading />}
     </Card>
   )
 }

@@ -34,7 +34,7 @@ const List = ({ user }: { user: User }) => {
 
   return (
     <Card title={renderTabs()} bordered>
-      {error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}
+      {error ? <ErrorComponent error={error} /> : ui ? render(ui) : <Loading />}
     </Card>
   )
 }

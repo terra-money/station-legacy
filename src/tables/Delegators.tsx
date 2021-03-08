@@ -56,7 +56,7 @@ const Delegators = ({ address }: { address: string }) => {
 
   return (
     <Card title={title} bodyClassName={s.delegator} bordered>
-      {error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}
+      {error ? <ErrorComponent error={error} /> : ui ? render(ui) : <Loading />}
     </Card>
   )
 }

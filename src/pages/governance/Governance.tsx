@@ -45,7 +45,7 @@ const Governance = () => {
         bordered
       >
         {error ? (
-          <ErrorComponent />
+          <ErrorComponent error={error} />
         ) : loading ? (
           <Loading />
         ) : ui?.message ? (

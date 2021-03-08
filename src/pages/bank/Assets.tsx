@@ -25,7 +25,7 @@ const Assets = ({ user }: { user: User }) => {
   )
 
   return error ? (
-    <ErrorComponent />
+    <ErrorComponent error={error} />
   ) : loading ? (
     <Loading card />
   ) : ui ? (

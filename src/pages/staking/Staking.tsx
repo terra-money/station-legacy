@@ -60,7 +60,13 @@ const Staking = () => {
 
   return (
     <Page title={title} action={personal && renderButton(personal)}>
-      {error ? <ErrorComponent card /> : loading ? <Loading card /> : render()}
+      {error ? (
+        <ErrorComponent error={error} card />
+      ) : loading ? (
+        <Loading card />
+      ) : (
+        render()
+      )}
     </Page>
   )
 }

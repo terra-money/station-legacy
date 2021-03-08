@@ -1,12 +1,24 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
+import { AxiosError } from 'axios'
 import { useInfo } from '../use-station/src'
+import { FORBIDDEN } from '../use-station/src/components/ErrorBoundary'
+import { getIsForbidden } from '../use-station/src/components/ErrorBoundary'
 import Info from './Info'
 
-const ErrorComponent: FC<{ card?: boolean }> = ({ card, children }) => {
+interface Props {
+  card?: boolean
+  error?: Error | AxiosError
+}
+
+const ErrorComponent: FC<Props> = ({ card, children, error }) => {
   const { ERROR } = useInfo()
   const props = { icon: 'sentiment_very_dissatisfied', card }
 
-  return children ? (
+  const isForbidden = error && getIsForbidden(error)
+
+  return isForbidden ? (
+    <Info {...ERROR} {...props} content={FORBIDDEN} />
+  ) : children ? (
     <Info {...props}>{children}</Info>
   ) : (
     <Info {...ERROR} {...props} />

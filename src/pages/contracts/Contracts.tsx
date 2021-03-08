@@ -76,7 +76,15 @@ const Contracts = () => {
 
   return (
     <Page title={title} action={buttons}>
-      <Card>{error ? <ErrorComponent /> : ui ? render(ui) : <Loading />}</Card>
+      <Card>
+        {error ? (
+          <ErrorComponent error={error} />
+        ) : ui ? (
+          render(ui)
+        ) : (
+          <Loading />
+        )}
+      </Card>
     </Page>
   )
 }

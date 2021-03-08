@@ -41,7 +41,7 @@ const Recover = ({ generated }: { generated?: Seed }) => {
   useExtensionGoBack(goBack)
 
   return error ? (
-    <ErrorComponent>{error.message}</ErrorComponent>
+    <ErrorComponent error={error}>{error.message}</ErrorComponent>
   ) : next ? (
     renderNext(next)
   ) : (
