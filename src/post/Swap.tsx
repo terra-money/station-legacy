@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { useSwap, useInfo, User } from '../use-station/src'
 import { useApp } from '../hooks'
 import WithAuth from '../auth/WithAuth'
@@ -10,6 +10,8 @@ import Number from '../components/Number'
 import Flex from '../components/Flex'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'
+import ButtonWithAuth from '../components/ButtonWithAuth'
+import SwapMultiple from './SwapMultiple'
 import Confirmation from './Confirmation'
 import s from './Swap.module.scss'
 
@@ -22,7 +24,8 @@ const Component = ({ actives, user, title }: ComponentProps) => {
   const { modal } = useApp()
   const { ERROR } = useInfo()
   const { error, load, loading, form, confirm, ui } = useSwap(user, actives)
-  const { mode, expectedPrice, message, max, spread } = ui!
+  const { bank, pairs, mode, expectedPrice, message, max, spread } = ui!
+  const { label } = ui!
 
   /* render */
   const pop = (
@@ -67,7 +70,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
     form?.onSubmit?.()
     confirm &&
       modal.open(
-        <Confirmation confirm={confirm} modal={modal} onResult={load} />
+        <Confirmation confirm={confirm} modal={modal} onFinish={load} />
       )
   }
 
@@ -84,6 +87,22 @@ const Component = ({ actives, user, title }: ComponentProps) => {
         message={message}
         contents={contents}
       />
+
+      <hr />
+
+      {bank && pairs && (
+        <ButtonWithAuth
+          className={s.all}
+          onClick={() =>
+            modal.open(
+              <SwapMultiple bank={bank} pairs={pairs} onFinish={load} />
+            )
+          }
+        >
+          <Icon name="bolt" size={24} className={s.icon} />
+          {label.multipleSwap}
+        </ButtonWithAuth>
+      )}
     </Card>
   ) : null
 }

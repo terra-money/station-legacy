@@ -42,6 +42,7 @@ form > header {
     cursor: pointer;
     font-size: 12px;
     position: relative;
+    user-select: none;
   }
 
   label:before,

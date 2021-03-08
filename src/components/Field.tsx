@@ -16,7 +16,7 @@ import s from './Field.module.scss'
 interface Props {
   field: FieldProps
   focus?: boolean
-  className?: { select?: string }
+  className?: { select?: string; checkbox?: string }
   onFocus?: (e: FocusEvent) => void
   render?: (field: FieldProps) => ReactNode
 }
@@ -103,7 +103,10 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
     <>
       <input {...attrs} className="form-check-input" onChange={handleChange} />
 
-      <label className="form-check-label" htmlFor={attrs.id}>
+      <label
+        className={c('form-check-label', props.className?.checkbox)}
+        htmlFor={attrs.id}
+      >
         {label}
       </label>
     </>

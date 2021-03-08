@@ -12,10 +12,10 @@ import ConfirmationComponent from './ConfirmationComponent'
 interface Props {
   confirm: ConfirmProps
   modal: Modal
-  onResult?: () => void
+  onFinish?: () => void
 }
 
-const Confirmation = ({ confirm, modal, onResult }: Props) => {
+const Confirmation = ({ confirm, modal, onFinish }: Props) => {
   const { user } = useAuth()
 
   const { contents, fee, form, ledger, result } = useConfirm(confirm, {
@@ -31,8 +31,8 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
     },
   })
 
-  const onFinish = () => {
-    onResult?.()
+  const finish = () => {
+    onFinish?.()
     modal.close()
   }
 
@@ -122,7 +122,7 @@ const Confirmation = ({ confirm, modal, onResult }: Props) => {
         form={form}
         ledger={ledger}
         result={result}
-        onFinish={onFinish}
+        onFinish={finish}
       />
     </ModalContent>
   )

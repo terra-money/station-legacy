@@ -1,7 +1,22 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
 .table {
   margin-top: 20px;
 }
 
 .icon {
   margin-left: 5px;
+}
+
+.all {
+  @include flex();
+
+  background-color: $bg;
+  border-radius: 45px;
+  color: $brand;
+  font-size: 15px;
+  font-weight: 500;
+  height: 64px;
+  width: 100%;
 }

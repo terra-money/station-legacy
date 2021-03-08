@@ -1,0 +1,53 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.list {
+  @include flex(flex-start, stretch);
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+
+.item {
+  width: 50%;
+  padding: 0 10px;
+}
+
+.inner {
+  @include flex(flex-start);
+  height: 100%;
+  border-top: 1px solid $hairline;
+  padding: 20px 7px;
+}
+
+.field {
+  flex: none;
+  margin-right: 20px;
+}
+
+.checkbox {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer {
+  $font-size: 10px;
+  $margin: 5px;
+  $line-height: 1.5;
+  $min-height: ($font-size * $line-height * 2 + $margin);
+
+  @include flex(center, flex-end);
+  flex-direction: column;
+
+  flex: 1;
+  font-size: $font-size;
+  min-height: $min-height;
+
+  .simulated {
+    @include flex;
+    margin-top: $margin;
+
+    i {
+      margin-right: 5px;
+    }
+  }
+}

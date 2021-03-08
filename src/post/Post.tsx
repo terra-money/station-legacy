@@ -10,9 +10,10 @@ import Confirmation from './Confirmation'
 interface Props {
   post: PostPage
   formProps?: Partial<FormProps>
+  onFinish?: () => Promise<void>
 }
 
-const Post = ({ post, formProps }: Props) => {
+const Post = ({ post, formProps, onFinish }: Props) => {
   const { error, loading, submitted, form, confirm } = post
   const { modal } = useApp()
   const { ERROR } = useInfo()
@@ -28,7 +29,7 @@ const Post = ({ post, formProps }: Props) => {
       {form && <Form form={form} {...formProps} />}
     </ModalContent>
   ) : confirm ? (
-    <Confirmation confirm={confirm} modal={modal} />
+    <Confirmation confirm={confirm} modal={modal} onFinish={onFinish} />
   ) : null
 }
 
