@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react'
+import { RawKey } from '@terra-money/terra.js'
 import { ConfirmProps, format } from '../use-station/src'
 import { useConfirm, useAuth } from '../use-station/src'
+import LedgerKey from '../wallet/LedgerKey'
+import { getStoredWallet } from '../utils/localStorage'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
+import * as ledgers from '../wallet/ledger'
 import ModalContent from '../components/ModalContent'
 import Select from '../components/Select'
 import Flex from '../components/Flex'
@@ -21,6 +25,17 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
   const { contents, fee, form, ledger, result } = useConfirm(confirm, {
     user: user!,
     password: isPreconfigured(user!) ? PW : '',
+    getKey: async (params) => {
+      if (user?.ledger) {
+        const key = new LedgerKey(await ledgers.getPubKey())
+        return key
+      } else {
+        const { name, password } = params!
+        const { privateKey } = getStoredWallet(name, password)
+        const key = new RawKey(Buffer.from(privateKey, 'hex'))
+        return key
+      }
+    },
     sign: async ({ tx, base, password }) => {
       const { ledger, name } = user!
       const type = ledger ? 'ledger' : 'local'

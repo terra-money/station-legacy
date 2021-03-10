@@ -16,7 +16,7 @@ import { PW, isPreconfigured } from '../layouts/Preconfigured'
 import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
-import LedgerKey from './LedgerKey'
+import LedgerKey from '../wallet/LedgerKey'
 import s from './Confirm.module.scss'
 
 interface Props extends RecordedExtSign {
