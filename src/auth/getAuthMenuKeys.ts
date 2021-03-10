@@ -2,7 +2,7 @@ import semver from 'semver'
 import { AuthMenuKey } from '../use-station/src'
 import { electron } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
-import { REQUIRED_ELECTRON_APP_VERSION } from '../use-station/src/api/ledger'
+import { REQUIRED_ELECTRON_APP_VERSION } from '../wallet/ledger'
 
 export default (): AuthMenuKey[] => {
   if (isElectron) {
