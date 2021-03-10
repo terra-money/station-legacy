@@ -42,11 +42,3 @@ $size: 38px;
   @include flex();
   width: $size;
 }
-
-.prev {
-  border-left: 1px solid $line;
-}
-
-.next {
-  border-right: 1px solid $line;
-}

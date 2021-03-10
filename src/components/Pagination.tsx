@@ -17,18 +17,14 @@ const Pagination: FC<PaginationParams & Props> = (props) => {
 
   const getLinks = () =>
     link && {
-      start: link(1),
       prev: link(toNumber(minus(page, 1))),
       next: link(toNumber(plus(page, 1))),
-      end: link(total),
     }
 
   const getActions = () =>
     action && {
-      start: () => action(1),
       prev: () => action(toNumber(minus(page, 1))),
       next: () => action(toNumber(plus(page, 1))),
-      end: () => action(total),
     }
 
   const renderEmpty = () =>

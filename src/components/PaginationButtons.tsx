@@ -26,11 +26,8 @@ const PaginationButtons = ({ current, total, links, actions }: Props) => {
   return total ? (
     <div className={s.wrapper}>
       <div className={s.component}>
-        {renderAction('start', '«', current === 1)}
         {renderAction('prev', '‹', current === 1)}
-        <span className={s.text}>{`${current} of ${total}`}</span>
         {renderAction('next', '›', current === total)}
-        {renderAction('end', '»', current === total)}
       </div>
     </div>
   ) : null
