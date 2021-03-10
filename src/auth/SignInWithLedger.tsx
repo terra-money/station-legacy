@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSignInWithLedger } from '../use-station/src'
-import * as ledger from '../wallet/ledger'
+import * as ledger from '../use-station/src/api/ledger'
 import ConfirmLedger from './ConfirmLedger'
 
 const SignInWithLedger = () => {

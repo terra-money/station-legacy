@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { ConfirmProps, format } from '../use-station/src'
 import { useConfirm, useAuth } from '../use-station/src'
+import { getStoredWallet } from '../utils/localStorage'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import ModalContent from '../components/ModalContent'
@@ -21,6 +22,10 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
   const { contents, fee, form, ledger, result } = useConfirm(confirm, {
     user: user!,
     password: isPreconfigured(user!) ? PW : '',
+    getKey: ({ name, password }) => {
+      const { privateKey } = getStoredWallet(name, password)
+      return privateKey
+    },
     sign: async ({ tx, base, password }) => {
       const { ledger, name } = user!
       const type = ledger ? 'ledger' : 'local'
