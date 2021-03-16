@@ -88,6 +88,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
           <SlippageTolerance
             value={slippageField.attrs.value!}
             setValue={slippageField.setValue!}
+            error={slippageField.error}
           />
         }
       >
