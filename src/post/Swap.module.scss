@@ -1,6 +1,15 @@
 @import '../styles/mixins';
 @import '../styles/variables';
 
+.title {
+  @include flex(flex-start);
+}
+
+.button {
+  @include flex;
+  margin-left: 10px;
+}
+
 .table {
   margin-top: 20px;
 }

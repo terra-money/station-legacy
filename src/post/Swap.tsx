@@ -13,6 +13,7 @@ import Pop from '../components/Pop'
 import ButtonWithAuth from '../components/ButtonWithAuth'
 import SwapMultiple from './SwapMultiple'
 import Confirmation from './Confirmation'
+import SlippageTolerance from './SlippageTolerance'
 import s from './Swap.module.scss'
 
 interface ComponentProps extends Props {
@@ -25,7 +26,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
   const { ERROR } = useInfo()
   const { error, load, loading, form, confirm, ui } = useSwap(user, actives)
   const { bank, pairs, mode, expectedPrice, message, max, spread } = ui!
-  const { label } = ui!
+  const { label, slippageField } = ui!
 
   /* render */
   const pop = (
@@ -76,12 +77,35 @@ const Component = ({ actives, user, title }: ComponentProps) => {
 
   const renderMode = () => <span className="badge">{mode}</span>
 
+  const renderTitle = () => (
+    <div className={s.title}>
+      {title}
+      <Pop
+        type="pop"
+        placement="bottom"
+        width={340}
+        content={
+          <SlippageTolerance
+            value={slippageField.attrs.value!}
+            setValue={slippageField.setValue!}
+          />
+        }
+      >
+        {({ ref, iconRef, getAttrs }) => (
+          <span {...getAttrs({ className: s.button })} ref={ref}>
+            <Icon name="settings" />
+          </span>
+        )}
+      </Pop>
+    </div>
+  )
+
   return error ? (
     <Confirm {...ERROR} />
   ) : loading ? (
     <Loading />
   ) : form ? (
-    <Card title={title} actions={renderMode()} bordered>
+    <Card title={renderTitle()} actions={renderMode()} bordered>
       <FormSwap
         form={{ ...form, onSubmit }}
         message={message}
