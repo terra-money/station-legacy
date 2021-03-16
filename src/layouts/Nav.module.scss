@@ -4,7 +4,6 @@
 $border-bottom: 1px solid fade-out(white, 0.9);
 
 .nav {
-  @include drag();
   background: $navy;
 }
 
@@ -23,6 +22,7 @@ $border-bottom: 1px solid fade-out(white, 0.9);
 
 .header {
   @include flex(space-between, stretch);
+  @include drag();
 
   @media (max-width: $breakpoint-large - 1) {
     height: $nav-height;
