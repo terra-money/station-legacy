@@ -196,7 +196,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
     error: passwordError,
   }
 
-  const disabled = !user.ledger && !password
+  const isDangerousTx = msgs.some(
+    (msg) => msg.toData().type === 'msgauth/MsgGrantAuthorization'
+  )
+
+  const disabled = (!user.ledger && !password) || isDangerousTx
 
   const submit = () => {
     user.ledger || testPassword(name, password)
