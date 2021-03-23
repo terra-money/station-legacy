@@ -82,6 +82,7 @@
     "@types/secp256k1": "^4",
     "@types/semver": "^7.3.4",
     "@types/socketcluster-client": "^13",
+    "cross-env": "^7.0.3",
     "husky": "^4.3.7",
     "lint-staged": "^10.5.3",
     "prettier": "^2",
@@ -100,7 +101,7 @@
     "build-storybook": "build-storybook -s public",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build-extension": "webpack --config extension/webpack.config.js",
-    "ext": "REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false react-app-rewired build && npm run build-extension"
+    "ext": "cross-env REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false react-app-rewired build && npm run build-extension"
   },
   "eslintConfig": {
     "extends": "react-app",
