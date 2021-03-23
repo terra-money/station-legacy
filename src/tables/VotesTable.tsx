@@ -3,7 +3,7 @@ import { Dictionary } from 'ramda'
 import { VotesTable, VoteContent } from '../use-station/src'
 import { TableUI } from '../use-station/src'
 import { useVotes, useVoteOptions } from '../use-station/src'
-import { useTabs } from '../hooks'
+import { usePageTabs } from '../hooks'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
@@ -13,7 +13,7 @@ import Voter from '../pages/proposal/Voter'
 
 const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
   const tabs = useVoteOptions(count)
-  const { currentTab, page, renderTabs, getLink } = useTabs('option', tabs)
+  const { currentTab, page, renderTabs, getLink } = usePageTabs('option', tabs)
   const { error, ui } = useVotes({ id, option: currentTab, page })
 
   const renderHeadings = (headings: VotesTable['headings']) => {

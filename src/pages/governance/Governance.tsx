@@ -2,7 +2,7 @@ import React from 'react'
 import { ProposalItemUI } from '../../use-station/src'
 import { useMenu } from '../../use-station/src'
 import { useGovernance, useProposalStatus } from '../../use-station/src'
-import { useTabs, useApp } from '../../hooks'
+import { usePageTabs, useApp } from '../../hooks'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Page from '../../components/Page'
@@ -18,7 +18,7 @@ const Governance = () => {
   const { modal } = useApp()
   const tabs = useProposalStatus()
   const { Governance: title } = useMenu()
-  const { currentTab, renderTabs } = useTabs('status', tabs)
+  const { currentTab, renderTabs } = usePageTabs('status', tabs)
   const { error, loading, ui, propose } = useGovernance({ status: currentTab })
 
   const button = (
