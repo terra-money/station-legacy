@@ -62,7 +62,12 @@ const Claims = ({ address }: { address: string }) => {
     )
 
     return (
-      <Pagination {...pagination} action={setPage} empty={empty}>
+      <Pagination
+        {...pagination}
+        count={table ? table.contents.length : 0}
+        action={setPage}
+        empty={empty}
+      >
         {table && (
           <Table>
             <thead>{renderHeadings(table.headings)}</thead>

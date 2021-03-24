@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom'
 import s from './PaginationButtons.module.scss'
 
 type Props = {
-  current: number
-  total: number
   links?: { [key: string]: { pathname: string; search: string } }
   actions?: { [key: string]: () => void }
 }
 
-const PaginationButtons = ({ current, total, links, actions }: Props) => {
+const PaginationButtons = ({ links, actions }: Props) => {
   const renderAction = (key: string, children: string, disabled: boolean) =>
     disabled ? (
       <span className={s[key]}>{children}</span>
@@ -23,14 +21,11 @@ const PaginationButtons = ({ current, total, links, actions }: Props) => {
       </button>
     )
 
-  return total ? (
+  return (
     <div className={s.wrapper}>
-      <div className={s.component}>
-        {renderAction('prev', '‹', current === 1)}
-        {renderAction('next', '›', current === total)}
-      </div>
+      <div className={s.component}>{renderAction('next', '›', false)}</div>
     </div>
-  ) : null
+  )
 }
 
 export default PaginationButtons

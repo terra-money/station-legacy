@@ -39,7 +39,12 @@ const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
   }
 
   const render = ({ pagination, card, table }: TableUI<VotesTable>) => (
-    <Pagination {...pagination} link={getLink} empty={card?.content}>
+    <Pagination
+      {...pagination}
+      count={table ? table.contents.length : 0}
+      link={getLink}
+      empty={card?.content}
+    >
       {table && (
         <Table>
           <thead>{renderHeadings(table.headings)}</thead>

@@ -44,7 +44,12 @@ const Delegators = ({ address }: { address: string }) => {
   }
 
   const render = ({ pagination, card, table }: TableUI<DelegatorsTable>) => (
-    <Pagination {...pagination} action={setPage} empty={card?.content}>
+    <Pagination
+      {...pagination}
+      count={table ? table.contents.length : 0}
+      action={setPage}
+      empty={card?.content}
+    >
       {table && (
         <Table>
           <thead>{renderHeadings(table.headings)}</thead>
