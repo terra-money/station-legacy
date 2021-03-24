@@ -4,6 +4,7 @@
 # production
 /build
 /dist
+/out
 
 # misc
 .DS_Store
@@ -15,6 +16,7 @@
 yarn-debug.log*
 yarn-error.log*
 .eslintcache
+tsconfig.tsbuildinfo
 
 # deployment
 /src/chains.ts
