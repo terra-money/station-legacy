@@ -6,7 +6,7 @@ import Page from '../../components/Page'
 import Info from '../../components/Info'
 import Card from '../../components/Card'
 import Loading from '../../components/Loading'
-import Pagination from '../../components/Pagination'
+import More from '../../components/More'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import ErrorComponent from '../../components/ErrorComponent'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
@@ -18,10 +18,9 @@ import Search from './Search'
 
 const Contracts = () => {
   useGoBack('/')
-  const [page, setPage] = useState(1)
   const [param, setParam] = useState<string>('') // For searching with contract address
   const [params, setParams] = useState<{ owner?: string; search?: string }>({})
-  const { error, ui, create, upload } = useContracts({ page, ...params })
+  const { error, ui, create, upload } = useContracts({ ...params })
   const contract: ContractUI | undefined = useContract(param)
   const { Contracts: title } = useMenu()
   const { modal } = useApp()
@@ -51,24 +50,25 @@ const Contracts = () => {
     />
   )
 
-  const render = ({ pagination, card, list, search: attrs }: ContractsUI) => {
+  const render = ({ card, list, search: attrs, more }: ContractsUI) => {
     return (
       <>
         <Search submit={submit} placeholder={attrs?.placeholder} />
+
         {contract ? (
           <Contract {...contract} />
         ) : (
-          <Pagination
-            {...pagination}
-            empty={card && <Info {...card} icon="info_outline" />}
-            action={setPage}
+          <More
+            isEmpty={!list?.length}
+            empty={card ? <Info {...card} icon="info_outline" /> : undefined}
+            more={more}
           >
             {list?.map((contract, index) => (
               <ErrorBoundary fallback={<ErrorComponent />} key={index}>
                 <Contract {...contract} />
               </ErrorBoundary>
             ))}
-          </Pagination>
+          </More>
         )}
       </>
     )
