@@ -11,11 +11,10 @@
   @include flex();
 }
 
-.button {
+.item {
   @include flex();
   flex-direction: column;
   flex: 1;
-  color: $brand;
   font-size: 14px;
   padding-bottom: 25px;
 
@@ -25,5 +24,46 @@
 
   & + & {
     border-left: 1px solid $line;
+  }
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: -15px;
+}
+
+.links {
+  padding-top: 23px;
+
+  svg {
+    margin-bottom: 23px;
+  }
+}
+
+.link {
+  color: $brand;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.ext {
+  background-color: $brand;
+  border-radius: 3px;
+  color: white;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 5px;
+  padding: 0 8px;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  & + & {
+    margin-left: 5px;
   }
 }
