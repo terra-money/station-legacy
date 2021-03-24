@@ -63,6 +63,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-transform-react-jsx-development": "^7.12.5",
+    "@ssen/mirror-files": "^2.0.0",
     "@types/bech32": "^1.1.2",
     "@types/chart.js": "^2.9.28",
     "@types/chrome": "^0.0.126",
@@ -101,7 +102,8 @@
     "build-storybook": "build-storybook -s public",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build-extension": "webpack --config extension/webpack.config.js",
-    "ext": "cross-env REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false react-app-rewired build && npm run build-extension"
+    "ext": "cross-env REACT_APP_ENV=extension INLINE_RUNTIME_CHUNK=false react-app-rewired build && npm run build-extension",
+    "watch-extension": "node scripts/extension.watch.js"
   },
   "eslintConfig": {
     "extends": "react-app",
