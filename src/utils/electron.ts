@@ -3,10 +3,15 @@ import { isElectron } from './env'
 declare global {
   interface Window {
     require: NodeRequire
+    electron: any
   }
 }
 
-const getElectron = (): Electron => {
+const getElectron = () => {
+  if (window?.electron?.sendSync) {
+    return window.electron.sendSync
+  }
+
   const { ipcRenderer } = window.require('electron')
   return ipcRenderer.sendSync
 }
