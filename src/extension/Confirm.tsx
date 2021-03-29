@@ -8,6 +8,7 @@ import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { useAuth, useConfig } from '../use-station/src'
 import { Field } from '../use-station/src'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
+import useTerraAssets from '../use-station/src/hooks/useTerraAssets'
 import * as ledger from '../wallet/ledger'
 import { useExtension } from './useExtension'
 import { ExtSign, RecordedExtSign, TxOptionsData } from './useExtension'
@@ -35,7 +36,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   /* chain */
   const { chain } = useConfig()
-  const { chainID, lcd: URL } = chain.current
+  const { chainID, lcd: URL, name: network } = chain.current
   const lcdClientConfig = Object.assign(
     { chainID, URL },
     gasPrices && { gasPrices }
@@ -196,9 +197,23 @@ const Component = ({ requestType, details, ...props }: Props) => {
     error: passwordError,
   }
 
-  const isDangerousTx = msgs.some(
-    (msg) => msg.toData().type === 'msgauth/MsgGrantAuthorization'
-  )
+  /* dangerous tx */
+  const { data } = useTerraAssets<
+    Dictionary<Dictionary<{ url: string; types: string[] }>>
+  >('/msgs/MsgGrantAuthorization.json')
+
+  const isDangerousTx = msgs.some((msg) => {
+    const { value } = msg.toData()
+    const MsgGrantAuthorization = data?.[network]
+
+    if (MsgGrantAuthorization && 'authorization' in value) {
+      const { grantee, authorization } = value
+      const info = MsgGrantAuthorization[grantee]
+      return !(info && info.types.includes(authorization.type))
+    }
+
+    return msg.toData().type === 'msgauth/MsgGrantAuthorization'
+  })
 
   const disabled = (!user.ledger && !password) || isDangerousTx
 
