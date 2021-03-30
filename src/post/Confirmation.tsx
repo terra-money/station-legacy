@@ -3,7 +3,7 @@ import { RawKey } from '@terra-money/terra.js'
 import { ConfirmProps, format } from '../use-station/src'
 import { useConfirm, useAuth } from '../use-station/src'
 import LedgerKey from '../extension/LedgerKey'
-import { getStoredWallet } from '../utils/localStorage'
+import { decryptWallet, getStoredWallet } from '../utils/localStorage'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import * as ledgers from '../wallet/ledger'
@@ -29,6 +29,11 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
       if (user?.ledger) {
         const key = new LedgerKey(await ledgers.getPubKey())
         return key
+      } else if (user?.wallet) {
+        // Preconfigured wallet
+        const { password } = params!
+        const { privateKey } = decryptWallet(user.wallet, password)
+        return new RawKey(Buffer.from(privateKey, 'hex'))
       } else {
         const { name, password } = params!
         const { privateKey } = getStoredWallet(name, password)
