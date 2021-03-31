@@ -9,8 +9,8 @@ import s from './Copy.module.scss'
 
 interface Payload {
   children: ReactNode
-  tooltip: string
-  clicked: boolean
+  tooltip?: string
+  clicked?: boolean
   onClick: () => void
 }
 
@@ -19,14 +19,14 @@ interface Props {
   text: string
   placement?: 'top' | 'bottom'
   noLabel?: boolean
-  payload?: Payload
+  payloads?: Payload[]
   children?: ReactNode
 }
 
 const DURATION = 1500
 
-const Copy = ({ classNames = {}, text, noLabel, payload, ...props }: Props) => {
-  const { children, placement = 'top' } = props
+const Copy = ({ classNames = {}, text, noLabel, ...props }: Props) => {
+  const { payloads, children, placement = 'top' } = props
   const { COPY, COPIED } = useText()
   const [copied, setCopied] = useState(false)
 
@@ -37,8 +37,11 @@ const Copy = ({ classNames = {}, text, noLabel, payload, ...props }: Props) => {
 
   const attrs = { text, onCopy: showTooltip }
 
-  const renderPayload = ({ children, tooltip, clicked, onClick }: Payload) => (
-    <section className={s.wrapper}>
+  const renderPayload = (
+    { children, tooltip, clicked, onClick }: Payload,
+    index: number
+  ) => (
+    <section className={s.wrapper} key={index}>
       <button className={classNames.button} onClick={onClick} type="button">
         {children}
       </button>
@@ -79,7 +82,7 @@ const Copy = ({ classNames = {}, text, noLabel, payload, ...props }: Props) => {
         )}
       </section>
 
-      {payload && renderPayload(payload)}
+      {payloads?.map(renderPayload)}
     </div>
   )
 }

@@ -9,6 +9,8 @@ import ManageWallet from '../auth/ManageWallet'
 import Copy from '../components/Copy'
 import Icon from '../components/Icon'
 import Modal from '../components/Modal'
+import ModalContent from '../components/ModalContent'
+import AddressQRCode from './AddressQRCode'
 import s from './User.module.scss'
 
 const Name = ({ children: name }: { children: string }) => {
@@ -35,18 +37,32 @@ const Name = ({ children: name }: { children: string }) => {
 
 const Address = ({ children }: { children: string }) => {
   const { VIEW_ADDRESS } = useText()
-  const payload = useViewAddress(VIEW_ADDRESS)
+  const viewAddress = useViewAddress(VIEW_ADDRESS)
+
+  const modal = useModal()
+  const showQRCode = {
+    onClick: () =>
+      modal.open(
+        <ModalContent {...modal}>
+          <AddressQRCode />
+        </ModalContent>
+      ),
+    children: <Icon name="qr_code_2" size={12} />,
+  }
 
   return !children ? null : (
-    <Copy
-      text={children}
-      classNames={{ container: s.copy, text: s.text, button: s.button }}
-      placement="bottom"
-      payload={payload}
-      noLabel
-    >
-      {children}
-    </Copy>
+    <>
+      <Copy
+        text={children}
+        classNames={{ container: s.copy, text: s.text, button: s.button }}
+        placement="bottom"
+        payloads={viewAddress ? [showQRCode, viewAddress] : [showQRCode]}
+        noLabel
+      >
+        {children}
+      </Copy>
+      <Modal {...modal}>{modal.content}</Modal>
+    </>
   )
 }
 

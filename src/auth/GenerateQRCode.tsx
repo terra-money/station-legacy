@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Component from 'qrcode.react'
+import { encode } from 'js-base64'
 import { FormUI, useAuth, useForm } from '../use-station/src'
 import validateForm from '../use-station/src/post/validateForm'
 import { getStoredWallet } from '../utils/localStorage'
 import { encrypt } from '../utils/terra-keystore'
 import Form from '../components/Form'
-import styles from './GenerateQRCode.module.scss'
-import { encode } from 'js-base64'
+import QRCode from './QRCode'
+
 interface Values {
   password: string
 }
@@ -68,21 +68,11 @@ const GenerateQRCode = () => {
   return !key ? (
     <Form form={formProps} />
   ) : (
-    <div className={styles.component}>
-      <h1 className={styles.title}>Export with QR code</h1>
-
-      <Component
-        value={data}
-        size={320}
-        bgColor="#f4f5fb"
-        fgColor="#2043b5"
-        includeMargin
-      />
-
-      <p className={styles.warn}>
-        {t('Auth:Manage:Keep this QR code private')}
-      </p>
-    </div>
+    <QRCode
+      title="Export with QR code"
+      data={data}
+      warn={t('Auth:Manage:Keep this QR code private')}
+    />
   )
 }
 
