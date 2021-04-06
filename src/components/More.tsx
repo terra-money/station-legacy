@@ -8,7 +8,7 @@ type Props = {
   more?: () => void
 }
 
-const Pagination: FC<Props> = ({ title, empty, isEmpty, more, children }) => {
+const More: FC<Props> = ({ title, empty, isEmpty, more, children }) => {
   const renderEmpty = () =>
     empty ? <>{empty}</> : <p>{title ? `No ${title}s` : 'No Data'}</p>
 
@@ -26,4 +26,4 @@ const Pagination: FC<Props> = ({ title, empty, isEmpty, more, children }) => {
   )
 }
 
-export default Pagination
+export default More
