@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
 import { ClaimsTable, ClaimContent } from '../use-station/src'
 import { TableUI } from '../use-station/src'
 import { useClaims, format } from '../use-station/src'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'
-import Pagination from '../components/Pagination'
+import More from '../components/More'
 import Card from '../components/Card'
 import Icon from '../components/Icon'
 import Table from '../components/Table'
@@ -13,8 +12,7 @@ import Number from '../components/Number'
 import s from './Claims.module.scss'
 
 const Claims = ({ address }: { address: string }) => {
-  const [page, setPage] = useState(1)
-  const { error, title, ui } = useClaims(address, { page })
+  const { error, title, ui } = useClaims(address)
 
   const renderHeadings = (headings: ClaimsTable['headings']) => {
     const { hash, type, displays, date } = headings
@@ -53,7 +51,7 @@ const Claims = ({ address }: { address: string }) => {
     )
   }
 
-  const render = ({ pagination, card, table }: TableUI<ClaimsTable>) => {
+  const render = ({ card, table, more }: TableUI<ClaimsTable>) => {
     const empty = card && (
       <p className={s.empty}>
         <Icon name="info_outline" size={30} />
@@ -62,19 +60,14 @@ const Claims = ({ address }: { address: string }) => {
     )
 
     return (
-      <Pagination
-        {...pagination}
-        count={table ? table.contents.length : 0}
-        action={setPage}
-        empty={empty}
-      >
+      <More empty={empty} more={more}>
         {table && (
           <Table>
             <thead>{renderHeadings(table.headings)}</thead>
             <tbody>{table.contents.map(renderRow)}</tbody>
           </Table>
         )}
-      </Pagination>
+      </More>
     )
   }
 

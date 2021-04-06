@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
 import { DelegatorsTable, DelegatorContent } from '../use-station/src'
 import { TableUI } from '../use-station/src'
 import { useDelegators, format } from '../use-station/src'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'
-import Pagination from '../components/Pagination'
+import More from '../components/More'
 import Card from '../components/Card'
 import Table from '../components/Table'
 import ExtLink from '../components/ExtLink'
@@ -12,8 +11,7 @@ import Number from '../components/Number'
 import s from './Validator.module.scss'
 
 const Delegators = ({ address }: { address: string }) => {
-  const [page, setPage] = useState(1)
-  const { error, title, ui } = useDelegators(address, { page })
+  const { error, title, ui } = useDelegators(address)
 
   const renderHeadings = (headings: DelegatorsTable['headings']) => {
     const { address, display, weight } = headings
@@ -43,20 +41,15 @@ const Delegators = ({ address }: { address: string }) => {
     )
   }
 
-  const render = ({ pagination, card, table }: TableUI<DelegatorsTable>) => (
-    <Pagination
-      {...pagination}
-      count={table ? table.contents.length : 0}
-      action={setPage}
-      empty={card?.content}
-    >
+  const render = ({ card, table, more }: TableUI<DelegatorsTable>) => (
+    <More empty={card?.content} more={more}>
       {table && (
         <Table>
           <thead>{renderHeadings(table.headings)}</thead>
           <tbody>{table.contents.map(renderRow)}</tbody>
         </Table>
       )}
-    </Pagination>
+    </More>
   )
 
   return (

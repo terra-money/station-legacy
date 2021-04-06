@@ -28,16 +28,8 @@ const Validator = () => {
       <Informations {...ui} />
 
       <h2>{delegations}</h2>
-      <div className="row">
-        <div className="col col-8">
-          <Delegations address={address} />
-        </div>
-
-        <div className="col col-4">
-          <Delegators address={address} />
-        </div>
-      </div>
-
+      <Delegations address={address} />
+      <Delegators address={address} />
       <Claims address={address} />
     </>
   )
