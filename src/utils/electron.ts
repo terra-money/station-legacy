@@ -8,7 +8,7 @@ declare global {
 }
 
 const getElectron = () => {
-  if (window?.electron?.sendSync) {
+  if (window.electron?.sendSync) {
     return window.electron.sendSync
   }
 
