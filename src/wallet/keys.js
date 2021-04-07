@@ -1,4 +1,4 @@
-import * as bech32 from 'bech32'
+import { bech32 } from 'bech32'
 import { ecdsaSign } from 'secp256k1'
 import * as CryptoJS from 'crypto-js'
 
