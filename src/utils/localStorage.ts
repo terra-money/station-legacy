@@ -1,5 +1,5 @@
 import { mergeRight as merge, omit } from 'ramda'
-import { Wallet } from '../use-station/src'
+import { Wallet, WalletParams } from '../use-station/src'
 import { encrypt, decrypt } from './terra-keystore'
 
 /* keys */
@@ -27,9 +27,11 @@ export const getStoredWallet = (name: string, password: string): Wallet => {
   return decryptWallet(stored.wallet, password)
 }
 
-type Params = { name: string; password: string; wallet: Wallet }
-
-export const encryptWallet = ({ name, password, wallet }: Params): Key => {
+export const encryptWallet = ({
+  name,
+  password,
+  wallet,
+}: WalletParams): Key => {
   const encrypted = encrypt(JSON.stringify(wallet), password)
 
   if (!encrypted) throw new Error('Encryption error occurred')
@@ -41,7 +43,7 @@ export const encryptWallet = ({ name, password, wallet }: Params): Key => {
   }
 }
 
-export const importKey = async (params: Params) => {
+export const importKey = async (params: WalletParams) => {
   const keys = loadKeys()
 
   if (keys.find((key) => key.name === params.name))

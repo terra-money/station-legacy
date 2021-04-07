@@ -12,6 +12,7 @@ import Recover from './Recover'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
 import SignInWithLedger from './SignInWithLedger'
+import ImportKey from './ImportKey'
 
 const AuthRoute = () => {
   const { user } = useAuth()
@@ -69,6 +70,7 @@ const AuthRoute = () => {
       <Route path={path + '/select'} component={SignIn} />
       <Route path={path + '/new'} component={SignUp} />
       <Route path={path + '/recover'} component={Recover} />
+      <Route path={path + '/import'} component={ImportKey} />
     </Switch>
   )
 }

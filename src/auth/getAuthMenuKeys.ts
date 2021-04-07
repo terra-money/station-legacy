@@ -12,9 +12,9 @@ export default (): AuthMenuKey[] => {
       return ['signIn', 'signUp', 'recover']
     }
 
-    return ['signInWithLedger', 'signIn', 'signUp', 'recover']
+    return ['signInWithLedger', 'signIn', 'signUp', 'recover', 'importKey']
   } else if (isExtension) {
-    return ['signInWithLedger', 'signIn', 'signUp', 'recover']
+    return ['signInWithLedger', 'signIn', 'signUp', 'recover', 'importKey']
   }
 
   return ['signInWithLedger', 'download']

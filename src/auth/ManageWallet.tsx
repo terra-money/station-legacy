@@ -30,6 +30,7 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
     : () => setCurrentIndex(-1)
 
   const renderQRCode = () => <GenerateQRCode />
+  const renderExportKey = () => <GenerateQRCode exportKey />
   const renderChangePassword = () => (
     <ChangePassword onFinish={onFinishSubmenu} />
   )
@@ -50,6 +51,12 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
           icon: 'qr_code',
           path: '/qrcode',
           render: renderQRCode,
+        },
+        {
+          title: 'Export private key',
+          icon: 'notes',
+          path: '/export',
+          render: renderExportKey,
         },
         {
           title: manage.password.tooltip,
@@ -95,6 +102,10 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
       <Route path={path + '/password'} render={renderChangePassword} />
       <Route path={path + '/delete'} render={renderDeleteAccount} />
       <Route path={path + '/qrcode'} render={renderQRCode} />
+      <Route
+        path={path + '/export'}
+        render={() => <GenerateQRCode exportKey />}
+      />
     </Switch>
   ) : (
     <ModalContent {...modal}>

@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { AuthMenuKey } from '../use-station/src'
 import { isExtension } from '../utils/env'
 import Recover from './Recover'
+import ImportKey from './ImportKey'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
 import SignInWithAddress from './SignInWithAddress'
@@ -20,6 +21,11 @@ export const menu: Record<AuthMenuKey, Item> = {
     icon: 'settings_backup_restore',
     path: '/recover',
     render: () => <Recover />,
+  },
+  importKey: {
+    icon: 'menu_open',
+    path: '/import',
+    render: () => <ImportKey />,
   },
   signUp: {
     icon: 'add_circle_outline',

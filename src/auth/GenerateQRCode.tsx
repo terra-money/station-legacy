@@ -12,7 +12,7 @@ interface Values {
   password: string
 }
 
-const GenerateQRCode = () => {
+const GenerateQRCode = ({ exportKey }: { exportKey?: boolean }) => {
   const { user } = useAuth()
   const [key, setKey] = useState('')
 
@@ -31,7 +31,7 @@ const GenerateQRCode = () => {
   const [incorrect, setIncorrect] = useState(false)
 
   const formProps: FormUI = {
-    title: 'Export with QR code',
+    title: exportKey ? 'Export private key' : 'Export with QR code',
     fields: [
       {
         ...getDefaultProps('password'),
@@ -50,28 +50,39 @@ const GenerateQRCode = () => {
       },
     ],
     disabled: invalid,
-    submitLabel: 'Generate QR code',
+    submitLabel: exportKey ? 'Generate key' : 'Generate QR code',
     onSubmit: () => {
-      const decrypted = getStoredWallet(user?.name!, password)
-      setKey(encrypt(decrypted.privateKey, password))
+      try {
+        const decrypted = getStoredWallet(user?.name!, password)
+        setKey(encrypt(decrypted.privateKey, password))
+      } catch (error) {
+        setIncorrect(true)
+      }
     },
   }
 
-  const data = `terrastation://wallet_recover/?payload=${encode(
+  const encoded = encode(
     JSON.stringify({
       name: user!.name,
       address: user!.address,
       encrypted_key: key,
     })
-  )}`
+  )
+
+  const data = `terrastation://wallet_recover/?payload=${encoded}`
 
   return !key ? (
     <Form form={formProps} />
   ) : (
     <QRCode
-      title="Export with QR code"
-      data={data}
-      warn={t('Auth:Manage:Keep this QR code private')}
+      title={exportKey ? 'Export private key' : 'Export with QR code'}
+      data={exportKey ? encoded : data}
+      warn={
+        exportKey
+          ? 'Keep this encrypted key private'
+          : t('Auth:Manage:Keep this QR code private')
+      }
+      exportKey={exportKey}
     />
   )
 }
