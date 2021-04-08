@@ -1,16 +1,18 @@
+import React, { useState } from 'react'
 import { DepositorsTable, DepositorContent } from '../use-station/src'
-import { TableUI } from '../use-station/src'
+import { PaginationTableUI } from '../use-station/src'
 import { useDepositors } from '../use-station/src'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'
-import More from '../components/More'
+import Pagination from '../components/Pagination'
 import Card from '../components/Card'
 import Table from '../components/Table'
 import Displays from '../components/Displays'
 import Voter from '../pages/proposal/Voter'
 
 const Depositors = ({ id }: { id: string }) => {
-  const { error, title, ui } = useDepositors(id)
+  const [page, setPage] = useState(1)
+  const { error, title, ui } = useDepositors(id, { page })
 
   const renderHeadings = (headings: DepositorsTable['headings']) => {
     const { depositor, displays } = headings
@@ -39,15 +41,24 @@ const Depositors = ({ id }: { id: string }) => {
     )
   }
 
-  const render = ({ card, table, more }: TableUI<DepositorsTable>) => (
-    <More empty={card?.content} more={more}>
+  const render = ({
+    pagination,
+    card,
+    table,
+  }: PaginationTableUI<DepositorsTable>) => (
+    <Pagination
+      {...pagination}
+      count={table ? table.contents.length : 0}
+      action={setPage}
+      empty={card?.content}
+    >
       {table && (
         <Table>
           <thead>{renderHeadings(table.headings)}</thead>
           <tbody>{table.contents.map(renderRow)}</tbody>
         </Table>
       )}
-    </More>
+    </Pagination>
   )
 
   return (
