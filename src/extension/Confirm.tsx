@@ -1,12 +1,15 @@
-import React, { useState, Fragment, ReactNode } from 'react'
+import React, { useState, Fragment, ReactNode, useEffect } from 'react'
 import c from 'classnames'
+import { addHours, isBefore } from 'date-fns'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import extension from 'extensionizer'
 import { CreateTxOptions } from '@terra-money/terra.js'
 import { Msg, TxInfo, StdFee, StdTx } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { useAuth, useConfig } from '../use-station/src'
 import { Field } from '../use-station/src'
+import { decrypt } from '../utils'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
 import useTerraAssets from '../use-station/src/hooks/useTerraAssets'
 import * as ledger from '../wallet/ledger'
@@ -23,7 +26,7 @@ import s from './Confirm.module.scss'
 interface Props extends RecordedExtSign {
   user: User
   pagination: ReactNode
-  onFinish: (params: Partial<ExtSign>) => void
+  onFinish: (params: Partial<ExtSign & { password: string }>) => void
 }
 
 const Component = ({ requestType, details, ...props }: Props) => {
@@ -79,7 +82,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
         }
       }
 
-      onFinish({ result, success: true })
+      onFinish({
+        result,
+        success: true,
+        password: storePassword ? password : undefined,
+      })
       setSubmitting(false)
       setSubmitted(true)
     } catch (error) {
@@ -113,7 +120,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
       const onVerified = (result: object) => {
         setSubmitting(false)
         setSubmitted(true)
-        onFinish({ result, success: true })
+        onFinish({
+          result,
+          success: true,
+          password: storePassword ? password : undefined,
+        })
       }
 
       const onError = (message: string) => {
@@ -172,11 +183,29 @@ const Component = ({ requestType, details, ...props }: Props) => {
   }
 
   /* form */
+  const [storePassword, setStorePassword] = useState(false)
   const [password, setPassword] = useState(isPreconfigured(user) ? PW : '')
   const [passwordError, setPasswordError] = useState<string>()
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>()
+
+  useEffect(() => {
+    extension.storage.local.get(
+      ['encrypted', 'timestamp'],
+      ({ encrypted, timestamp }) => {
+        if (
+          encrypted &&
+          timestamp &&
+          isBefore(new Date(), addHours(new Date(timestamp), 1))
+        ) {
+          const decrypted = decrypt(encrypted, String(timestamp))
+          setStorePassword(true)
+          setPassword(decrypted)
+        }
+      }
+    )
+  }, [])
 
   const passwordField: Field = {
     label: 'Confirm with password',
@@ -195,6 +224,19 @@ const Component = ({ requestType, details, ...props }: Props) => {
       setPassword(v)
     },
     error: passwordError,
+  }
+
+  const storePasswordField: Field = {
+    label: 'Save password for an hour',
+    element: 'input',
+    attrs: {
+      type: 'checkbox',
+      id: 'storePassword',
+      checked: storePassword,
+    },
+    setValue: () => {
+      setStorePassword(!storePassword)
+    },
   }
 
   /* dangerous tx */
@@ -225,7 +267,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   const form = {
     title: 'Confirm',
-    fields: !user.ledger ? [passwordField] : [],
+    fields: !user.ledger ? [passwordField, storePasswordField] : [],
     disabled,
     submitLabel: 'Submit',
     onSubmit: disabled ? undefined : submit,
@@ -287,9 +329,10 @@ const Confirm = () => {
   )
 
   /* response */
-  const handleFinish = (params: Partial<ExtSign>) => {
+  const handleFinish = (params: Partial<ExtSign & { password?: string }>) => {
+    const { password, ...rest } = params
     const { requestType, details } = currentItem ?? {}
-    currentItem && onFinish(requestType, { ...details, ...params })
+    currentItem && onFinish(requestType, { ...details, ...rest }, password)
   }
 
   return !(user && currentItem) ? null : (

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { without, uniq, update, isNil } from 'ramda'
 import extension from 'extensionizer'
 import { createContext } from '../use-station/src'
+import { encrypt } from '../utils'
 
 /* request & response */
 export interface TxOptionsData {
@@ -45,7 +46,7 @@ interface Extension {
   request: {
     list: RequestList
     sorted: RecordedExtSign[]
-    onFinish: (type: RequestType, params: ExtSign) => void
+    onFinish: (type: RequestType, params: ExtSign, password?: string) => void
   }
 
   goBack?: () => void
@@ -96,7 +97,17 @@ export const useExtensionRequested = (): Extension => {
   }
 
   /* sign & post */
-  const onFinish = (requestType: RequestType, result: ExtSign) => {
+  const onFinish = (
+    requestType: RequestType,
+    result: ExtSign,
+    password?: string
+  ) => {
+    const timestamp = Date.now()
+    extension.storage.local.set({
+      timestamp: password ? timestamp : null,
+      encrypted: password ? encrypt(password, String(timestamp)) : null,
+    })
+
     // Receive the results and record them on the storage.
     // Find out what kind of request it is.
     extension.storage.local.get([requestType], (storage) => {
