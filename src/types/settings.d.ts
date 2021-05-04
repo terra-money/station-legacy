@@ -20,5 +20,4 @@ interface CustomNetwork {
   chainID: string
   lcd: string
   fcd: string
-  ws: string
 }

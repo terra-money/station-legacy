@@ -18,6 +18,6 @@ export default () => {
   return mergedChains
 }
 
-const keys: (keyof ChainOptions)[] = ['name', 'chainID', 'lcd', 'fcd', 'ws']
+const keys: (keyof ChainOptions)[] = ['name', 'chainID', 'lcd', 'fcd']
 export const validateNetwork = (item: ChainOptions) =>
   keys.every((key) => typeof item[key] === 'string')

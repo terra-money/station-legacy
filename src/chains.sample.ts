@@ -7,6 +7,5 @@ export const Chains: Dictionary<ChainOptions> = {
     chainID: 'columbus-4',
     lcd: 'https://lcd.terra.dev',
     fcd: 'https://fcd.terra.dev',
-    ws: 'wss://fcd.terra.dev',
   },
 }

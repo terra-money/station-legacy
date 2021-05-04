@@ -11,7 +11,6 @@ interface Values {
   chainID: string
   lcd: string
   fcd: string
-  ws: string
 }
 
 const AddNetwork = () => {
@@ -20,13 +19,12 @@ const AddNetwork = () => {
   const { push } = useHistory()
 
   /* form */
-  const initial = { name: '', chainID: '', lcd: '', fcd: '', ws: '' }
-  const validate = ({ name, chainID, lcd, fcd, ws }: Values) => ({
+  const initial = { name: '', chainID: '', lcd: '', fcd: '' }
+  const validate = ({ name, chainID, lcd, fcd }: Values) => ({
     name: !name ? 'Required' : chains[name] ? 'Already exists' : '',
     chainID: !chainID ? 'Required' : '',
     lcd: !lcd ? 'Required' : '',
     fcd: !fcd ? 'Required' : '',
-    ws: !ws ? 'Required' : '',
   })
 
   const form = useForm(initial, validate)
@@ -53,11 +51,6 @@ const AddNetwork = () => {
       label: 'fcd',
       ...getDefaultProps('fcd'),
       attrs: { ...getDefaultAttrs('fcd'), placeholder: sample['fcd'] },
-    },
-    {
-      label: 'ws',
-      ...getDefaultProps('ws'),
-      attrs: { ...getDefaultAttrs('ws'), placeholder: sample['ws'] },
     },
   ]
 
