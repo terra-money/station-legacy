@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
-import { useSwap, useInfo, User } from '../use-station/src'
+import c from 'classnames'
+import { last } from 'ramda'
+import { useSwap, useInfo, User, Field } from '../use-station/src'
 import { useApp } from '../hooks'
 import WithAuth from '../auth/WithAuth'
 import Confirm from '../components/Confirm'
@@ -25,7 +27,7 @@ const Component = ({ actives, user, title }: ComponentProps) => {
   const { modal } = useApp()
   const { ERROR } = useInfo()
   const { error, load, loading, form, confirm, ui } = useSwap(user, actives)
-  const { bank, pairs, mode, expectedPrice, message, max, spread } = ui!
+  const { bank, pairs, expectedPrice, message, max, spread } = ui!
   const { label, slippageField } = ui!
 
   /* render */
@@ -75,7 +77,20 @@ const Component = ({ actives, user, title }: ComponentProps) => {
       )
   }
 
-  const renderMode = () => <span className="badge">{mode}</span>
+  const renderRadio = ({ attrs, options, setValue }: Field) => {
+    return (
+      !attrs.hidden &&
+      options!.map(({ value, children }) => (
+        <button
+          className={c('badge', value === attrs.value && 'badge-primary')}
+          onClick={() => setValue!(value)}
+          key={value}
+        >
+          {children}
+        </button>
+      ))
+    )
+  }
 
   const renderTitle = () => (
     <div className={s.title}>
@@ -106,7 +121,11 @@ const Component = ({ actives, user, title }: ComponentProps) => {
   ) : loading ? (
     <Loading />
   ) : form ? (
-    <Card title={renderTitle()} actions={renderMode()} bordered>
+    <Card
+      title={renderTitle()}
+      actions={renderRadio(last(form.fields)!)}
+      bordered
+    >
       <FormSwap
         form={{ ...form, onSubmit }}
         message={message}
