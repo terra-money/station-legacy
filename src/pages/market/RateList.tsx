@@ -51,13 +51,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
   return (
     <Card title={title}>
       {message ? <NotAvailable>{message}</NotAvailable> : renderFilter()}
-      {error ? (
-        <ErrorComponent error={error} />
-      ) : loading ? (
-        <Loading />
-      ) : (
-        ui && render(ui)
-      )}
+      {error ? null : loading ? <Loading /> : ui && render(ui)}
     </Card>
   )
 }
