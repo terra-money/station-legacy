@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRate, RateItem, RateUI } from '../../use-station/src'
 import c from 'classnames'
-import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Card from '../../components/Card'
 import Select from '../../components/Select'
