@@ -1,7 +1,8 @@
 import React, { ChangeEvent, Fragment, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import c from 'classnames'
-import { useConfig, useNodeInfo } from '../use-station/src'
+import { useConfig } from '../use-station/src'
+import useFCD from '../use-station/src/api/useFCD'
 import { isExtension } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'
@@ -65,9 +66,9 @@ export default Chain
 
 /* hook */
 const useCheckLocalTerra = (callback: () => void, chain?: string) => {
-  const { error } = useNodeInfo()
-  const hasError = !!error
   const isLocal = chain === 'localterra'
+  const { error } = useFCD<object>({ url: '/node_info' }, isLocal)
+  const hasError = !!error
 
   useEffect(() => {
     isLocal && hasError && callback()
