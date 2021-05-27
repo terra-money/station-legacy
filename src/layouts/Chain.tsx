@@ -13,6 +13,14 @@ import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
 import NavStyles from './Nav.module.scss'
 
+const STATION = {
+  DEFAULT: 'https://station.terra.money/',
+  BOMBAY: 'https://station-bombay.terra.money/',
+}
+
+export const isDefaultStation = window.location.href === STATION.DEFAULT
+export const isBombayStation = window.location.href === STATION.BOMBAY
+
 const Chain = ({ disabled }: { disabled?: boolean }) => {
   const { chain } = useConfig()
   const modal = useModal()
@@ -29,10 +37,18 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const key = e.target.value
+    const redirectTo =
+      key === 'bombay' && !isBombayStation
+        ? STATION.BOMBAY
+        : key !== 'bombay' && !isDefaultStation
+        ? STATION.DEFAULT
+        : undefined
 
     if (!key) {
       // redirect to add a new network
       push('/network')
+    } else if (redirectTo) {
+      window.location.assign(redirectTo)
     } else {
       localSettings.set({ chain: key })
       set(chains[key])

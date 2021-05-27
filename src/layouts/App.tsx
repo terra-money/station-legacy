@@ -33,6 +33,7 @@ import { ExtensionProvider } from '../extension/useExtension'
 import Nav from './Nav'
 import Header from './Header'
 import UpdateElectron from './UpdateElectron'
+import { isBombayStation } from './Chain'
 import s from './App.module.scss'
 
 const App = () => {
@@ -47,7 +48,7 @@ const App = () => {
   const initialState = {
     lang: lang as LangKey,
     currency,
-    chain: chains[chain!] ?? Chains['mainnet'],
+    chain: chains[chain!] ?? Chains[isBombayStation ? 'bombay' : 'mainnet'],
   }
 
   /* app state */
