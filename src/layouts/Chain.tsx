@@ -37,10 +37,12 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const key = e.target.value
+    const shouldRedirectToBombayStation = ['bombay', 'localterra'].includes(key)
+
     const redirectTo =
-      key === 'bombay' && !isBombayStation
+      shouldRedirectToBombayStation && !isBombayStation
         ? STATION.BOMBAY
-        : key !== 'bombay' && !isDefaultStation
+        : !shouldRedirectToBombayStation && !isDefaultStation
         ? STATION.DEFAULT
         : undefined
 
