@@ -2,7 +2,7 @@
 
 ![Banner](Logo.png)
 
-**Terra Station** is a web application to interact with [Terra Core](https://github.com/terra-project/core).
+**Terra Station** is a web application to interact with [Terra Core](https://github.com/terra-money/core).
 
 Terra Station allows users to:
 
@@ -28,7 +28,7 @@ Add the following entry to your `/etc/hosts` file:
 ### Build Terra Station
 
 ```sh
-git clone https://github.com/terra-project/station.git
+git clone https://github.com/terra-money/station.git
 cd station
 cp src/chains.sample.ts src/chains.ts
 git submodule init
@@ -44,12 +44,12 @@ Terra Station should now be running locally at https://local.terra.money:3000.
 
 > :mortar_board: You need to change your host file to be able to access `local.terra.money` locally.
 
-#### Customizing [useStation](https://github.com/terra-project/use-station)
+#### Customizing [useStation](https://github.com/terra-money/use-station)
 
 You may want to modify the `useStation` to change how Terra Station works.
 ​
 ```sh
-git clone https://github.com/terra-project/use-station.git
+git clone https://github.com/terra-money/use-station.git
 cd use-station
 yarn
 yarn build
@@ -58,7 +58,7 @@ yarn build
 Then, to build Terra Station:
 
 ```sh
-git clone https://github.com/terra-project/station.git
+git clone https://github.com/terra-money/station.git
 cd station
 yarn
 yarn add ..path/to/your/use-station
@@ -71,7 +71,7 @@ Before executing the following commands, make sure the server of Terra Station(w
 is running, which provides instructions on how to run the Electron app.
 ​
 ```sh
-git clone https://github.com/terra-project/station-electron.git
+git clone https://github.com/terra-money/station-electron.git
 cd station-electron
 git checkout -t origin/local
 yarn

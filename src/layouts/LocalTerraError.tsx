@@ -14,7 +14,7 @@ const LocalTerraError = ({ modal }: { modal: Modal }) => {
         image={{ src: Logo, width: 60, height: 60 }}
         footer={
           <ExtLink
-            href="https://github.com/terra-project/localterra"
+            href="https://github.com/terra-money/localterra"
             className="btn btn-primary btn-block"
           >
             {LOCALTERRA_ERROR.button}

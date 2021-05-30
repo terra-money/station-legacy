@@ -4,7 +4,7 @@ import useValidators from '../../use-station/src/hooks/useValidators'
 import ExtLink from '../../components/ExtLink'
 import styles from './ViewProfile.module.scss'
 
-const PROJECT = 'https://github.com/terra-project/validator-profiles'
+const PROJECT = 'https://github.com/terra-money/validator-profiles'
 const PATH = '/tree/master/validators/'
 
 const ViewProfile = ({ address }: { address: string }) => {
