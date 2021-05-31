@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import c from 'classnames'
 import { useConfig } from '../use-station/src'
 import useFCD from '../use-station/src/api/useFCD'
-import { isExtension } from '../utils/env'
+import { isExtension, isProduction } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
 import { useModal } from '../hooks'
 import Select from '../components/Select'
@@ -49,7 +49,7 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
     if (!key) {
       // redirect to add a new network
       push('/network')
-    } else if (redirectTo) {
+    } else if (isProduction && redirectTo) {
       window.location.assign(redirectTo)
     } else {
       localSettings.set({ chain: key })
