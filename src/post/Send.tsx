@@ -5,10 +5,12 @@ import { useSend, useAuth } from '../use-station/src'
 import ButtonGroup from '../components/ButtonGroup'
 import Post from './Post'
 import s from './Send.module.scss'
+import useTokenBalance from '../use-station/src/cw20/useTokenBalance'
 
 const Send = ({ denom }: { denom: string }) => {
   const { user } = useAuth()
-  const response = useSend(user!, denom)
+  const tokenBalance = useTokenBalance(user!.address)
+  const response = useSend(user!, denom, tokenBalance)
 
   const renderRecent = ({ title, contents }: RecentSentUI) => {
     const buttons = contents.map((content) => ({

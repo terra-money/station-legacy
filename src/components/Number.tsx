@@ -22,7 +22,7 @@ const Number: FC<Props> = ({ value, unit, children, className, ...config }) => {
       {integer}
 
       <small>
-        {!hideDecimal && `.${decimal}`}
+        {decimal && !hideDecimal && `.${decimal}`}
         {unit && ` ${unit}`}
       </small>
     </span>
