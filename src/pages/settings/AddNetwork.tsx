@@ -1,17 +1,10 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useForm, useConfig } from '../../use-station/src'
+import { useForm, useConfig, ChainOptions } from '../../use-station/src'
 import { localSettings } from '../../utils/localStorage'
 import { Chains } from '../../chains'
 import Form from '../../components/Form'
 import useMergeChains, { validateNetwork } from './useMergeChains'
-
-interface Values {
-  name: string
-  chainID: string
-  lcd: string
-  fcd: string
-}
 
 const AddNetwork = () => {
   const chains = useMergeChains()
@@ -19,12 +12,13 @@ const AddNetwork = () => {
   const { push } = useHistory()
 
   /* form */
-  const initial = { name: '', chainID: '', lcd: '', fcd: '' }
-  const validate = ({ name, chainID, lcd, fcd }: Values) => ({
+  const initial = { name: '', chainID: '', lcd: '', fcd: '', localterra: false }
+  const validate = ({ name, chainID, lcd, fcd }: ChainOptions) => ({
     name: !name ? 'Required' : chains[name] ? 'Already exists' : '',
     chainID: !chainID ? 'Required' : '',
     lcd: !lcd ? 'Required' : '',
     fcd: !fcd ? 'Required' : '',
+    localterra: '',
   })
 
   const form = useForm(initial, validate)
@@ -51,6 +45,11 @@ const AddNetwork = () => {
       label: 'fcd',
       ...getDefaultProps('fcd'),
       attrs: { ...getDefaultAttrs('fcd'), placeholder: sample['fcd'] },
+    },
+    {
+      label: 'LocalTerra network',
+      ...getDefaultProps('localterra'),
+      attrs: { ...getDefaultAttrs('localterra'), type: 'checkbox' as const },
     },
   ]
 

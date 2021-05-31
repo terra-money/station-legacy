@@ -16,7 +16,7 @@ const Header = ({ className }: { className: string }) => {
   const { CONNECT } = useText()
   const { goBack, refresh, authModal, modal } = useApp()
   const { chain } = useConfig()
-  const isLocal = chain.current.name === 'localterra'
+  const isLocalTerra = chain.current.localterra
 
   const share = () =>
     modal.open(
@@ -50,7 +50,7 @@ const Header = ({ className }: { className: string }) => {
               </button>
             )}
 
-            {isLocal && (
+            {isLocalTerra && (
               <Preconfigured className={c('btn btn-sm', s.button, s.select)} />
             )}
           </div>
