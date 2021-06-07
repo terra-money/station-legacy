@@ -292,8 +292,9 @@ export const sign = async (signMessage: string) => {
     return
   }
 
-  const { signature } = await app.sign(path, signMessage)
-  return Buffer.from(signatureImport(Buffer.from(signature as any)))
+  const response = await app.sign(path, signMessage)
+  checkLedgerErrors(response)
+  return Buffer.from(signatureImport(Buffer.from(response.signature as any)))
 }
 
 const isWindows = (platform: string) => platform.indexOf('Win') > -1
