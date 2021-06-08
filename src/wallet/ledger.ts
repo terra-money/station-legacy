@@ -25,6 +25,13 @@ declare global {
   }
 }
 
+class LedgerError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'LedgerError'
+  }
+}
+
 class TerraElectronBridge extends TerraApp {
   constructor() {
     super({})
@@ -74,7 +81,7 @@ const handleTransportError = (err: Error) => {
   }
 
   if (err.name === 'TransportOpenUserCancelled') {
-    throw new Error(
+    throw new LedgerError(
       `Couldn't find the Ledger. Check your Ledger is plugged in and unlocked.`
     )
   }
@@ -89,7 +96,7 @@ const handleConnectError = (err: Error) => {
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('No WebUSB interface found for your Ledger device')) {
-    throw new Error(
+    throw new LedgerError(
       `Couldn't connect to a Ledger device. Please use Ledger Live to upgrade the Ledger firmware to version ${REQUIRED_APP_VERSION} or later.`
     )
   }
@@ -97,21 +104,21 @@ const handleConnectError = (err: Error) => {
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('Unable to claim interface')) {
     // apparently can't use it in several tabs in parallel
-    throw new Error(
+    throw new LedgerError(
       'Could not access Ledger device. Is it being used in another tab?'
     )
   }
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('Not supported')) {
-    throw new Error(
+    throw new LedgerError(
       `Your browser doesn't seem to support WebUSB yet. Try updating it to the latest version.`
     )
   }
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith('No device selected')) {
-    throw new Error(
+    throw new LedgerError(
       `Couldn't find the Ledger. Check your Ledger is plugged in and unlocked.`
     )
   }
@@ -128,34 +135,36 @@ const checkLedgerErrors = (response: CommonResponse | null) => {
   const { error_message, device_locked } = response
 
   if (device_locked) {
-    throw new Error(`Ledger's screensaver mode is on.`)
+    throw new LedgerError(`Ledger's screensaver mode is on.`)
   }
 
   if (error_message.startsWith('TransportRaceCondition')) {
-    throw new Error('Please finish previous action in Ledger.')
+    throw new LedgerError('Please finish previous action in Ledger.')
   } else if (error_message.startsWith('DisconnectedDeviceDuringOperation')) {
     app = path = null
-    throw new Error('Open the Terra app in your Ledger.')
+    throw new LedgerError('Open the Terra app in your Ledger.')
   }
 
   switch (error_message) {
     case 'U2F: Timeout':
-      throw new Error('Could not find a connected and unlocked Ledger device.')
+      throw new LedgerError(
+        'Could not find a connected and unlocked Ledger device.'
+      )
 
     case 'App does not seem to be open':
-      throw new Error('Open the Terra app in your Ledger.')
+      throw new LedgerError('Open the Terra app in your Ledger.')
 
     case 'Command not allowed':
-      throw new Error('Transaction rejected.')
+      throw new LedgerError('Transaction rejected.')
 
     case 'Transaction rejected':
-      throw new Error('User rejected the transaction.')
+      throw new LedgerError('User rejected the transaction.')
 
     case 'Unknown Status Code: 26628':
-      throw new Error(`Ledger's screensaver mode is on.`)
+      throw new LedgerError(`Ledger's screensaver mode is on.`)
 
     case 'Instruction not supported':
-      throw new Error(
+      throw new LedgerError(
         'Please check your Ledger is running latest version of Terra.'
       )
 
@@ -163,7 +172,7 @@ const checkLedgerErrors = (response: CommonResponse | null) => {
       break
 
     default:
-      throw new Error(error_message)
+      throw new LedgerError(error_message)
   }
 }
 
@@ -174,7 +183,9 @@ async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
     const version: string = electron('version')
 
     if (semver.lt(version, REQUIRED_ELECTRON_APP_VERSION)) {
-      throw new Error('Outdated version: Please update Station to use Ledger.')
+      throw new LedgerError(
+        'Outdated version: Please update Station to use Ledger.'
+      )
     }
 
     app = new TerraElectronBridge()
@@ -184,7 +195,7 @@ async function createTerraApp(): Promise<TerraApp | TerraElectronBridge> {
     if (isWindows(navigator.platform)) {
       // For Windows
       if (!navigator.hid) {
-        throw new Error(
+        throw new LedgerError(
           `Your browser doesn't have HID enabled.\nPlease enable this feature by visiting:\nchrome://flags/#enable-experimental-web-platform-features`
         )
       }
@@ -225,7 +236,7 @@ const connect = async () => {
   const { app_name: appName } = app.getInfo()
 
   if (!['Terra', 'Cosmos'].includes(appName)) {
-    throw new Error(`Open the Terra app in your Ledger.`)
+    throw new LedgerError(`Open the Terra app in your Ledger.`)
   }
 
   const { major, minor, patch } = app.getVersion()
@@ -235,7 +246,7 @@ const connect = async () => {
     (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
     (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
   ) {
-    throw new Error(
+    throw new LedgerError(
       'Outdated version: Please update Ledger Terra App to the latest version.'
     )
   }
@@ -304,7 +315,7 @@ const checkBrowser = (userAgent: string): string => {
   const isBrave = isChrome && !window.google
 
   if (!isChrome && !isBrave) {
-    throw new Error("Your browser doesn't support Ledger devices.")
+    throw new LedgerError("Your browser doesn't support Ledger devices.")
   }
 
   return isChrome ? 'chrome' : 'brave'
