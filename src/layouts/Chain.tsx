@@ -49,7 +49,7 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
     if (!key) {
       // redirect to add a new network
       push('/network')
-    } else if (!isLocal && redirectTo) {
+    } else if (!isLocal && !isExtension && redirectTo) {
       window.location.assign(redirectTo)
     } else {
       localSettings.set({ chain: key })
