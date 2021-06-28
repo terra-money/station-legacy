@@ -14,9 +14,9 @@ interface Props {
 const NavItem = ({ name, to, icon, submenu }: Props) => {
   const { pathname } = useLocation()
   const active =
-    to === '/'
-      ? pathname === '/'
-      : pathname.startsWith(to) ||
+    pathname === '/'
+      ? to === '/'
+      : to.startsWith(pathname) ||
         !!submenu?.some((p) => pathname.startsWith(p))
 
   return (
