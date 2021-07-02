@@ -29,12 +29,6 @@
   @include flex(space-between);
 }
 
-.icon {
-  border-radius: 50%;
-  background: #121a2f;
-  padding: 4px;
-}
-
 .denom {
   @include flex(flex-start);
   font-size: 16px;
