@@ -1,22 +1,91 @@
-import { Dictionary } from 'ramda'
-import { ChainOptions } from '../../use-station/src'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
+import { Dictionary, omit } from 'ramda'
+import { ChainOptions, DefaultChainOptions } from '../../use-station/src'
+import { useConfig } from '../../use-station/src'
+import useTerraAssets from '../../use-station/src/hooks/useTerraAssets'
 import { localSettings } from '../../utils/localStorage'
-import { Chains } from '../../chains'
+import { useApp } from '../../hooks'
 
-export default () => {
+const chainsState = atom<Dictionary<ChainOptions>>({
+  key: 'chainsState',
+  default: {},
+})
+
+export const useInitChains = () => {
+  const setChains = useSetRecoilState(chainsState)
+  const { data: Chains, loading } =
+    useTerraAssets<Dictionary<DefaultChainOptions>>('chains.json')
+
   const { customNetworks = [] } = localSettings.get()
 
-  const mergedChains = {
-    ...Chains,
-    ...customNetworks.reduce<Dictionary<ChainOptions>>(
-      (acc, item) =>
-        Object.assign({}, acc, validateNetwork(item) && { [item.name]: item }),
-      {}
-    ),
-  }
+  useEffect(() => {
+    const mergedChains: Dictionary<ChainOptions> = {
+      ...Object.entries(Chains ?? {}).reduce((acc, [name, chain]) => {
+        const fcd = chain.lcd.replace('lcd', 'fcd')
+        const localterra = name === 'localterra'
+        return { ...acc, [name]: { ...chain, fcd, localterra } }
+      }, {}),
+      ...customNetworks.reduce(
+        (acc, item) =>
+          Object.assign(
+            {},
+            acc,
+            validateNetwork(item) && { [item.name]: item }
+          ),
+        {}
+      ),
+    }
 
-  return mergedChains
+    setChains(mergedChains)
+
+    // eslint-disable-next-line
+  }, [Chains, JSON.stringify(customNetworks), setChains])
+
+  return loading
 }
+
+export const useAddNetwork = () => {
+  const { chain } = useConfig()
+  const { push } = useHistory()
+  const setChains = useSetRecoilState(chainsState)
+
+  return (values: ChainOptions) => {
+    const { customNetworks = [] } = localSettings.get()
+
+    localSettings.set({
+      customNetworks: [...customNetworks.filter(validateNetwork), values],
+      chain: values.name,
+    })
+
+    chain.set(values)
+    setChains((prev) => ({ ...prev, [values.name]: values }))
+    push('/')
+  }
+}
+
+export const useDeleteNetwork = () => {
+  const { refresh } = useApp()
+  const setChains = useSetRecoilState(chainsState)
+
+  return (name: string) => {
+    const { customNetworks = [] } = localSettings.get()
+
+    localSettings.set({
+      customNetworks: customNetworks.filter((item) => item.name !== name),
+    })
+
+    setChains((prev) => omit([name], prev))
+    refresh()
+  }
+}
+
+const useChains = () => {
+  return useRecoilValue(chainsState)
+}
+
+export default useChains
 
 const keys: (keyof ChainOptions)[] = ['name', 'chainID', 'lcd', 'fcd']
 export const validateNetwork = (item: ChainOptions) =>

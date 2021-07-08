@@ -12,7 +12,6 @@ import { useConfigState, ConfigProvider, User } from '../use-station/src'
 import { useAuthState, AuthProvider } from '../use-station/src'
 import { LangKey } from '../use-station/src'
 
-import { Chains } from '../chains'
 import { electron, report } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
@@ -48,7 +47,7 @@ const App = () => {
   const initialState = {
     lang: lang as LangKey,
     currency,
-    chain: chains[chain!] ?? Chains[isBombayStation ? 'bombay' : 'mainnet'],
+    chain: chains[chain!] ?? chains[isBombayStation ? 'bombay' : 'mainnet'],
   }
 
   /* app state */

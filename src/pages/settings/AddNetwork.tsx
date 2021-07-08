@@ -1,15 +1,11 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useForm, useConfig, ChainOptions } from '../../use-station/src'
-import { localSettings } from '../../utils/localStorage'
-import { Chains } from '../../chains'
+import { useForm, ChainOptions } from '../../use-station/src'
 import Form from '../../components/Form'
-import useMergeChains, { validateNetwork } from './useMergeChains'
+import useMergeChains, { useAddNetwork } from './useMergeChains'
 
 const AddNetwork = () => {
   const chains = useMergeChains()
-  const { chain } = useConfig()
-  const { push } = useHistory()
+  const addNetwork = useAddNetwork()
 
   /* form */
   const initial = { name: '', chainID: '', lcd: '', fcd: '', localterra: false }
@@ -24,7 +20,7 @@ const AddNetwork = () => {
   const form = useForm(initial, validate)
   const { values, invalid, getDefaultAttrs, getDefaultProps } = form
 
-  const sample = Chains['mainnet']
+  const sample = chains['mainnet']
   const fields = [
     {
       label: 'name',
@@ -58,18 +54,7 @@ const AddNetwork = () => {
     fields,
     disabled: invalid,
     submitLabel: 'Add',
-    onSubmit: () => {
-      const { customNetworks = [] } = localSettings.get()
-      const next = values
-
-      localSettings.set({
-        customNetworks: [...customNetworks.filter(validateNetwork), next],
-        chain: values.name,
-      })
-
-      chain.set(next)
-      push('/')
-    },
+    onSubmit: () => addNetwork(values),
   }
 
   return <Form form={formUI} />

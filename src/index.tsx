@@ -4,10 +4,12 @@ import 'react-app-polyfill/ie11'
 import React, { ReactNode } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 import * as Sentry from '@sentry/browser'
 
 import './index.scss'
 import { isLocal, isExtension } from './utils/env'
+import WithChains from './WithChains'
 import ErrorBoundary from './components/ErrorBoundary'
 import Disconnected from './components/Disconnected'
 import App from './layouts/App'
@@ -26,8 +28,10 @@ const route = (children: ReactNode) =>
 
 render(
   <ErrorBoundary>
-    {route(<App />)}
-    <Disconnected />
+    <RecoilRoot>
+      <WithChains>{route(<App />)}</WithChains>
+      <Disconnected />
+    </RecoilRoot>
   </ErrorBoundary>,
   document.getElementById('root')
 )

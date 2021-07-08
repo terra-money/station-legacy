@@ -1,32 +1,25 @@
 import React, { useState } from 'react'
 import classNames from 'classnames/bind'
+import { useConfig } from '../../use-station/src'
 import { localSettings } from '../../utils/localStorage'
-import { Chains } from '../../chains'
-import { useApp } from '../../hooks'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
+import useMergeChains, { useDeleteNetwork } from './useMergeChains'
 import AddNetwork from './AddNetwork'
-import useMergeChains from './useMergeChains'
 import styles from './Network.module.scss'
 
 const cx = classNames.bind(styles)
 
 const Network = () => {
-  const { refresh } = useApp()
   const chains = useMergeChains()
+  const deleteNetwork = useDeleteNetwork()
   const [selected, setSelected] = useState<string | undefined>()
+  const { customNetworks = [] } = localSettings.get()
+  const { chain } = useConfig()
 
   const addNetwork = () => {
     setSelected(undefined)
-  }
-
-  const deleteNetwork = (name: string) => {
-    const { customNetworks = [] } = localSettings.get()
-    localSettings.set({
-      customNetworks: customNetworks.filter((item) => item.name !== name),
-    })
-    refresh()
   }
 
   return (
@@ -68,10 +61,11 @@ const Network = () => {
                 </pre>
 
                 <div className={styles.actions}>
-                  {!Object.keys(Chains).includes(selected) && (
+                  {customNetworks.some(({ name }) => name === selected) && (
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => deleteNetwork(selected)}
+                      disabled={chain.current.name === selected}
                     >
                       Delete
                     </button>
