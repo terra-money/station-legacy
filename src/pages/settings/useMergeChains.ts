@@ -21,25 +21,26 @@ export const useInitChains = () => {
   const { customNetworks = [] } = localSettings.get()
 
   useEffect(() => {
-    const mergedChains: Dictionary<ChainOptions> = {
-      ...Object.entries(Chains ?? {}).reduce((acc, [name, chain]) => {
-        const fcd = chain.lcd.replace('lcd', 'fcd')
-        const localterra = name === 'localterra'
-        return { ...acc, [name]: { ...chain, fcd, localterra } }
-      }, {}),
-      ...customNetworks.reduce(
-        (acc, item) =>
-          Object.assign(
-            {},
-            acc,
-            validateNetwork(item) && { [item.name]: item }
-          ),
-        {}
-      ),
+    if (Chains) {
+      const mergedChains: Dictionary<ChainOptions> = {
+        ...Object.entries(Chains ?? {}).reduce((acc, [name, chain]) => {
+          const fcd = chain.lcd.replace('lcd', 'fcd')
+          const localterra = name === 'localterra'
+          return { ...acc, [name]: { ...chain, fcd, localterra } }
+        }, {}),
+        ...customNetworks.reduce(
+          (acc, item) =>
+            Object.assign(
+              {},
+              acc,
+              validateNetwork(item) && { [item.name]: item }
+            ),
+          {}
+        ),
+      }
+
+      setChains(mergedChains)
     }
-
-    setChains(mergedChains)
-
     // eslint-disable-next-line
   }, [Chains, JSON.stringify(customNetworks), setChains])
 
