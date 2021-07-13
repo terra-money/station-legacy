@@ -14,7 +14,7 @@
     "@mirror-protocol/mirror.js": "^1.1.2",
     "@sentry/browser": "^6.2.5",
     "@terra-money/ledger-terra-js": "^1.1",
-    "@terra-money/terra.js": "^1.8.6-beta.0",
+    "@terra-money/terra.js": "^1.8.6",
     "@ungap/url-search-params": "^0.2",
     "ace-builds": "^1.4.12",
     "axios": "^0.21.1",
