@@ -1,8 +1,9 @@
+@use 'sass:math';
 @import '../styles/mixins';
 @import '../styles/variables';
 
 $button: 24px;
-$radius: (24px / 2);
+$radius: math.div(24px, 2);
 $border: #d2d9f0;
 
 .wrapper {

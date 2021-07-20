@@ -1,7 +1,8 @@
+@use 'sass:math';
 @import '../styles/variables';
 
 .item {
-  width: (100% / 6);
+  width: math.div(100%, 6);
   padding-right: 10px;
   position: relative;
 }

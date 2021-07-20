@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 $margin: 10px;
 $margin-large: 20px;
 
@@ -10,7 +12,7 @@ $margin-large: 20px;
 
   @media (min-width: $breakpoint) {
     @include flex(flex-start, stretch);
-    margin: -($margin-large / 2);
+    margin: math.div($margin-large, -2);
   }
 
   .col {
@@ -20,7 +22,7 @@ $margin-large: 20px;
 
     @media (min-width: $breakpoint) {
       flex: 1;
-      padding: ($margin-large / 2);
+      padding: math.div($margin-large, 2);
     }
 
     .card {
@@ -31,35 +33,35 @@ $margin-large: 20px;
   .col-2 {
     @media (min-width: $breakpoint) {
       flex: none;
-      width: (100% * 2 / 12);
+      width: math.div(100% * 2, 12);
     }
   }
 
   .col-4 {
     @media (min-width: $breakpoint) {
       flex: none;
-      width: (100% * 4 / 12);
+      width: math.div(100% * 4, 12);
     }
   }
 
   .col-5 {
     @media (min-width: $breakpoint) {
       flex: none;
-      width: (100% * 5 / 12);
+      width: math.div(100% * 5, 12);
     }
   }
 
   .col-6 {
     @media (min-width: $breakpoint) {
       flex: none;
-      width: (100% * 6 / 12);
+      width: math.div(100% * 6, 12);
     }
   }
 
   .col-8 {
     @media (min-width: $breakpoint) {
       flex: none;
-      width: (100% * 8 / 12);
+      width: math.div(100% * 8, 12);
     }
   }
 
@@ -90,7 +92,7 @@ $margin-large: 20px;
     }
 
     @media (min-width: $breakpoint) {
-      margin-top: ($margin-large / 2);
+      margin-top: math.div($margin-large, 2);
     }
   }
 }
@@ -112,6 +114,6 @@ $margin-large: 20px;
   }
 
   @media (min-width: $breakpoint) {
-    margin-top: ($margin-large / 2);
+    margin-top: math.div($margin-large, 2);
   }
 }

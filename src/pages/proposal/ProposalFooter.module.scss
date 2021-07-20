@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../styles/mixins';
 
 .tallying {
@@ -5,7 +6,7 @@
 
   article {
     text-align: center;
-    width: (100% / 3);
+    width: math.div(100%, 3);
   }
 
   h1 {

@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../styles/mixins';
 @import '../styles/variables';
 
@@ -8,10 +9,10 @@
 
 .option {
   padding: 4px;
-  width: (100% / 2);
+  width: math.div(100%, 2);
 
   @media (min-width: $breakpoint) {
-    width: (100% / 4);
+    width: math.div(100%, 4);
   }
 }
 

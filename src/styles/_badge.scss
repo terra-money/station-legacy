@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .badge {
   color: $brand;
   display: inline-block;
@@ -23,7 +25,7 @@
   line-height: $height;
   height: $height;
   min-width: 55px;
-  border-radius: ($height / 2);
+  border-radius: math.div($height, 2);
 
   & + & {
     margin-left: 5px;

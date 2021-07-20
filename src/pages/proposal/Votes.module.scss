@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
@@ -38,15 +39,15 @@
 
   flex: 1;
   flex-wrap: wrap;
-  margin: (-$gutter / 2);
+  margin: math.div(-$gutter, 2);
 }
 
 .option {
-  width: (100% / 2);
-  padding: ($gutter / 2);
+  width: math.div(100%, 2);
+  padding: math.div($gutter, 2);
 
   @media (min-width: 1280px) {
-    width: (100% / 4);
+    width: math.div(100%, 4);
     max-width: 190px;
   }
 
