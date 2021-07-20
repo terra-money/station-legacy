@@ -1,8 +1,9 @@
+@use 'sass:math';
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
 .list {
-  margin: ($gutter-large / -2);
+  margin: math.div($gutter-large, -2);
 
   @media (min-width: $breakpoint) {
     display: flex;
@@ -12,7 +13,7 @@
 }
 
 .item {
-  padding: ($gutter-large / 2);
+  padding: math.div($gutter-large, 2);
   width: 100%;
 
   @media (min-width: 1280px) {
@@ -35,7 +36,7 @@
     @include flex();
 
     article {
-      width: (100% / 3);
+      width: math.div(100%, 3);
     }
   }
 

@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
@@ -35,7 +36,7 @@ $border: #cdd5ee;
       position: absolute;
       top: 20px;
       bottom: 0;
-      left: ((20px - 2px) / 2);
+      left: math.div(20px - 2px, 2);
       z-index: 0;
     }
   }

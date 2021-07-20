@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 $border: 1px solid $line;
 $box-shadow: fade-out(black, 0.95);
 $padding: 25px;
@@ -104,7 +106,7 @@ button.card-main {
     }
 
     .card-small .card-header + & {
-      padding-top: ($padding-small/ 2);
+      padding-top: math.div($padding-small, 2);
     }
   }
 }
