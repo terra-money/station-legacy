@@ -2,8 +2,9 @@
   "manifest_version": 2,
   "name": "Terra Station",
   "version": "1.9.1",
-
-  "options_page": "index.html",
+  "options_ui": {
+    "page": "index.html"
+  },
   "background": {
     "scripts": ["background.js"],
     "persistent": true
