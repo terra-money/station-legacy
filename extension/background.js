@@ -91,7 +91,18 @@ const connectRemote = (remotePort) => {
           // It is recursive.
           // After referring to a specific value in the storage, perform the function listed below again.
           if (namespace === 'local') {
-            extension.storage.local.get(['connect', 'wallet'], handleGetConnect)
+            const { newValue, oldValue } = changes.connect
+
+            const denied =
+              oldValue &&
+              oldValue.request.length - 1 === newValue.request.length &&
+              oldValue.allowed.length === newValue.allowed.length
+
+            if (!denied)
+              extension.storage.local.get(
+                ['connect', 'wallet'],
+                handleGetConnect
+              )
           }
         }
 
