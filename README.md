@@ -30,7 +30,6 @@ Add the following entry to your `/etc/hosts` file:
 ```sh
 git clone https://github.com/terra-money/station.git
 cd station
-cp src/chains.sample.ts src/chains.ts
 git submodule init
 git submodule update
 yarn
