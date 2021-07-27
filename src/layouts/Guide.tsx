@@ -14,9 +14,6 @@ const Guid = () => (
       <a href="https://terra.money/static/Terra_Station_Guide_Eng.pdf" download>
         ENG
       </a>
-      <a href="https://terra.money/static/Terra_Station_Guide_Kor.pdf" download>
-        KOR
-      </a>
     </div>
   </div>
 )
