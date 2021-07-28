@@ -1,5 +1,6 @@
 import React from 'react'
 import { ValidatorUI, format } from '../../use-station/src'
+import { DelegateType } from '../../use-station/src/post/useDelegate'
 import { useApp } from '../../hooks'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
@@ -14,20 +15,15 @@ import s from './Actions.module.scss'
 
 const Actions = (v: ValidatorUI) => {
   const { operatorAddress } = v
-  const { delegate, undelegate, withdraw } = v
+  const { delegate, redelegate, undelegate, withdraw } = v
   const { myDelegations, myActionsTable, myRewards } = v
 
   const { modal } = useApp()
 
   /* tx */
   const open = {
-    delegate: ({ undelegate }: { undelegate?: boolean }) =>
-      modal.open(
-        <Delegate
-          address={operatorAddress.address}
-          isUndelegation={!!undelegate}
-        />
-      ),
+    delegate: ({ type }: { type: DelegateType }) =>
+      modal.open(<Delegate address={operatorAddress.address} type={type} />),
     withdraw: () =>
       myRewards.amounts &&
       modal.open(
@@ -67,12 +63,17 @@ const Actions = (v: ValidatorUI) => {
             list={[
               <ButtonWithAuth
                 {...delegate}
-                onClick={() => open.delegate({})}
+                onClick={() => open.delegate({ type: DelegateType.D })}
+                className="btn btn-sm btn-primary"
+              />,
+              <ButtonWithAuth
+                {...redelegate}
+                onClick={() => open.delegate({ type: DelegateType.R })}
                 className="btn btn-sm btn-primary"
               />,
               <ButtonWithAuth
                 {...undelegate}
-                onClick={() => open.delegate({ undelegate: true })}
+                onClick={() => open.delegate({ type: DelegateType.U })}
                 className="btn btn-sm btn-sky"
               />,
             ]}

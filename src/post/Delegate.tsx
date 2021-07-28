@@ -1,15 +1,16 @@
 import React from 'react'
 import { useAuth, useDelegate } from '../use-station/src'
+import { DelegateType } from '../use-station/src/post/useDelegate'
 import Post from './Post'
 
 interface Props {
   address: string
-  isUndelegation: boolean
+  type: DelegateType
 }
 
-const Delegate = ({ address: validatorAddress, isUndelegation }: Props) => {
+const Delegate = ({ address: validatorAddress, type }: Props) => {
   const { user } = useAuth()
-  const response = useDelegate(user!, { validatorAddress, isUndelegation })
+  const response = useDelegate(user!, { validatorAddress, type })
   return <Post post={response} />
 }
 
