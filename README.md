@@ -28,12 +28,10 @@ Add the following entry to your `/etc/hosts` file:
 ### Build Terra Station
 
 ```sh
-git clone https://github.com/terra-money/station.git
+git clone --recursive https://github.com/terra-money/station.git
 cd station
-git submodule init
-git submodule update
-yarn
-yarn start
+npm i
+npm run start
 ```
 
 > :warning: For Windows user, you need to change the `SASS_PATH` inside your `.env` file.
@@ -43,40 +41,18 @@ Terra Station should now be running locally at https://local.terra.money:3000.
 
 > :mortar_board: You need to change your host file to be able to access `local.terra.money` locally.
 
-#### Customizing [useStation](https://github.com/terra-money/use-station)
-
-You may want to modify the `useStation` to change how Terra Station works.
-​
-```sh
-git clone https://github.com/terra-money/use-station.git
-cd use-station
-yarn
-yarn build
-```
-
-Then, to build Terra Station:
-
-```sh
-git clone https://github.com/terra-money/station.git
-cd station
-yarn
-yarn add ..path/to/your/use-station
-yarn start
-```
-​
 ### Building Terra Station (Electron App)
 
 Before executing the following commands, make sure the server of Terra Station(web)
 is running, which provides instructions on how to run the Electron app.
-​
+
 ```sh
 git clone https://github.com/terra-money/station-electron.git
 cd station-electron
-git checkout -t origin/local
-yarn
-yarn start
+npm i
+npm run start
 ```
-​
+
 An Electron app should now be running against https://local.terra.money:3000.
 You can now launch the app version of Terra Station.
 
@@ -86,11 +62,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `npm run start`
 
 Runs the app in the development mode.<br>
 Open [https://localhost:3000](https://localhost:3000) to view it in the browser.
 
-### `yarn test`
+### `npm run test`
 
 Launches the test runner in the interactive watch mode.
