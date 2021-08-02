@@ -2,10 +2,12 @@ import React from 'react'
 import c from 'classnames'
 import { RecentSentUI, RecentSentItemUI } from '../use-station/src'
 import { useSend, useAuth } from '../use-station/src'
+import useTokenBalance from '../use-station/src/cw20/useTokenBalance'
 import ButtonGroup from '../components/ButtonGroup'
+import FormInformation from '../components/FormInformation'
+import ExtLink from '../components/ExtLink'
 import Post from './Post'
 import s from './Send.module.scss'
-import useTokenBalance from '../use-station/src/cw20/useTokenBalance'
 
 const Send = ({ denom }: { denom: string }) => {
   const { user } = useAuth()
@@ -27,6 +29,14 @@ const Send = ({ denom }: { denom: string }) => {
   }
 
   const formProps = {
+    renderBeforeFields: () => (
+      <FormInformation>
+        <p>
+          Use <ExtLink href="https://bridge.terra.money">Terra Bridge</ExtLink>{' '}
+          for cross-chain transfers
+        </p>
+      </FormInformation>
+    ),
     renderAfterFields: () => response.ui && renderRecent(response.ui),
   }
 

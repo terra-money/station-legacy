@@ -1,0 +1,21 @@
+@import '../styles/mixins';
+
+.component {
+  display: flex;
+  background: rgba(#ebeff8, 90%);
+  border-radius: 8px;
+  font-size: 12px;
+  margin-bottom: 20px;
+  padding: 20px;
+
+  i {
+    flex: none;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  a {
+    font-weight: 500;
+    text-decoration: underline;
+  }
+}
