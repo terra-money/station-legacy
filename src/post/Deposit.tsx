@@ -16,8 +16,7 @@ const Deposit = ({ params, contents }: Props) => {
   const response = useDeposit(user!, params)
 
   const formProps = {
-    reversed: true,
-    children: (
+    renderBeforeFields: () => (
       <dl className={c('dl-wrap', s.dl)}>
         {contents.map(({ title, displays, content }) => (
           <Fragment key={title}>

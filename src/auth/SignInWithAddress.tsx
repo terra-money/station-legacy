@@ -11,9 +11,12 @@ const SignInWithAddress = () => {
   const refresh = () => setKey((k) => k + 1)
 
   return (
-    <Form form={form}>
-      <RecentAddresses onDeleteAll={refresh} key={key} />
-    </Form>
+    <Form
+      form={form}
+      renderAfterFields={() => (
+        <RecentAddresses onDeleteAll={refresh} key={key} />
+      )}
+    />
   )
 }
 

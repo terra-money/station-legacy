@@ -17,7 +17,7 @@ const SwapMultiple = ({ bank, pairs, onFinish }: Props) => {
   const response = useSwapMultiple(user!, { bank, pairs })
   const { ui } = response
 
-  const children = (
+  const renderAfterFields = () => (
     <>
       <label className="label">{ui.checkboxes.label}</label>
 
@@ -58,7 +58,13 @@ const SwapMultiple = ({ bank, pairs, onFinish }: Props) => {
     </>
   )
 
-  return <Post post={response} formProps={{ children }} onFinish={onFinish} />
+  return (
+    <Post
+      post={response}
+      formProps={{ renderAfterFields }}
+      onFinish={onFinish}
+    />
+  )
 }
 
 export default SwapMultiple

@@ -13,7 +13,10 @@ const Component = ({ address, denoms }: Props & { denoms: string[] }) => {
   const response = useInteract(address, user!, denoms)
   const { ui } = response
   return (
-    <Post post={response} formProps={{ children: <CoinFields {...ui!} /> }} />
+    <Post
+      post={response}
+      formProps={{ renderAfterFields: () => <CoinFields {...ui!} /> }}
+    />
   )
 }
 

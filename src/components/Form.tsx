@@ -9,9 +9,9 @@ export interface Props {
   h2?: ReactNode
   disabled?: boolean
   cancel?: { onClick: () => void; children: string }
-  reversed?: boolean
   className?: string
-  children?: ReactNode
+  renderBeforeFields?: () => ReactNode
+  renderAfterFields?: () => ReactNode
   renderField?: (field: FieldProps) => ReactNode
   render?: (params: State) => ReactNode
 }
@@ -21,8 +21,9 @@ export interface State {
   setIndex: (index: number) => void
 }
 
-const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
-  const { actions, cancel, reversed, className } = props
+const Form = ({ form, h2, renderField, render, ...props }: Props) => {
+  const { renderBeforeFields, renderAfterFields } = props
+  const { actions, cancel, className } = props
   const { title, fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled
   const [currentFieldIndex, setCurrentFieldIndex] = useState<number>(-1)
@@ -40,7 +41,7 @@ const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
         {h2 && <h2>{h2}</h2>}
       </header>
 
-      {reversed && children}
+      {renderBeforeFields?.()}
 
       <section className={className}>
         {fields.map((field, index) =>
@@ -56,7 +57,7 @@ const Form = ({ form, h2, renderField, render, children, ...props }: Props) => {
         )}
       </section>
 
-      {!reversed && children}
+      {renderAfterFields?.()}
       {render?.({ index: currentFieldIndex, setIndex: setCurrentFieldIndex })}
 
       <footer className={s.submit}>

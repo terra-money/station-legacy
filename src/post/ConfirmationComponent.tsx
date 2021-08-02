@@ -34,26 +34,32 @@ const ConfirmationComponent: FC<Props> = ({ dl, ledger, ...props }) => {
   ) : ledger ? (
     <ConfirmLedger {...ledger} />
   ) : (
-    <Form {...formProps} actions={pagination} reversed>
-      {children}
+    <Form
+      {...formProps}
+      actions={pagination}
+      renderBeforeFields={() => (
+        <>
+          {children}
 
-      {dl && (
-        <dl className={c('dl-wrap', s.dl)}>
-          {dl.map(({ dt, dd }, index) => (
-            <Fragment key={index}>
-              <dt>{dt}</dt>
-              <dd>{dd}</dd>
-            </Fragment>
-          ))}
-        </dl>
+          {dl && (
+            <dl className={c('dl-wrap', s.dl)}>
+              {dl.map(({ dt, dd }, index) => (
+                <Fragment key={index}>
+                  <dt>{dt}</dt>
+                  <dd>{dd}</dd>
+                </Fragment>
+              ))}
+            </dl>
+          )}
+
+          <section className={s.feedback}>
+            {formProps.form.errors?.map((error, index) => (
+              <InvalidFeedback key={index}>{error}</InvalidFeedback>
+            ))}
+          </section>
+        </>
       )}
-
-      <section className={s.feedback}>
-        {formProps.form.errors?.map((error, index) => (
-          <InvalidFeedback key={index}>{error}</InvalidFeedback>
-        ))}
-      </section>
-    </Form>
+    />
   )
 }
 

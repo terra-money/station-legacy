@@ -45,13 +45,17 @@ const Recover = ({ generated }: { generated?: Seed }) => {
   ) : next ? (
     renderNext(next)
   ) : (
-    <Form form={form} disabled={generated && !checked}>
-      {generated ? (
-        <Warning {...warning} attrs={{ checked, onChange: toggle }} />
-      ) : (
-        <Mnemonics {...mnemonics} />
-      )}
-    </Form>
+    <Form
+      form={form}
+      disabled={generated && !checked}
+      renderAfterFields={() =>
+        generated ? (
+          <Warning {...warning} attrs={{ checked, onChange: toggle }} />
+        ) : (
+          <Mnemonics {...mnemonics} />
+        )
+      }
+    />
   )
 }
 

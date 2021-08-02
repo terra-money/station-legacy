@@ -9,7 +9,10 @@ const Component = ({ denoms }: { denoms: string[] }) => {
   const response = useCreate(user!, denoms)
   const { ui } = response
   return (
-    <Post post={response} formProps={{ children: <CoinFields {...ui!} /> }} />
+    <Post
+      post={response}
+      formProps={{ renderAfterFields: () => <CoinFields {...ui!} /> }}
+    />
   )
 }
 

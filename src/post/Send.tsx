@@ -26,7 +26,9 @@ const Send = ({ denom }: { denom: string }) => {
     )
   }
 
-  const formProps = { children: response.ui && renderRecent(response.ui) }
+  const formProps = {
+    renderAfterFields: () => response.ui && renderRecent(response.ui),
+  }
 
   return <Post post={response} formProps={formProps} />
 }
