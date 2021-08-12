@@ -61,13 +61,13 @@ const Form = ({ form, h2, renderField, render, ...props }: Props) => {
       {render?.({ index: currentFieldIndex, setIndex: setCurrentFieldIndex })}
 
       <footer className={s.submit}>
-        <button type="submit" className="btn btn-primary" disabled={disabled}>
-          {submitLabel}
-        </button>
-
         {cancel && (
           <button type="button" className="btn btn-danger" {...cancel} />
         )}
+
+        <button type="submit" className="btn btn-primary" disabled={disabled}>
+          {submitLabel}
+        </button>
       </footer>
     </form>
   )
