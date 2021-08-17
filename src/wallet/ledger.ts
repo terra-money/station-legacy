@@ -235,23 +235,24 @@ const connect = async () => {
   app = await createTerraApp()
   const { app_name: appName } = app.getInfo()
 
-  if (!['Terra', 'Cosmos'].includes(appName)) {
-    throw new LedgerError(`Open the Terra app in your Ledger.`)
-  }
+  console.log(appName)
+  // if (!['Terra', 'Cosmos'].includes(appName)) {
+  //   throw new LedgerError(`Open the Terra app in your Ledger.`)
+  // }
 
-  const { major, minor, patch } = app.getVersion()
-  const version = `${major}.${minor}.${patch}`
+  // const { major, minor, patch } = app.getVersion()
+  // const version = `${major}.${minor}.${patch}`
 
-  if (
-    (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
-    (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
-  ) {
-    throw new LedgerError(
-      'Outdated version: Please update Ledger Terra App to the latest version.'
-    )
-  }
+  // if (
+  //   (appName === 'Terra' && semver.lt(version, REQUIRED_APP_VERSION)) ||
+  //   (appName === 'Cosmos' && semver.lt(version, REQUIRED_COSMOS_APP_VERSION))
+  // ) {
+  //   throw new LedgerError(
+  //     'Outdated version: Please update Ledger Terra App to the latest version.'
+  //   )
+  // }
 
-  path = [44, appName === 'Terra' ? 330 : 118, 0, 0, 0]
+  path = [44, 330, 0, 0, 0]
 }
 
 export const close = async () => {
