@@ -1,0 +1,51 @@
+@import '../../styles/variables';
+
+.token {
+  border-radius: 5px;
+  border: solid 1px $line;
+  display: flex;
+  padding: 15px;
+}
+
+.main {
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.symbol {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.placeholder {
+  background: $line;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}
+
+.img {
+  margin-right: 5px;
+}
+
+.link {
+  font-size: 12px;
+}
+
+.button {
+  border: solid 1px $brand;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  width: 80px;
+  height: 30px;
+}
+
+.muted {
+  opacity: 0.3;
+}

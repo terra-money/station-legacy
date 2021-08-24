@@ -10,15 +10,21 @@ export interface AssetsPage extends BankAPI {
 export interface AssetsUI {
   card?: Card
   available?: AvailableUI
-  tokens?: AvailableUI
+  tokens: AvailableUI
   vesting?: VestingUI
 }
 
 export interface AvailableUI {
   title: string
   list: AvailableItem[]
-  hideSmall: { label: string; checked: boolean; toggle: () => void }
+  hideSmall?: HideSmallUI
   send: string
+}
+
+export interface HideSmallUI {
+  label: string
+  checked: boolean
+  toggle: () => void
 }
 
 export interface AvailableItem {

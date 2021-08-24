@@ -3,7 +3,7 @@ import { Dictionary } from 'ramda'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { TokenBalance, Tokens } from '../types'
 import { useConfig } from '../contexts/ConfigContext'
-import useWhitelist from './useWhitelist'
+import { useTokens } from '../../data/local'
 import mantleURL from './mantle.json'
 import alias from './alias'
 
@@ -19,11 +19,13 @@ export default (address: string): TokenBalanceQuery => {
   const [loading, setLoading] = useState(false)
   const { chain } = useConfig()
   const { name: currentChain } = chain.current
-  const { whitelist, loading: loadingWhitelist } = useWhitelist(currentChain)
+  const tokens = useTokens()
   const mantle = (mantleURL as Dictionary<string | undefined>)[currentChain]
 
   const load = useCallback(async () => {
-    if (whitelist) {
+    if (!Object.keys(tokens).length) {
+      setResult({})
+    } else {
       setLoading(true)
 
       try {
@@ -33,14 +35,18 @@ export default (address: string): TokenBalanceQuery => {
         })
 
         const queries = alias(
-          Object.values(whitelist).map(({ token }) => ({
+          Object.values(tokens).map(({ token }) => ({
             token,
             contract: token,
             msg: { balance: { address } },
           }))
         )
 
-        const { data } = await client.query({ query: queries })
+        const { data } = await client.query({
+          query: queries,
+          errorPolicy: 'all',
+        })
+
         setResult(parseResult(data))
       } catch (error) {
         setResult({})
@@ -48,21 +54,21 @@ export default (address: string): TokenBalanceQuery => {
 
       setLoading(false)
     }
-  }, [address, mantle, whitelist])
+  }, [address, mantle, tokens])
 
   useEffect(() => {
     address && load()
-  }, [address, whitelist, mantle, load])
+  }, [address, tokens, mantle, load])
 
   return {
     load,
-    loading: loading || loadingWhitelist,
-    whitelist,
+    loading,
+    whitelist: tokens,
     list:
       result &&
-      whitelist &&
+      tokens &&
       Object.entries(result).map(([token, balance]) => ({
-        ...whitelist[token],
+        ...tokens[token],
         balance,
       })),
   }

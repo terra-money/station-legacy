@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AssetsPage, BankData, Schedule, TokenBalance, User } from '../../types'
 import { format } from '../../utils'
-import { percent, gte, gt } from '../../utils/math'
+import { percent, gte } from '../../utils/math'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
 
@@ -16,17 +16,14 @@ interface Config {
 export default (user: User, config?: Config): AssetsPage => {
   const { t } = useTranslation()
   const bank = useBank(user)
-  const tokens = useTokenBalance(user.address)
+  const tokenBalances = useTokenBalance(user.address)
   const [hideSmall, setHideSmall] = useState<boolean>(
     config?.hideSmall !== undefined ? config.hideSmall : false
-  )
-  const [hideSmallTokens, setHideSmallTokens] = useState(
-    config?.hideSmallTokens !== undefined ? config.hideSmallTokens : false
   )
 
   const load = () => {
     bank.execute()
-    tokens.load()
+    tokenBalances.load()
   }
 
   const render = (
@@ -63,27 +60,19 @@ export default (user: User, config?: Config): AssetsPage => {
           },
           send: t('Post:Send:Send'),
         },
-    tokens: !tokenList?.filter(({ balance }) => gt(balance, 0)).length
-      ? undefined
-      : {
-          title: 'Tokens',
-          list: tokenList
-            .filter(({ balance }) => !hideSmallTokens || gt(balance, SMALL))
-            .map(({ token, symbol, icon, balance, decimals }) => ({
-              icon,
-              token,
-              display: {
-                value: format.amount(balance, decimals),
-                unit: symbol,
-              },
-            })),
-          hideSmall: {
-            label: t('Page:Bank:Hide small balances'),
-            checked: hideSmallTokens,
-            toggle: () => setHideSmallTokens((v) => !v),
-          },
-          send: t('Post:Send:Send'),
-        },
+    tokens: {
+      title: 'Tokens',
+      list:
+        tokenList?.map(({ token, symbol, icon, balance, decimals }) => {
+          const display = {
+            value: format.amount(balance, decimals),
+            unit: symbol,
+          }
+
+          return { icon, token, display }
+        }) ?? [],
+      send: t('Post:Send:Send'),
+    },
     vesting: !vesting.length
       ? undefined
       : {
@@ -122,13 +111,8 @@ export default (user: User, config?: Config): AssetsPage => {
   return Object.assign(
     { setHideSmall, load },
     bank,
-    { loading: bank.loading || tokens.loading },
-    bank.data && {
-      ui: render(
-        bank.data,
-        tokens.list?.filter(({ balance }) => gt(balance, 0))
-      ),
-    }
+    { loading: bank.loading || tokenBalances.loading },
+    bank.data && { ui: render(bank.data, tokenBalances.list) }
   )
 }
 

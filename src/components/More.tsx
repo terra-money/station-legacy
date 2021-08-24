@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import styles from './More.module.scss'
 
 type Props = {
   title?: string
@@ -16,7 +15,7 @@ const More: FC<Props> = ({ title, empty, isEmpty, more, children }) => {
     <>
       {children}
       {more && (
-        <button className={styles.more} onClick={more}>
+        <button className="btn-more" onClick={more}>
           more
         </button>
       )}

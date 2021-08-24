@@ -1,0 +1,17 @@
+@import '../../styles/variables';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  background: $bg;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.search {
+  flex: 1;
+  font-size: 15px;
+  width: 100%;
+  height: 40px;
+}

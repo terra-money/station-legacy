@@ -16,7 +16,7 @@ export default ({ address }: User): TxsPage => {
   const getLink = useFinder()
   const { chain } = useConfig()
   const { name: currentChain } = chain.current
-  const { whitelist } = useWhitelist(currentChain)
+  const { whitelist } = useWhitelist()
   const { contracts } = useContracts(currentChain)
 
   /* api */

@@ -3,14 +3,17 @@ import Icon from './Icon'
 import styles from './ExtLink.module.scss'
 
 type Anchor = AnchorHTMLAttributes<HTMLAnchorElement>
-const ExtLink: FC<Anchor> = ({ href, children, ...attrs }) =>
-  href ? (
+const ExtLink: FC<Anchor> = ({ href, children, ...attrs }) => {
+  const content = href ? (
     <a {...attrs} href={fix(href)} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   ) : (
     <span {...attrs}>{children}</span>
   )
+
+  return content
+}
 
 export default ExtLink
 

@@ -1,30 +1,53 @@
 import React, { ReactNode } from 'react'
-import { AvailableUI } from '../../lib'
+import { AvailableUI, HideSmallUI } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'
 import Checkbox from '../../components/Checkbox'
 import Available from './Available'
+import styles from './AvailableList.module.scss'
 
-const AvailableList = ({ title, list, hideSmall, send }: AvailableUI) => {
-  const toggle = () => {
-    localSettings.set({ hideSmallBalances: !hideSmall.checked })
-    hideSmall.toggle()
-  }
+interface Props extends AvailableUI {
+  button?: ReactNode
+  footer?: ReactNode
+}
 
-  const checkbox = (
-    <Checkbox onClick={toggle} checked={hideSmall.checked}>
-      {hideSmall.label}
-    </Checkbox>
-  )
+const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
+  const { button, footer } = props
 
   const content = list.map((item, i) => (
     <Available {...item} buttonLabel={send} key={i} />
   ))
 
+  const renderCheckbox = ({ toggle, checked, label }: HideSmallUI) => {
+    const handleClick = () => {
+      localSettings.set({ hideSmallBalances: !checked })
+      toggle()
+    }
+
+    return (
+      <Checkbox onClick={handleClick} checked={checked}>
+        {label}
+      </Checkbox>
+    )
+  }
+
+  const renderTitle = () => {
+    return (
+      <div className={styles.header}>
+        {title}
+        {button}
+      </div>
+    )
+  }
+
   const renderCard = (children: ReactNode) => (
-    <Card title={title} actions={checkbox}>
+    <Card
+      title={renderTitle()}
+      actions={hideSmall && renderCheckbox(hideSmall)}
+    >
       {children}
+      {footer}
     </Card>
   )
 
