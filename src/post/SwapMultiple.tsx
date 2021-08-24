@@ -1,5 +1,5 @@
-import { useSwapMultiple, useAuth } from '../use-station/src'
-import { BankData, Pairs, Field as FieldProps } from '../use-station/src'
+import { useSwapMultiple, useAuth } from '../lib'
+import { BankData, Pairs, Field as FieldProps } from '../lib'
 import Field from '../components/Field'
 import Icon from '../components/Icon'
 import Post from './Post'

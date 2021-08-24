@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { ScheduleUI } from '../../use-station/src'
+import { ScheduleUI } from '../../lib'
 import Icon from '../../components/Icon'
 import Number from '../../components/Number'
 import s from './Schedule.module.scss'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignInWithAddress } from '../use-station/src'
+import { useSignInWithAddress } from '../lib'
 import Form from '../components/Form'
 import RecentAddresses from './RecentAddresses'
 

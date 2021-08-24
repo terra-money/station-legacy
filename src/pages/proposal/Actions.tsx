@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProposalUI } from '../../use-station/src'
+import { ProposalUI } from '../../lib'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import Deposit from '../../post/Deposit'

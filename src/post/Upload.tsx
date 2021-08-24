@@ -1,5 +1,5 @@
 import React from 'react'
-import { useUpload, useAuth } from '../use-station/src'
+import { useUpload, useAuth } from '../lib'
 import Post from './Post'
 
 const Upload = () => {

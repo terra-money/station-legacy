@@ -1,5 +1,5 @@
 import React from 'react'
-import { VestingUI } from '../../use-station/src'
+import { VestingUI } from '../../lib'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
 import Flex from '../../components/Flex'

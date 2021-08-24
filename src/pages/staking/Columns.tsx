@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { StakingPersonal, DisplayCoin } from '../../use-station/src'
+import { StakingPersonal, DisplayCoin } from '../../lib'
 import Card from '../../components/Card'
 import Flex from '../../components/Flex'
 import Icon from '../../components/Icon'

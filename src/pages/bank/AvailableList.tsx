@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AvailableUI } from '../../use-station/src'
+import { AvailableUI } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'

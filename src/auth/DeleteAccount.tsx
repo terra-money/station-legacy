@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth, useManageAccounts } from '../use-station/src'
+import { useAuth, useManageAccounts } from '../lib'
 import { loadKeys, storeKeys } from '../utils/localStorage'
 import Confirm from '../components/Confirm'
 

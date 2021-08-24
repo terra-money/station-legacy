@@ -1,4 +1,4 @@
-import { useDashboard, DashboardUI } from '../../use-station/src'
+import { useDashboard, DashboardUI } from '../../lib'
 import ErrorComponent from '../../components/ErrorComponent'
 import Prices from './Prices'
 import TaxRate from './TaxRate'

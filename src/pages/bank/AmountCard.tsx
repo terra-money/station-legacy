@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react'
-import { DisplayCoin } from '../../use-station/src'
+import { DisplayCoin } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'

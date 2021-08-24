@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react'
 import PaginationButtons from './PaginationButtons'
-import { Pagination as PaginationParams } from '../use-station/src'
-import { toNumber, plus } from '../use-station/src'
+import { Pagination as PaginationParams } from '../lib'
+import { toNumber, plus } from '../lib'
 
 type Props = {
   count: number

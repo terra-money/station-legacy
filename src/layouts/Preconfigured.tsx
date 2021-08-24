@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useAuth } from '../use-station/src'
+import { useAuth } from '../lib'
 import { generateWallet } from '../utils'
 import { encryptWallet } from '../utils/localStorage'
 import Select from '../components/Select'

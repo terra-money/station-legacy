@@ -1,5 +1,5 @@
 import React from 'react'
-import { TallyingUI } from '../../use-station/src'
+import { TallyingUI } from '../../lib'
 import Card from '../../components/Card'
 import s from './ProposalFooter.module.scss'
 

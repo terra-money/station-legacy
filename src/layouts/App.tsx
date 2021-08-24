@@ -8,9 +8,9 @@ import { without } from 'ramda'
 import axios from 'axios'
 import c from 'classnames'
 
-import { useConfigState, ConfigProvider, User } from '../use-station/src'
-import { useAuthState, AuthProvider } from '../use-station/src'
-import { LangKey } from '../use-station/src'
+import { useConfigState, ConfigProvider, User } from '../lib'
+import { useAuthState, AuthProvider } from '../lib'
+import { LangKey } from '../lib'
 
 import { electron, report } from '../utils'
 import { isElectron, isExtension } from '../utils/env'

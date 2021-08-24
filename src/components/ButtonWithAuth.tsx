@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import c from 'classnames'
-import { useAuth, useText } from '../use-station/src'
+import { useAuth, useText } from '../lib'
 import Pop from './Pop'
 import s from './ButtonWithName.module.scss'
 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import c from 'classnames'
 import xss from 'xss'
-import { ProposalUI } from '../../use-station/src'
+import { ProposalUI } from '../../lib'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import { getBadgeColor } from '../governance/helpers'

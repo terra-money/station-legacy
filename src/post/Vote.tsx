@@ -1,5 +1,5 @@
 import React from 'react'
-import { useVote, useAuth, Field } from '../use-station/src'
+import { useVote, useAuth, Field } from '../lib'
 import VoteItem from './VoteItem'
 import Post from './Post'
 import s from './Vote.module.scss'

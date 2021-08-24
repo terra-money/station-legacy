@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react'
-import { ContractsUI, ContractUI, is } from '../../use-station/src'
-import { useMenu, useContract, useContracts } from '../../use-station/src'
+import { ContractsUI, ContractUI, is } from '../../lib'
+import { useMenu, useContract, useContracts } from '../../lib'
 import { useApp, useGoBack } from '../../hooks'
 import Page from '../../components/Page'
 import Info from '../../components/Info'

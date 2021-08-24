@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react'
-import { DisplayCoin } from '../use-station/src'
+import { DisplayCoin } from '../lib'
 import Number from './Number'
 
 interface Props {

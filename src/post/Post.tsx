@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInfo, PostPage } from '../use-station/src'
+import { useInfo, PostPage } from '../lib'
 import { useApp } from '../hooks'
 import Form, { Props as FormProps } from '../components/Form'
 import ModalContent from '../components/ModalContent'

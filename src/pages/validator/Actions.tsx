@@ -1,6 +1,6 @@
 import React from 'react'
-import { ValidatorUI, format } from '../../use-station/src'
-import { DelegateType } from '../../use-station/src/post/useDelegate'
+import { ValidatorUI, format } from '../../lib'
+import { DelegateType } from '../../lib/post/useDelegate'
 import { useApp } from '../../hooks'
 import Card from '../../components/Card'
 import Number from '../../components/Number'

@@ -1,6 +1,6 @@
 import React from 'react'
-import { LangKey, Languages } from '../use-station/src'
-import { useConfig, getLang } from '../use-station/src'
+import { LangKey, Languages } from '../lib'
+import { useConfig, getLang } from '../lib'
 import { isExtension } from '../utils/env'
 import { localSettings } from '../utils/localStorage'
 import Select from '../components/Select'

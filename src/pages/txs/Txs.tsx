@@ -1,6 +1,6 @@
 import React from 'react'
-import { TxsUI, User } from '../../use-station/src'
-import { useMenu, useTxs } from '../../use-station/src'
+import { TxsUI, User } from '../../lib'
+import { useMenu, useTxs } from '../../lib'
 import WithAuth from '../../auth/WithAuth'
 import Page from '../../components/Page'
 import Info from '../../components/Info'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { VoterUI } from '../../use-station/src'
+import { VoterUI } from '../../lib'
 import ExtLink from '../../components/ExtLink'
 
 interface Props {

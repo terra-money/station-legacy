@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Mnemonics as Props } from '../use-station/src'
+import { Mnemonics as Props } from '../lib'
 import InvalidFeedback from '../components/InvalidFeedback'
 import Mnemonic from './Mnemonic'
 import s from './Mnemonics.module.scss'

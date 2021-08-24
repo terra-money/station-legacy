@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRate, RateItem, RateUI } from '../../use-station/src'
+import { useRate, RateItem, RateUI } from '../../lib'
 import c from 'classnames'
 import Loading from '../../components/Loading'
 import Card from '../../components/Card'

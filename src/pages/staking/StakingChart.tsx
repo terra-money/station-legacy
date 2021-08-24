@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { MyDelegations as Item } from '../../use-station/src'
+import { MyDelegations as Item } from '../../lib'
 import Chart from '../../components/Chart'
 import Number from '../../components/Number'
 import s from './StakingChart.module.scss'

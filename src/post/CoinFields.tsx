@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { CoinFields as Props } from '../use-station/src'
+import { CoinFields as Props } from '../lib'
 import Field from '../components/Field'
 import Flex from '../components/Flex'
 import s from './CoinFields.module.scss'

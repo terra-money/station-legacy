@@ -1,5 +1,5 @@
 import React from 'react'
-import { GovernanceParamUI } from '../../use-station/src'
+import { GovernanceParamUI } from '../../lib'
 import Displays from '../../components/Displays'
 
 const Footer = ({ list }: { list: GovernanceParamUI[] }) => (

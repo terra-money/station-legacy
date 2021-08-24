@@ -1,4 +1,4 @@
-import { createContext } from '../use-station/src'
+import { createContext } from '../lib'
 
 interface AuthModal {
   modalActions: {

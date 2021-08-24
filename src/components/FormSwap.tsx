@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, ReactNode } from 'react'
 import c from 'classnames'
-import { FormUI, Field as FieldProps } from '../use-station/src'
+import { FormUI, Field as FieldProps } from '../lib'
 import { ReactComponent as SwapIcon } from '../images/Swap.svg'
 import Field from './Field'
 import Icon from './Icon'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AuthMenuUI, Trans } from '../use-station/src'
+import { AuthMenuUI, Trans } from '../lib'
 import { useAuthModal } from './useAuthModal'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'

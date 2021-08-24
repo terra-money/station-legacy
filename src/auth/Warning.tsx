@@ -1,5 +1,5 @@
 import React, { InputHTMLAttributes } from 'react'
-import { Trans, SignUpWarning } from '../use-station/src'
+import { Trans, SignUpWarning } from '../lib'
 import Pop from '../components/Pop'
 import Flex from '../components/Flex'
 import Icon from '../components/Icon'

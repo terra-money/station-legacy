@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
-import { SignUpNext, Seed } from '../use-station/src'
-import { useSignUp } from '../use-station/src'
+import { SignUpNext, Seed } from '../lib'
+import { useSignUp } from '../lib'
 import { generateAddresses, generateWallet } from '../utils'
 import { importKey, loadKeys } from '../utils/localStorage'
 import { useExtensionGoBack } from '../extension/useExtension'

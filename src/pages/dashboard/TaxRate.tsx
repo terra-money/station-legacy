@@ -1,5 +1,5 @@
 import React from 'react'
-import { TaxRateUI } from '../../use-station/src'
+import { TaxRateUI } from '../../lib'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 

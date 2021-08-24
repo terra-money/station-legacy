@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { Card as CardProps } from '../use-station/src'
+import { Card as CardProps } from '../lib'
 import Icon from './Icon'
 import Card from './Card'
 import s from './Info.module.scss'

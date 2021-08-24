@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { AxiosError } from 'axios'
-import { useInfo } from '../use-station/src'
-import { FORBIDDEN } from '../use-station/src/components/ErrorBoundary'
-import { getIsForbidden } from '../use-station/src/components/ErrorBoundary'
+import { useInfo } from '../lib'
+import { FORBIDDEN } from '../lib/components/ErrorBoundary'
+import { getIsForbidden } from '../lib/components/ErrorBoundary'
 import Info from './Info'
 
 interface Props {

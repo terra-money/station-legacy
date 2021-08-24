@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useActiveDenoms } from '../use-station/src'
+import { useActiveDenoms } from '../lib'
 
 interface Props {
   children: (denoms: string[]) => ReactNode

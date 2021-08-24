@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMarket, useMenu } from '../../use-station/src'
+import { useMarket, useMenu } from '../../lib'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Page from '../../components/Page'

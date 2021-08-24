@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactNode, useState } from 'react'
-import { FormUI, Field as FieldProps } from '../use-station/src'
+import { FormUI, Field as FieldProps } from '../lib'
 import Field from './Field'
 import s from './Form.module.scss'
 

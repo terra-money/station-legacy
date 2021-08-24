@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInfo } from '../use-station/src'
+import { useInfo } from '../lib'
 import Info from './Info'
 import ProgressCircle from './ProgressCircle'
 import { isExtension } from '../utils/env'

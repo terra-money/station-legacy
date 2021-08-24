@@ -1,5 +1,5 @@
 import QRCode from '../auth/QRCode'
-import { useAuth } from '../use-station/src'
+import { useAuth } from '../lib'
 
 const AddressQRCode = () => {
   const { user } = useAuth()

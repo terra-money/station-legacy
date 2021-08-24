@@ -1,6 +1,6 @@
 import React from 'react'
-import { useMenu, useStaking, useAuth } from '../../use-station/src'
-import { StakingPersonal } from '../../use-station/src'
+import { useMenu, useStaking, useAuth } from '../../lib'
+import { StakingPersonal } from '../../lib'
 import { useApp, useSearch } from '../../hooks'
 import Withdraw from '../../post/Withdraw'
 import ValidatorList from '../validators/ValidatorList'

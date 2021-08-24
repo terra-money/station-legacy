@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useInfo } from '../use-station/src'
+import { useInfo } from '../lib'
 import Icon from './Icon'
 import s from './Disconnected.module.scss'
 

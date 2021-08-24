@@ -1,5 +1,5 @@
 import React from 'react'
-import { StakingRatioUI } from '../../use-station/src'
+import { StakingRatioUI } from '../../lib'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 

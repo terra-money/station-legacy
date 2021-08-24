@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAssets, AssetsUI, User } from '../../use-station/src'
+import { useAssets, AssetsUI, User } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import { useRemovePadding } from '../../hooks'

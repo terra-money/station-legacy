@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useShare } from '../use-station/src'
+import { useShare } from '../lib'
 import { ReactComponent as Twitter } from './Twitter.svg'
 import { ReactComponent as Telegram } from './Telegram.svg'
 import { ReactComponent as Mail } from './Mail.svg'

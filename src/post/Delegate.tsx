@@ -1,6 +1,6 @@
 import React from 'react'
-import { useAuth, useDelegate } from '../use-station/src'
-import { DelegateType } from '../use-station/src/post/useDelegate'
+import { useAuth, useDelegate } from '../lib'
+import { DelegateType } from '../lib/post/useDelegate'
 import Post from './Post'
 
 interface Props {

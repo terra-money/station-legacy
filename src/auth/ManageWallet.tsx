@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
-import { useAuth, useManageAccounts } from '../use-station/src'
+import { useAuth, useManageAccounts } from '../lib'
 import { isExtension } from '../utils/env'
 import ModalContent from '../components/ModalContent'
 import ChangePassword from './ChangePassword'

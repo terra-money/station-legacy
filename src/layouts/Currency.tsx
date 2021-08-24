@@ -1,5 +1,5 @@
 import React from 'react'
-import { useConfig } from '../use-station/src'
+import { useConfig } from '../lib'
 import { localSettings } from '../utils/localStorage'
 import ConfigSelector from './ConfigSelector'
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import classNames from 'classnames/bind'
-import { gt, gte, isFinite, lt, lte } from '../use-station/src'
+import { gt, gte, isFinite, lt, lte } from '../lib'
 import styles from './SlippageTolerance.module.scss'
 
 const cx = classNames.bind(styles)

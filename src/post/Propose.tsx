@@ -1,5 +1,5 @@
 import React from 'react'
-import { usePropose, useAuth } from '../use-station/src'
+import { usePropose, useAuth } from '../lib'
 import Post from './Post'
 
 const Propose = () => {

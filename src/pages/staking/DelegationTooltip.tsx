@@ -1,5 +1,5 @@
 import React from 'react'
-import { MyActionsTable } from '../../use-station/src'
+import { MyActionsTable } from '../../lib'
 import Number from '../../components/Number'
 import Table from '../../components/Table'
 

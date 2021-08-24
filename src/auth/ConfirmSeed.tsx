@@ -1,5 +1,5 @@
 import React from 'react'
-import { useConfirmSeed, SignUpNext } from '../use-station/src'
+import { useConfirmSeed, SignUpNext } from '../lib'
 import Form, { State } from '../components/Form'
 import ButtonGroup from '../components/ButtonGroup'
 import s from './ConfirmSeed.module.scss'

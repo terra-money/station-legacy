@@ -1,5 +1,5 @@
 import React from 'react'
-import { VoteUI, percent } from '../../use-station/src'
+import { VoteUI, percent } from '../../lib'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import VoteChart from '../governance/VoteChart'

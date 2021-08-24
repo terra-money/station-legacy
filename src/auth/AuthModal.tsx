@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AuthMenuKey, useAuthMenu } from '../use-station/src'
+import { AuthMenuKey, useAuthMenu } from '../lib'
 import { isElectron } from '../utils/env'
 import { loadKeys } from '../utils/localStorage'
 import { useApp } from '../hooks'

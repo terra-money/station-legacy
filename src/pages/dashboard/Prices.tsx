@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { PricesUI } from '../../use-station/src'
+import { PricesUI } from '../../lib'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import Number from '../../components/Number'

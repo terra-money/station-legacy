@@ -1,6 +1,6 @@
 import React from 'react'
-import { WithdrawProps } from '../use-station/src'
-import { useWithdraw, useAuth } from '../use-station/src'
+import { WithdrawProps } from '../lib'
+import { useWithdraw, useAuth } from '../lib'
 import Post from './Post'
 
 const Withdraw = (props: WithdrawProps) => {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { format, DisplayCoin } from '../use-station/src'
+import { format, DisplayCoin } from '../lib'
 
 interface Props extends Partial<DisplayCoin> {
   children?: string

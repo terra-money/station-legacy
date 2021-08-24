@@ -1,6 +1,6 @@
 import React from 'react'
 import c from 'classnames'
-import { AvailableItem } from '../../use-station/src'
+import { AvailableItem } from '../../lib'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AmountCard from './AmountCard'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import classNames from 'classnames/bind'
-import { useConfig } from '../../use-station/src'
+import { useConfig } from '../../lib'
 import { localSettings } from '../../utils/localStorage'
 import Page from '../../components/Page'
 import Card from '../../components/Card'

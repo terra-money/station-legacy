@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInteract, useAuth } from '../use-station/src'
+import { useInteract, useAuth } from '../lib'
 import CoinFields from './CoinFields'
 import Post from './Post'
 import WithActiveDenoms from './WithActiveDenoms'

@@ -1,5 +1,5 @@
 import semver from 'semver'
-import { AuthMenuKey } from '../use-station/src'
+import { AuthMenuKey } from '../lib'
 import { electron } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
 import { REQUIRED_ELECTRON_APP_VERSION } from '../wallet/ledger'

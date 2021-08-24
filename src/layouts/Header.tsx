@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { useAuth, useText, useConfig } from '../use-station/src'
+import { useAuth, useText, useConfig } from '../lib'
 import { isExtension } from '../utils/env'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'

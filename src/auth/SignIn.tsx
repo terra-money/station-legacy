@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSignIn } from '../use-station/src'
+import { useSignIn } from '../lib'
 import { loadKeys, testPassword } from '../utils/localStorage'
 import Form from '../components/Form'
 

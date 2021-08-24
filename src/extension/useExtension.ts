@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { without, uniq, update, isNil } from 'ramda'
 import extension from 'extensionizer'
-import { createContext } from '../use-station/src'
+import { createContext } from '../lib'
 import { encrypt } from '../utils'
 
 /* request & response */

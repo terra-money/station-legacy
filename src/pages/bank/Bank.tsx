@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMenu } from '../../use-station/src'
+import { useMenu } from '../../lib'
 import { isExtension } from '../../utils/env'
 import WithAuth from '../../auth/WithAuth'
 import Page from '../../components/Page'

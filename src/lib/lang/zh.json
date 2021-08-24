@@ -1,0 +1,553 @@
+{
+  "Common": {
+    "Coin": "币",
+
+    "All": "全体",
+    "Type": "类型",
+    "Change": "改变",
+    "Time": "时间",
+    "Weight": "权重",
+
+    "Copy": "复制",
+    "Copied": "复制完成",
+
+    "Account": {
+      "Address": "地址",
+      "Available": "可用"
+    },
+
+    "Tx": {
+      "Tx": "交易",
+      "Tx Hash": "Tx Hash",
+      "Height": "区块高度",
+      "Amount": "数量",
+      "Memo": "Memo",
+      "Fee": "手续费",
+      "Tx fee": "手续费",
+      "Log": "记录"
+    },
+
+    "Form": {
+      "Optional": "可选项",
+      "Next": "下一步",
+      "Confirm": "确认",
+      "Ok": "确定",
+      "Cancel": "取消",
+      "Loading...": "加载中...",
+      "Retry": "重试"
+    },
+
+    "Error": {
+      "Oops! Something went wrong": "糟糕！有些地方不对劲",
+      "You have encountered an error": "遇到错误",
+      "Station ran into an error": "Station 出现错误",
+
+      "No internet connection": "您没有连接到互联网",
+      "Please check your internet connection and retry again": "请检查您的互联网连接，然后重试。",
+
+      "LocalTerra doesn't seem to be running.": "Local Terra似乎没有被执行",
+      "LocalTerra is a one-click local Terra testnet & ecosystem for easy development of smart contracts and Terra tools.": "LocalTerra是一个用来开发Terra的测试环境（本地私有测试链）",
+      "Learn more about it here": "了解更多信息"
+    },
+
+    "Loading": {
+      "Data is loading...": "正在加载数据...",
+      "Please wait a moment": "请稍等。"
+    },
+
+    "Validate": {
+      "{{label}} is required": "请输入{{label}}",
+      "{{label}} are required": "请输入{{label}}",
+      "{{label}} is too long": "{{label}}过长",
+      "{{label}} is invalid": "{{label}}无效",
+      "{{label}} already exists": "{{label}}已存在",
+      "{{label}} doesn't exist": "{{label}}不存在",
+      "{{label}} must be between {{min}} and {{max}}": "必须至少{{min}}个且不超过{{max}}",
+      "{{label}} must be between {{min}} and {{max}} characters": "{{label}}必须至少{{min}}个且不超过{{max}}个字符",
+      "{{label}} must be longer than {{min}} characters": "{{label}}必须大于{{min}}个字符",
+      "{{label}} must be within {{decimals}} decimal points": "{{label}}必须在{{decimals}}位小数位之内。",
+      "{{label}} cannot include angle brackets": "{{label}}不能使用歪斜括号文字",
+      "Password does not match": "密码不匹配",
+      "Insufficient balance": "余额不足",
+      "Invalid": "无效"
+    }
+  },
+
+  "Auth": {
+    "Menu": {
+      "Recover existing wallet": "钱包恢复",
+      "New wallet": "新钱包",
+      "Select wallet": "加载钱包",
+      "Access with ledger": "使用ledger 登录",
+      "Browse with address": "使用地址查询",
+      "Download Terra Station": "Terra Station下载"
+    },
+
+    "Common": {
+      "Welcome": "欢迎",
+      "Connect": "连接",
+
+      "Connect to your wallet, create a new wallet or recover an existing wallet using a seed phrase": "使用密码登录,创建一个新钱包, 或者连接钱包",
+      "Create a new wallet or recover an existing wallet using a seed phrase": "创建一个新钱包或者使用助记词恢复钱包。",
+
+      "Just browsing?": "仅浏览？",
+      "Quickly glance through your address": "通过地址快速浏览您的账户",
+
+      "How can I create an wallet?": "如何创建钱包？",
+      "If you want to create an wallet, please download <0>Terra Station for Windows/MacOS</0>. We don't support creating an wallet for Terra Station web due to the security reasons.": "如果要创建钱包，请下载 <0>Windows / MacOS版 Terra Station</0>。应用程序，出于安全原因，我们不支持通过Terra Station网站创建钱包。",
+
+      "Connection required": "需要登录",
+      "This page shows data for a specific address. To access the page, please <0>connect</0>.": "为了显示此页面，需要连接钱包。",
+      "Please connect with wallet or ledger to execute": "请使用钱包或ledger 登录才能执行该操作"
+    },
+
+    "Form": {
+      "Password": "密码",
+      "Must be at least 10 characters": "至少包含10个字符",
+      "Incorrect password": "密码不正确"
+    },
+
+    "SignUp": {
+      "Wallet name": "钱包名",
+      "Enter 5-20 alphanumeric characters": "请输入5至20个字母数字字符",
+      "Confirm password": "确认密码",
+      "Confirm your password": "请再次输入您的密码",
+      "Seed phrase": "助记词",
+
+      "{{word}} is an invalid word": "{{word}}是无效的助记词",
+      "What if I lost my seed phrase?": "如果我丢失了我的助记词怎么办？",
+      "We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Terra Station does not store your mnemonic.": "如果您丢失了助记词，它将永远消失。我们将无法为您恢复信息。Station 将不会存储任何数据。",
+      "I have securely <0>WRITTEN DOWN MY SEED</0>. I understand that lost seeds cannot be recovered.": "<1>我写下了我的助记词。</1> 我已了解丢失的助记词后将无法恢复。",
+
+      "Select address to recover": "选择要恢复的地址",
+      "Vested": "既得(Vested)",
+      "Delegated": "委托",
+      "Undelegated": "取消委托",
+      "No balance": "没有余额",
+      "Wallet recovered successfully!": "成功地恢复了",
+      "Welcome back to Terra Station.": "欢迎回到Terra Station。",
+
+      "Confirm your seed": "确认助记词",
+      "{{index}} word": "第{{index}}个字",
+      "Select or type": "请输入",
+      "Create a wallet": "创建钱包",
+      "Wallet created!": "钱包创建成功",
+      "Welcome aboard to Terra Station.": "欢迎来到Terra Station。",
+      "Explore the Terra Network": "畅游Terra Network"
+    },
+
+    "SignIn": {
+      "Wallet": "选择钱包",
+      "Wallet address": "钱包地址",
+      "Input your wallet address": "请输入您的钱包地址",
+      "Please plug in your\nLedger Wallet": "请插入您的Ledger Wallet",
+      "Browse": "查询"
+    },
+
+    "Manage": {
+      "Manage wallets": "管理钱包",
+      "Change password or delete wallet": "修改加密钱包的密码或者删除钱包",
+      "Change password": "更改密码",
+      "Delete wallet": "删除钱包",
+
+      "Current password": "当前密码",
+      "New password": "新密码",
+      "Confirm new password": "确认新密码",
+      "Password changed": "您的密码已成功更改",
+      "You can now connect with your new password": "您的密码已重新设置。请登陆您的钱包。",
+
+      "Are you sure you want to delete this wallet? Your wallet cannot be recovered without seed phrase.": "您确定要删除此钱包吗？您随时可以使用助记词来恢复您的钱包。",
+      "Delete": "删除",
+
+      "Recent addresses": "最近的地址",
+      "Delete all": "全部删除",
+
+      "Keep this QR code private": "不要与任何人共享您的二维码"
+    },
+
+    "Download": {
+      "For Mac": "Mac版下载",
+      "For Windows": "Windows版下载"
+    }
+  },
+
+  "Page": {
+    "Share": "分享",
+    "Twitter": "Twitter",
+    "Telegram": "Telegram",
+    "Mail": "邮件分享",
+    "Copy link": "复制链接",
+
+    "Menu": {
+      "Dashboard": "仪表盘",
+      "Wallet": "钱包",
+      "History": "交易记录",
+      "Staking": "权益质押",
+      "Validator details": "验证人详情",
+      "Swap": "兑换",
+      "Governance": "治理",
+      "Proposal details": "提案详情",
+      "Contracts": "智能合约"
+    },
+
+    "Dashboard": {
+      "Tax rate": "税率",
+      "Capped at {{cappedAt}}": "最多 {{cappedAt}}",
+      "Issuance": "发行量",
+      "Community pool": "社区池",
+      "Staking ratio": "质押比率",
+      "{{staked}} staked": "{{staked}} 已质押",
+      "Staked Luna / Total Luna": "已质押 Luna / 全部 Luna"
+    },
+
+    "Chart": {
+      "Cumulative": "累计",
+      "Periodic": "周期",
+      "Annualized": "1年",
+      "Daily": "1日",
+      "From genesis": "自创世区块起",
+      "Last day": "昨天",
+      "{{d}} days": "{{d}} 天",
+      "/ year": "/ 年",
+      "/ day": "/ 日",
+
+      "Transaction volume": "交易量",
+      "The onchain transaction volume for the selected currency over the selected time period": "所选周期内所选代币的链上交易量",
+      "Staking return": "质押收益",
+      "Annualized staking yield for Luna based on tax rewards, oracle rewards, gas, MIR and ANC airdrop rewards and latest prices of Luna (annualize return = 10 days moving average return * 365)": "税收，预言（Oracle）奖励，Gas费, MIR奖励和Luna 的最新价格的所得出的Luna 的年度质押收益率（质押年化收益率 = 十天移动平均值*365）",
+      "Tax rewards": "税收奖励",
+      "Tax rewards distributed over the selected time period": "在所选周期内分配的税收奖励",
+      "Total accounts": "账户数",
+      "Total": "Total",
+      "Active": "Active",
+      "Number of total registered accounts in the selected period": "账户总数更新，以只基于选定的时段"
+    },
+
+    "Bank": {
+      "My wallet": "我的钱包",
+      "Verify this address on your Ledger": "使用您的Ledger设备验证生成的地址",
+
+      "Wallet empty": "空钱包",
+      "This wallet doesn't hold any coins yet": "此钱包还没有任何代币",
+
+      "Available": "可用",
+      "Hide small balances": "隐藏小额余额",
+
+      "Vesting schedule": "行权计划（Vesting Schedule）",
+      "This displays your investment with Terra. Vested Luna can be delegated in the meantime.": "显示该帐户的行权计划。未兑现的Luna 也可以权益质押。",
+
+      "Released": "兑现完成",
+      "Releasing": "兑现中",
+      "Release on": "将兑现"
+    },
+
+    "Txs": {
+      "Default": "基本",
+      "Send": "转出",
+      "Receive": "收到",
+      "Staking": "权益质押",
+      "Swap": "兑换",
+      "Governance": "治理",
+      "Contract": "智能合约",
+      "Other": "其他",
+
+      "No transaction history": "无交易记录",
+      "Looks like you haven't made any transaction yet": "你还没有任何交易记录"
+    },
+
+    "Staking": {
+      "Withdraw all rewards": "提取所有奖励",
+      "Available for delegation": "可委托数量",
+      "Delegated assets": "已委托资产",
+      "Undelegated assets": "取消委托中的资产",
+
+      "Validator": "验证人",
+      "Action": "区分",
+      "Delegated": "委托",
+      "Undelegated": "取消委托",
+      "Rewards": "奖励",
+      "Reward": "奖励",
+      "Release time": "完成时间",
+
+      "Rank": "排名",
+      "Moniker": "名称",
+
+      "Operator address": "运营地址",
+      "Account address": "账户地址",
+
+      "Voting power": "投票权",
+      "Self-delegation": "自我委托",
+
+      "Commission": "手续费",
+      "Validator commission": "验证人手续费",
+      "Max commission rate": "最高手续费率",
+      "Max daily commission change": "每日可变的最大手续费率",
+      "Last commission change": "上次手续费更改",
+      "Delegation return": "委托回报",
+      "Uptime": "上线时间",
+      "Last 10k blocks": "最新的1万个区块",
+
+      "My delegations": "我的委托",
+      "My rewards": "我的奖励",
+
+      "Delegations": "委托",
+      "Event log": "事件记录",
+      "Delegators": "委托人",
+      "Claim log": "索取记录",
+
+      "No events": "没有委托人",
+      "No delegators": "没有事件",
+      "This validator has no claim history yet": "这个验证人还没有任何索取记录",
+
+      "Pro Tip — your rewards will be automatically withdrawn in the following cases": "小贴士 -  在下列情况下, 未提取的奖励都应自动提取",
+      "Delegating more to a validator you’ve already delegated to": "增加委托",
+      "Undelegation of assets": "节点反质押",
+      "Redelegation of assets": "变更委托",
+      "Mainnet upgrade": "主网升级",
+      "This won’t appear in your transaction history, but your rewards will be reflected in your balance.": "自动提款的交易记录是不显示的。"
+    },
+
+    "Swap": {
+      "Luna price": "Luna 价格",
+      "Chart is not available": "图表不可用",
+
+      "1m": "1分钟",
+      "5m": "5分钟",
+      "15m": "15分钟",
+      "30m": "30分钟",
+      "1h": "1小时",
+      "1d": "1天",
+
+      "Terra exchange rate": "Terra 汇率",
+      "Swap coins": "代币兑换"
+    },
+
+    "Governance": {
+      "Voting period": "投票期",
+      "Minimum deposit": "最小保证金",
+      "Maximum deposit period": "最大保证金周期",
+
+      "No proposals here yet. Be the first!": "还没有提案。请成为第一个！",
+      "Proposal": "提案",
+
+      "Deposit": "保证金",
+      "Voting": "投票中",
+      "Passed": "通过",
+      "Rejected": "拒绝",
+
+      "Submitted by {{proposer}} at {{date}}": "{{date}} 提交者{{proposer}}",
+      "Submitted by ": "提交者: ",
+      "Submit time": "提交时间",
+      "Ends in": "结束时间",
+
+      "tax_rate": "税率",
+      "reward_weight": "奖励权重",
+      "recipient": "接受者",
+      "amount": "数量",
+      "changes": "更改的内容",
+
+      "Min deposit completed": "确保最低保证金",
+      "Deposit end time": "保证金结束时间",
+      "Total": "总计",
+      "Depositor": "担保人",
+      "Depositors": "担保人们",
+      "No deposits yet": "还没有保证金",
+
+      "Vote": "投票",
+      "Voting end time": "投票结束时间",
+      "Most voted on": "得票最多",
+      "Percent voting": "投票百分比：",
+      "{{n}} of {{d}} has voted": "{{d}}中{{n}}已投票",
+      "No votes yet": "尚未投票",
+      "Voter": "投票人",
+      "Answer": "答案",
+
+      "Yes": "赞成",
+      "No": "反对",
+      "NoWithVeto": "反对(行使拒绝权)",
+      "No\nWithVeto": "反对\n(行使拒绝权)",
+      "Abstain": "弃权",
+
+      "The following validators you've delegated to have not yet voted on this proposal": "没有进行表决的自己关注的验证人(已委托状态)",
+      "Request to vote": "要求投票",
+
+      "Tallying procedure": "统计过程",
+      "Quorum": "法定人数(Quorum)",
+      "Pass threshold": "通过门槛",
+      "Veto threshold": "否决门槛",
+
+      "New proposal": "提案"
+    },
+
+    "Contracts": {
+      "Contract": "智能合约",
+
+      "Create": "创建",
+      "Upload": "代码上传",
+      "Interact": "执行",
+      "Query": "查询",
+
+      "Search": "搜索",
+      "No contracts": "无智能合约",
+      "No contracts yet": "暂未创建智能合约"
+    }
+  },
+
+  "Post": {
+    "Confirm": {
+      "Simulating...": "模拟中...",
+
+      "Recommended fee is {{fee}} or higher.\nTransactions with low fee might fail to proceed.": "推荐手续费为{{fee}}或更多.\n手续过少可能交易无法完成。",
+      "You don't have enough balance. Please adjust either the amount or the fee.": "您没有足够的代币。请调整数量或费用。",
+
+      "Confirm with ledger": "用ledger 来确认",
+      "Please confirm in your\nLedger Wallet": "请在您的Ledger 设备上确认",
+
+      "Confirm with password": "确认密码",
+      "Input your password to confirm": "输入密码进行确认",
+
+      "Success!": "成功！"
+    },
+
+    "Send": {
+      "Send {{unit}}": "转出{{unit}}",
+      "Send to": "接收方",
+      "Network": "网络",
+      "Input receiver's wallet address": "请输入接收方的钱包地址",
+      "Input memo": "请输入Memo",
+      "Tax": "税金",
+      "Tax ({{percent}}, Max {{max}})": "税率 ({{percent}}, 最高{{max}})",
+      "Recent transactions": "最近交易",
+
+      "Calculating tax...": "计算税金中",
+      "Send": "转出",
+      "Sending...": "转出中...",
+      "Sent {{coin}} to {{address}}": "发送{{coin}}到{{address}}",
+      "Please double check if the above transaction requires a memo": "如果转到交易所需要填写MEMO",
+      "A fee of 1 UST or 0.1% of the transfer amount (whichever is greater) will be charged for transferring assets from Terra to Ethereum through Shuttle": "Shuttle收取1UST或成交金额的0.1%的費用, 收费以较高者为准。"
+    },
+
+    "Staking": {
+      "Source ({{length}})": "源 ({{length}})",
+      "Delegate to": "委托给",
+      "Undelegate from": "取消委托从",
+
+      "Delegate": "委托",
+      "Delegating...": "委托中...",
+      "Delegated {{coin}} to {{moniker}}": "{{coin}}委托给{{moniker}}。",
+
+      "Redelegate": "再委托",
+      "Redelegating...": "再委托中...",
+      "Redelegated {{coin}} to {{moniker}}": "{{coin}}再委托给{{moniker}}。",
+
+      "Undelegate": "取消委托",
+      "Undelegating...": "取消委托中...",
+      "Undelegated {{coin}} from {{moniker}}": "从{{moniker}}取消委托了{{coin}}",
+
+      "Withdraw": "提取奖励",
+      "Withdrawing...": "提取奖励中...",
+      "Withdrew to {{to}}": "提取到{{to}}",
+
+      "Create Validator": "成为验证者",
+
+      "Remember to leave a small amount of tokens undelegated, as subsequent transactions (e.g. redelegation) require fees to be paid.": "请注意，执行后续操作(如：再委托）需要支付交易费。",
+      "Undelegation takes 21 days to complete. You would not get rewards in the meantime.": "取消委托需要21天才能完成。在此期间没有任何奖励。",
+      "Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.": "21天内禁止再委托给同一验证人。请确保您输入了正确的委托量。"
+    },
+
+    "Swap": {
+      "Swapping is not available": "现在兑换不可用",
+      "Swapping is not available at the moment": "现在不能兑换代币",
+      "Select a coin to swap": "请选择要兑换的货币",
+
+      "Select a coin...": "选择代币...",
+
+      "Current balance": "当前余额",
+      "Available balance": "可用余额",
+      "Spread": "价差(Spread)",
+      "Receive": "收到数量",
+
+      "Luna swap spread": "Luna兑换价差",
+      "min.": "最小 ",
+      "tobin tax": "托宾税(tobin tax)",
+      "except for {{unit}} set at {{rate}}": "除了{{unit}}的情况",
+
+      "Swap": "兑换",
+      "Swapping...": "兑换中...",
+      "Swapped {{coin}} to {{unit}}": "把{{coin}}换成了{{unit}}",
+      "Swap multiple coins": "多币种兑换",
+
+      "Final amount you receive in {{unit}} may vary due to the swap rate changes": "由于汇率变化而收到 {{unit}} 最终金额可能有所不同。"
+    },
+
+    "Governance": {
+      "Propose": "提案",
+      "Proposing...": "提案中...",
+      "Deposit": "保证金",
+      "Depositing...": "支付保证金中...",
+      "Vote": "投票",
+      "Voting...": "投票中...",
+
+      "Text Proposal": "文本提案",
+      "Tax-rate Update": "税率更新",
+      "Reward-weight Update": "奖励权重更新",
+      "Community-pool Spend": "社区池支出",
+      "Parameter-change": "参数变更",
+
+      "Title": "标题",
+      "Description": "描述",
+      "Initial deposit": "初始保证金",
+
+      "Tax-rate": "税率",
+      "Reward-weight": "奖励权重",
+      "Recipient": "接受者",
+      "Changes": "更改的内容",
+
+      "Community pool": "社区池",
+
+      "Created proposal {{title}} with {{coin}} deposit": "支付{{coin}}的保证金后，成为{{proposal}}提案",
+      "Created proposal {{title}} without deposit": "无保证金成为{{proposal}}提案",
+      "Deposited {{coin}} to {{title}}": "支付{{coin}}的保证金到{{proposal}}",
+      "Voted {{answer}} for {{title}}": "关于{{title}}提案，投票赞成{{answer}}"
+    },
+
+    "Contracts": {
+      "Code upload": "代码上传",
+      "Create contract": "编写智能合约",
+      "Interact with": "执行",
+      "Query": "查询",
+
+      "Contract address": "智能合约地址",
+
+      "File": "文件",
+      "Choose a file": "请选择文件",
+      "Size": "文件大小",
+      "The uploaded file is invalid": "文件无效",
+
+      "Name": "智能合约名称",
+      "Description": "描述",
+      "Repo URL": "Repo URL",
+      "Code": "代码",
+      "Coins": "货币",
+
+      "InitMsg JSON": "InitMsg JSON",
+      "HandleMsg JSON": "HandleMsg JSON",
+      "QueryMsg JSON": "QueryMsg JSON",
+
+      "Upload": "上传",
+      "Uploading...": "上传中...",
+      "Uploaded code": "代码上传成功",
+
+      "Create": "创建",
+      "Creating...": "创建中...",
+      "Created contract": "创建成功",
+
+      "Interact": "执行",
+      "Interacting...": "执行中...",
+      "Interacted with {{address}}": "{{address}}执行成功",
+
+      "Query result": "查询结果",
+      "JSON output": "JSON 输出"
+    }
+  }
+}

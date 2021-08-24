@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useAuth, User } from '../use-station/src'
+import { useAuth, User } from '../lib'
 import PleaseSignIn from '../components/PleaseSignIn'
 
 interface Props {

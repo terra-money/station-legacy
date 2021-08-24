@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ProposalItemUI } from '../../use-station/src'
+import { ProposalItemUI } from '../../lib'
 import c from 'classnames'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'

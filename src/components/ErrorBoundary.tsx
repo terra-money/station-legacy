@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, ErrorInfo } from 'react'
 import * as Sentry from '@sentry/browser'
-import { ErrorBoundary as Component, useText } from '../use-station/src'
+import { ErrorBoundary as Component, useText } from '../lib'
 
 interface Props {
   fallback?: ReactNode

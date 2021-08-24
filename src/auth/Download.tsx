@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import classNames from 'classnames'
-import { DownloadLink, DownloadLinks, useDownload } from '../use-station/src'
+import { DownloadLink, DownloadLinks, useDownload } from '../lib'
 import { ReactComponent as Mac } from './Mac.svg'
 import { ReactComponent as Windows } from './Windows.svg'
 import { ReactComponent as Linux } from './Linux.svg'

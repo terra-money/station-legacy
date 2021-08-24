@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, ChainOptions } from '../../use-station/src'
+import { useForm, ChainOptions } from '../../lib'
 import Form from '../../components/Form'
 import useMergeChains, { useAddNetwork } from './useMergeChains'
 

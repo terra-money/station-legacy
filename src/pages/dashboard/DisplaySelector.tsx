@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { DisplaySelector as Props } from '../../use-station/src'
+import { DisplaySelector as Props } from '../../lib'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import Select from '../../components/Select'

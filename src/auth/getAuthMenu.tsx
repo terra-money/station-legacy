@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AuthMenuKey } from '../use-station/src'
+import { AuthMenuKey } from '../lib'
 import { isExtension } from '../utils/env'
 import Recover from './Recover'
 import ImportKey from './ImportKey'

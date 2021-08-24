@@ -1,5 +1,5 @@
 import React from 'react'
-import { DepositUI } from '../../use-station/src'
+import { DepositUI } from '../../lib'
 import Card from '../../components/Card'
 import Orb from '../../components/Orb'
 import Displays from '../../components/Displays'

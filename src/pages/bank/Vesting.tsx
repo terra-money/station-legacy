@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VestingItemUI } from '../../use-station/src'
+import { VestingItemUI } from '../../lib'
 import Icon from '../../components/Icon'
 import AmountCard from './AmountCard'
 import Schedule from './Schedule'

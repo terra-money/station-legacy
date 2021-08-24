@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import c from 'classnames'
-import { useAuth, useText } from '../use-station/src'
+import { useAuth, useText } from '../lib'
 import { ReactComponent as Ledger } from '../images/Ledger.svg'
 import { isExtension } from '../utils/env'
 import { useModal } from '../hooks'
