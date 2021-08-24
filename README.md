@@ -28,7 +28,7 @@ Add the following entry to your `/etc/hosts` file:
 ### Build Terra Station
 
 ```sh
-git clone --recursive https://github.com/terra-money/station.git
+git clone https://github.com/terra-money/station.git
 cd station
 npm i
 npm run start
