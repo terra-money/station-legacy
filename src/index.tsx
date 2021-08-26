@@ -4,6 +4,7 @@ import 'react-app-polyfill/ie11'
 import React, { ReactNode } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { RecoilRoot } from 'recoil'
 import * as Sentry from '@sentry/browser'
 
@@ -26,11 +27,15 @@ const route = (children: ReactNode) =>
     <BrowserRouter>{children}</BrowserRouter>
   )
 
+const queryClient = new QueryClient()
+
 render(
   <ErrorBoundary>
     <RecoilRoot>
-      <WithChains>{route(<App />)}</WithChains>
-      <Disconnected />
+      <QueryClientProvider client={queryClient}>
+        <WithChains>{route(<App />)}</WithChains>
+        <Disconnected />
+      </QueryClientProvider>
     </RecoilRoot>
   </ErrorBoundary>,
   document.getElementById('root')

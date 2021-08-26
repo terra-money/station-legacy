@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from 'react-query'
 import { Coins, LCDClient, StdFee } from '@terra-money/terra.js'
 import { StdSignMsg, StdTx } from '@terra-money/terra.js'
 import { ConfirmProps, ConfirmPage, Sign, Field, User, GetKey } from '../types'
@@ -141,6 +142,7 @@ export default (
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [result, setResult] = useState<PostResult>()
+  const [txhash, setTxHash] = useState<string>()
 
   const submit = async () => {
     try {
@@ -153,12 +155,8 @@ export default (
           const { gasPrices } = calcFee!
           const lcd = new LCDClient({ chainID, URL, gasPrices })
 
-          const data = await lcd.tx.broadcast(signedTx)
-          setResult(data)
-
-          // Catch error
-          const errorMessage = checkError(data.raw_log)
-          errorMessage ? setErrorMessage(errorMessage) : setSubmitted(true)
+          const data = await lcd.tx.broadcastSync(signedTx)
+          setTxHash(data.txhash)
         }
 
         const gasFee = new Coins({ [fee.denom]: fee.amount })
@@ -202,6 +200,15 @@ export default (
       setSubmitting(false)
     }
   }
+
+  const pollResult = usePollTxHash(txhash ?? '')
+  useEffect(() => {
+    if (pollResult?.height) {
+      setResult(pollResult)
+      const errorMessage = checkError(pollResult.raw_log)
+      errorMessage ? setErrorMessage(errorMessage) : setSubmitted(true)
+    }
+  }, [pollResult])
 
   const readyToSubmit = simulated && !submitting
   const valid = gt(fee.amount, 0) && validate(fee)
@@ -317,5 +324,29 @@ export default (
       : submitted
       ? { ...SUCCESS, content: (result && parseResult?.(result)) ?? message }
       : undefined,
+
+    txhash,
   }
+}
+
+/* hooks */
+export const usePollTxHash = (txhash: string) => {
+  const [refetchInterval, setRefetchInterval] = useState<number | false>(false)
+  const { data } = useQuery(txhash, () => fcd.get(`/v1/tx/${txhash}`), {
+    refetchInterval,
+    enabled: !!txhash,
+  })
+
+  const result = data?.data
+  const height = result && result.height
+
+  useEffect(() => {
+    if (height) {
+      setRefetchInterval(false)
+    } else {
+      setRefetchInterval(1000)
+    }
+  }, [height])
+
+  return result
 }

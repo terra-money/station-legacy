@@ -1,4 +1,6 @@
 import React, { FC, AnchorHTMLAttributes } from 'react'
+import Icon from './Icon'
+import styles from './ExtLink.module.scss'
 
 type Anchor = AnchorHTMLAttributes<HTMLAnchorElement>
 const ExtLink: FC<Anchor> = ({ href, children, ...attrs }) =>
@@ -11,6 +13,16 @@ const ExtLink: FC<Anchor> = ({ href, children, ...attrs }) =>
   )
 
 export default ExtLink
+
+/* variant */
+export const ExtLinkWithIcon = (props: Anchor) => {
+  return (
+    <span className={styles.wrapper}>
+      <ExtLink {...props} />
+      <Icon name="open_in_new" />
+    </span>
+  )
+}
 
 /* helper */
 const fix = (href: string): string => {

@@ -1,0 +1,11 @@
+@import '../styles/variables';
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+
+  i {
+    color: $sky;
+    margin-left: 5px;
+  }
+}

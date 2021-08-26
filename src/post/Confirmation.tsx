@@ -22,7 +22,7 @@ interface Props {
 const Confirmation = ({ confirm, modal, onFinish }: Props) => {
   const { user } = useAuth()
 
-  const { contents, fee, form, ledger, result } = useConfirm(confirm, {
+  const confirmUI = useConfirm(confirm, {
     user: user!,
     password: isPreconfigured(user!) ? PW : '',
     getKey: async (params) => {
@@ -50,6 +50,8 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
       return signedTx
     },
   })
+
+  const { contents, fee, form } = confirmUI
 
   const finish = () => {
     onFinish?.()
@@ -139,10 +141,8 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
     <ModalContent {...modalActions}>
       <ConfirmationComponent
         dl={feeDl ? [...contentsDl, feeDl] : [...contentsDl]}
-        form={form}
-        ledger={ledger}
-        result={result}
         onFinish={finish}
+        {...confirmUI}
       />
     </ModalContent>
   )

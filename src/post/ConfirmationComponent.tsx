@@ -6,18 +6,20 @@ import Form, { Props as FormProps } from '../components/Form'
 import InvalidFeedback from '../components/InvalidFeedback'
 import Confirm from '../components/Confirm'
 import ConfirmLedger from '../auth/ConfirmLedger'
+import PendingTx from './PendingTx'
 import s from './ConfirmationComponent.module.scss'
 
 interface Props extends FormProps {
   dl?: { dt: ReactNode; dd: ReactNode }[]
   ledger?: ConfirmLedgerProps
   result?: Card
+  txhash?: string
   pagination?: ReactNode
   onFinish?: () => void
 }
 
 const ConfirmationComponent: FC<Props> = ({ dl, ledger, ...props }) => {
-  const { result, onFinish, children, pagination, ...formProps } = props
+  const { result, onFinish, children, pagination, txhash, ...formProps } = props
 
   const renderResultButton = (label: string) => (
     <button className="btn btn-block btn-primary" onClick={onFinish}>
@@ -31,6 +33,8 @@ const ConfirmationComponent: FC<Props> = ({ dl, ledger, ...props }) => {
       icon="check_circle"
       footer={result.button && renderResultButton(result.button)}
     />
+  ) : txhash ? (
+    <PendingTx txhash={txhash} />
   ) : ledger ? (
     <ConfirmLedger {...ledger} />
   ) : (

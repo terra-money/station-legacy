@@ -49,6 +49,7 @@
     "react-i18next": "^11.8.5",
     "react-intersection-observer": "^8.30.3",
     "react-modal": "^3.11.2",
+    "react-query": "^3.21.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-toastify": "^6.1.0",

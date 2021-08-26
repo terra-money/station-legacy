@@ -43,6 +43,7 @@ export interface ConfirmPage extends Pick<ConfirmProps, 'contents'> {
   form: FormUI
   ledger?: ConfirmLedger
   result?: Card
+  txhash?: string
 }
 
 export interface Base {
