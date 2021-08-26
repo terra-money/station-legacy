@@ -34,7 +34,7 @@ const PendingTx = ({ txhash }: { txhash: string }) => {
 
       <div className={styles.card}>
         <section className={styles.processing}>
-          <div className={styles.item}>
+          <div className={classNames(styles.item, styles.text)}>
             <h2>Queued</h2>
           </div>
 
@@ -44,7 +44,7 @@ const PendingTx = ({ txhash }: { txhash: string }) => {
             <Icon name="chevron_right" className={styles.icon} />
           </div>
 
-          <div className={classNames(styles.item, styles.muted)}>
+          <div className={classNames(styles.item, styles.text, styles.muted)}>
             <h2>Processed</h2>
           </div>
         </section>
