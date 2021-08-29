@@ -44,6 +44,7 @@ const Contracts = () => {
   const buttons = (
     <ActionBar
       list={[
+        <span>use "Upload" to upload a .wasm file, use "Create" to initialize the contract</span>,
         renderButton({ ...create, component: <Create /> }),
         renderButton({ ...upload, component: <Upload /> }),
       ]}
