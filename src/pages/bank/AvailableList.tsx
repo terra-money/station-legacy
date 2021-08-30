@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 import { AvailableUI, HideSmallUI } from '../../lib'
-import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'
 import Checkbox from '../../components/Checkbox'
@@ -51,7 +50,7 @@ const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
     </Card>
   )
 
-  return <>{isExtension ? content : renderCard(content)}</>
+  return <>{renderCard(content)}</>
 }
 
 export default AvailableList
