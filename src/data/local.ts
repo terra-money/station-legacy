@@ -1,4 +1,5 @@
 import { omit } from 'ramda'
+import { useMemo } from 'react'
 import { atom, useRecoilState, useRecoilValue } from 'recoil'
 import { useCurrentChainName, Whitelist } from '../lib'
 
@@ -29,5 +30,6 @@ export const useManageTokens = () => {
 export const useTokens = () => {
   const tokens = useRecoilValue(tokensState)
   const name = useCurrentChainName()
-  return tokens[name] ?? {}
+  const placeholder = useMemo(() => ({}), [])
+  return tokens[name] ?? placeholder
 }
