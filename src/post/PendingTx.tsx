@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import useFinder from '../lib/hooks/useFinder'
 import { truncate } from '../lib/utils/format'
 import { ExtLinkWithIcon } from '../components/ExtLink'
-import Icon from '../components/Icon'
+import { ReactComponent as Icon } from './Queued.svg'
 import Broadcasting from './Broadcasting.gif'
 import styles from './PendingTx.module.scss'
 
@@ -29,7 +29,6 @@ const PendingTx = ({ txhash }: { txhash: string }) => {
       <header className={styles.header}>
         <img src={Broadcasting} alt="" width={100} height={100} />
         <h1 className={styles.title}>Broadcasting transaction</h1>
-        <small className={styles.timestamp}>{fromNow}</small>
       </header>
 
       <div className={styles.card}>
@@ -39,20 +38,12 @@ const PendingTx = ({ txhash }: { txhash: string }) => {
           </div>
 
           <div className={classNames(styles.item, styles.icons)}>
-            <Icon name="chevron_right" className={styles.icon} />
-            <Icon name="chevron_right" className={styles.icon} />
-            <Icon name="chevron_right" className={styles.icon} />
-          </div>
-
-          <div className={classNames(styles.item, styles.text, styles.muted)}>
-            <h2>Processed</h2>
+            <Icon className={styles.icon} />
           </div>
         </section>
 
-        <p className={styles.desc}>
-          The transaction has been successfully queued and will be processed
-          shortly.
-        </p>
+        <p className={styles.timestamp}>{fromNow}</p>
+        <p className={styles.desc}>This transaction is in process</p>
 
         <footer className={styles.footer}>
           <strong>Tx Hash</strong>
