@@ -15,6 +15,7 @@ import useFCD from '../api/useFCD'
 import useBank from '../api/useBank'
 import fcd from '../api/fcd'
 import useTokenBalance from '../cw20/useTokenBalance'
+import useWhitelist from '../cw20/useWhitelist'
 import validateForm from './validateForm'
 import usePairs from '../cw20/usePairs'
 import { getFeeDenomList, isAvailable, isFeeAvailable } from './validateConfirm'
@@ -58,10 +59,11 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
   /* ready: balance */
   const bank = useBank(user)
-  const cw20Tokens = useTokenBalance(user.address)
+  const cw20TokenBalance = useTokenBalance(user.address)
+  const { whitelist, loading: loadingWhitelist } = useWhitelist()
   const { pairs, loading: loadingPairs } = usePairs(chain.current.name)
-  const { whitelist } = cw20Tokens
-  const loadingUI = bank.loading || cw20Tokens.loading || loadingPairs
+  const loadingUI =
+    bank.loading || loadingWhitelist || cw20TokenBalance.loading || loadingPairs
 
   // tokens
   const nativeTokensOptions = ['uluna', ...actives].map((denom) => ({
@@ -71,13 +73,14 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     icon: `https://assets.terra.money/icon/60/${format.denom(denom)}.png`,
   }))
 
-  const cw20TokensList =
-    cw20Tokens.list?.map(({ token, symbol, balance, icon }) => ({
-      value: token,
-      children: symbol,
-      balance,
-      icon,
-    })) ?? []
+  const cw20TokensList = whitelist
+    ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
+        value: token,
+        children: symbol,
+        balance: cw20TokenBalance.result?.[token] ?? '0',
+        icon,
+      }))
+    : []
 
   const tokens = [...nativeTokensOptions, ...cw20TokensList]
   const getBalance = (from: string) =>
@@ -93,7 +96,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const load = async () => {
     init()
     await bank.execute()
-    await cw20Tokens.load()
+    await cw20TokenBalance.load()
   }
 
   /* form */

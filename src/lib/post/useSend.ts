@@ -33,7 +33,7 @@ export default (
 ): PostPage<RecentSentUI> => {
   const { t } = useTranslation()
   const { data: bank, loading: bankLoading, error } = useBank(user)
-  const { list: tokens, loading: tokenLoading, whitelist } = tokenBalance
+  const { list, loading: tokenLoading, tokens } = tokenBalance
   const loading = bankLoading || tokenLoading
   const v = validateForm(t)
 
@@ -74,14 +74,14 @@ export default (
   const getBalance = () =>
     (is.nativeDenom(denom)
       ? find(`${denom}:available`, bank?.balance)
-      : tokens?.find(({ token }) => token === denom)?.balance) ?? '0'
+      : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
   const validate = ({ input, to, memo }: Values) => ({
     to: v.address(to),
     input: v.input(
       input,
-      { max: toInput(getBalance(), whitelist?.[denom]?.decimals) },
-      whitelist?.[denom]?.decimals
+      { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
+      tokens?.[denom]?.decimals
     ),
     memo:
       v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
@@ -94,7 +94,7 @@ export default (
   const { values, setValue, invalid } = form
   const { getDefaultProps, getDefaultAttrs } = form
   const { to, input, memo } = values
-  const amount = toAmount(input, whitelist?.[denom]?.decimals)
+  const amount = toAmount(input, tokens?.[denom]?.decimals)
 
   /* tax */
   const [submitted, setSubmitted] = useState(false)
@@ -113,7 +113,7 @@ export default (
       : calculatedMaxAmount
   const taxAmount = calcTax.getTax(amount)
 
-  const unit = format.denom(denom, whitelist)
+  const unit = format.denom(denom, tokens)
 
   /* render */
   const fields: Field[] = [
@@ -133,11 +133,11 @@ export default (
         label: t('Common:Account:Available'),
         display: format.display(
           { amount: maxAmount, denom },
-          whitelist?.[denom]?.decimals
+          tokens?.[denom]?.decimals
         ),
         attrs: {
           onClick: () =>
-            setValue('input', toInput(maxAmount, whitelist?.[denom]?.decimals)),
+            setValue('input', toInput(maxAmount, tokens?.[denom]?.decimals)),
         },
       },
       attrs: {
@@ -180,7 +180,7 @@ export default (
         displays: [
           is.nativeDenom(denom)
             ? format.display({ amount, denom })
-            : { value: input, unit: whitelist?.[denom].symbol ?? '' },
+            : { value: input, unit: tokens?.[denom].symbol ?? '' },
         ],
       },
     ])
@@ -236,7 +236,7 @@ export default (
     loading,
     submitted,
     form: formUI,
-    confirm: bank ? getConfirm(bank, whitelist ?? {}) : undefined,
+    confirm: bank ? getConfirm(bank, tokens ?? {}) : undefined,
     ui: txsResponse.data && renderRecent(txsResponse.data),
   }
 }

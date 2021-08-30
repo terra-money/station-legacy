@@ -9,7 +9,8 @@ import alias from './alias'
 
 export interface TokenBalanceQuery {
   loading: boolean
-  whitelist?: Tokens
+  tokens?: Tokens
+  result?: Dictionary<string>
   list?: TokenBalance[]
   load: () => Promise<void>
 }
@@ -63,7 +64,8 @@ export default (address: string): TokenBalanceQuery => {
   return {
     load,
     loading,
-    whitelist: tokens,
+    tokens,
+    result,
     list:
       result &&
       tokens &&
