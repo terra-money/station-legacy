@@ -36,12 +36,8 @@ const Assets = ({ user }: { user: User }) => {
   const render = ({ card, available, tokens, vesting }: AssetsUI) => (
     <>
       {card && <Info icon="info_outline" {...card} card={!isExtension} />}
-      {available && (
-        <>
-          <AvailableList {...available} />
-          <AvailableList {...tokens} button={manageTokens} footer={addToken} />
-        </>
-      )}
+      {available && <AvailableList {...available} />}
+      <AvailableList {...tokens} button={manageTokens} footer={addToken} />
       {vesting && <VestingList {...vesting} />}
     </>
   )
