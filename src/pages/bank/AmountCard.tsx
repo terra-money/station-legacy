@@ -15,7 +15,7 @@ const AmountCard: FC<Props> = ({ unit, value, button, children, ...props }) => {
   const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
 
-  const src = `https://assets.terra.money/icon/60/${unit}.png`
+  const src = `/assets/icon/60/${unit}.png`
 
   const icon = props.icon ? (
     <img src={props.icon} className={s.icon} alt="" {...size} />

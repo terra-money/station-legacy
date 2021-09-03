@@ -25,7 +25,7 @@ export default ({ address }: User): TxsPage => {
   const [done, setDone] = useState(false)
 
   const url = '/v1/msgs'
-  const params = { account: address, limit: LIMIT, offset }
+  const params = { account: address, offset }
   const response = useFCD<{ txs: Tx[] }>({ url, params })
   const { data } = response
 
