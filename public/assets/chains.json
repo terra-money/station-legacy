@@ -1,0 +1,22 @@
+{
+  "mainnet": {
+    "name": "mainnet",
+    "chainID": "columbus-4",
+    "lcd": "https://lcd.terra.dev"
+  },
+  "testnet": {
+    "name": "testnet",
+    "chainID": "tequila-0004",
+    "lcd": "https://tequila-lcd.terra.dev"
+  },
+  "bombay": {
+    "name": "bombay",
+    "chainID": "bombay-10",
+    "lcd": "https://bombay-lcd.terra.dev"
+  },
+  "localterra": {
+    "name": "localterra",
+    "chainID": "localterra",
+    "lcd": "http://localhost:3060"
+  }
+}

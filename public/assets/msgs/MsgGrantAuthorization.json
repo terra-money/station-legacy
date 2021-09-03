@@ -1,0 +1,14 @@
+{
+  "mainnet": {
+    "terra10perwarjzn47xqdfla43j2kdfr90sy5lmc0uwc": {
+      "url": "https://terra-bot.b42.tech",
+      "types": ["msgauth/GenericAuthorization"]
+    }
+  },
+  "testnet": {
+    "terra1l05d3ql49rfl6re3vjw4ak7lrprtldlcywsz4l": {
+      "url": "https://terra-bot.b42.tech",
+      "types": ["msgauth/GenericAuthorization"]
+    }
+  }
+}
