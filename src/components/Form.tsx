@@ -36,8 +36,11 @@ const Form = ({ form, h2, renderField, render, ...props }: Props) => {
   return (
     <form onSubmit={handleSubmit}>
       <header className={s.header}>
-        <h1>{title}</h1>
-        {actions}
+        <section className={s.heading}>
+          <h1>{title}</h1>
+          {actions}
+        </section>
+
         {h2 && <h2>{h2}</h2>}
       </header>
 

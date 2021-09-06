@@ -12,7 +12,7 @@ import ManageTokens from '../tokens/ManageTokens'
 import AvailableList from './AvailableList'
 import VestingList from './VestingList'
 
-const Assets = ({ user }: { user: User }) => {
+const Assets = () => {
   useRemovePadding()
 
   const { hideSmallBalances: hideSmall = false } = localSettings.get()

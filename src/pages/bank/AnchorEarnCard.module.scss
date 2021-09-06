@@ -1,0 +1,46 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.component {
+  border-top: 1px solid $line;
+  padding-top: 16px;
+  padding-bottom: 25px;
+}
+
+.row {
+  @include flex(space-between);
+  font-size: 14px;
+
+  & + & {
+    margin-top: 10px;
+  }
+}
+
+.content {
+  @include flex(space-between);
+  flex: 1;
+
+  @media (max-width: $breakpoint - 1) {
+    margin-right: 10px;
+  }
+
+  @media (min-width: $breakpoint) {
+    margin-right: 25px;
+  }
+}
+
+.label {
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid $brand;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 1px 7px;
+}
+
+.action {
+  width: 100px;
+}

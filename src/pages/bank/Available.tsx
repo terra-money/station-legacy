@@ -1,10 +1,11 @@
-import c from 'classnames'
 import { AvailableItem } from '../../lib'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
-import AmountCard from './AmountCard'
+import AnchorEarn from '../../post/AnchorEarn'
 import Send from '../../post/Send'
-import s from './Available.module.scss'
+import AmountCard from './AmountCard'
+import AnchorEarnCard from './AnchorEarnCard'
+import { AnchorEarnTxType } from './useAnchorEarn'
 
 interface Props extends AvailableItem {
   buttonLabel: string
@@ -19,13 +20,38 @@ const Available = (item: Props) => {
     children: buttonLabel,
   }
 
-  const renderButton = () => {
-    const className = c('btn btn-primary btn-sm', s.button)
-    return <ButtonWithAuth {...buttonAttrs} className={className} />
+  const renderAnchorEarnButton = (type: AnchorEarnTxType) => (
+    <ButtonWithAuth
+      onClick={() => modal.open(<AnchorEarn type={type} />)}
+      className="btn btn-sky btn-sm"
+      style={{ marginTop: type === 'Deposit' ? 10 : undefined }}
+    >
+      {type}
+    </ButtonWithAuth>
+  )
+
+  const renderButtons = () => {
+    return (
+      <>
+        <ButtonWithAuth {...buttonAttrs} className="btn btn-primary btn-sm" />
+        <section>
+          {denom === 'uusd' && renderAnchorEarnButton('Deposit')}
+        </section>
+      </>
+    )
   }
 
   return (
-    <AmountCard {...item} button={renderButton()} buttonAttrs={buttonAttrs} />
+    <AmountCard
+      {...item}
+      button={renderButtons()}
+      buttonAttrs={buttonAttrs}
+      extended={denom === 'uusd'}
+    >
+      {denom === 'uusd' && (
+        <AnchorEarnCard button={renderAnchorEarnButton('Withdraw')} />
+      )}
+    </AmountCard>
   )
 }
 

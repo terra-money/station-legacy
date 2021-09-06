@@ -1,0 +1,27 @@
+@import '../styles/mixins';
+
+.powered {
+  @include flex;
+  font-size: 12px;
+  font-weight: normal;
+
+  svg {
+    margin-left: 5px;
+  }
+}
+
+.desc {
+  background: #ebeff8;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 20px;
+  margin-top: 20px;
+
+  strong {
+    display: inline-block;
+    border-top: 1px solid #cfd8ea;
+    margin-top: 15px;
+    padding-top: 15px;
+    width: 100%;
+  }
+}

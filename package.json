@@ -8,6 +8,7 @@
   "author": "Terra <engineering@terra.money> (https://terra.money)",
   "license": "ISC",
   "dependencies": {
+    "@anchor-protocol/anchor.js": "^1.2.0-alpha.6",
     "@ledgerhq/hw-transport-webhid": "^5.29.0",
     "@ledgerhq/hw-transport-webusb": "^5.29.0",
     "@sentry/browser": "^6.2.5",

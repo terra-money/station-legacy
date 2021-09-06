@@ -1,12 +1,12 @@
 @import '../styles/mixins';
 @import '../styles/variables';
 
-.header {
-  @include flex(space-between);
-
+.heading {
   @media (min-width: $breakpoint) {
     justify-content: center;
   }
+
+  @include flex(space-between);
 }
 
 .submit {

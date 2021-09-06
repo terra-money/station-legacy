@@ -1,4 +1,5 @@
 import { FC, ReactNode, useState } from 'react'
+import classNames from 'classnames/bind'
 import { AvailableItem } from '../../lib'
 import { TERRA_ASSETS } from '../../constants'
 import { isExtension } from '../../utils/env'
@@ -8,14 +9,17 @@ import Number from '../../components/Number'
 import Icon from '../../components/Icon'
 import s from './AmountCard.module.scss'
 
+const cx = classNames.bind(s)
+
 interface Props extends AvailableItem {
   button: ReactNode
   buttonAttrs?: { onClick: () => void; children: string }
   icon?: string
+  extended?: boolean
 }
 
 const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
-  const { currencyValueDisplay, buttonAttrs } = props
+  const { currencyValueDisplay, buttonAttrs, extended } = props
   const { value, unit } = display
   const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
@@ -33,7 +37,7 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
 
   const content = (
     <article className={s.article}>
-      <header className={s.header}>
+      <header className={cx(s.header, { extended })}>
         <h1 className={s.denom}>
           {icon}
           {unit}
@@ -44,7 +48,7 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
 
           {showEstimatedValue && (
             <p className={s.estimated}>
-              <Number {...currencyValueDisplay} estimated />
+              <Number {...currencyValueDisplay} estimated integer />
             </p>
           )}
         </section>

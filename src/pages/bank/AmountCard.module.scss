@@ -44,6 +44,10 @@
   height: 80px;
 }
 
+.extended {
+  height: 110px;
+}
+
 .denom {
   @include flex(flex-start);
   font-size: 16px;
