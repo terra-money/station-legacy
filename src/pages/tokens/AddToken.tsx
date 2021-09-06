@@ -9,7 +9,7 @@ import Tokens from './Tokens'
 import styles from './AddToken.module.scss'
 
 const AddToken = () => {
-  const { whitelist } = useWhitelist()
+  const { whitelist, loading } = useWhitelist()
   const lcd = useLCD()
   const [input, setInput] = useState('')
   const [results, setResults] = useState<Whitelist>({})
@@ -39,7 +39,7 @@ const AddToken = () => {
   /* render */
   const result = results[input]
 
-  return !whitelist ? null : (
+  return loading ? null : (
     <ModalContent>
       <h1 className="modal-title">Add token</h1>
 
@@ -56,7 +56,9 @@ const AddToken = () => {
 
       <ul className={styles.list}>
         <Tokens
-          tokens={result ? [result] : Object.values(whitelist).filter(filter)}
+          tokens={
+            result ? [result] : Object.values(whitelist ?? {}).filter(filter)
+          }
           muteOnAdded
         />
       </ul>
