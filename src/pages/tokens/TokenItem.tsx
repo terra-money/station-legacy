@@ -10,8 +10,8 @@ interface Props extends Token {
   muteOnAdded?: boolean
 }
 
-export const TokenItem = (item: Props) => {
-  const { token, symbol, decimals, icon, muteOnAdded } = item
+export const TokenItem = ({ muteOnAdded, ...item }: Props) => {
+  const { token, symbol, decimals, icon } = item
   const tokens = useTokens()
   const { add, remove } = useManageTokens()
   const added = !!tokens[token]
