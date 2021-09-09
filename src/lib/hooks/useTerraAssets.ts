@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { TERRA_ASSETS } from '../pages/constants'
 
-const config = { baseURL: 'https://assets.terra.money' }
+const config = { baseURL: TERRA_ASSETS }
 
 const useTerraAssets = <T = any>(path: string) => {
   const [data, setData] = useState<T>()

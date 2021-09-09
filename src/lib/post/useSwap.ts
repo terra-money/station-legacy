@@ -16,8 +16,9 @@ import useBank from '../api/useBank'
 import fcd from '../api/fcd'
 import useTokenBalance from '../cw20/useTokenBalance'
 import useWhitelist from '../cw20/useWhitelist'
-import validateForm from './validateForm'
 import usePairs from '../cw20/usePairs'
+import validateForm from './validateForm'
+import { TERRA_ASSETS } from '../pages/constants'
 import { getFeeDenomList, isAvailable, isFeeAvailable } from './validateConfirm'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import * as routeswap from './routeswap'
@@ -70,7 +71,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     value: denom,
     children: format.denom(denom),
     balance: find(`${denom}:available`, bank.data?.balance) ?? '0',
-    icon: `https://assets.terra.money/icon/60/${format.denom(denom)}.png`,
+    icon: `${TERRA_ASSETS}/icon/60/${format.denom(denom)}.png`,
   }))
 
   const cw20TokensList = whitelist

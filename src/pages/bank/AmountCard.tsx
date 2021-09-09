@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useState } from 'react'
 import { DisplayCoin } from '../../lib'
+import { TERRA_ASSETS } from '../../lib/pages/constants'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'
@@ -15,7 +16,7 @@ const AmountCard: FC<Props> = ({ unit, value, button, children, ...props }) => {
   const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
 
-  const src = `https://assets.terra.money/icon/60/${unit}.png`
+  const src = `${TERRA_ASSETS}/icon/60/${unit}.png`
 
   const icon = props.icon ? (
     <img src={props.icon} className={s.icon} alt="" {...size} />
