@@ -11,6 +11,7 @@ import c from 'classnames'
 import { useConfigState, ConfigProvider, User } from '../lib'
 import { useAuthState, AuthProvider } from '../lib'
 import { LangKey } from '../lib'
+import { TERRA_ASSETS } from '../lib/pages/constants'
 
 import { electron, report } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
@@ -139,7 +140,7 @@ const useCheckElectronVersion = (modal: Modal, onCheck: () => void) => {
       }
 
       try {
-        const url = 'https://terra.money/station/version.json'
+        const url = `${TERRA_ASSETS}/station/version.json`
         const { data } = await axios.get<Version>(url)
         const version = electron<string>('version')
         version !== data.version && onDeprecatedUI(data)
