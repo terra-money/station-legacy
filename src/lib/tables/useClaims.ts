@@ -5,8 +5,6 @@ import { format, gt } from '../utils'
 import useFCD from '../api/useFCD'
 import useFinder from '../hooks/useFinder'
 
-const LIMIT = 5
-
 export default (address: string): ClaimsPage => {
   const { t } = useTranslation()
   const getLink = useFinder()
@@ -18,7 +16,7 @@ export default (address: string): ClaimsPage => {
   const [done, setDone] = useState(false)
 
   const url = `/v1/staking/validators/${address}/claims`
-  const params = { limit: LIMIT, offset }
+  const params = { offset }
   const response = useFCD<ClaimsData>({ url, params })
   const { data } = response
 
@@ -26,7 +24,7 @@ export default (address: string): ClaimsPage => {
     if (data) {
       setClaims((claims) => [...claims, ...data.claims])
       setNext(data.next)
-      setDone(data.claims.length < LIMIT)
+      setDone(data.claims.length < data.limit)
     }
   }, [data])
 

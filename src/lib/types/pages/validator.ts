@@ -160,11 +160,13 @@ export interface MyUndelegation {
 
 export interface ClaimsData {
   claims: Claim[]
+  limit: number
   next: number
 }
 
 export interface DelegationsData {
   events: Event[]
+  limit: number
   next: number
 }
 

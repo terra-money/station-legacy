@@ -3,12 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { ContractsPage, Contract } from '../../types'
 import useFCD from '../../api/useFCD'
 import useFinder from '../../hooks/useFinder'
-import { LIMIT } from '../constants'
 import renderContract from './renderContract'
 
 interface Params {
   owner?: string
   search?: string
+}
+
+interface Response {
+  contracts: Contract[]
+  limit: number
+  next: number
 }
 
 export default (props: Params): ContractsPage => {
@@ -17,25 +22,24 @@ export default (props: Params): ContractsPage => {
 
   /* api */
   const [contracts, setContracts] = useState<Contract[]>([])
+  const [next, setNext] = useState<number>()
   const [offset, setOffset] = useState<number>()
   const [done, setDone] = useState(false)
 
   const url = '/v1/wasm/contracts'
-  const params = { ...props, limit: LIMIT, offset }
-  const response = useFCD<{ contracts: Contract[] }>({ url, params })
+  const params = { ...props, offset }
+  const response = useFCD<Response>({ url, params })
   const { data } = response
 
   useEffect(() => {
     if (data) {
       setContracts((contracts) => [...contracts, ...data.contracts])
-      setDone(data.contracts.length < LIMIT)
+      setNext(data.next)
+      setDone(data.contracts.length < data.limit)
     }
   }, [data])
 
-  const more =
-    contracts.length && !done
-      ? () => setOffset(Number(contracts[contracts.length - 1].id))
-      : undefined
+  const more = contracts.length && !done ? () => setOffset(next) : undefined
 
   /* render */
   const ui =

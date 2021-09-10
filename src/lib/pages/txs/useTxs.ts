@@ -7,9 +7,14 @@ import useWhitelist from '../../cw20/useWhitelist'
 import { useConfig } from '../../contexts/ConfigContext'
 import useFinder from '../../hooks/useFinder'
 import useContracts from '../../hooks/useContracts'
-import { LIMIT } from '../constants'
 
 const TERRA_ADDRESS_REGEX = /(terra1[a-z0-9]{38})/g
+
+interface Response {
+  txs: Tx[]
+  limit: number
+  next: number
+}
 
 export default ({ address }: User): TxsPage => {
   const { t } = useTranslation()
@@ -21,23 +26,24 @@ export default ({ address }: User): TxsPage => {
 
   /* api */
   const [txs, setTxs] = useState<Tx[]>([])
+  const [next, setNext] = useState<number>()
   const [offset, setOffset] = useState<number>()
   const [done, setDone] = useState(false)
 
   const url = '/v1/msgs'
   const params = { account: address, offset }
-  const response = useFCD<{ txs: Tx[] }>({ url, params })
+  const response = useFCD<Response>({ url, params })
   const { data } = response
 
   useEffect(() => {
     if (data) {
       setTxs((txs) => [...txs, ...data.txs])
-      setDone(data.txs.length < LIMIT)
+      setNext(data.next)
+      setDone(data.txs.length < data.limit)
     }
   }, [data])
 
-  const more =
-    txs.length && !done ? () => setOffset(txs[txs.length - 1].id) : undefined
+  const more = txs.length && !done ? () => setOffset(next) : undefined
 
   /* render */
   const ui =

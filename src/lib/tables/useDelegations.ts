@@ -5,8 +5,6 @@ import { format, gt } from '../utils'
 import useFCD from '../api/useFCD'
 import useFinder from '../hooks/useFinder'
 
-const LIMIT = 5
-
 export default (address: string): DelegationsPage => {
   const { t } = useTranslation()
   const getLink = useFinder()
@@ -18,7 +16,7 @@ export default (address: string): DelegationsPage => {
   const [done, setDone] = useState(false)
 
   const url = `/v1/staking/validators/${address}/delegations`
-  const params = { limit: LIMIT, offset }
+  const params = { offset }
   const response = useFCD<DelegationsData>({ url, params })
   const { data } = response
 
@@ -26,7 +24,7 @@ export default (address: string): DelegationsPage => {
     if (data) {
       setEvents((events) => [...events, ...data.events])
       setNext(data.next)
-      setDone(data.events.length < LIMIT)
+      setDone(data.events.length < data.limit)
     }
   }, [data])
 
