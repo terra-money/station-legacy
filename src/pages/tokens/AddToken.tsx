@@ -54,14 +54,16 @@ const AddToken = () => {
         <Icon name="search" />
       </section>
 
-      <ul className={styles.list}>
-        <Tokens
-          tokens={
-            result ? [result] : Object.values(whitelist ?? {}).filter(filter)
-          }
-          muteOnAdded
-        />
-      </ul>
+      {input && (
+        <ul className={styles.list}>
+          <Tokens
+            tokens={
+              result ? [result] : Object.values(whitelist ?? {}).filter(filter)
+            }
+            muteOnAdded
+          />
+        </ul>
+      )}
     </ModalContent>
   )
 }
