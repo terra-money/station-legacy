@@ -234,6 +234,9 @@ export default (
         const compareNumber = c * (gt(a, b) ? 1 : -1)
         return a === b ? 0 : isString ? compareString : compareNumber
       })
+      .sort(({ status: a }, { status: b }) => {
+        return Number(b === 'active') - Number(a === 'active')
+      })
 
     const grouped = [
       ...sorted
