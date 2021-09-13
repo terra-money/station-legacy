@@ -6,7 +6,7 @@ import create from '../../../ruleset/create'
 import { createLogMatcher } from '../../../ruleset/execute'
 import { getMatchMsg } from '../../../ruleset/format'
 
-import { TxsPage, User, Tx } from '../../types'
+import { TxsPage, User, Tx, TxUI } from '../../types'
 import { format } from '../../utils'
 import useFCD from '../../api/useFCD'
 import { useConfig } from '../../contexts/ConfigContext'
@@ -75,7 +75,7 @@ export default ({ address }: User): TxsPage => {
         }
       : {
           more,
-          list: txs.map((txItem) => {
+          list: txs.map((txItem): TxUI => {
             const { txhash, chainId, timestamp, raw_log, tx } = txItem
             const { fee, memo } = tx.value
 
@@ -88,11 +88,12 @@ export default ({ address }: User): TxsPage => {
               date: format.date(timestamp, { toLocale: true }),
               messages: success
                 ? msgs.map((msg) => {
-                    const tag = msg?.msgType.split('/')[1].replaceAll('-', ' ')
-                    const summary = msg?.canonicalMsg.map(parseTxText)
+                    if (!msg) return { tag: '', summary: [], success: true }
+                    const tag = msg.msgType.split('/')[1].replaceAll('-', ' ')
+                    const summary = msg.canonicalMsg.map(parseTxText)
                     return { tag, summary, success }
                   })
-                : [{ tag: 'Failed', text: [raw_log] }],
+                : [{ tag: 'Failed', summary: [raw_log], success }],
               details: [
                 {
                   title: t('Common:Tx:Tx fee'),
