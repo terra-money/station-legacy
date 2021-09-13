@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { isTxError } from '@terra-money/terra.js'
+
+import create from '../../../ruleset/create'
+import { createLogMatcher } from '../../../ruleset/execute'
+import { getMatchMsg } from '../../../ruleset/format'
+
 import { TxsPage, User, Tx } from '../../types'
 import { format } from '../../utils'
 import useFCD from '../../api/useFCD'
-import useWhitelist from '../../cw20/useWhitelist'
 import { useConfig } from '../../contexts/ConfigContext'
 import useFinder from '../../hooks/useFinder'
-import useContracts from '../../hooks/useContracts'
-
-const TERRA_ADDRESS_REGEX = /(terra1[a-z0-9]{38})/g
+import useParseTxText from './useParseTxText'
 
 interface Response {
   txs: Tx[]
@@ -21,8 +24,8 @@ export default ({ address }: User): TxsPage => {
   const getLink = useFinder()
   const { chain } = useConfig()
   const { name: currentChain } = chain.current
-  const { whitelist } = useWhitelist()
-  const { contracts } = useContracts(currentChain)
+
+  const parseTxText = useParseTxText()
 
   /* api */
   const [txs, setTxs] = useState<Tx[]>([])
@@ -30,7 +33,7 @@ export default ({ address }: User): TxsPage => {
   const [offset, setOffset] = useState<number>()
   const [done, setDone] = useState(false)
 
-  const url = '/v1/msgs'
+  const url = '/v1/txs'
   const params = { account: address, offset }
   const response = useFCD<Response>({ url, params })
   const { data } = response
@@ -45,6 +48,20 @@ export default ({ address }: User): TxsPage => {
 
   const more = txs.length && !done ? () => setOffset(next) : undefined
 
+  /* parse */
+  const ruleset = create(currentChain)
+  const logMatcher = createLogMatcher(ruleset)
+
+  const getCanonicalMsgs = (tx: Tx) => {
+    const matchedMsg = getMatchMsg(JSON.stringify(tx), logMatcher, address)
+
+    return matchedMsg
+      ? matchedMsg
+          .map((matchedLog) => matchedLog.map(({ transformed }) => transformed))
+          .flat(2)
+      : []
+  }
+
   /* render */
   const ui =
     !response.loading && !txs.length
@@ -58,37 +75,32 @@ export default ({ address }: User): TxsPage => {
         }
       : {
           more,
-          list: txs.map(({ chainId, txhash, timestamp, msgs, ...tx }) => {
-            const { success, txFee, memo, errorMessage } = tx
+          list: txs.map((txItem) => {
+            const { txhash, chainId, timestamp, raw_log, tx } = txItem
+            const { fee, memo } = tx.value
+
+            const success = !isTxError(txItem)
+            const msgs = getCanonicalMsgs(txItem)
+
             return {
               link: getLink!({ network: chainId, q: 'tx', v: txhash }),
               hash: txhash,
               date: format.date(timestamp, { toLocale: true }),
-              messages: msgs.map(({ tag, text }) => {
-                const replacer = (addr: string) => {
-                  const token = whitelist?.[addr]
-                  const contract = contracts?.[addr]
-
-                  return contract
-                    ? [contract.protocol, contract.name].join(' ')
-                    : token
-                    ? token.symbol
-                    : addr
-                }
-
-                return {
-                  tag: t('Page:Txs:' + tag),
-                  text: text.replace(TERRA_ADDRESS_REGEX, replacer),
-                  success,
-                }
-              }),
+              messages: success
+                ? msgs.map((msg) => {
+                    const tag = msg?.msgType.split('/')[1].replaceAll('-', ' ')
+                    const summary = msg?.canonicalMsg.map(parseTxText)
+                    return { tag, summary, success }
+                  })
+                : [{ tag: 'Failed', text: [raw_log] }],
               details: [
                 {
                   title: t('Common:Tx:Tx fee'),
-                  content: txFee?.map((coin) => format.coin(coin)).join(', '),
+                  content: fee.amount
+                    ?.map((coin) => format.coin(coin))
+                    .join(', '),
                 },
                 { title: t('Common:Tx:Memo'), content: memo },
-                { title: t('Common:Tx:Log'), content: errorMessage },
               ].filter(({ content }) => !!content),
             }
           }),

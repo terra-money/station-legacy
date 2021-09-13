@@ -31,7 +31,6 @@ export * from './pages/proposal'
 export * from './pages/contracts'
 
 /* post */
-export * from './post/send'
 export * from './post/withdraw'
 export * from './post/market'
 export * from './post/contracts'

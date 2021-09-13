@@ -20,7 +20,7 @@ export interface TxUI {
 
 export interface MessageUI {
   tag: string
-  text: string
+  summary: string[]
   success: boolean
 }
 
@@ -31,14 +31,21 @@ export interface TxsData {
 
 export interface Tx {
   id: number
+  height: number
   timestamp: string
   txhash: string
-  msgs: Message[]
-  txFee: Coin[]
-  memo: string
-  success: boolean
-  errorMessage: string
   chainId: string
+  tx: {
+    type: string
+    value: TxValue
+  }
+  raw_log: string
+}
+
+export interface TxValue {
+  fee: { gas: string; amount: { amount: string; denom: string }[] }
+  memo: string
+  msg: { type: string; value: any }[]
 }
 
 export interface Message {

@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Dictionary, last } from 'ramda'
 import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
-import { BankData, TxsData, Tx, Whitelist } from '../types'
-import { RecentSentUI, RecentSentItemUI } from '../types'
+import { BankData, Whitelist } from '../types'
 import { PostPage, Coin as StationCoin, User, Field } from '../types'
 import { ConfirmContent, ConfirmProps } from '../types'
 import { is, format, find } from '../utils'
 import { gt, max, minus } from '../utils/math'
 import { toAmount, toInput } from '../utils/format'
 import { TokenBalanceQuery } from '../cw20/useTokenBalance'
-import useFCD from '../api/useFCD'
 import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
@@ -30,45 +27,12 @@ export default (
   user: User,
   denom: string,
   tokenBalance: TokenBalanceQuery
-): PostPage<RecentSentUI> => {
+): PostPage => {
   const { t } = useTranslation()
   const { data: bank, loading: bankLoading, error } = useBank(user)
   const { list, loading: tokenLoading, tokens } = tokenBalance
   const loading = bankLoading || tokenLoading
   const v = validateForm(t)
-
-  /* recent txs */
-  const url = '/v1/msgs'
-  const params = { account: user.address, action: 'send' }
-  const txsResponse = useFCD<TxsData>({ url, params })
-
-  const renderRecentItem = ({
-    date,
-    values,
-  }: RecentSentItem): RecentSentItemUI => {
-    const { to, input, memo } = values
-
-    return {
-      title: date,
-      contents: [
-        { title: t('Post:Send:Send to'), content: to },
-        { title: t('Common:Tx:Amount'), content: `${input} ${unit}` },
-        { title: t('Common:Tx:Memo'), content: memo },
-      ].filter(({ content }) => content),
-      onClick: () => form.setValues({ ...values, to, memo }),
-    }
-  }
-
-  const renderRecent = ({ txs }: TxsData): RecentSentUI | undefined => {
-    const recent = !gt(txs.length, 0) ? undefined : findRecent(txs, denom)
-
-    return !recent?.length
-      ? undefined
-      : {
-          title: t('Post:Send:Recent transactions', { unit }),
-          contents: recent.map(renderRecentItem),
-        }
-  }
 
   /* form */
   const getBalance = () =>
@@ -237,34 +201,5 @@ export default (
     submitted,
     form: formUI,
     confirm: bank ? getConfirm(bank, tokens ?? {}) : undefined,
-    ui: txsResponse.data && renderRecent(txsResponse.data),
   }
-}
-
-/* helper */
-type RecentSentItem = { date: string; values: Omit<Values, 'network'> }
-const findRecent = (txs: Tx[], denom: string): RecentSentItem[] | undefined => {
-  const reduced = txs.reduce<Dictionary<RecentSentItem>>(
-    (acc, { msgs: [{ text, out }], memo, timestamp }) => {
-      try {
-        const to = last(text.split(' to '))
-        const coin = out![0]
-
-        return coin.denom === denom && to && !acc[to] && is.address(to)
-          ? {
-              ...acc,
-              [to]: {
-                date: format.date(timestamp),
-                values: { to, input: toInput(coin.amount), memo },
-              },
-            }
-          : acc
-      } catch {
-        return acc
-      }
-    },
-    {}
-  )
-
-  return Object.values(reduced)
 }

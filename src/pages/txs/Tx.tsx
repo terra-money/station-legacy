@@ -22,14 +22,22 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
     </>
   )
 
-  const renderMessage = ({ tag, text, success }: MessageUI, index: number) => {
+  const renderMessage = (
+    { tag, summary, success }: MessageUI,
+    index: number
+  ) => {
     const badgeClassName = success ? 'badge-secondary' : 'badge-danger'
     return (
       <article className={s.message} key={index}>
         <Badge className={c(s.tag, badgeClassName)} small>
           {tag}
         </Badge>
-        <p className={s.text}>{text}</p>
+
+        <section className={s.text}>
+          {summary.map((item, index) => (
+            <p key={index}>{item}</p>
+          ))}
+        </section>
       </article>
     )
   }

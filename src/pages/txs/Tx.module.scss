@@ -45,6 +45,7 @@
 .tag {
   text-transform: capitalize;
   margin-right: 10px;
+  flex: none;
 
   @media (max-width: $breakpoint - 1) {
     margin-bottom: 5px;
