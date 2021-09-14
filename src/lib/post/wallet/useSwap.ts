@@ -3,27 +3,37 @@ import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
-import { PostPage, SwapUI, ConfirmProps, BankData, Whitelist } from '../types'
-import { User, CoinItem, Rate, Field, FormUI } from '../types'
-import { find, format, is } from '../utils'
-import { gt, gte, lte, times, percent, plus, minus, div } from '../utils'
-import { max, floor, isFinite, isInteger } from '../utils'
-import { toInput, toAmount, decimalN } from '../utils/format'
-import { useConfig } from '../contexts/ConfigContext'
-import useForm from '../hooks/useForm'
-import useFCD from '../api/useFCD'
-import useBank from '../api/useBank'
-import fcd from '../api/fcd'
-import useTokenBalance from '../cw20/useTokenBalance'
-import useWhitelist from '../cw20/useWhitelist'
-import usePairs from '../cw20/usePairs'
-import validateForm from './validateForm'
-import { TERRA_ASSETS } from '../pages/constants'
-import { getFeeDenomList, isAvailable, isFeeAvailable } from './validateConfirm'
+import {
+  PostPage,
+  SwapUI,
+  ConfirmProps,
+  BankData,
+  Whitelist,
+} from '../../types'
+import { User, CoinItem, Rate, Field, FormUI } from '../../types'
+import { find, format, is } from '../../utils'
+import { gt, gte, lte, times, percent, plus, minus, div } from '../../utils'
+import { max, floor, isFinite, isInteger } from '../../utils'
+import { toInput, toAmount, decimalN } from '../../utils/format'
+import { useConfig } from '../../contexts/ConfigContext'
+import useForm from '../../hooks/useForm'
+import useFCD from '../../api/useFCD'
+import useBank from '../../api/useBank'
+import fcd from '../../api/fcd'
+import useTokenBalance from '../../cw20/useTokenBalance'
+import useWhitelist from '../../cw20/useWhitelist'
+import usePairs from '../../cw20/usePairs'
+import validateForm from '../validateForm'
+import { TERRA_ASSETS } from '../../pages/constants'
+import {
+  getFeeDenomList,
+  isAvailable,
+  isFeeAvailable,
+} from '../validateConfirm'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import * as routeswap from './routeswap'
-import useCalcTax from './useCalcTax'
-import { useCalcFee } from './txHelpers'
+import useCalcTax from '../useCalcTax'
+import { useCalcFee } from '../txHelpers'
 
 const { findPair, getRouteMessage } = routeswap
 const { isRouteAvailable, isMarketAvailable, simulateRoute } = routeswap
@@ -523,20 +533,21 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     : undefined
 
   const getConfirm = (bank: BankData, whitelist: Whitelist): ConfirmProps => ({
-    msgs: !mode
-      ? undefined
-      : {
-          Market: assertLimitOrder ? [assertLimitOrder, swap] : [swap],
-          Terraswap: terraswap?.msgs,
-          Route: [
-            new MsgExecuteContract(
-              user.address,
-              executeRoute.contract,
-              executeRoute.msg,
-              executeRoute.coins
-            ),
-          ],
-        }[mode],
+    msgs:
+      (!mode
+        ? undefined
+        : {
+            Market: assertLimitOrder ? [assertLimitOrder, swap] : [swap],
+            Terraswap: terraswap?.msgs,
+            Route: [
+              new MsgExecuteContract(
+                user.address,
+                executeRoute.contract,
+                executeRoute.msg,
+                executeRoute.coins
+              ),
+            ],
+          }[mode]) ?? [],
     tax: shouldTax ? new Coin(from, tax) : undefined,
     contents: [
       {

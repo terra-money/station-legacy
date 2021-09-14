@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, ConfirmProps, StakingData, BankData } from '../types'
-import { CoinItem, User, Field, FieldElement } from '../types'
-import { format } from '../utils'
-import { toAmount, toInput } from '../utils/format'
-import useFCD from '../api/useFCD'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import validateForm from './validateForm'
-import { isDelegatable, isFeeAvailable } from './validateConfirm'
-import { getFeeDenomList } from './validateConfirm'
+import { MsgDelegate, MsgBeginRedelegate } from '@terra-money/terra.js'
+import { MsgUndelegate, Coin } from '@terra-money/terra.js'
+import { PostPage, ConfirmProps, StakingData, BankData } from '../../types'
+import { CoinItem, User, Field, FieldElement } from '../../types'
+import { format } from '../../utils'
+import { toAmount, toInput } from '../../utils/format'
+import useFCD from '../../api/useFCD'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import validateForm from '../validateForm'
+import { isDelegatable, isFeeAvailable } from '../validateConfirm'
+import { getFeeDenomList } from '../validateConfirm'
 
 interface Values {
   from: string
@@ -150,12 +152,9 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/delegations`,
-        payload: {
-          delegator_address: from,
-          validator_address: validatorAddress,
-          amount: { amount, denom },
-        },
+        msgs: [
+          new MsgDelegate(from, validatorAddress, new Coin(denom, amount)),
+        ],
         validate: (fee: CoinItem) =>
           isDelegatable({ amount, denom, fee }, bank.balance) &&
           isFeeAvailable(fee, bank.balance),
@@ -175,13 +174,14 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/redelegations`,
-        payload: {
-          delegator_address: address,
-          validator_src_address: from,
-          validator_dst_address: validatorAddress,
-          amount: { amount, denom },
-        },
+        msgs: [
+          new MsgBeginRedelegate(
+            address,
+            from,
+            validatorAddress,
+            new Coin(denom, amount)
+          ),
+        ],
         validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Redelegate'),
@@ -198,12 +198,9 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/unbonding_delegations`,
-        payload: {
-          delegator_address: from,
-          validator_address: validatorAddress,
-          amount: { amount, denom },
-        },
+        msgs: [
+          new MsgUndelegate(from, validatorAddress, new Coin(denom, amount)),
+        ],
         validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Undelegate'),

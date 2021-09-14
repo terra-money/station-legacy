@@ -4,14 +4,14 @@ import { useQuery } from 'react-query'
 import { Coins, LCDClient, StdFee } from '@terra-money/terra.js'
 import { StdSignMsg, StdTx } from '@terra-money/terra.js'
 import { ConfirmProps, ConfirmPage, Sign, Field, User, GetKey } from '../types'
-import { PostResult } from '../types'
+import { PostResult, PostError } from '../types'
 import useInfo from '../lang/useInfo'
 import fcd from '../api/fcd'
 import { format } from '../utils'
 import { toInput, toAmount } from '../utils/format'
-import { times, lt, gt } from '../utils/math'
+import { lt, gt } from '../utils/math'
 import { useConfig } from '../contexts/ConfigContext'
-import { getBase, config, useCalcFee } from './txHelpers'
+import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 
 interface SignParams {
@@ -22,14 +22,14 @@ interface SignParams {
 }
 
 export default (
-  { url, payload, memo, submitLabels, message, ...rest }: ConfirmProps,
+  { memo, submitLabels, message, ...rest }: ConfirmProps,
   { user, password: defaultPassword = '', sign, getKey }: SignParams
 ): ConfirmPage => {
   const { contents, msgs, tax, feeDenom, validate, warning, parseResult } = rest
 
   const { t } = useTranslation()
   const { ERROR } = useInfo()
-  const { address, name, ledger } = user
+  const { name, ledger } = user
 
   const SUCCESS = {
     title: t('Post:Confirm:Success!'),
@@ -83,39 +83,22 @@ export default (
 
         const gasAdjustment = 1.75
 
-        if (msgs) {
-          const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
-          const lcd = new LCDClient({ chainID, URL, gasPrices })
-          const options = { msgs, feeDenoms: [denom], memo, gasAdjustment }
-          const unsignedTx = await lcd.tx.create(user.address, options)
-          setUnsignedTx(unsignedTx)
+        const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
+        const lcd = new LCDClient({ chainID, URL, gasPrices })
+        const options = { msgs, feeDenoms: [denom], memo, gasAdjustment }
+        const unsignedTx = await lcd.tx.create(user.address, options)
+        setUnsignedTx(unsignedTx)
 
-          const gas = String(unsignedTx.fee.gas)
-          const estimatedFee = calcFee!.feeFromGas(gas, denom)
-          setGas(gas)
-          setInput(toInput(estimatedFee ?? '0'))
-          setEstimated(estimatedFee)
-          setSimulated(true)
-        } else if (url) {
-          // Simulate with initial fee
-          const base = await getBase(address)
-          const fees = [{ ...fee, amount: '0' }]
-          const req = { simulate: true, gas: 'auto', fees, memo }
-          const body = { base_req: { ...base, ...req }, ...payload }
-
-          type Data = { gas_estimate: string }
-          const { data } = await fcd.post<Data>(url, body, config)
-          const adjusted = times(data.gas_estimate, gasAdjustment)
-          const feeAmount = calcFee!.feeFromGas(adjusted, denom)
-
-          // Set simulated fee
-          setGas(adjusted)
-          setInput(toInput(feeAmount))
-          setEstimated(feeAmount)
-          setSimulated(true)
-        }
+        const gas = String(unsignedTx.fee.gas)
+        const estimatedFee = calcFee!.feeFromGas(gas, denom)
+        setGas(gas)
+        setInput(toInput(estimatedFee ?? '0'))
+        setEstimated(estimatedFee)
+        setSimulated(true)
       } catch (error) {
-        setSimulatedErrorMessage(parseError(error, defaultErrorMessage))
+        setSimulatedErrorMessage(
+          parseError(error as PostError, defaultErrorMessage)
+        )
       } finally {
         setSimulating(false)
       }
@@ -145,56 +128,37 @@ export default (
   const [txhash, setTxHash] = useState<string>()
 
   const submit = async () => {
+    if (!unsignedTx) return
+
     try {
       setLedgerError(undefined)
       setSubmitting(true)
       setErrorMessage(undefined)
 
-      if (unsignedTx) {
-        const broadcast = async (signedTx: StdTx) => {
-          const { gasPrices } = calcFee!
-          const lcd = new LCDClient({ chainID, URL, gasPrices })
+      const broadcast = async (signedTx: StdTx) => {
+        const { gasPrices } = calcFee!
+        const lcd = new LCDClient({ chainID, URL, gasPrices })
 
-          const data = await lcd.tx.broadcastSync(signedTx)
-          setTxHash(data.txhash)
-        }
-
-        const gasFee = new Coins({ [fee.denom]: fee.amount })
-        const fees = tax ? gasFee.add(tax) : gasFee
-        unsignedTx.fee = new StdFee(unsignedTx.fee.gas, fees)
-
-        const key = await getKey(name ? { name, password } : undefined)
-        const signed = await key.signTx(unsignedTx)
-        await broadcast(signed)
-      } else if (url) {
-        // Post to fetch tx
-        const gas_prices = [{ amount: calcFee!.gasPrice(fee.denom), denom }]
-        const gas = calcFee!.gasFromFee(fee.amount, denom)
-        const base = await getBase(address)
-        const req = { simulate: false, gas, gas_prices, memo }
-        const body = { base_req: { ...base, ...req }, ...payload }
-
-        type Data = { value: string }
-        const { data } = await fcd.post<Data>(url, body, config)
-        const { value: tx } = data
-
-        // Post with signed tx
-        const txURL = '/v1/txs'
-        const signedTx = await sign({ tx, base, password })
-        const result = await fcd.post<PostResult>(txURL, signedTx, config)
-        setResult(result.data)
-
-        // Catch error
-        const errorMessage = checkError(result.data.raw_log)
-        errorMessage ? setErrorMessage(errorMessage) : setSubmitted(true)
+        const data = await lcd.tx.broadcastSync(signedTx)
+        setTxHash(data.txhash)
       }
+
+      const gasFee = new Coins({ [fee.denom]: fee.amount })
+      const fees = tax ? gasFee.add(tax) : gasFee
+      unsignedTx.fee = new StdFee(unsignedTx.fee.gas, fees)
+
+      const key = await getKey(name ? { name, password } : undefined)
+      const signed = await key.signTx(unsignedTx)
+      await broadcast(signed)
     } catch (error) {
-      if (error.message === 'Incorrect password') {
+      const { name, message } = error as PostError
+
+      if (message === 'Incorrect password') {
         setPasswordError(t('Auth:Form:Incorrect password'))
-      } else if (error.name === 'LedgerError') {
-        setLedgerError(error.message)
+      } else if (name === 'LedgerError') {
+        setLedgerError(message)
       } else {
-        setErrorMessage(parseError(error, defaultErrorMessage))
+        setErrorMessage(parseError(error as PostError, defaultErrorMessage))
       }
     } finally {
       setSubmitting(false)

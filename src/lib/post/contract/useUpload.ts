@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BankData } from '../types'
-import { PostPage, CoinItem, User, Field } from '../types'
-import { ConfirmProps } from '../types'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
-import { stringify } from './txHelpers'
+import { MsgStoreCode } from '@terra-money/terra.js'
+import { BankData } from '../../types'
+import { PostPage, CoinItem, User, Field } from '../../types'
+import { ConfirmProps } from '../../types'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
+import { stringify } from '../txHelpers'
 
 interface Values {
   wasm: string
@@ -73,8 +74,7 @@ export default (user: User): PostPage => {
   }
 
   const getConfirm = (bank: BankData): ConfirmProps => ({
-    url: `/wasm/codes`,
-    payload: { wasm_bytes: wasm },
+    msgs: [new MsgStoreCode(user.address, wasm)],
     memo: stringify({ name, description, url }),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },

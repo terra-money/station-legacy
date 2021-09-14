@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth, useDelegate } from '../lib'
-import { DelegateType } from '../lib/post/useDelegate'
+import { DelegateType } from '../lib/post/staking/useDelegate'
 import Post from './Post'
 
 interface Props {

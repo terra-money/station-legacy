@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BankData, CoinFields } from '../types'
-import { PostPage, CoinItem, User, Field } from '../types'
-import { ConfirmProps } from '../types'
-import { is, format } from '../utils'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
-import { useCoinsFields } from './txHooks'
-import { stringify } from './txHelpers'
+import { Coin, Coins, MsgInstantiateContract } from '@terra-money/terra.js'
+import { BankData, CoinFields } from '../../types'
+import { PostPage, CoinItem, User, Field } from '../../types'
+import { ConfirmProps } from '../../types'
+import { is } from '../../utils'
+import { parseJSON } from '../../utils/format'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
+import { useCoinsFields } from '../txHooks'
+import { stringify } from '../txHelpers'
 
 interface Values {
   code: string
@@ -78,20 +80,38 @@ export default (user: User, denoms: string[]): PostPage<CoinFields> => {
     onSubmit: disabled ? undefined : () => setSubmitted(true),
   }
 
-  const getConfirm = (bank: BankData): ConfirmProps => ({
-    url: `/wasm/codes/${code}`,
-    payload: {
-      init_coins: coinsFields.coins,
-      init_msg: format.sanitizeJSON(json),
-    },
-    memo: stringify({ name, description }),
-    contents: [],
-    feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
-    submitLabels: [t('Post:Contracts:Create'), t('Post:Contracts:Creating...')],
-    message: t('Post:Contracts:Created contract'),
-    cancel: () => setSubmitted(false),
-  })
+  const getConfirm = (bank: BankData): ConfirmProps => {
+    const address = user.address
+    const code_id = Number(code)
+    const init_msg = parseJSON(json)
+    const init_coins = new Coins(
+      coinsFields.coins.map(({ amount, denom }) => new Coin(denom, amount))
+    )
+
+    return {
+      msgs: [
+        new MsgInstantiateContract(
+          address,
+          code_id,
+          init_msg,
+          init_coins,
+          true,
+          address,
+          address
+        ),
+      ],
+      memo: stringify({ name, description }),
+      contents: [],
+      feeDenom: { list: getFeeDenomList(bank.balance) },
+      validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
+      submitLabels: [
+        t('Post:Contracts:Create'),
+        t('Post:Contracts:Creating...'),
+      ],
+      message: t('Post:Contracts:Created contract'),
+      cancel: () => setSubmitted(false),
+    }
+  }
 
   return {
     error,

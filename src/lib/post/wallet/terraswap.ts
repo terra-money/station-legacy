@@ -1,7 +1,7 @@
 import { AccAddress, MsgExecuteContract } from '@terra-money/terra.js'
-import { Coin, Coins } from '@terra-money/terra.js'
+import { Coins } from '@terra-money/terra.js'
 import axios from 'axios'
-import { ChainOptions } from '../types'
+import { ChainOptions } from '../../types'
 
 interface Params {
   pair?: string
@@ -40,7 +40,7 @@ export const getTerraswapURL = (
             address,
             pair!,
             { swap: { ...swapOptions, offer_asset: asset } },
-            new Coins([new Coin(offer.from, offer.amount)])
+            new Coins({ [offer.from]: offer.amount })
           ),
         ]
       : [

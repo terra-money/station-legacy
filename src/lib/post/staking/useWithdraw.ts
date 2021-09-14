@@ -1,8 +1,8 @@
 import { MsgWithdrawDelegationReward } from '@terra-money/terra.js'
 import { useTranslation } from 'react-i18next'
-import { User, WithdrawProps, PostPage } from '../types'
-import useBank from '../api/useBank'
-import { isFeeAvailable, getFeeDenomList } from './validateConfirm'
+import { User, WithdrawProps, PostPage } from '../../types'
+import useBank from '../../api/useBank'
+import { isFeeAvailable, getFeeDenomList } from '../validateConfirm'
 
 export default (user: User, props: WithdrawProps): PostPage => {
   const { amounts, validators } = props

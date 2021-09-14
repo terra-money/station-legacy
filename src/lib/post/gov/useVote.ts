@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, CoinItem, User, Field, BankData } from '../types'
-import { ConfirmProps } from '../types'
-import useBank from '../api/useBank'
-import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
-import { optionColors } from '../pages/governance/helpers'
+import { MsgVote } from '@terra-money/terra.js'
+import { PostPage, CoinItem, User, Field, BankData } from '../../types'
+import { ConfirmProps } from '../../types'
+import useBank from '../../api/useBank'
+import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
+import { optionColors } from '../../pages/governance/helpers'
 
 export default (
   user: User,
@@ -13,25 +14,25 @@ export default (
   const { t } = useTranslation()
   const { data: bank, loading, error } = useBank(user)
 
-  type OptionItem = { key: string; label: string; color: string }
+  type OptionItem = { key: MsgVote.Option; label: string; color: string }
   const OptionsList: OptionItem[] = [
     {
-      key: 'yes',
+      key: MsgVote.Option.YES,
       label: t('Page:Governance:Yes'),
       color: optionColors['Yes'],
     },
     {
-      key: 'no',
+      key: MsgVote.Option.NO,
       label: t('Page:Governance:No'),
       color: optionColors['No'],
     },
     {
-      key: 'no_with_veto',
+      key: MsgVote.Option.NO_WITH_VETO,
       label: t('Page:Governance:No\nWithVeto'),
       color: optionColors['NoWithVeto'],
     },
     {
-      key: 'abstain',
+      key: MsgVote.Option.ABSTAIN,
       label: t('Page:Governance:Abstain'),
       color: optionColors['Abstain'],
     },
@@ -73,8 +74,7 @@ export default (
     bank: BankData,
     { key, label }: OptionItem
   ): ConfirmProps => ({
-    url: `/gov/proposals/${id}/votes`,
-    payload: { voter: user.address, option: key },
+    msgs: [new MsgVote(Number(id), user.address, key)],
     contents: [{ name: t('Page:Governance:Answer'), text: label }],
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),

@@ -1,8 +1,8 @@
 import { Coin } from '@terra-money/terra.js'
 import axios from 'axios'
 import { Dictionary } from 'ramda'
-import { ChainOptions, Pairs } from '../types'
-import { is } from '../utils'
+import { ChainOptions, Pairs } from '../../types'
+import { is } from '../../utils'
 import { toBase64, toTokenInfo } from './terraswap'
 
 const RouteContracts: Dictionary<string> = {

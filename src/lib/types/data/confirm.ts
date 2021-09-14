@@ -4,10 +4,8 @@ import { Card, CoinItem, DisplayCoin, ConfirmLedger } from '..'
 import { PostResult } from './post'
 
 export interface ConfirmProps {
-  url?: string
-  msgs?: Msg[]
+  msgs: Msg[]
   tax?: Coin | Coins
-  payload?: object
   memo?: string
   contents: ConfirmContent[]
   feeDenom: { defaultValue?: string; list: string[] }

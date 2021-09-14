@@ -1,8 +1,7 @@
 import { Dictionary } from 'ramda'
-import { Result, ParsedRaw, ParsedLog, Base, PostError } from '../types'
+import { ParsedRaw, ParsedLog, PostError } from '../types'
 import { times, div, ceil, floor } from '../utils/math'
 import { decimal } from '../utils/format'
-import fcd from '../api/fcd'
 import useFCD from '../api/useFCD'
 
 export const config = { headers: { 'Content-Type': 'application/json' } }
@@ -32,32 +31,6 @@ export const useCalcFee = () => {
         gasFromFee: calcGasFromFee,
       }
 }
-
-/* base */
-type Latest = { block: { header: { chain_id: string } } }
-type Account = Result<{ value: AccountValue | BaseAccountValue }>
-type BaseAccountValue = { BaseVestingAccount: { BaseAccount: AccountValue } }
-export const getBase = async (from: string): Promise<Base> => {
-  const { data: latest } = await fcd.get<Latest>('/blocks/latest')
-  const { chain_id } = latest.block.header
-
-  const { data: account } = await fcd.get<Account>(`/auth/accounts/${from}`)
-  const { account_number, sequence } = getValue(account)
-
-  return {
-    from,
-    chain_id,
-    account_number: String(account_number),
-    sequence: String(sequence),
-  }
-}
-
-type AccountValue = { account_number: string; sequence: string }
-const getValue = ({ result: { value } }: Account): AccountValue =>
-  Object.assign(
-    { account_number: '0', sequence: '0' },
-    'BaseVestingAccount' in value ? value.BaseVestingAccount.BaseAccount : value
-  )
 
 /* error */
 export const parseError = (

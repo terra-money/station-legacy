@@ -115,3 +115,15 @@ export const sanitizeJSON = (string: string): string => {
     return ''
   }
 }
+
+export const parseJSON = (string?: string) => {
+  if (string) {
+    try {
+      return JSON.parse(string)
+    } catch {
+      return undefined
+    }
+  } else {
+    return undefined
+  }
+}

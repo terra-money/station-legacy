@@ -3,19 +3,23 @@ import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
-import { BankData, Whitelist } from '../types'
-import { PostPage, CoinItem, User, Field } from '../types'
-import { ConfirmContent, ConfirmProps } from '../types'
-import { is, format, find } from '../utils'
-import { gt, max, minus } from '../utils/math'
-import { toAmount, toInput } from '../utils/format'
-import { TokenBalanceQuery } from '../cw20/useTokenBalance'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import validateForm from './validateForm'
-import { isAvailable, getFeeDenomList, isFeeAvailable } from './validateConfirm'
-import { useCalcFee } from './txHelpers'
-import useCalcTax from './useCalcTax'
+import { BankData, Whitelist } from '../../types'
+import { PostPage, CoinItem, User, Field } from '../../types'
+import { ConfirmContent, ConfirmProps } from '../../types'
+import { is, format, find } from '../../utils'
+import { gt, max, minus } from '../../utils/math'
+import { toAmount, toInput } from '../../utils/format'
+import { TokenBalanceQuery } from '../../cw20/useTokenBalance'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import validateForm from '../validateForm'
+import {
+  isAvailable,
+  getFeeDenomList,
+  isFeeAvailable,
+} from '../validateConfirm'
+import { useCalcFee } from '../txHelpers'
+import useCalcTax from '../useCalcTax'
 
 interface Values {
   to: string

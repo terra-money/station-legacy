@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js'
-import { BankData, CoinFields } from '../types'
-import { PostPage, CoinItem, User, Field } from '../types'
-import { ConfirmProps } from '../types'
-import { is } from '../utils'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
-import { useCoinsFields } from './txHooks'
-import useCalcTaxes from './useCalcTaxes'
+import { BankData, CoinFields } from '../../types'
+import { PostPage, CoinItem, User, Field } from '../../types'
+import { ConfirmProps } from '../../types'
+import { is } from '../../utils'
+import { parseJSON } from '../../utils/format'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
+import { useCoinsFields } from '../txHooks'
+import useCalcTaxes from '../useCalcTaxes'
 
 interface Values {
   address: string
@@ -73,7 +74,7 @@ export default (
       new MsgExecuteContract(
         user.address,
         address,
-        parse(values.json),
+        parseJSON(values.json),
         Coins.fromData(coinsFields.coins)
       ),
     ],
@@ -100,14 +101,5 @@ export default (
     form: formUI,
     confirm: bank && getConfirm(bank),
     ui: coinsFields,
-  }
-}
-
-/* helpers */
-const parse = (input: string) => {
-  try {
-    return JSON.parse(input)
-  } catch {
-    return {}
   }
 }

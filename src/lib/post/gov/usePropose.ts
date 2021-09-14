@@ -1,21 +1,29 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, ConfirmProps, BankData } from '../types'
-import { CoinItem, User, Field } from '../types'
-import { format, find, gt } from '../utils'
-import { toAmount, toInput } from '../utils/format'
-import useFCD from '../api/useFCD'
-import useBank from '../api/useBank'
-import useForm from '../hooks/useForm'
-import validateForm from './validateForm'
-import { isAvailable, getFeeDenomList } from './validateConfirm'
+import { PostPage, ConfirmProps, BankData } from '../../types'
+import { CoinItem, User, Field } from '../../types'
+import { format, find, gt } from '../../utils'
+import { parseJSON, toAmount, toInput } from '../../utils/format'
+import useFCD from '../../api/useFCD'
+import useBank from '../../api/useBank'
+import useForm from '../../hooks/useForm'
+import validateForm from '../validateForm'
+import { isAvailable, getFeeDenomList } from '../validateConfirm'
+import { Coins, Dec, MsgSubmitProposal } from '@terra-money/terra.js'
+import {
+  TextProposal,
+  TaxRateUpdateProposal,
+  RewardWeightUpdateProposal,
+  CommunityPoolSpendProposal,
+  ParameterChangeProposal,
+} from '@terra-money/terra.js'
 
 enum TypeKey {
-  DEFAULT = '',
-  T = 'tax_rate_update',
-  R = 'reward_weight_update',
-  C = 'community_pool_spend',
-  P = 'param_change',
+  TEXT = '',
+  TAX_RATE_UPDATE = 'tax_rate_update',
+  REWARD_WEIGHT_UPDATE = 'reward_weight_update',
+  COMMUNITY_POOL_SPEND = 'community_pool_spend',
+  PARAM_CHANGE = 'param_change',
 }
 
 interface Change {
@@ -29,7 +37,7 @@ const CHANGES_PLACEHOLDER = `[{
   "subspace": "staking",
   "key": "MaxValidators",
   "subkey": "",
-  "value": {}
+  "value": "100"
 }]`
 
 interface CustomField {
@@ -61,29 +69,24 @@ export default (user: User): PostPage => {
 
   const TypesList = [
     {
-      key: TypeKey.DEFAULT,
+      key: TypeKey.TEXT,
       title: t('Post:Governance:Text Proposal'),
-      url: '/gov/proposals',
     },
     {
-      key: TypeKey.T,
+      key: TypeKey.TAX_RATE_UPDATE,
       title: t('Post:Governance:Tax-rate Update'),
-      url: '/gov/proposals/tax_rate_update',
     },
     {
-      key: TypeKey.R,
+      key: TypeKey.REWARD_WEIGHT_UPDATE,
       title: t('Post:Governance:Reward-weight Update'),
-      url: '/gov/proposals/reward_weight_update',
     },
     {
-      key: TypeKey.C,
+      key: TypeKey.COMMUNITY_POOL_SPEND,
       title: t('Post:Governance:Community-pool Spend'),
-      url: '/gov/proposals/community_pool_spend',
     },
     {
-      key: TypeKey.P,
+      key: TypeKey.PARAM_CHANGE,
       title: t('Post:Governance:Parameter-change'),
-      url: '/gov/proposals/param_change',
     },
   ]
 
@@ -117,22 +120,25 @@ export default (user: User): PostPage => {
       typeIndex: '',
       proposal_type: '',
       tax_rate:
-        key === TypeKey.T
+        key === TypeKey.TAX_RATE_UPDATE
           ? v.between(updates.tax_rate, {
               range: [0, 1],
               label: t('Post:Governance:Tax-rate'),
             })
           : '',
       reward_weight:
-        key === TypeKey.R
+        key === TypeKey.REWARD_WEIGHT_UPDATE
           ? v.between(updates.reward_weight, {
               range: [0, 1],
               label: t('Post:Governance:Reward-weight'),
             })
           : '',
-      recipient: key === TypeKey.C ? v.address(updates.recipient) : '',
+      recipient:
+        key === TypeKey.COMMUNITY_POOL_SPEND
+          ? v.address(updates.recipient)
+          : '',
       amount:
-        key === TypeKey.C
+        key === TypeKey.COMMUNITY_POOL_SPEND
           ? !lunaPool
             ? t("Common:Validate:{{label}} doesn't exist", {
                 label: t('Post:Governance:Community pool'),
@@ -143,7 +149,7 @@ export default (user: User): PostPage => {
               })
           : '',
       changes:
-        key === TypeKey.P
+        key === TypeKey.PARAM_CHANGE
           ? !updates.changes
             ? t('Common:Validate:{{label}} are required', {
                 label: t('Post:Governance:Changes'),
@@ -172,29 +178,29 @@ export default (user: User): PostPage => {
   const [submitted, setSubmitted] = useState(false)
   const form = useForm<Values>(initial, validate)
   const { values, setValue, invalid, getDefaultProps, getDefaultAttrs } = form
-  const { typeIndex, input, title, description } = values
+  const { typeIndex, input, title } = values
   const amount = toAmount(input)
 
   /* render */
   const unit = format.denom(denom)
 
   const customField: Field[] = {
-    [TypeKey.DEFAULT]: [],
-    [TypeKey.T]: [
+    [TypeKey.TEXT]: [],
+    [TypeKey.TAX_RATE_UPDATE]: [
       {
         ...getDefaultProps('tax_rate'),
         label: t('Post:Governance:Tax-rate'),
         attrs: { ...getDefaultAttrs('tax_rate'), placeholder: '0' },
       },
     ],
-    [TypeKey.R]: [
+    [TypeKey.REWARD_WEIGHT_UPDATE]: [
       {
         ...getDefaultProps('reward_weight'),
         label: t('Post:Governance:Reward-weight'),
         attrs: { ...getDefaultAttrs('reward_weight'), placeholder: '0' },
       },
     ],
-    [TypeKey.C]: [
+    [TypeKey.COMMUNITY_POOL_SPEND]: [
       {
         ...getDefaultProps('recipient'),
         label: t('Post:Governance:Recipient'),
@@ -207,7 +213,7 @@ export default (user: User): PostPage => {
         unit,
       },
     ],
-    [TypeKey.P]: [
+    [TypeKey.PARAM_CHANGE]: [
       {
         ...getDefaultProps('changes'),
         label: t('Post:Governance:Changes'),
@@ -264,16 +270,13 @@ export default (user: User): PostPage => {
   ]
 
   const getConfirm = (bank: BankData): ConfirmProps => ({
-    url: TypesList[typeIndex].url,
-    payload: {
-      title,
-      description,
-      proposer: user.address,
-      [(!typeIndex ? 'initial_' : '') + 'deposit']: gt(amount, 0)
-        ? [{ amount, denom }]
-        : [],
-      ...sanitize(TypesList[typeIndex].key, values),
-    },
+    msgs: [
+      new MsgSubmitProposal(
+        sanitize(TypesList[typeIndex].key, values),
+        new Coins(gt(amount, 0) ? { [denom]: amount } : {}),
+        user.address
+      ),
+    ],
     contents: input
       ? [
           {
@@ -325,27 +328,45 @@ export default (user: User): PostPage => {
 /* helpers */
 const validateChanges = (changes: string) => {
   try {
+    const isValueString = (o: object) =>
+      Object.values(o).every((v) => typeof v === 'string')
+
     const parsed: Change[] = JSON.parse(changes)
-    return Array.isArray(parsed) && parsed.every((o) => typeof o === 'object')
+    return (
+      Array.isArray(parsed) &&
+      parsed.every((o) => typeof o === 'object' && isValueString(o))
+    )
   } catch {
     return false
   }
 }
 
 const sanitize = (typeKey: TypeKey, values: Values) => {
-  const { proposal_type, tax_rate, reward_weight } = values
+  const { title, description, tax_rate, reward_weight } = values
   const { recipient, amount, changes } = values
 
   return {
-    [TypeKey.DEFAULT]: { proposal_type },
-    [TypeKey.T]: { tax_rate },
-    [TypeKey.R]: { reward_weight },
-    [TypeKey.C]: {
+    [TypeKey.TEXT]: new TextProposal(title, description),
+    [TypeKey.TAX_RATE_UPDATE]: new TaxRateUpdateProposal(
+      title,
+      description,
+      new Dec(tax_rate || 0)
+    ),
+    [TypeKey.REWARD_WEIGHT_UPDATE]: new RewardWeightUpdateProposal(
+      title,
+      description,
+      new Dec(reward_weight || 0)
+    ),
+    [TypeKey.COMMUNITY_POOL_SPEND]: new CommunityPoolSpendProposal(
+      title,
+      description,
       recipient,
-      amount: [{ denom: 'uluna', amount: toAmount(amount) }],
-    },
-    [TypeKey.P]: {
-      changes: validateChanges(changes) ? JSON.parse(changes) : [],
-    },
+      new Coins({ uluna: toAmount(amount) })
+    ),
+    [TypeKey.PARAM_CHANGE]: new ParameterChangeProposal(
+      title,
+      description,
+      validateChanges(changes) ? parseJSON(changes) : []
+    ),
   }[typeKey]
 }
