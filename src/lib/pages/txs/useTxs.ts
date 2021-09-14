@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
 
-import create from '../../../ruleset/create'
-import { createLogMatcher } from '../../../ruleset/execute'
-import { getMatchMsg } from '../../../ruleset/format'
+import { createActionRuleSet } from '../../../ruleset/create'
+import { createLogMatcherForActions } from '../../../ruleset/execute'
+import { getTxCanonicalMsgs } from '../../../ruleset/format'
 
 import { TxsPage, User, Tx, TxUI } from '../../types'
 import { format } from '../../utils'
@@ -49,11 +49,11 @@ export default ({ address }: User): TxsPage => {
   const more = txs.length && !done ? () => setOffset(next) : undefined
 
   /* parse */
-  const ruleset = create(currentChain)
-  const logMatcher = createLogMatcher(ruleset)
+  const ruleset = createActionRuleSet(currentChain)
+  const logMatcher = createLogMatcherForActions(ruleset)
 
   const getCanonicalMsgs = (tx: Tx) => {
-    const matchedMsg = getMatchMsg(JSON.stringify(tx), logMatcher, address)
+    const matchedMsg = getTxCanonicalMsgs(JSON.stringify(tx), logMatcher)
 
     return matchedMsg
       ? matchedMsg
