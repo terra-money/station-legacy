@@ -1,11 +1,11 @@
-import { Coin, Balance } from '..'
+import { CoinItem, Balance } from '..'
 import { find, plus, lte } from '../utils'
 
 interface Params {
   amount: string
   denom: string
-  fee: Coin
-  tax?: Coin
+  fee: CoinItem
+  tax?: CoinItem
 }
 
 type Validate = (params: Params, balance: Balance[]) => boolean
@@ -29,7 +29,7 @@ export const isDelegatable: Validate = (params, balance) => {
     : lte(amount, delegatable) && isFeeAvailable(params, balance)
 }
 
-export const isFeeAvailable = (fee: Coin, balance: Balance[]) => {
+export const isFeeAvailable = (fee: CoinItem, balance: Balance[]) => {
   const available = find(`${fee.denom}:available`, balance) || '0'
   return lte(fee.amount, available)
 }

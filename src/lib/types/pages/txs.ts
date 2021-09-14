@@ -1,4 +1,4 @@
-import { API, Coin, Card } from '..'
+import { API, CoinItem, Card } from '..'
 
 export interface TxsPage extends API<TxsData> {
   ui?: TxsUI
@@ -51,5 +51,5 @@ export interface TxValue {
 export interface Message {
   tag: string
   text: string
-  out?: Coin[]
+  out?: CoinItem[]
 }

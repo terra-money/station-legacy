@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../types'
-import { PostPage, Coin as TerraCoin, User, Field } from '../types'
+import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmProps } from '../types'
 import { is } from '../utils'
 import useBank from '../api/useBank'
@@ -84,7 +84,7 @@ export default (
     ),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: TerraCoin) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
     submitLabels: [
       t('Post:Contracts:Interact'),
       t('Post:Contracts:Interacting...'),

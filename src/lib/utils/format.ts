@@ -1,7 +1,7 @@
 import { AccAddress } from '@terra-money/terra.js'
 import BigNumber from 'bignumber.js'
 import { DateTime } from 'luxon'
-import { Coin, DisplayCoin, Whitelist } from '../types'
+import { CoinItem, DisplayCoin, Whitelist } from '../types'
 import is from './is'
 import currencies from './currencies.json'
 
@@ -47,7 +47,7 @@ export const denom = (denom = '', whitelist?: Whitelist): string => {
 }
 
 export const display = (
-  coin: Coin,
+  coin: CoinItem,
   decimals = 6,
   config?: Config,
   whitelist?: Whitelist
@@ -58,7 +58,7 @@ export const display = (
 }
 
 export const coin = (
-  coin: Coin,
+  coin: CoinItem,
   decimals = 6,
   config?: Config,
   whitelist?: Whitelist

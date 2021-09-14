@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PostPage, ConfirmProps, BankData } from '../types'
-import { Coin, User, Field } from '../types'
+import { CoinItem, User, Field } from '../types'
 import { format, find, gt } from '../utils'
 import { toAmount, toInput } from '../utils/format'
 import useFCD from '../api/useFCD'
@@ -48,7 +48,7 @@ interface Values extends CustomField {
   input: string
 }
 
-type Pool = { result: Coin[] }
+type Pool = { result: CoinItem[] }
 const denom = 'uluna'
 export default (user: User): PostPage => {
   const { t } = useTranslation()
@@ -288,7 +288,8 @@ export default (user: User): PostPage => {
       'LUNA proposal deposits are not refunded if the quorum is not reached or the poll result is NoWithVeto',
     ],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin) => isAvailable({ amount, denom, fee }, bank.balance),
+    validate: (fee: CoinItem) =>
+      isAvailable({ amount, denom, fee }, bank.balance),
     submitLabels: [
       t('Post:Governance:Propose'),
       t('Post:Governance:Proposing...'),

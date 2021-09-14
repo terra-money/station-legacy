@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BankData } from '../types'
-import { PostPage, Coin, User, Field } from '../types'
+import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmProps } from '../types'
 import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
@@ -78,7 +78,7 @@ export default (user: User): PostPage => {
     memo: stringify({ name, description, url }),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
     submitLabels: [
       t('Post:Contracts:Upload'),
       t('Post:Contracts:Uploading...'),

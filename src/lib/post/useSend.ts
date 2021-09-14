@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { BankData, Whitelist } from '../types'
-import { PostPage, Coin as StationCoin, User, Field } from '../types'
+import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmContent, ConfirmProps } from '../types'
 import { is, format, find } from '../utils'
 import { gt, max, minus } from '../utils/math'
@@ -170,7 +170,7 @@ export default (
     memo,
     contents,
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: StationCoin) =>
+    validate: (fee: CoinItem) =>
       is.nativeDenom(denom)
         ? isAvailable(
             { amount, denom, fee, tax: { amount: taxAmount, denom } },

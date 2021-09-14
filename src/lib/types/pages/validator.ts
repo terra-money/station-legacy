@@ -1,4 +1,4 @@
-import { API, DisplayCoin, Pagination, Coin, TablePage, TableUI } from '..'
+import { API, DisplayCoin, Pagination, CoinItem, TablePage, TableUI } from '..'
 import { PaginationTablePage, PaginationTableUI } from '../common/ui'
 
 export interface ValidatorPage extends API<ValidatorData> {
@@ -177,7 +177,7 @@ export interface DelegatorsData extends Pagination {
 export interface Claim {
   txhash: string
   type: string
-  amounts?: Coin[]
+  amounts?: CoinItem[]
   timestamp: string
 }
 
@@ -185,7 +185,7 @@ export interface Event {
   txhash: string
   height: string
   type: string
-  amount: Coin
+  amount: CoinItem
   timestamp: string
 }
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Dictionary, without } from 'ramda'
 import { Coin, Coins } from '@terra-money/terra.js'
 import { Msg, MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
-import { PostPage, Coin as StationCoin, User, Field } from '../types'
+import { PostPage, CoinItem, User, Field } from '../types'
 import { BankData, Pairs, ConfirmProps } from '../types'
 import { format, gt, minus, sum } from '../utils'
 import { toInput } from '../utils/format'
@@ -318,7 +318,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
       defaultValue: defaultFeeDenom,
       list: feeDenomList,
     },
-    validate: (fee: StationCoin) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
     submitLabels: [t('Post:Swap:Swap'), t('Post:Swap:Swapping...')],
     message: t('Post:Swap:Swapped {{coin}} to {{unit}}', {
       coin: checked.map((denom) => format.denom(denom)).join(', '),

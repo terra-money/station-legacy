@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, Coin, User, Field, BankData } from '../types'
+import { PostPage, CoinItem, User, Field, BankData } from '../types'
 import { ConfirmProps } from '../types'
 import useBank from '../api/useBank'
 import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
@@ -77,7 +77,7 @@ export default (
     payload: { voter: user.address, option: key },
     contents: [{ name: t('Page:Governance:Answer'), text: label }],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
     submitLabels: [t('Post:Governance:Vote'), t('Post:Governance:Voting...')],
     message: t('Post:Governance:Voted {{answer}} for {{title}}', {
       answer: label,

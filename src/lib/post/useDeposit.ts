@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, Coin, User, Field, BankData } from '../types'
+import { PostPage, CoinItem, User, Field, BankData } from '../types'
 import { ConfirmProps } from '../types'
 import { format, find } from '../utils'
 import { toAmount, toInput } from '../utils/format'
@@ -78,7 +78,8 @@ export default (
       },
     ],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin) => isAvailable({ amount, denom, fee }, bank.balance),
+    validate: (fee: CoinItem) =>
+      isAvailable({ amount, denom, fee }, bank.balance),
     submitLabels: [
       t('Post:Governance:Deposit'),
       t('Post:Governance:Depositing...'),

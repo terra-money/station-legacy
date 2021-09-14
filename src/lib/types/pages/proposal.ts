@@ -1,6 +1,6 @@
 import { Dictionary } from 'ramda'
 import { API, ProposalItemData, DisplayCoin, VoteOption } from '..'
-import { Pagination, Coin, Article } from '..'
+import { Pagination, CoinItem, Article } from '..'
 import { ValidatorData } from '..'
 import { PaginationTablePage, PaginationTableUI } from '../common/ui'
 
@@ -135,7 +135,7 @@ export interface DepositorsData extends Pagination {
 
 export interface Depositor {
   txhash: string
-  deposit: Coin[]
+  deposit: CoinItem[]
   depositor: Voter
 }
 

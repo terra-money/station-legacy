@@ -4,7 +4,7 @@ import { TFunction } from 'i18next'
 import { MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { PostPage, SwapUI, ConfirmProps, BankData, Whitelist } from '../types'
-import { User, Coin as StationCoin, Rate, Field, FormUI } from '../types'
+import { User, CoinItem, Rate, Field, FormUI } from '../types'
 import { find, format, is } from '../utils'
 import { gt, gte, lte, times, percent, plus, minus, div } from '../utils'
 import { max, floor, isFinite, isInteger } from '../utils'
@@ -579,7 +579,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         ],
       }),
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: StationCoin) =>
+    validate: (fee: CoinItem) =>
       is.nativeDenom(from)
         ? isAvailable(
             { amount: plus(amount, tax), denom: from, fee },
@@ -658,7 +658,7 @@ export const simulateMarket = async (
   const { from, to, amount } = simulateParams
   const params = { offer_coin: amount + from, ask_denom: to }
   const url = `/market/swap`
-  const swapped = await fcd.get<{ result: StationCoin }>(url, { params })
+  const swapped = await fcd.get<{ result: CoinItem }>(url, { params })
 
   if (fetchRate) {
     const rateList = await fcd.get<Rate[]>(`/v1/market/swaprate/${from}`)

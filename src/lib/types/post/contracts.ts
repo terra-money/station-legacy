@@ -1,4 +1,4 @@
-import { Coin, Field, ButtonAttrs } from '..'
+import { CoinItem, Field, ButtonAttrs } from '..'
 
 export interface CoinInput {
   denom: string
@@ -14,7 +14,7 @@ export interface CoinInputGroup {
 export interface CoinFields {
   label: string
   groups: CoinInputGroup[]
-  coins: Coin[]
+  coins: CoinItem[]
   invalid: boolean
 }
 

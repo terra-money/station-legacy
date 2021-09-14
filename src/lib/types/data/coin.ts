@@ -3,7 +3,7 @@ import { Token, ContractInfo } from '../pages/assets'
 
 export type Denom = 'ukrw' | 'umnt' | 'usdr' | 'uusd'
 
-export interface Coin {
+export interface CoinItem {
   amount: string
   denom: string
 }

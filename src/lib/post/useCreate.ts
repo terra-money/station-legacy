@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BankData, CoinFields } from '../types'
-import { PostPage, Coin, User, Field } from '../types'
+import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmProps } from '../types'
 import { is, format } from '../utils'
 import useBank from '../api/useBank'
@@ -87,7 +87,7 @@ export default (user: User, denoms: string[]): PostPage<CoinFields> => {
     memo: stringify({ name, description }),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
     submitLabels: [t('Post:Contracts:Create'), t('Post:Contracts:Creating...')],
     message: t('Post:Contracts:Created contract'),
     cancel: () => setSubmitted(false),

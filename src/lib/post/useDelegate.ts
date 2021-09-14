@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PostPage, ConfirmProps, StakingData, BankData } from '../types'
-import { Coin, User, Field, FieldElement } from '../types'
+import { CoinItem, User, Field, FieldElement } from '../types'
 import { format } from '../utils'
 import { toAmount, toInput } from '../utils/format'
 import useFCD from '../api/useFCD'
@@ -53,7 +53,7 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
     staking?.validators?.find((d) => d.operatorAddress === address)
 
   /* max */
-  const getMax = (address: string): Coin => {
+  const getMax = (address: string): CoinItem => {
     const amount =
       findDelegationFromSources(address)?.amountDelegated ??
       staking?.availableLuna
@@ -156,7 +156,7 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
           validator_address: validatorAddress,
           amount: { amount, denom },
         },
-        validate: (fee: Coin) =>
+        validate: (fee: CoinItem) =>
           isDelegatable({ amount, denom, fee }, bank.balance) &&
           isFeeAvailable(fee, bank.balance),
         submitLabels: [
@@ -182,7 +182,7 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
           validator_dst_address: validatorAddress,
           amount: { amount, denom },
         },
-        validate: (fee: Coin) => isFeeAvailable(fee, bank.balance),
+        validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Redelegate'),
           t('Post:Staking:Redelegating...'),
@@ -204,7 +204,7 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
           validator_address: validatorAddress,
           amount: { amount, denom },
         },
-        validate: (fee: Coin) => isFeeAvailable(fee, bank.balance),
+        validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Undelegate'),
           t('Post:Staking:Undelegating...'),
