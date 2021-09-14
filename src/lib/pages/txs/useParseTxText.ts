@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query'
 import { format } from '../../utils'
+import { truncate } from '../../utils/format'
 import useLCD from '../../api/useLCD'
 import { useAuth } from '../../contexts/AuthContext'
 import { useCurrentChainName } from '../../contexts/ConfigContext'
@@ -47,7 +48,7 @@ const useParseTxText = () => {
       ? [contract.protocol, contract.name].join(' ')
       : token
       ? token.symbol
-      : address
+      : truncate(address)
   }
 
   const replaceCoin = (coin: string) => {
@@ -62,7 +63,7 @@ const useParseTxText = () => {
 
   const parseWord = (word: string): string =>
     word.split(',').length > 1
-      ? word.split(',').map(parseWord).join(', ')
+      ? 'multiple coins'
       : word
           .replaceAll(REGEXP.COIN, replaceCoin)
           .replaceAll(REGEXP.ADDRESS, replaceAddress)

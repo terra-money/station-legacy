@@ -88,7 +88,13 @@ export default ({ address }: User): TxsPage => {
               date: format.date(timestamp, { toLocale: true }),
               messages: success
                 ? msgs.map((msg) => {
-                    if (!msg) return { tag: '', summary: [], success: true }
+                    if (!msg)
+                      return {
+                        tag: 'Unknown',
+                        summary: ['Unknown tx'],
+                        success,
+                      }
+
                     const tag = msg.msgType.split('/')[1].replaceAll('-', ' ')
                     const summary = msg.canonicalMsg.map(parseTxText)
                     return { tag, summary, success }

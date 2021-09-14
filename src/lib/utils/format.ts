@@ -100,7 +100,7 @@ export const date = (
     : ''
 }
 
-export const truncate = (address: string, [h, t]: number[]) => {
+export const truncate = (address: string, [h, t] = [6, 6]) => {
   if (!address) return ''
 
   const head = address.slice(0, h)
