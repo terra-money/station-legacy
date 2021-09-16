@@ -2,8 +2,11 @@
 @import '../styles/variables';
 
 .header {
-  @include flex(space-between);
   margin-bottom: 20px;
+}
+
+.heading {
+  @include flex(space-between);
 }
 
 .header,
@@ -21,6 +24,11 @@
   @media (min-width: $breakpoint) {
     font-size: 26px;
   }
+}
+
+.desc {
+  font-size: 11px;
+  opacity: 0.5;
 }
 
 .article > h2 {

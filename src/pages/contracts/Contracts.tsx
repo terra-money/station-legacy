@@ -44,7 +44,6 @@ const Contracts = () => {
   const buttons = (
     <ActionBar
       list={[
-        <span>use "Upload" to upload a .wasm file, use "Create" to initialize the contract</span>,
         renderButton({ ...create, component: <Create /> }),
         renderButton({ ...upload, component: <Upload /> }),
       ]}
@@ -76,7 +75,11 @@ const Contracts = () => {
   }
 
   return (
-    <Page title={title} action={buttons}>
+    <Page
+      title={title}
+      desc='Use "Upload" to upload a .wasm file, use "Create" to initialize the contract'
+      action={buttons}
+    >
       <Card>
         {error ? (
           <ErrorComponent error={error} />
