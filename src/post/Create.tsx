@@ -1,12 +1,11 @@
 import React from 'react'
-import { useCreate, useAuth } from '../lib'
+import { useCreate } from '../lib'
 import CoinFields from './CoinFields'
 import Post from './Post'
 import WithActiveDenoms from './WithActiveDenoms'
 
 const Component = ({ denoms }: { denoms: string[] }) => {
-  const { user } = useAuth()
-  const response = useCreate(user!, denoms)
+  const response = useCreate(denoms)
   const { ui } = response
   return (
     <Post

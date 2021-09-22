@@ -1,11 +1,12 @@
-import React from 'react'
-import { useAuth, useManageAccounts } from '../lib'
+import { useAuth, useUser } from '../data/auth'
+import { useManageAccounts } from '../lib'
 import { loadKeys, storeKeys } from '../utils/localStorage'
 import Confirm from '../components/Confirm'
 
 const DeleteAccount = ({ onFinish }: { onFinish?: () => void }) => {
   const accounts = loadKeys()
-  const { user, signOut } = useAuth()
+  const user = useUser()
+  const { signOut } = useAuth()
   const { delete: text } = useManageAccounts()
   const { title, content, button, cancel } = text
 

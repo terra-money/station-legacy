@@ -1,10 +1,9 @@
 import React from 'react'
-import { useUpload, useAuth } from '../lib'
+import { useUpload } from '../lib'
 import Post from './Post'
 
 const Upload = () => {
-  const { user } = useAuth()
-  const response = useUpload(user!)
+  const response = useUpload()
   return <Post post={response} />
 }
 

@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../../types'
-import { PostPage, CoinItem, User, Field } from '../../types'
+import { PostPage, CoinItem, Field } from '../../types'
 import { ConfirmProps } from '../../types'
 import { is } from '../../utils'
 import { parseJSON } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
@@ -18,12 +19,12 @@ interface Values {
 }
 
 export default (
-  address: string,
-  user: User,
+  contractAddress: string,
   denoms: string[]
 ): PostPage<CoinFields> => {
   const { t } = useTranslation()
-  const { data: bank, loading, error } = useBank(user)
+  const { data: bank, loading, error } = useBank()
+  const address = useAddress()
 
   const [submitted, setSubmitted] = useState(false)
 
@@ -34,7 +35,7 @@ export default (
       ? t('Common:Validate:{{label}} is invalid', { label: 'JSON' })
       : '',
   })
-  const initial = { address, json: '' }
+  const initial = { address: contractAddress, json: '' }
   const form = useForm<Values>(initial, validate)
   const { values, invalid, getDefaultProps, getDefaultAttrs } = form
 
@@ -72,8 +73,8 @@ export default (
   const getConfirm = (bank: BankData): ConfirmProps => ({
     msgs: [
       new MsgExecuteContract(
-        user.address,
         address,
+        contractAddress,
         parseJSON(values.json),
         Coins.fromData(coinsFields.coins)
       ),
@@ -90,7 +91,9 @@ export default (
       t('Post:Contracts:Interact'),
       t('Post:Contracts:Interacting...'),
     ],
-    message: t(`Post:Contracts:Interacted with {{address}}`, { address }),
+    message: t(`Post:Contracts:Interacted with {{address}}`, {
+      address: contractAddress,
+    }),
     cancel: () => setSubmitted(false),
   })
 

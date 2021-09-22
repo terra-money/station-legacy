@@ -1,25 +1,25 @@
-import React from 'react'
-import { useConfig } from '../lib'
-import { localSettings } from '../utils/localStorage'
+import { useCurrency, useCurrencyRates, useSetCurrency } from '../data/currency'
 import ConfigSelector from './ConfigSelector'
 
 const Currency = () => {
-  const { currency } = useConfig()
-  const { current, list, set } = currency
+  const currency = useCurrency()
+  const set = useSetCurrency()
+  const { list } = useCurrencyRates()
 
-  const handleSelect = (key: string) => {
-    localSettings.set({ currency: key })
-    set(key)
-  }
-
-  return !current || !list ? null : (
+  return !currency || !list ? null : (
     <ConfigSelector
       title="Select currency"
-      value={current.value}
-      onSelect={handleSelect}
-      options={list}
+      label={getCurrencyName(currency)}
+      value={currency}
+      onSelect={set}
+      options={Object.keys(list).map((denom) => ({
+        label: getCurrencyName(denom),
+        value: denom,
+      }))}
     />
   )
 }
 
 export default Currency
+
+const getCurrencyName = (denom: string) => denom.slice(1).toUpperCase()

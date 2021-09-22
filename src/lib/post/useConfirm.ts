@@ -3,14 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { Coins, LCDClient, StdFee } from '@terra-money/terra.js'
 import { StdSignMsg, StdTx } from '@terra-money/terra.js'
-import { ConfirmProps, ConfirmPage, Sign, Field, User, GetKey } from '../types'
+import { useConnectedWallet } from '@terra-money/wallet-provider'
+import { ConfirmProps, ConfirmPage, Sign, Field, GetKey } from '../types'
 import { PostResult, PostError } from '../types'
 import useInfo from '../lang/useInfo'
+import { useCurrentChain } from '../../data/chain'
 import fcd from '../api/fcd'
 import { format } from '../utils'
 import { toInput, toAmount } from '../utils/format'
 import { lt, gt } from '../utils/math'
-import { useConfig } from '../contexts/ConfigContext'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 
@@ -23,13 +24,13 @@ interface SignParams {
 
 export default (
   { memo, submitLabels, message, ...rest }: ConfirmProps,
-  { user, password: defaultPassword = '', sign, getKey }: SignParams
+  { user, password: defaultPassword = '', getKey }: SignParams
 ): ConfirmPage => {
   const { contents, msgs, tax, feeDenom, validate, warning, parseResult } = rest
 
   const { t } = useTranslation()
   const { ERROR } = useInfo()
-  const { name, ledger } = user
+  const { name, ledger, address } = user
 
   const SUCCESS = {
     title: t('Post:Confirm:Success!'),
@@ -40,8 +41,7 @@ export default (
   const defaultErrorMessage = t('Common:Error:Oops! Something went wrong')
   const [simulatedErrorMessage, setSimulatedErrorMessage] = useState<string>()
   const [errorMessage, setErrorMessage] = useState<string>()
-  const { chain } = useConfig()
-  const { chainID, lcd: URL } = chain.current
+  const { chainID, lcd: URL } = useCurrentChain()
 
   /* fee */
   const getFeeDenom = (gas: string) => {
@@ -86,7 +86,7 @@ export default (
         const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
         const lcd = new LCDClient({ chainID, URL, gasPrices })
         const options = { msgs, feeDenoms: [denom], memo, gasAdjustment }
-        const unsignedTx = await lcd.tx.create(user.address, options)
+        const unsignedTx = await lcd.tx.create(address, options)
         setUnsignedTx(unsignedTx)
 
         const gas = String(unsignedTx.fee.gas)
@@ -127,6 +127,8 @@ export default (
   const [result, setResult] = useState<PostResult>()
   const [txhash, setTxHash] = useState<string>()
 
+  const connected = useConnectedWallet()
+
   const submit = async () => {
     if (!unsignedTx) return
 
@@ -147,9 +149,14 @@ export default (
       const fees = tax ? gasFee.add(tax) : gasFee
       unsignedTx.fee = new StdFee(unsignedTx.fee.gas, fees)
 
-      const key = await getKey(name ? { name, password } : undefined)
-      const signed = await key.signTx(unsignedTx)
-      await broadcast(signed)
+      if (connected) {
+        const { result } = await connected.post(unsignedTx as any)
+        setTxHash(result.txhash)
+      } else {
+        const key = await getKey(name ? { name, password } : undefined)
+        const signed = await key.signTx(unsignedTx)
+        await broadcast(signed)
+      }
     } catch (error) {
       const { name, message } = error as PostError
 

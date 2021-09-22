@@ -1,4 +1,4 @@
-import { useSwapMultiple, useAuth } from '../lib'
+import { useSwapMultiple } from '../lib'
 import { BankData, Pairs, Field as FieldProps } from '../lib'
 import Field from '../components/Field'
 import Icon from '../components/Icon'
@@ -13,8 +13,7 @@ interface Props {
 }
 
 const SwapMultiple = ({ bank, pairs, onFinish }: Props) => {
-  const { user } = useAuth()
-  const response = useSwapMultiple(user!, { bank, pairs })
+  const response = useSwapMultiple({ bank, pairs })
   const { ui } = response
 
   const renderAfterFields = () => (

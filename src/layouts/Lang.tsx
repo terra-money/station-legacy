@@ -1,35 +1,29 @@
-import React from 'react'
-import { LangKey, Languages } from '../lib'
-import { useConfig, getLang } from '../lib'
+import { LangKey } from '../lib'
 import { isExtension } from '../utils/env'
-import { localSettings } from '../utils/localStorage'
+import { languageList, Languages } from '../data/lang'
+import { useLang, useManageLanguage } from '../data/lang'
 import Select from '../components/Select'
 import ConfigSelector from './ConfigSelector'
 import s from './Nav.module.scss'
 
 const Lang = () => {
-  const { lang } = useConfig()
-  const { current, list, set } = lang
+  const current = useLang()
+  const { set } = useManageLanguage()
 
-  const handleSelect = (key: string) => {
-    localSettings.set({ lang: key })
-    set(key as LangKey)
-  }
-
-  const languages = list.map((key: LangKey) => ({
-    key,
-    value: Languages[key]['name'],
+  const languages = languageList.map((key: LangKey) => ({
+    label: Languages[key]['name'],
+    value: key,
   }))
 
-  return !current ? null : isExtension ? (
+  return isExtension ? (
     <Select
       value={current}
-      onChange={(e) => handleSelect(e.target.value)}
+      onChange={(e) => set(e.target.value)}
       className="form-control"
       containerClassName={isExtension ? s.select : undefined}
     >
-      {languages.map(({ key, value }) => (
-        <option value={key} key={key}>
+      {languages.map(({ label, value }) => (
+        <option value={value} key={label}>
           {value}
         </option>
       ))}
@@ -38,8 +32,9 @@ const Lang = () => {
     <ConfigSelector
       icon="language"
       title="Select language"
-      value={getLang(current)['name']}
-      onSelect={handleSelect}
+      label={Languages[current]?.['name']}
+      value={current}
+      onSelect={set}
       options={languages}
     />
   )

@@ -1,28 +1,28 @@
-import React, { ChangeEvent, Fragment, useEffect } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import c from 'classnames'
-import { useConfig } from '../lib'
 import useFCD from '../lib/api/useFCD'
-import { isExtension } from '../utils/env'
-import { localSettings } from '../utils/localStorage'
+import { isExtension, isWeb } from '../utils/env'
+import { useCurrentChainName, useManageChain } from '../data/chain'
 import { useModal } from '../hooks'
 import Select from '../components/Select'
 import Modal from '../components/Modal'
-import useMergeChains from '../pages/settings/useMergeChains'
+import useMergeChains from '../pages/settings/useMergedChains'
 import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
 import NavStyles from './Nav.module.scss'
 
 const Chain = ({ disabled }: { disabled?: boolean }) => {
-  const { chain } = useConfig()
+  const { set } = useManageChain()
+  const currentChainName = useCurrentChainName()
   const modal = useModal()
-  const { current, set } = chain
+
   const chains = useMergeChains()
 
   /* check localterra status */
   useCheckLocalTerra(
     () => modal.open(<LocalTerraError modal={modal} />),
-    chain.current.name
+    currentChainName
   )
 
   const { push } = useHistory()
@@ -34,15 +34,16 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
       // redirect to add a new network
       push('/network')
     } else {
-      localSettings.set({ chain: key })
       set(chains[key])
     }
   }
 
-  return (
+  return isWeb ? (
+    <div className={s.select}>{currentChainName}</div>
+  ) : (
     <>
       <Select
-        value={current['name']}
+        value={currentChainName}
         onChange={handleChange}
         className={c('form-control', s.select)}
         containerClassName={isExtension ? NavStyles.select : undefined}

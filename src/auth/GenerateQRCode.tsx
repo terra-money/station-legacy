@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { encode } from 'js-base64'
-import { FormUI, useAuth, useForm } from '../lib'
+import { FormUI, useForm } from '../lib'
 import validateForm from '../lib/post/validateForm'
 import { getStoredWallet } from '../utils/localStorage'
 import { encrypt } from '../utils/terra-keystore'
+import { useUser } from '../data/auth'
 import Form from '../components/Form'
 import QRCode from './QRCode'
 
@@ -13,7 +14,7 @@ interface Values {
 }
 
 const GenerateQRCode = ({ exportKey }: { exportKey?: boolean }) => {
-  const { user } = useAuth()
+  const user = useUser()
   const [key, setKey] = useState('')
 
   const { t } = useTranslation()

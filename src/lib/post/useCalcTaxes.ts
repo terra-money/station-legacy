@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Dictionary } from 'ramda'
 import BigNumber from 'bignumber.js'
 import { TFunction } from 'i18next'
-import { Result } from '../types'
 import fcd from '../api/fcd'
 
 type Response = Result<string>

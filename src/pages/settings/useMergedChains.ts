@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { Dictionary, omit } from 'ramda'
 import { ChainOptions, DefaultChainOptions } from '../../lib'
-import { useConfig } from '../../lib'
 import useTerraAssets from '../../lib/hooks/useTerraAssets'
 import { localSettings } from '../../utils/localStorage'
 import { useApp } from '../../hooks'
+import { useManageChain } from '../../data/chain'
 
 const chainsState = atom<Dictionary<ChainOptions>>({
   key: 'chainsState',
@@ -14,8 +14,8 @@ const chainsState = atom<Dictionary<ChainOptions>>({
 })
 
 export const useInitChains = () => {
-  const setChains = useSetRecoilState(chainsState)
-  const { data: Chains, loading } =
+  const [chains, setChains] = useRecoilState(chainsState)
+  const { data: Chains } =
     useTerraAssets<Dictionary<DefaultChainOptions>>('chains.json')
 
   const { customNetworks = [] } = localSettings.get()
@@ -44,11 +44,11 @@ export const useInitChains = () => {
     // eslint-disable-next-line
   }, [Chains, JSON.stringify(customNetworks), setChains])
 
-  return loading
+  return chains
 }
 
 export const useAddNetwork = () => {
-  const { chain } = useConfig()
+  const { set } = useManageChain()
   const { push } = useHistory()
   const setChains = useSetRecoilState(chainsState)
 
@@ -60,7 +60,7 @@ export const useAddNetwork = () => {
       chain: values.name,
     })
 
-    chain.set(values)
+    set(values)
     setChains((prev) => ({ ...prev, [values.name]: values }))
     push('/')
   }
@@ -82,11 +82,11 @@ export const useDeleteNetwork = () => {
   }
 }
 
-const useChains = () => {
+const useMergedChains = () => {
   return useRecoilValue(chainsState)
 }
 
-export default useChains
+export default useMergedChains
 
 const keys: (keyof ChainOptions)[] = ['name', 'chainID', 'lcd', 'fcd']
 export const validateNetwork = (item: ChainOptions) =>

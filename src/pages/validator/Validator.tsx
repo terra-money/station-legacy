@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { ValidatorUI } from '../../lib'
-import { useValidator, useMenu, useAuth } from '../../lib'
+import { useValidator, useMenu } from '../../lib'
 import { useGoBack } from '../../hooks'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
@@ -15,11 +15,10 @@ import Informations from './Informations'
 
 const Validator = () => {
   useGoBack('/staking')
-  const { address } = useParams<{ address: string }>()
+  const { address: validatorAddress } = useParams<{ address: string }>()
 
   const { Validator: title } = useMenu()
-  const { user } = useAuth()
-  const { error, loading, ui, delegations } = useValidator(address, user)
+  const { error, loading, ui, delegations } = useValidator(validatorAddress)
 
   const render = (ui: ValidatorUI, address: string) => (
     <>
@@ -41,7 +40,7 @@ const Validator = () => {
       ) : loading ? (
         <Loading card />
       ) : (
-        ui && address && render(ui, address)
+        ui && validatorAddress && render(ui, validatorAddress)
       )}
     </Page>
   )

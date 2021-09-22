@@ -1,10 +1,9 @@
 import React from 'react'
-import { usePropose, useAuth } from '../lib'
+import { usePropose } from '../lib'
 import Post from './Post'
 
 const Propose = () => {
-  const { user } = useAuth()
-  const response = usePropose(user!)
+  const response = usePropose()
   return <Post post={response} />
 }
 

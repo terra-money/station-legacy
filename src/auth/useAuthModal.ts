@@ -1,15 +1,6 @@
-import { createContext } from '../lib'
+import { useApp } from '../hooks'
 
-interface AuthModal {
-  modalActions: {
-    close: () => void
-    goBack?: () => void
-  }
-
-  actions: {
-    glance: () => void
-    download: () => void
-  }
+export const useAuthModal = () => {
+  const { authModal } = useApp()
+  return authModal
 }
-
-export const [useAuthModal, AuthModalProvider] = createContext<AuthModal>()

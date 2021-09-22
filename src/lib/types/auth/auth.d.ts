@@ -1,29 +1,30 @@
-export type Address = string
+type Address = string
 
-export interface User {
+interface User {
   address: Address
   name?: string
   wallet?: string
   ledger?: boolean
+  provider?: boolean
 }
 
-export interface LocalUser extends User {
+interface LocalUser extends User {
   name: string
 }
 
-export interface Auth {
+interface Auth {
   user?: User
   signIn: (user: User) => void
   signOut: () => void
 }
 
-export interface Wallet {
+interface Wallet {
   privateKey: string
   publicKey: string
   terraAddress: string
 }
 
-export interface WalletParams {
+interface WalletParams {
   name: string
   password: string
   wallet: Wallet

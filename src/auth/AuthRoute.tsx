@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
 import { useHistory, Switch, Route, useRouteMatch } from 'react-router-dom'
 import extension from 'extensionizer'
-import { useAuthMenu, useAuth } from '../lib'
+import { useAuthMenu } from '../lib'
 import { AuthMenuKey } from '../lib'
 import { loadKeys } from '../utils/localStorage'
-import * as ledger from '../wallet/ledger'
 import { menu } from './getAuthMenu'
 import getAuthMenuKeys from './getAuthMenuKeys'
 import AuthMenu from './AuthMenu'
@@ -15,18 +13,8 @@ import SignInWithLedger from './SignInWithLedger'
 import ImportKey from './ImportKey'
 
 const AuthRoute = () => {
-  const { user } = useAuth()
-  const { push, replace } = useHistory()
+  const { push } = useHistory()
   const { path, url } = useRouteMatch()
-
-  useEffect(() => {
-    // Close connection to Ledger. It is not allowed to be accessed from multiple tabs.
-    if (user && user.ledger) {
-      ledger.close()
-    }
-
-    user && replace('/')
-  }, [user, replace])
 
   const keys: AuthMenuKey[] = getAuthMenuKeys()
   const { ui, list } = useAuthMenu(keys)

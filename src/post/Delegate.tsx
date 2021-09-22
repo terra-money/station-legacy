@@ -1,5 +1,4 @@
-import React from 'react'
-import { useAuth, useDelegate } from '../lib'
+import { useDelegate } from '../lib'
 import { DelegateType } from '../lib/post/staking/useDelegate'
 import Post from './Post'
 
@@ -9,8 +8,7 @@ interface Props {
 }
 
 const Delegate = ({ address: validatorAddress, type }: Props) => {
-  const { user } = useAuth()
-  const response = useDelegate(user!, { validatorAddress, type })
+  const response = useDelegate({ validatorAddress, type })
   return <Post post={response} />
 }
 

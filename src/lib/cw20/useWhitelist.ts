@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda'
-import { useCurrentChainName } from '../contexts/ConfigContext'
+import { useCurrentChainName } from '../../data/chain'
 import useTerraAssets from '../hooks/useTerraAssets'
 import { Whitelist } from '../types'
 

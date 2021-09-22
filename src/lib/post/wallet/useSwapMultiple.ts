@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { Dictionary, without } from 'ramda'
 import { Coin, Coins } from '@terra-money/terra.js'
 import { Msg, MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
-import { PostPage, CoinItem, User, Field } from '../../types'
+import { PostPage, CoinItem, Field } from '../../types'
 import { BankData, Pairs, ConfirmProps } from '../../types'
 import { format, gt, minus, sum } from '../../utils'
 import { toInput } from '../../utils/format'
-import { useConfig } from '../../contexts/ConfigContext'
+import { useAddress } from '../../../data/auth'
+import { useCurrentChain, useCurrentChainName } from '../../../data/chain'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
 import { useActiveDenoms, useForm } from '../../index'
 import useCalcTaxes from '../useCalcTaxes'
@@ -24,9 +25,13 @@ interface Params {
   pairs: Pairs
 }
 
-export default (user: User, { bank, pairs }: Params): PostPage => {
+export default ({ bank, pairs }: Params): PostPage => {
   const { t } = useTranslation()
-  const { chain } = useConfig()
+  const address = useAddress()
+  const currentChainName = useCurrentChainName()
+  const currentChain = useCurrentChain()
+  const { lcd } = currentChain
+
   const activeDenoms = useActiveDenoms()
   const balanceDenoms = bank.balance.map(({ denom }) => denom)
   const { getTax, loading: loadingTaxes } = useCalcTaxes(balanceDenoms, t)
@@ -86,8 +91,8 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
           const amount = getAmountAfterTax(from)
           return simulateTerraswap(
             { pair: findPair({ from, to }, pairs), offer: { amount, from } },
-            chain.current,
-            user.address
+            currentChain,
+            address
           )
         })
 
@@ -104,7 +109,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
         const simulateRouteswapList = routeswapList.map(async (from) => {
           try {
             const amount = getAmountAfterTax(from)
-            const params = { from, to, amount, chain: chain.current }
+            const params = { from, to, amount, chain: currentChainName, lcd }
             const result = await simulateRoute(params)
             return result
           } catch {
@@ -165,8 +170,8 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
     const amount = getAmountAfterTax(from)
     const terraswap = getTerraswapURL(
       { pair: findPair({ from, to }, pairs), offer: { amount, from } },
-      chain.current,
-      user.address
+      lcd,
+      address
     )
 
     return [...acc, ...terraswap.msgs]
@@ -174,15 +179,15 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
 
   const msgsRouteswap = routeswapChecked.map((from) => {
     const amount = getAmountAfterTax(from)
-    const params = { amount, from, to, chain: chain.current }
+    const params = { amount, from, to, chain: currentChainName, lcd }
     const { execute } = getRouteMessage(params)
     const { contract, msg, coins } = execute
-    return new MsgExecuteContract(user.address, contract, msg, coins)
+    return new MsgExecuteContract(address, contract, msg, coins)
   })
 
   const msgsMarket = checked.map(
     (from) =>
-      new MsgSwap(user.address, new Coin(from, availableList[from] ?? '0'), to)
+      new MsgSwap(address, new Coin(from, availableList[from] ?? '0'), to)
   )
 
   const msgs =

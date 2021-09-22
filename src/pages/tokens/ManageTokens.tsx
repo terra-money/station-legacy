@@ -1,4 +1,4 @@
-import { useTokens } from '../../data/local'
+import { useTokens } from '../../data/tokens'
 import ModalContent from '../../components/ModalContent'
 import Tokens from './Tokens'
 

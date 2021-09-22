@@ -3,6 +3,8 @@
 
 .card {
   display: flex;
+  padding-top: 0;
+  padding-bottom: 0;
 
   .article {
     flex: 1;
@@ -27,6 +29,7 @@
 
 .header {
   @include flex(space-between);
+  height: 80px;
 }
 
 .denom {
@@ -39,8 +42,9 @@
   }
 }
 
-.action {
-  @include flex();
+.value {
+  flex: 1;
+  text-align: right;
 }
 
 .amount {
@@ -50,6 +54,18 @@
 
   @media (min-width: $breakpoint) {
     font-size: 20px;
+  }
+}
+
+.estimated {
+  opacity: 0.5;
+
+  @media (max-width: $breakpoint - 1) {
+    display: none;
+  }
+
+  @media (min-width: $breakpoint) {
+    font-size: 13px;
   }
 }
 

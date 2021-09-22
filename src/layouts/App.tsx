@@ -4,18 +4,16 @@ import { ToastContainer, Slide } from 'react-toastify'
 import { ToastContainerProps } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import extension from 'extensionizer'
-import { without } from 'ramda'
 import axios from 'axios'
 import c from 'classnames'
 
-import { useConfigState, ConfigProvider, User } from '../lib'
-import { useAuthState, AuthProvider } from '../lib'
-import { LangKey } from '../lib'
+import { useCurrentChainName } from '../data/chain'
+import { useCurrency } from '../data/currency'
+import { useLang } from '../data/lang'
 import { TERRA_ASSETS } from '../lib/pages/constants'
 
 import { electron, report } from '../utils'
 import { isElectron, isExtension } from '../utils/env'
-import { localSettings } from '../utils/localStorage'
 import { useScrollToTop, useModal, AppProvider } from '../hooks'
 import routes from './routes'
 
@@ -25,7 +23,7 @@ import ModalContent from '../components/ModalContent'
 import Modal from '../components/Modal'
 import UnderMaintenance from '../components/UnderMaintenance'
 import AuthModal from '../auth/AuthModal'
-import useMergeChains from '../pages/settings/useMergeChains'
+import useMergeChains from '../pages/settings/useMergedChains'
 
 import Extension from '../extension/Extension'
 import { useExtensionRequested } from '../extension/useExtension'
@@ -41,15 +39,9 @@ const App = () => {
   const { pathname } = useLocation()
   const modal = useModal()
 
-  /* init app */
-  const { lang, currency, chain, user: initialUser } = localSettings.get()
-  const chains = useMergeChains()
-
-  const initialState = {
-    lang: lang as LangKey,
-    currency,
-    chain: (chain && chains[chain]) || chains['mainnet'],
-  }
+  const currentLang = useLang()
+  const currentCurrency = useCurrency()
+  const currentChainName = useCurrentChainName()
 
   /* app state */
   const [appKey, setAppKey] = useState(0)
@@ -60,58 +52,48 @@ const App = () => {
   const deprecatedUI = useCheckElectronVersion(modal, refresh)
 
   /* redirect on chain change */
-  useOnChainChange({ goBack, chain })
-
-  /* provider */
-  const config = useConfigState(initialState)
-  const auth = useAuthState(initialUser)
-  const { current: currentLang = '' } = config.lang
-  const { current: currentCurrencyItem } = config.currency
-  const { current: currentChainOptions } = config.chain
-  const { key: currentCurrency = '' } = currentCurrencyItem || {}
-  const { name: currentChain = '' } = currentChainOptions
-  const { user } = auth
+  useOnChainChange({ goBack, chain: currentChainName })
 
   /* auth modal */
-  const authModal = useAuthModal(modal, user)
+  const authModal = useAuthModal(modal)
 
   /* extension */
   const extension = useExtensionRequested()
 
-  /* render */
+  /* app */
   const [padding, setPadding] = useState<boolean>(true)
-  const key = [currentLang, currentChain, currentCurrency, appKey].join()
-  const ready = !!(currentLang && currentChain && currentCurrency && appKey > 0)
-  const value = { setPadding, refresh, goBack, setGoBack, modal, authModal }
+  const app = { setPadding, refresh, goBack, setGoBack, modal, authModal }
+
+  /* render */
+  const key = [currentLang, currentChainName, currentCurrency, appKey].join()
+  const ready = !!(
+    currentLang &&
+    currentChainName &&
+    currentCurrency &&
+    appKey > 0
+  )
 
   return deprecatedUI ?? !ready ? null : (
     <ExtensionProvider value={extension}>
-      <AppProvider value={value} key={key}>
-        <ConfigProvider value={config}>
-          <AuthProvider value={auth}>
-            <Nav />
-            <section className={s.main}>
-              <Header className={s.header} />
-              <section
-                className={c(
-                  isExtension ? s.extension : s.content,
-                  isExtension && padding && s.padding
-                )}
-              >
-                <ErrorBoundary
-                  fallback={<ErrorComponent card />}
-                  key={pathname}
-                >
-                  {isExtension ? <Extension /> : routes}
-                </ErrorBoundary>
-              </section>
-            </section>
+      <AppProvider value={app} key={key}>
+        <Nav />
+        <section className={s.main}>
+          <Header className={s.header} />
+          <section
+            className={c(
+              isExtension ? s.extension : s.content,
+              isExtension && padding && s.padding
+            )}
+          >
+            <ErrorBoundary fallback={<ErrorComponent card />} key={pathname}>
+              {isExtension ? <Extension /> : routes}
+            </ErrorBoundary>
+          </section>
+        </section>
 
-            <Modal config={modal.config}>{modal.content}</Modal>
-            <ToastContainer {...ToastConfig} autoClose={false} />
-            <UnderMaintenance />
-          </AuthProvider>
-        </ConfigProvider>
+        <Modal config={modal.config}>{modal.content}</Modal>
+        <ToastContainer {...ToastConfig} autoClose={false} />
+        <UnderMaintenance />
       </AppProvider>
     </ExtensionProvider>
   )
@@ -179,30 +161,7 @@ const useOnChainChange = ({
   }, [chain])
 }
 
-const useAuthModal = (modal: Modal, user?: User) => {
-  const authModal = {
-    open: () => modal.open(<AuthModal />),
-    close: () => modal.close(),
-  }
-
-  useEffect(() => {
-    const onSignIn = (user: User) => {
-      const { address } = user
-      const { recentAddresses = [] } = localSettings.get()
-      const next = [address, ...without([address], recentAddresses)]
-      localSettings.set({ user, recentAddresses: next })
-      extension.storage?.local.set({ wallet: { address } })
-    }
-
-    const onSignOut = () => {
-      localSettings.delete(['user'])
-      extension.storage?.local.remove(['wallet'])
-    }
-
-    user ? onSignIn(user) : onSignOut()
-    authModal.close()
-    // eslint-disable-next-line
-  }, [user])
-
-  return authModal
-}
+const useAuthModal = (modal: Modal) => ({
+  open: () => modal.open(<AuthModal />),
+  close: () => modal.close(),
+})

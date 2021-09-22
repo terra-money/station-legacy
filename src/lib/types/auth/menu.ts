@@ -19,7 +19,7 @@ export interface AuthMenuUI {
   tooltip: { label: string; link: string; i18nKey: string }
 }
 
-export interface AuthMenuItem {
+interface AuthMenuItem {
   label: string
   key: AuthMenuKey
 }

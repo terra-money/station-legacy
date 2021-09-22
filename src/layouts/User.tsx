@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import c from 'classnames'
-import { useAuth, useText } from '../lib'
+import { useText } from '../lib'
 import { ReactComponent as Ledger } from '../images/Ledger.svg'
 import { isExtension } from '../utils/env'
 import { useModal } from '../hooks'
 import * as ledger from '../wallet/ledger'
+import { useUser } from '../data/auth'
 import ManageWallet from '../auth/ManageWallet'
 import Copy from '../components/Copy'
 import Icon from '../components/Icon'
@@ -27,7 +28,7 @@ const Name = ({ children: name }: { children: string }) => {
           </button>
 
           <Modal config={modal.config}>
-            <ManageWallet modalActions={modal} onFinish={modal.close} />
+            <ManageWallet />
           </Modal>
         </>
       )}
@@ -79,7 +80,7 @@ export default User
 
 /* hook */
 const useViewAddress = (viewAddress: string) => {
-  const { user } = useAuth()
+  const user = useUser()
   const [clicked, setClicked] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 

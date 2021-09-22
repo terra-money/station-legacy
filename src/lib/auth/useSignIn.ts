@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SignIn, LocalUser, Field, TestPassword } from '../types'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../data/auth'
+import { SignIn, Field, TestPassword } from '../types'
 
 interface Props {
   list: LocalUser[]

@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import classNames from 'classnames/bind'
-import { useConfig } from '../../lib'
+import { useCurrentChainName } from '../../data/chain'
 import { localSettings } from '../../utils/localStorage'
 import Page from '../../components/Page'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
-import useMergeChains, { useDeleteNetwork } from './useMergeChains'
+import useMergeChains, { useDeleteNetwork } from './useMergedChains'
 import AddNetwork from './AddNetwork'
 import styles from './Network.module.scss'
 
 const cx = classNames.bind(styles)
 
 const Network = () => {
+  const currentChainName = useCurrentChainName()
   const chains = useMergeChains()
   const deleteNetwork = useDeleteNetwork()
   const [selected, setSelected] = useState<string | undefined>()
   const { customNetworks = [] } = localSettings.get()
-  const { chain } = useConfig()
 
   const addNetwork = () => {
     setSelected(undefined)
@@ -65,7 +65,7 @@ const Network = () => {
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => deleteNetwork(selected)}
-                      disabled={chain.current.name === selected}
+                      disabled={currentChainName === selected}
                     >
                       Delete
                     </button>

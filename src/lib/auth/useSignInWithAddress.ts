@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { SignInWithAddress } from '../types'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../data/auth'
 import useForm from '../hooks/useForm'
 import validateForm from '../post/validateForm'
 
@@ -32,7 +32,7 @@ export default (): SignInWithAddress => {
     },
   ]
 
-  const onSubmit = () => signIn({ address })
+  const submit = () => signIn({ address })
 
   return {
     form: {
@@ -40,7 +40,7 @@ export default (): SignInWithAddress => {
       fields,
       disabled,
       submitLabel: t('Auth:SignIn:Browse'),
-      onSubmit: disabled ? undefined : onSubmit,
+      onSubmit: disabled ? undefined : submit,
     },
   }
 }

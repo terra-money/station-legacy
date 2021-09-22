@@ -1,5 +1,5 @@
 import { MnemonicKey } from '@terra-money/terra.js'
-import { Bip, Wallet, Address } from '../lib'
+import { Bip } from '../lib'
 
 export const generateSeed = (): string => {
   const mk = new MnemonicKey()

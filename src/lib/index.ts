@@ -38,11 +38,8 @@ export { default as useInfo } from './lang/useInfo'
 export { Trans } from 'react-i18next'
 
 /* contexts */
-export * from './contexts/ConfigContext'
-export * from './contexts/AuthContext'
 export { default as createContext } from './contexts/createContext'
 export { default as useHeight } from './contexts/useHeight'
-export { Languages, getLang } from './contexts/useLang'
 
 /* hooks:api */
 export { default as fcd } from './api/fcd'

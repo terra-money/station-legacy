@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RawKey } from '@terra-money/terra.js'
-import { Field, ImportKey, WalletParams } from '../types'
-import { decrypt } from '../../utils'
-import { useAuth } from '../contexts/AuthContext'
-import useForm from '../hooks/useForm'
 import { decode } from 'js-base64'
+import { RawKey } from '@terra-money/terra.js'
+import { useAuth } from '../../data/auth'
+import { Field, ImportKey } from '../types'
+import { decrypt } from '../../utils'
+import useForm from '../hooks/useForm'
 
 interface Values {
   key: string

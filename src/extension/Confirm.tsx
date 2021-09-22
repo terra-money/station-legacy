@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ReactNode, useEffect } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 import c from 'classnames'
 import { addHours, isBefore } from 'date-fns'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
@@ -7,11 +7,12 @@ import { CreateTxOptions } from '@terra-money/terra.js'
 import { Msg, TxInfo, StdFee, StdTx } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
-import { useAuth, useConfig } from '../lib'
 import { Field } from '../lib'
 import { decrypt } from '../utils'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
 import useTerraAssets from '../lib/hooks/useTerraAssets'
+import { useCurrentChain } from '../data/chain'
+import { useUser } from '../data/auth'
 import * as ledger from '../wallet/ledger'
 import { useExtension } from './useExtension'
 import { ExtSign, RecordedExtSign, TxOptionsData } from './useExtension'
@@ -38,8 +39,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { msgs, memo } = txOptions
 
   /* chain */
-  const { chain } = useConfig()
-  const { chainID, lcd: URL, name: network } = chain.current
+  const { chainID, lcd: URL, name: network } = useCurrentChain()
   const lcdClientConfig = Object.assign(
     { chainID, URL },
     gasPrices && { gasPrices }
@@ -67,7 +67,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
           stdSignMsgData: stdSignMsg.toData(),
         }
       } else {
-        const { privateKey } = getStoredWallet(name, password)
+        const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
         const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
         const { signature, recid } = key.ecdsaSign(
@@ -108,7 +108,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
         const key = new LedgerKey(await ledger.getPubKey())
         signed = await lcd.wallet(key).createAndSignTx(txOptions)
       } else {
-        const { privateKey } = getStoredWallet(name, password)
+        const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
         signed = await lcd.wallet(key).createAndSignTx(txOptions)
       }
@@ -260,7 +260,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const disabled = (!user.ledger && !password) || isDangerousTx
 
   const submit = () => {
-    user.ledger || testPassword(name, password)
+    user.ledger || testPassword(name!, password)
       ? { post: postTx, sign: signTx }[requestType]()
       : setPasswordError('Incorrect password')
   }
@@ -315,7 +315,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
 }
 
 const Confirm = () => {
-  const { user } = useAuth()
+  const user = useUser()
 
   /* extension */
   const { request } = useExtension()

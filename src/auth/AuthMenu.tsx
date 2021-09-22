@@ -6,16 +6,9 @@ import { useRemovePadding } from '../hooks'
 import Icon from '../components/Icon'
 import s from './AuthMenu.module.scss'
 
-interface Item {
-  title: string
-  icon: string
-  onClick: () => void
-  disabled?: boolean
-}
-
 interface Props {
   card?: Card
-  list: Item[]
+  list: AuthMenuItem[]
   footer?: ReactNode
 }
 

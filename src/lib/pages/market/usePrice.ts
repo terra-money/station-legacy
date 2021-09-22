@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PricePage, PriceUI, PriceData, Price, Point } from '../../types'
-import { useConfig } from '../../contexts/ConfigContext'
 import { format, percent } from '../../utils'
+import { useCurrency } from '../../../data/currency'
 import useFCD from '../../api/useFCD'
 import usePoll, { MINUTE, HOUR, DAY } from './usePoll'
 
@@ -17,8 +17,7 @@ const intervals = [
 
 export default (): PricePage => {
   const { t } = useTranslation()
-  const { currency } = useConfig()
-  const denom = currency.current?.key
+  const denom = useCurrency()
 
   /* filter */
   const [intervalIndex, setIntervalIndex] = useState(2) // intervals[2] === 15m

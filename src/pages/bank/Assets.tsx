@@ -1,9 +1,9 @@
 import React from 'react'
-import { useAssets, AssetsUI, User } from '../../lib'
+import { useAssets, AssetsUI } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import { useApp, useRemovePadding } from '../../hooks'
-import { useTokens } from '../../data/local'
+import { useTokens } from '../../data/tokens'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Info from '../../components/Info'
@@ -17,7 +17,7 @@ const Assets = ({ user }: { user: User }) => {
   useRemovePadding()
 
   const { hideSmallBalances: hideSmall = false } = localSettings.get()
-  const { error, loading, ui } = useAssets(user, { hideSmall })
+  const { error, loading, ui } = useAssets({ hideSmall })
   const tokens = useTokens()
 
   const { modal } = useApp()

@@ -3,19 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
-import {
-  PostPage,
-  SwapUI,
-  ConfirmProps,
-  BankData,
-  Whitelist,
-} from '../../types'
-import { User, CoinItem, Rate, Field, FormUI } from '../../types'
+import { PostPage, SwapUI, ConfirmProps } from '../../types'
+import { BankData, Whitelist } from '../../types'
+import { CoinItem, Rate, Field, FormUI } from '../../types'
 import { find, format, is } from '../../utils'
 import { gt, gte, lte, times, percent, plus, minus, div } from '../../utils'
 import { max, floor, isFinite, isInteger } from '../../utils'
 import { toInput, toAmount, decimalN } from '../../utils/format'
-import { useConfig } from '../../contexts/ConfigContext'
+import { useCurrentChain, useCurrentChainName } from '../../../data/chain'
 import useForm from '../../hooks/useForm'
 import useFCD from '../../api/useFCD'
 import useBank from '../../api/useBank'
@@ -25,11 +20,8 @@ import useWhitelist from '../../cw20/useWhitelist'
 import usePairs from '../../cw20/usePairs'
 import validateForm from '../validateForm'
 import { TERRA_ASSETS } from '../../pages/constants'
-import {
-  getFeeDenomList,
-  isAvailable,
-  isFeeAvailable,
-} from '../validateConfirm'
+import { getFeeDenomList } from '../validateConfirm'
+import { isAvailable, isFeeAvailable } from '../validateConfirm'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import * as routeswap from './routeswap'
 import useCalcTax from '../useCalcTax'
@@ -66,13 +58,15 @@ interface TobinTaxItem {
 export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const { t } = useTranslation()
   const v = validateForm(t)
-  const { chain } = useConfig()
+  const currentChain = useCurrentChain()
+  const currentChainName = useCurrentChainName()
+  const { lcd } = currentChain
 
   /* ready: balance */
-  const bank = useBank(user)
-  const cw20TokenBalance = useTokenBalance(user.address)
+  const bank = useBank()
+  const cw20TokenBalance = useTokenBalance()
   const { whitelist, loading: loadingWhitelist } = useWhitelist()
-  const { pairs, loading: loadingPairs } = usePairs(chain.current.name)
+  const { pairs, loading: loadingPairs } = usePairs(currentChainName)
   const loadingUI =
     bank.loading || loadingWhitelist || cw20TokenBalance.loading || loadingPairs
 
@@ -152,14 +146,14 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
         return available.length
           ? available
-          : isRouteAvailable({ from, to, chain: chain.current.name, pairs })
+          : isRouteAvailable({ from, to, chain: currentChainName, pairs })
           ? ['Route']
           : []
       }
 
       return []
     },
-    [chain, pairs]
+    [currentChainName, pairs]
   )
 
   const availableModes = useMemo(
@@ -246,7 +240,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     amount,
     from,
     to,
-    chain: chain.current,
+    chain: currentChainName,
+    lcd,
     minimum_receive,
   }
 
@@ -280,7 +275,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         if (availableModes.includes('Terraswap')) {
           const result = await simulateTerraswap(
             terraswapParams,
-            chain.current,
+            currentChain,
             user.address
           )
 
@@ -512,7 +507,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     onSubmit: disabled ? undefined : () => setSubmitted(true),
   }
 
-  const assertLimitOrderContract = assertLimitOrderContracts[chain.current.name]
+  const assertLimitOrderContract = assertLimitOrderContracts[currentChainName]
   const assertLimitOrder = !assertLimitOrderContract
     ? undefined
     : new MsgExecuteContract(user.address, assertLimitOrderContract, {
@@ -526,7 +521,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const swap = new MsgSwap(user.address, new Coin(from, amount), to)
 
   const terraswap = pair
-    ? getTerraswapURL(terraswapParams, chain.current, user.address, {
+    ? getTerraswapURL(terraswapParams, lcd, user.address, {
         belief_price: String(decimalN(expectedPrice, 18)),
         max_spread: slippagePercent,
       })

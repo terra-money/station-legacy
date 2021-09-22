@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { Token } from '../../lib'
 import useFinder from '../../lib/hooks/useFinder'
 import { truncate } from '../../lib/utils/format'
-import { useManageTokens, useTokens } from '../../data/local'
+import { useManageTokens, useTokens } from '../../data/tokens'
 import { ExtLinkWithIcon } from '../../components/ExtLink'
 import styles from './TokenItem.module.scss'
 

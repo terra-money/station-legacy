@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PostPage, ConfirmProps, BankData } from '../../types'
-import { CoinItem, User, Field } from '../../types'
+import { CoinItem, Field } from '../../types'
 import { format, find, gt } from '../../utils'
 import { parseJSON, toAmount, toInput } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import useFCD from '../../api/useFCD'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
@@ -58,11 +59,12 @@ interface Values extends CustomField {
 
 type Pool = { result: CoinItem[] }
 const denom = 'uluna'
-export default (user: User): PostPage => {
+export default (): PostPage => {
   const { t } = useTranslation()
+  const address = useAddress()
   const v = validateForm(t)
   const url = '/distribution/community_pool'
-  const { data: bank, loading, error } = useBank(user)
+  const { data: bank, loading, error } = useBank()
   const { data: pool, ...poolResponse } = useFCD<Pool>({ url })
   const { loading: poolLoading, error: poolError } = poolResponse
   const lunaPool = find('uluna:amount', pool?.result)
@@ -274,7 +276,7 @@ export default (user: User): PostPage => {
       new MsgSubmitProposal(
         sanitize(TypesList[typeIndex].key, values),
         new Coins(gt(amount, 0) ? { [denom]: amount } : {}),
-        user.address
+        address
       ),
     ],
     contents: input

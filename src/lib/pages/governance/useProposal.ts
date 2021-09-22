@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
 import { DateTime } from 'luxon'
-import { User } from '../../types'
 import { ProposalData, ProposalDetail } from '../../types'
 import { Deposit, Vote, TallyingParameters } from '../../types'
 import { ProposalPage, ProposalUI } from '../../types'
@@ -9,17 +8,19 @@ import { DepositUI, DepositContent } from '../../types'
 import { VoteUI, VoteProgressBar, VoteOption } from '../../types'
 import { TallyingUI } from '../../types'
 import { format, times, div, sum, percent, lt, gt, gte } from '../../utils'
+import { useAddress } from '../../../data/auth'
 import useFinder from '../../hooks/useFinder'
 import useFCD from '../../api/useFCD'
 import { calcDepositRatio, convertVote, getVoter } from './helpers'
 
-export default (id: string, user?: User): ProposalPage => {
+export default (id: string): ProposalPage => {
   const { t } = useTranslation()
   const getLink = useFinder()
 
   /* api */
+  const address = useAddress()
   const url = `/v1/gov/proposals/${id}`
-  const params = { account: user?.address }
+  const params = { account: address }
   const response = useFCD<ProposalData>({ url, params })
 
   const render = (proposal: ProposalData): ProposalUI => {

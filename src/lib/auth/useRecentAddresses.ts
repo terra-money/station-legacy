@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../data/auth'
 import { RecentAddresses } from '../types'
 
 export default (recentAddresses: string[]): RecentAddresses => {

@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
-import { useAuth, useManageAccounts } from '../lib'
+import { useManageAccounts } from '../lib'
 import { isExtension } from '../utils/env'
+import { useAuth, useUser } from '../data/auth'
 import ModalContent from '../components/ModalContent'
+import { useAuthModal } from './useAuthModal'
 import ChangePassword from './ChangePassword'
 import DeleteAccount from './DeleteAccount'
 import AuthMenu from './AuthMenu'
 import GenerateQRCode from './GenerateQRCode'
 
-interface Props {
-  modalActions: { close: () => void }
-  onFinish?: () => void
-}
-
-const ManageWallet = ({ modalActions, onFinish }: Props) => {
-  const { user, signOut } = useAuth()
-  const { push, goBack, replace } = useHistory()
+const ManageWallet = () => {
+  const user = useUser()
+  const { signOut } = useAuth()
+  const authModal = useAuthModal()
+  const { push, goBack } = useHistory()
   const { path, url } = useRouteMatch()
   const manage = useManageAccounts()
 
   const [currentIndex, setCurrentIndex] = useState(-1)
-
-  useEffect(() => {
-    !user && replace('/')
-  }, [user, replace])
 
   const onFinishSubmenu = isExtension
     ? () => goBack()
@@ -92,7 +87,7 @@ const ManageWallet = ({ modalActions, onFinish }: Props) => {
   )
 
   const modal = {
-    ...modalActions,
+    ...authModal,
     goBack: currentIndex > -1 ? () => setCurrentIndex(-1) : undefined,
   }
 

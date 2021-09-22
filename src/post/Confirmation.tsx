@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { RawKey } from '@terra-money/terra.js'
 import { ConfirmProps, format } from '../lib'
-import { useConfirm, useAuth } from '../lib'
+import { useConfirm } from '../lib'
 import LedgerKey from '../extension/LedgerKey'
 import { decryptWallet, getStoredWallet } from '../utils/localStorage'
+import { useUser } from '../data/auth'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
 import * as ledgers from '../wallet/ledger'
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const Confirmation = ({ confirm, modal, onFinish }: Props) => {
-  const { user } = useAuth()
+  const user = useUser()
 
   const confirmUI = useConfirm(confirm, {
     user: user!,

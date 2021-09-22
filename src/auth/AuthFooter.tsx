@@ -1,12 +1,14 @@
 import React from 'react'
 import { AuthMenuUI, Trans } from '../lib'
-import { useAuthModal } from './useAuthModal'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'
 import s from './AuthFooter.module.scss'
 
-const AuthFooter = ({ signInWithLedger, tooltip }: AuthMenuUI) => {
-  const { actions } = useAuthModal()
+interface Props extends AuthMenuUI {
+  actions: { glance: () => void; download: () => void }
+}
+
+const AuthFooter = ({ signInWithLedger, tooltip, actions }: Props) => {
   const [p, button] = signInWithLedger
   const { label, i18nKey } = tooltip
 

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TFunction } from 'i18next'
-import { Result } from '../types'
 import { format, is } from '../utils'
 import { min, percent } from '../utils/math'
 import fcd from '../api/fcd'

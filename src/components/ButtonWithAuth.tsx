@@ -1,6 +1,8 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import c from 'classnames'
-import { useAuth, useText } from '../lib'
+import { useConnectedWallet } from '@terra-money/wallet-provider'
+import { useText } from '../lib'
+import { useUser } from '../data/auth'
 import Pop from './Pop'
 import s from './ButtonWithName.module.scss'
 
@@ -9,10 +11,13 @@ type Attrs = ButtonHTMLAttributes<HTMLButtonElement>
 
 /* Show tooltip if user can't use this button */
 const ButtonWithAuth = ({ placement = 'top', ...attrs }: Props & Attrs) => {
-  const { user } = useAuth()
+  const connected = useConnectedWallet()
+  const user = useUser()
   const { WITH_AUTH } = useText()
 
-  return user?.name || user?.ledger ? (
+  const authenticated = connected || user?.name || user?.ledger
+
+  return authenticated ? (
     <button {...attrs} />
   ) : (
     <Pop

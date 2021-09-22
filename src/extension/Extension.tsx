@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isNil } from 'ramda'
 import '@ledgerhq/hw-transport-webusb' // include in bundle
-import { useAuth } from '../lib'
+import { useAddress } from '../data/auth'
 import { useExtension } from './useExtension'
 import AuthRoute from '../auth/AuthRoute'
 import ManageWallet from '../auth/ManageWallet'
@@ -13,7 +13,7 @@ import Connect from '../extension/Connect'
 import Confirm from '../extension/Confirm'
 
 const Extension = () => {
-  const { user } = useAuth()
+  const address = useAddress()
   const { connect, request } = useExtension()
   const isRequested = [request.list.sign, request.list.post].some(
     // If there is a request to handle either sign or post,
@@ -22,7 +22,7 @@ const Extension = () => {
 
   /* Redirect on requested */
   useRedirect(
-    !user
+    !address
       ? '/auth'
       : connect.list.length
       ? '/connect'

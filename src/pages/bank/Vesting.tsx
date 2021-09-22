@@ -11,7 +11,7 @@ const Vesting = ({ display, schedule }: VestingItemUI) => {
 
   return (
     <AmountCard
-      {...display}
+      display={display}
       button={
         <button onClick={toggle} className={s.button}>
           <Icon name={isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} />

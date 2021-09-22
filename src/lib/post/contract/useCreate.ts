@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Coin, Coins, MsgInstantiateContract } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../../types'
-import { PostPage, CoinItem, User, Field } from '../../types'
+import { PostPage, CoinItem, Field } from '../../types'
 import { ConfirmProps } from '../../types'
 import { is } from '../../utils'
 import { parseJSON } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
@@ -19,9 +20,10 @@ interface Values {
   desc: string
 }
 
-export default (user: User, denoms: string[]): PostPage<CoinFields> => {
+export default (denoms: string[]): PostPage<CoinFields> => {
   const { t } = useTranslation()
-  const { data: bank, loading, error } = useBank(user)
+  const { data: bank, loading, error } = useBank()
+  const address = useAddress()
 
   const [submitted, setSubmitted] = useState(false)
 
@@ -81,7 +83,6 @@ export default (user: User, denoms: string[]): PostPage<CoinFields> => {
   }
 
   const getConfirm = (bank: BankData): ConfirmProps => {
-    const address = user.address
     const code_id = Number(code)
     const init_msg = parseJSON(json)
     const init_coins = new Coins(

@@ -6,10 +6,10 @@ import { createActionRuleSet } from '../../../ruleset/create'
 import { createLogMatcherForActions } from '../../../ruleset/execute'
 import { getTxCanonicalMsgs } from '../../../ruleset/format'
 
-import { TxsPage, User, Tx, TxUI } from '../../types'
+import { TxsPage, Tx, TxUI } from '../../types'
 import { format } from '../../utils'
+import { useCurrentChainName } from '../../../data/chain'
 import useFCD from '../../api/useFCD'
-import { useConfig } from '../../contexts/ConfigContext'
 import useFinder from '../../hooks/useFinder'
 import useParseTxText from './useParseTxText'
 
@@ -22,8 +22,7 @@ interface Response {
 export default ({ address }: User): TxsPage => {
   const { t } = useTranslation()
   const getLink = useFinder()
-  const { chain } = useConfig()
-  const { name: currentChain } = chain.current
+  const currentChainName = useCurrentChainName()
 
   const parseTxText = useParseTxText()
 
@@ -49,7 +48,7 @@ export default ({ address }: User): TxsPage => {
   const more = txs.length && !done ? () => setOffset(next) : undefined
 
   /* parse */
-  const ruleset = createActionRuleSet(currentChain)
+  const ruleset = createActionRuleSet(currentChainName)
   const logMatcher = createLogMatcherForActions(ruleset)
 
   const getCanonicalMsgs = (tx: Tx) => {

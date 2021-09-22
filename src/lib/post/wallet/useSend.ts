@@ -4,20 +4,18 @@ import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { BankData, Whitelist } from '../../types'
-import { PostPage, CoinItem, User, Field } from '../../types'
+import { PostPage, CoinItem, Field } from '../../types'
 import { ConfirmContent, ConfirmProps } from '../../types'
 import { is, format, find } from '../../utils'
 import { gt, max, minus } from '../../utils/math'
 import { toAmount, toInput } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import { TokenBalanceQuery } from '../../cw20/useTokenBalance'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import validateForm from '../validateForm'
-import {
-  isAvailable,
-  getFeeDenomList,
-  isFeeAvailable,
-} from '../validateConfirm'
+import { isAvailable, isFeeAvailable } from '../validateConfirm'
+import { getFeeDenomList } from '../validateConfirm'
 import { useCalcFee } from '../txHelpers'
 import useCalcTax from '../useCalcTax'
 
@@ -27,13 +25,10 @@ interface Values {
   memo: string
 }
 
-export default (
-  user: User,
-  denom: string,
-  tokenBalance: TokenBalanceQuery
-): PostPage => {
+export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
   const { t } = useTranslation()
-  const { data: bank, loading: bankLoading, error } = useBank(user)
+  const address = useAddress()
+  const { data: bank, loading: bankLoading, error } = useBank()
   const { list, loading: tokenLoading, tokens } = tokenBalance
   const loading = bankLoading || tokenLoading
   const v = validateForm(t)
@@ -164,9 +159,9 @@ export default (
 
   const getConfirm = (bank: BankData, whitelist: Whitelist): ConfirmProps => ({
     msgs: is.nativeDenom(denom)
-      ? [new MsgSend(user.address, to, amount + denom)]
+      ? [new MsgSend(address, to, amount + denom)]
       : [
-          new MsgExecuteContract(user.address, denom, {
+          new MsgExecuteContract(address, denom, {
             transfer: { recipient: to, amount },
           }),
         ],

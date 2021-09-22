@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import classNames from 'classnames'
-import { useCurrentChainName } from '../lib'
+import { useCurrentChainName } from '../data/chain'
 import useTerraAssets from '../lib/hooks/useTerraAssets'
 import styles from './UnderMaintenance.module.scss'
 

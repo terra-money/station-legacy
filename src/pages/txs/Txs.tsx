@@ -1,5 +1,4 @@
-import React from 'react'
-import { TxsUI, User } from '../../lib'
+import { TxsUI } from '../../lib'
 import { useMenu, useTxs } from '../../lib'
 import WithAuth from '../../auth/WithAuth'
 import Page from '../../components/Page'

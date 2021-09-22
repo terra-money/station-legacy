@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import c from 'classnames'
 import { last } from 'ramda'
-import { useSwap, useInfo, User, Field } from '../lib'
+import { useSwap, useInfo, Field } from '../lib'
 import { useApp } from '../hooks'
 import WithAuth from '../auth/WithAuth'
 import Confirm from '../components/Confirm'

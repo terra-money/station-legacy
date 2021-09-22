@@ -1,7 +1,8 @@
 import { useQueries } from 'react-query'
 import { TokenBalance, Tokens } from '../types'
-import { useTokens } from '../../data/local'
+import { useTokens } from '../../data/tokens'
 import useLCD from '../api/useLCD'
+import { useAddress } from '../../data/auth'
 
 export interface TokenBalanceQuery {
   loading: boolean
@@ -11,7 +12,8 @@ export interface TokenBalanceQuery {
   load: () => Promise<void>
 }
 
-export default (address: string): TokenBalanceQuery => {
+export default (): TokenBalanceQuery => {
+  const address = useAddress()
   const tokens = useTokens()
   const lcd = useLCD()
   const values = Object.values(tokens)

@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
-import { useAuth, User } from '../lib'
+import { ReactNode } from 'react'
+import { useUser } from '../data/auth'
 import PleaseSignIn from '../components/PleaseSignIn'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const WithAuth = ({ card, children }: Props) => {
-  const { user } = useAuth()
+  const user = useUser()
   return !user ? <PleaseSignIn card={card} /> : <>{children(user)}</>
 }
 

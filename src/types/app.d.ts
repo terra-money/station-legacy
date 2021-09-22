@@ -8,3 +8,10 @@ interface App {
   modal: Modal
   authModal: { open: () => void; close: () => void }
 }
+
+interface AuthMenuItem {
+  title: string
+  icon: string
+  onClick: () => void
+  disabled?: boolean
+}

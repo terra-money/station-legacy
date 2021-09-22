@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MsgStoreCode } from '@terra-money/terra.js'
 import { BankData } from '../../types'
-import { PostPage, CoinItem, User, Field } from '../../types'
+import { PostPage, CoinItem, Field } from '../../types'
 import { ConfirmProps } from '../../types'
+import { useAddress } from '../../../data/auth'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
@@ -16,9 +17,10 @@ interface Values {
   repo: string
 }
 
-export default (user: User): PostPage => {
+export default (): PostPage => {
   const { t } = useTranslation()
-  const { data: bank, loading, error } = useBank(user)
+  const address = useAddress()
+  const { data: bank, loading, error } = useBank()
 
   const [submitted, setSubmitted] = useState(false)
 
@@ -74,7 +76,7 @@ export default (user: User): PostPage => {
   }
 
   const getConfirm = (bank: BankData): ConfirmProps => ({
-    msgs: [new MsgStoreCode(user.address, wasm)],
+    msgs: [new MsgStoreCode(address, wasm)],
     memo: stringify({ name, description, url }),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },

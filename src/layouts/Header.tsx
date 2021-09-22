@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import c from 'classnames'
-import { useAuth, useText, useConfig } from '../lib'
+import { useText } from '../lib'
 import { isExtension } from '../utils/env'
+import { useAuth, useUser } from '../data/auth'
+import { useCurrentChain } from '../data/chain'
 import { useApp } from '../hooks'
 import Icon from '../components/Icon'
 import ModalContent from '../components/ModalContent'
@@ -12,11 +14,11 @@ import Preconfigured from './Preconfigured'
 import s from './Header.module.scss'
 
 const Header = ({ className }: { className: string }) => {
-  const { user, signOut } = useAuth()
   const { CONNECT } = useText()
+  const { signOut } = useAuth()
+  const user = useUser()
   const { goBack, refresh, authModal, modal } = useApp()
-  const { chain } = useConfig()
-  const isLocalTerra = chain.current.localterra
+  const { localterra: isLocalTerra } = useCurrentChain()
 
   const share = () =>
     modal.open(

@@ -1,18 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfirmLedger } from '../types'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../data/auth'
 
 export default (getAddress: () => Promise<string>): ConfirmLedger => {
   const { t } = useTranslation()
-  const auth = useAuth()
+  const { signIn } = useAuth()
   const [error, setError] = useState<Error>()
 
   const request = useCallback(async () => {
     try {
       setError(undefined)
       const address = await getAddress()
-      auth.signIn({ address, ledger: true })
+      signIn({ address, ledger: true })
     } catch (error) {
       setError(error)
     }

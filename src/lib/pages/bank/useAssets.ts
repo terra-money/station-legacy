@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AssetsPage, BankData, Schedule, TokenBalance, User } from '../../types'
+import { AssetsPage, BankData, Schedule, TokenBalance } from '../../types'
 import { format } from '../../utils'
 import { percent, gte } from '../../utils/math'
+import { useCurrency, useCurrencyRates } from '../../../data/currency'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
 
@@ -13,10 +14,12 @@ interface Config {
   hideSmallTokens?: boolean
 }
 
-export default (user: User, config?: Config): AssetsPage => {
+export default (config?: Config): AssetsPage => {
   const { t } = useTranslation()
-  const bank = useBank(user)
-  const tokenBalances = useTokenBalance(user.address)
+  const bank = useBank()
+  const tokenBalances = useTokenBalance()
+  const currency = useCurrency()
+  const { getValue, getCurrentCurrencyValue } = useCurrencyRates()
   const [hideSmall, setHideSmall] = useState<boolean>(
     config?.hideSmall !== undefined ? config.hideSmall : false
   )
@@ -48,11 +51,21 @@ export default (user: User, config?: Config): AssetsPage => {
       : {
           title: t('Page:Bank:Available'),
           list: balance
-            .filter(({ available }) => !hideSmall || gte(available, SMALL))
-            .map(({ available, denom }) => ({
-              denom,
-              display: format.display({ amount: available, denom }),
-            })),
+            .map(({ available, denom }) => {
+              const currencyValule = getCurrentCurrencyValue({
+                denom,
+                amount: available,
+              })
+              return {
+                denom,
+                display: format.display({ amount: available, denom }),
+                currencyValueDisplay: !gte(currencyValule, 0)
+                  ? undefined
+                  : format.display({ amount: currencyValule, denom: currency }),
+                uusdValue: getValue({ denom, amount: available }, 'uusd'),
+              }
+            })
+            .filter(({ uusdValue }) => !hideSmall || gte(uusdValue, SMALL)),
           hideSmall: {
             label: t('Page:Bank:Hide small balances'),
             checked: hideSmall,

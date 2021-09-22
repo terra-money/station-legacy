@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { ProposalUI } from '../../lib'
-import { useProposal, useMenu, useAuth } from '../../lib'
+import { useProposal, useMenu } from '../../lib'
 import { useGoBack } from '../../hooks'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
@@ -20,8 +20,7 @@ const Proposal = () => {
 
   const { Proposal: title } = useMenu()
   const { id } = useParams<{ id: string }>()
-  const { user } = useAuth()
-  const { error, loading, ui } = useProposal(id, user)
+  const { error, loading, ui } = useProposal(id)
 
   const render = (ui: ProposalUI) => {
     const { vote, deposit, tallying } = ui

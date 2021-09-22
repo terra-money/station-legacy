@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import c from 'classnames'
-import { useDeposit, useAuth } from '../lib'
+import { useDeposit } from '../lib'
 import { DepositContent } from '../lib'
 import Displays from '../components/Displays'
 import Post from './Post'
@@ -12,8 +12,7 @@ interface Props {
 }
 
 const Deposit = ({ params, contents }: Props) => {
-  const { user } = useAuth()
-  const response = useDeposit(user!, params)
+  const response = useDeposit(params)
 
   const formProps = {
     renderBeforeFields: () => (

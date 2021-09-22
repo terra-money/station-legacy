@@ -1,7 +1,7 @@
 import React from 'react'
 import { toast } from 'react-toastify'
-import { useAuth } from '../lib'
 import { useChangePassword, useManageAccounts } from '../lib'
+import { useUser } from '../data/auth'
 import { decrypt } from '../utils'
 import { importKey, loadKeys, storeKeys } from '../utils/localStorage'
 import { testPassword } from '../utils/localStorage'
@@ -10,7 +10,7 @@ import Toast from '../components/Toast'
 
 const ChangePassword = ({ onFinish }: { onFinish?: () => void }) => {
   const accounts = loadKeys()
-  const { user } = useAuth()
+  const user = useUser()
   const { password: toastText } = useManageAccounts()
 
   const changePassword = async ({

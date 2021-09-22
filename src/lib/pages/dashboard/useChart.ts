@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { ChartCard, ChartKey } from '../../types'
-import { useConfig } from '../../contexts/ConfigContext'
+import { useCurrency, useCurrencyRates } from '../../../data/currency'
 import useChartCard from './useChartCard'
 import getTxVolume from './getTxVolume'
 import getStakingReturn from './getStakingReturn'
@@ -9,12 +9,13 @@ import getTotalAccounts from './getTotalAccounts'
 
 export default (key: ChartKey): ChartCard => {
   const { t } = useTranslation()
-  const { currency } = useConfig()
+  const currency = useCurrency()
+  const { getRate } = useCurrencyRates()
 
   const props = {
     TxVolume: getTxVolume(t),
     StakingReturn: getStakingReturn(t),
-    TaxRewards: getTaxRewards(t, currency.current!),
+    TaxRewards: getTaxRewards(t, currency, getRate(currency, 'ukrw')),
     TotalAccounts: getTotalAccounts(t),
   }
 

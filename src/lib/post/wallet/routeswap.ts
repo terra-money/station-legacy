@@ -1,7 +1,7 @@
 import { Coin } from '@terra-money/terra.js'
 import axios from 'axios'
 import { Dictionary } from 'ramda'
-import { ChainOptions, Pairs } from '../../types'
+import { Pairs } from '../../types'
 import { is } from '../../utils'
 import { toBase64, toTokenInfo } from './terraswap'
 
@@ -18,7 +18,8 @@ interface SwapParams {
 interface SimulateParams extends SwapParams {
   amount: string
   minimum_receive?: string
-  chain: ChainOptions
+  chain: string
+  lcd: string
 }
 
 export const isMarketAvailable = ({ from, to }: SwapParams) =>
@@ -77,7 +78,7 @@ export const isRouteAvailable = ({
 export const getRouteMessage = (params: SimulateParams) => {
   const { amount, from, to, chain, minimum_receive } = params
   const offer_amount = amount
-  const path = RouteContracts[chain.name]
+  const path = RouteContracts[chain]
   const operations = findRoute({ from, to })
 
   const swapOperations = { offer_amount, operations, minimum_receive }
@@ -98,10 +99,9 @@ export const getRouteMessage = (params: SimulateParams) => {
 }
 
 export const simulateRoute = async (params: SimulateParams) => {
-  const { chain } = params
   const { simulate } = getRouteMessage(params)
   const path = `/wasm/contracts/${simulate.path}/store`
-  const config = { baseURL: chain.lcd, params: { query_msg: simulate.msg } }
+  const config = { baseURL: params.lcd, params: { query_msg: simulate.msg } }
   const { data } = await axios.get<{ result: { amount: string } }>(path, config)
   return data.result.amount
 }

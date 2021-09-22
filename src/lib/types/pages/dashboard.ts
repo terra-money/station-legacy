@@ -2,7 +2,7 @@ import { Dictionary } from 'ramda'
 import { API, DisplayCoin, DisplayCoinDictionary, Options } from '..'
 
 export interface DashboardPage extends API<DashboardData> {
-  ui: DashboardUI
+  ui?: DashboardUI
 }
 
 export interface DashboardUI {

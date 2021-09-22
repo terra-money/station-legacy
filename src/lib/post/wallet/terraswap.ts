@@ -16,7 +16,7 @@ export const toTokenInfo = (token: string) =>
 
 export const getTerraswapURL = (
   { pair, token, offer }: Params,
-  { lcd: baseURL }: ChainOptions,
+  lcd: string,
   address: string,
   swapOptions?: { belief_price: string; max_spread: string }
 ) => {
@@ -32,7 +32,7 @@ export const getTerraswapURL = (
   const asset = { amount: offer.amount, info: toTokenInfo(offer.from) }
 
   return {
-    query: { baseURL, path: simulatePath, params },
+    query: { baseURL: lcd, path: simulatePath, params },
     url,
     msgs: !shouldHook
       ? [
@@ -66,7 +66,7 @@ export const simulateTerraswap = async (
   chain: ChainOptions,
   address: string
 ) => {
-  const { query } = getTerraswapURL(params, chain, address)
+  const { query } = getTerraswapURL(params, chain.lcd, address)
   const { path, ...config } = query
   const { data } = await axios.get<{ result: SimulationResult }>(path, config)
   return data.result

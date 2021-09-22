@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next'
-import { CumulativeType, Currency } from '../../types'
+import { CumulativeType } from '../../types'
 import { format, sum, minus, times } from '../../utils'
 import { Props } from './useChartCard'
 
@@ -10,7 +10,8 @@ interface Result {
 
 export default (
   t: TFunction,
-  { key: denom, krwRate }: Currency
+  denom: string,
+  krwRate: string
 ): Props<Result> => {
   const exchange = (n: string): string => times(n, krwRate)
 

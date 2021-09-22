@@ -1,14 +1,13 @@
 import React from 'react'
-import { useSend, useAuth } from '../lib'
+import { useSend } from '../lib'
 import useTokenBalance from '../lib/cw20/useTokenBalance'
 import FormInformation from '../components/FormInformation'
 import ExtLink from '../components/ExtLink'
 import Post from './Post'
 
 const Send = ({ denom }: { denom: string }) => {
-  const { user } = useAuth()
-  const tokenBalance = useTokenBalance(user!.address)
-  const response = useSend(user!, denom, tokenBalance)
+  const tokenBalance = useTokenBalance()
+  const response = useSend(denom, tokenBalance)
 
   const formProps = {
     renderBeforeFields: () => (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm, ChainOptions } from '../../lib'
 import Form from '../../components/Form'
-import useMergeChains, { useAddNetwork } from './useMergeChains'
+import useMergeChains, { useAddNetwork } from './useMergedChains'
 
 const AddNetwork = () => {
   const chains = useMergeChains()

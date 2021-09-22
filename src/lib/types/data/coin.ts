@@ -1,7 +1,6 @@
-import { Dictionary } from 'ramda'
 import { Token, ContractInfo } from '../pages/assets'
 
-export type Denom = 'ukrw' | 'umnt' | 'usdr' | 'uusd'
+export type Denom = string
 
 export interface CoinItem {
   amount: string

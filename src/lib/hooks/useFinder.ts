@@ -1,11 +1,10 @@
 import { FinderParams, FinderFunction } from '../types'
-import { useConfig } from '../contexts/ConfigContext'
+import { useCurrentChain } from '../../data/chain'
 
 const FINDER = 'https://finder.terra.money'
 
 export default (): FinderFunction | undefined => {
-  const { chain } = useConfig()
-  const { chainID } = chain.current
+  const { chainID } = useCurrentChain()
   return ({ network, q, v }: FinderParams) =>
     `${FINDER}/${network ?? chainID}/${q}/${v}`
 }

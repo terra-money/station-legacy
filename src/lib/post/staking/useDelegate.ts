@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { MsgDelegate, MsgBeginRedelegate } from '@terra-money/terra.js'
 import { MsgUndelegate, Coin } from '@terra-money/terra.js'
 import { PostPage, ConfirmProps, StakingData, BankData } from '../../types'
-import { CoinItem, User, Field, FieldElement } from '../../types'
+import { CoinItem, Field, FieldElement } from '../../types'
 import { format } from '../../utils'
 import { toAmount, toInput } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import useFCD from '../../api/useFCD'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
@@ -31,7 +32,7 @@ export enum DelegateType {
 
 const denom = 'uluna'
 
-export default (user: User, { validatorAddress, type }: Props): PostPage => {
+export default ({ validatorAddress, type }: Props): PostPage => {
   const isUndelegation = type === DelegateType.U
   const isRedelegation = type === DelegateType.R
 
@@ -39,9 +40,9 @@ export default (user: User, { validatorAddress, type }: Props): PostPage => {
   const v = validateForm(t)
 
   /* ready */
-  const { address } = user
+  const address = useAddress()
   const url = `/v1/staking/${address}`
-  const { data: bank, loading, error } = useBank(user)
+  const { data: bank, loading, error } = useBank()
   const { data: staking, ...stakingResponse } = useFCD<StakingData>({ url })
   const { loading: stakingLoading, error: stakingError } = stakingResponse
   const sources = staking?.myDelegations?.filter(

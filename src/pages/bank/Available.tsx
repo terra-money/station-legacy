@@ -11,7 +11,8 @@ interface Props extends AvailableItem {
   buttonLabel: string
 }
 
-const Available = ({ icon, denom, token, display, buttonLabel }: Props) => {
+const Available = (item: Props) => {
+  const { denom, token, buttonLabel } = item
   const { modal } = useApp()
 
   const renderButton = () => {
@@ -25,7 +26,7 @@ const Available = ({ icon, denom, token, display, buttonLabel }: Props) => {
     )
   }
 
-  return <AmountCard icon={icon} {...display} button={renderButton()} />
+  return <AmountCard {...item} button={renderButton()} />
 }
 
 export default Available

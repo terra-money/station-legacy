@@ -1,9 +1,8 @@
 import QRCode from '../auth/QRCode'
-import { useAuth } from '../lib'
+import { useAddress } from '../data/auth'
 
 const AddressQRCode = () => {
-  const { user } = useAuth()
-  const { address } = user!
+  const address = useAddress()
   return <QRCode title="Your wallet address" data={address} warn={address} />
 }
 

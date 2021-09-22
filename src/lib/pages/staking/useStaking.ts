@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { path } from 'ramda'
-import { User } from '../../types'
+import { useAddress, useUser } from '../../../data/auth'
 import { StakingUI, StakingPersonal } from '../../types'
 import { StakingData, StakingPage, StakingDelegation } from '../../types'
 import { ValidatorSorter, Undelegation } from '../../types'
@@ -13,17 +13,16 @@ import useFCD from '../../api/useFCD'
 import useValidatorItem from './useValidatorItem'
 
 const denom = 'uluna'
-export default (
-  user?: User,
-  initialSort?: { by: string; sort?: string }
-): StakingPage => {
+export default (initialSort?: { by: string; sort?: string }): StakingPage => {
   const { t } = useTranslation()
+  const user = useUser()
   const renderValidatorItem = useValidatorItem()
   const calcUndelegationTotal = (undelegations?: Undelegation[]) =>
     undelegations?.length ? sum(undelegations.map((u) => u.amount)) : '0'
 
   /* api */
-  const url = user ? `/v1/staking/${user.address}` : '/v1/staking'
+  const address = useAddress()
+  const url = address ? `/v1/staking/${address}` : '/v1/staking'
   const response = useFCD<StakingData>({ url })
 
   /* render */

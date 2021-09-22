@@ -29,17 +29,20 @@ const Option = ({ icon, label, caret, active, className }: OptionProps) => (
 
 interface Props {
   icon?: string
+  label: string
   value: string
   title: string
-  options: { key: string; value: string }[]
-  onSelect: (key: string) => void
+  options: { label: string; value: string }[]
+  onSelect: (value: string) => void
 }
 
-const ConfigSelector = ({ icon, value, title, options, onSelect }: Props) => {
-  const list = options.map(({ key, ...option }) => (
-    <li className={s.item} key={key}>
-      <button className={s.button} onClick={() => onSelect(key)}>
-        <Option label={option.value} active={option.value === value} />
+const ConfigSelector = ({ icon, label, value, title, ...props }: Props) => {
+  const { options, onSelect } = props
+
+  const list = options.map(({ label, ...option }) => (
+    <li className={s.item} key={option.value}>
+      <button className={s.button} onClick={() => onSelect(option.value)}>
+        <Option label={label} active={option.value === value} />
       </button>
     </li>
   ))
@@ -59,7 +62,7 @@ const ConfigSelector = ({ icon, value, title, options, onSelect }: Props) => {
     >
       {({ ref, getAttrs }) => (
         <span {...getAttrs({ className: s.wrapper })} ref={ref}>
-          <Option icon={icon} label={value} className={s.select} caret />
+          <Option icon={icon} label={label} className={s.select} caret />
         </span>
       )}
     </Pop>

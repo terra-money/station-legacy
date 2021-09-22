@@ -1,5 +1,5 @@
 import { useState, Dispatch, SetStateAction } from 'react'
-import { Assign, Field, FieldAttrs } from '../types'
+import { Field, FieldAttrs } from '../types'
 
 type DefaultProps = Pick<Field, 'element' | 'setValue' | 'error'>
 interface DefaultAttrs<T> extends Pick<FieldAttrs, 'type' | 'autoComplete'> {

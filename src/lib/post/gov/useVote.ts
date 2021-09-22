@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MsgVote } from '@terra-money/terra.js'
-import { PostPage, CoinItem, User, Field, BankData } from '../../types'
+import { PostPage, CoinItem, Field, BankData } from '../../types'
 import { ConfirmProps } from '../../types'
+import { useAddress } from '../../../data/auth'
 import useBank from '../../api/useBank'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
 import { optionColors } from '../../pages/governance/helpers'
 
-export default (
-  user: User,
-  { id, title }: { id: string; title: string }
-): PostPage => {
+export default ({ id, title }: { id: string; title: string }): PostPage => {
   const { t } = useTranslation()
-  const { data: bank, loading, error } = useBank(user)
+  const address = useAddress()
+  const { data: bank, loading, error } = useBank()
 
   type OptionItem = { key: MsgVote.Option; label: string; color: string }
   const OptionsList: OptionItem[] = [
@@ -74,7 +73,7 @@ export default (
     bank: BankData,
     { key, label }: OptionItem
   ): ConfirmProps => ({
-    msgs: [new MsgVote(Number(id), user.address, key)],
+    msgs: [new MsgVote(Number(id), address, key)],
     contents: [{ name: t('Page:Governance:Answer'), text: label }],
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),

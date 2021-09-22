@@ -1,5 +1,5 @@
 import React from 'react'
-import { useInteract, useAuth } from '../lib'
+import { useInteract } from '../lib'
 import CoinFields from './CoinFields'
 import Post from './Post'
 import WithActiveDenoms from './WithActiveDenoms'
@@ -9,8 +9,7 @@ interface Props {
 }
 
 const Component = ({ address, denoms }: Props & { denoms: string[] }) => {
-  const { user } = useAuth()
-  const response = useInteract(address, user!, denoms)
+  const response = useInteract(address, denoms)
   const { ui } = response
   return (
     <Post

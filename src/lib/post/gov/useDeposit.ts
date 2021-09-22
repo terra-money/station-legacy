@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Coins, MsgDeposit } from '@terra-money/terra.js'
-import { PostPage, CoinItem, User, Field, BankData } from '../../types'
+import { PostPage, CoinItem, Field, BankData } from '../../types'
 import { ConfirmProps } from '../../types'
 import { format, find } from '../../utils'
 import { toAmount, toInput } from '../../utils/format'
+import { useAddress } from '../../../data/auth'
 import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import validateForm from '../validateForm'
@@ -15,12 +16,10 @@ interface Values {
 }
 
 const denom = 'uluna'
-export default (
-  user: User,
-  { id, title }: { id: string; title: string }
-): PostPage => {
+export default ({ id, title }: { id: string; title: string }): PostPage => {
   const { t } = useTranslation()
-  const { data: bank, loading, error } = useBank(user)
+  const address = useAddress()
+  const { data: bank, loading, error } = useBank()
   const [submitted, setSubmitted] = useState(false)
   const v = validateForm(t)
 
@@ -70,9 +69,7 @@ export default (
   }
 
   const getConfirm = (bank: BankData): ConfirmProps => ({
-    msgs: [
-      new MsgDeposit(Number(id), user.address, new Coins({ uluna: amount })),
-    ],
+    msgs: [new MsgDeposit(Number(id), address, new Coins({ uluna: amount }))],
     contents: [
       {
         name: t('Page:Governance:Deposit'),

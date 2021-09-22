@@ -32,6 +32,7 @@ export interface AvailableItem {
   denom?: string
   token?: string
   display: DisplayCoin
+  currencyValueDisplay?: DisplayCoin
 }
 
 export interface VestingUI {

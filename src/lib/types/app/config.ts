@@ -20,15 +20,15 @@ export interface LangConfig {
 }
 
 /* currency */
-export interface Currency {
+export interface CurrencyItem {
   key: string
   value: string
   krwRate: string
 }
 
 export interface CurrencyConfig {
-  current?: Currency
-  list?: Currency[]
+  current?: CurrencyItem
+  list?: CurrencyItem[]
   loading: boolean
   set: (key: string) => void
 }

@@ -1,7 +1,8 @@
-import { omit } from 'ramda'
 import { useMemo } from 'react'
 import { atom, useRecoilState, useRecoilValue } from 'recoil'
-import { useCurrentChainName, Whitelist } from '../lib'
+import { omit } from 'ramda'
+import { Whitelist } from '../lib'
+import { useCurrentChainName } from './chain'
 
 export const tokensState = atom<Dictionary<Whitelist>>({
   key: 'tokensState',

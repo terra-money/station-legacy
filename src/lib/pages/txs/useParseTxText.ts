@@ -2,8 +2,8 @@ import { useQuery } from 'react-query'
 import { format } from '../../utils'
 import { truncate } from '../../utils/format'
 import useLCD from '../../api/useLCD'
-import { useAuth } from '../../contexts/AuthContext'
-import { useCurrentChainName } from '../../contexts/ConfigContext'
+import { useCurrentChainName } from '../../../data/chain'
+import { useAddress } from '../../../data/auth'
 import useWhitelist from '../../cw20/useWhitelist'
 import useContracts from '../../hooks/useContracts'
 
@@ -14,7 +14,7 @@ const REGEXP = {
 
 const useParseTxText = () => {
   const chainName = useCurrentChainName()
-  const { user } = useAuth()
+  const userAddress = useAddress()
   const { whitelist } = useWhitelist()
   const { contracts } = useContracts(chainName)
   const lcd = useLCD()
@@ -40,7 +40,7 @@ const useParseTxText = () => {
       ({ operator_address }) => operator_address === address
     )
 
-    return address === user?.address
+    return address === userAddress
       ? 'My wallet'
       : validator
       ? validator.description.moniker
