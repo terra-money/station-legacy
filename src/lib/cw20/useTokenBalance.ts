@@ -1,11 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Dictionary } from 'ramda'
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { useQueries } from 'react-query'
 import { TokenBalance, Tokens } from '../types'
-import { useConfig } from '../contexts/ConfigContext'
 import { useTokens } from '../../data/local'
-import mantleURL from './mantle.json'
-import alias from './alias'
+import useLCD from '../api/useLCD'
 
 export interface TokenBalanceQuery {
   loading: boolean
@@ -16,71 +12,43 @@ export interface TokenBalanceQuery {
 }
 
 export default (address: string): TokenBalanceQuery => {
-  const [result, setResult] = useState<Dictionary<string>>()
-  const [loading, setLoading] = useState(false)
-  const { chain } = useConfig()
-  const { name: currentChain } = chain.current
   const tokens = useTokens()
-  const mantle = (mantleURL as Dictionary<string | undefined>)[currentChain]
+  const lcd = useLCD()
+  const values = Object.values(tokens)
 
-  const load = useCallback(async () => {
-    if (!Object.keys(tokens).length) {
-      setResult({})
-    } else {
-      setLoading(true)
-
-      try {
-        const client = new ApolloClient({
-          uri: mantle,
-          cache: new InMemoryCache(),
-        })
-
-        const queries = alias(
-          Object.values(tokens).map(({ token }) => ({
-            token,
-            contract: token,
-            msg: { balance: { address } },
-          }))
+  const queries = useQueries(
+    values.map(({ token }) => ({
+      queryKey: ['cw20TokenBalance', token],
+      queryFn: async () => {
+        const { balance } = await lcd.wasm.contractQuery<{ balance: string }>(
+          token,
+          { balance: { address } }
         )
 
-        const { data } = await client.query({
-          query: queries,
-          errorPolicy: 'all',
-        })
+        return balance
+      },
+    }))
+  )
 
-        setResult(parseResult(data))
-      } catch (error) {
-        setResult({})
-      }
+  const load = async () => {
+    await queries.forEach(async ({ refetch }) => await refetch())
+  }
 
-      setLoading(false)
-    }
-  }, [address, mantle, tokens])
+  const result = queries.reduce((acc, { data: balance }, index) => {
+    const { token } = values[index]
+    return { ...acc, [token]: balance as string }
+  }, {})
 
-  useEffect(() => {
-    address && load()
-  }, [address, tokens, mantle, load])
+  const list = queries.map(({ data: balance }, index) => ({
+    ...values[index],
+    balance: balance as string,
+  }))
 
   return {
-    load,
-    loading,
     tokens,
+    load,
     result,
-    list:
-      result &&
-      tokens &&
-      Object.entries(result).map(([token, balance]) => ({
-        ...tokens[token],
-        balance,
-      })),
+    list,
+    loading: queries.some(({ isLoading }) => isLoading),
   }
 }
-
-const parseResult = (data: Dictionary<{ Result: string }>) =>
-  Object.entries(data).reduce(
-    (acc, [token, { Result }]) => ({
-      ...acc,
-      [token]: JSON.parse(Result).balance,
-    }),
-    {}
-  )
