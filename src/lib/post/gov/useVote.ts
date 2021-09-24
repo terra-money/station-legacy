@@ -51,7 +51,7 @@ export default ({ id, title }: { id: string; title: string }): PostPage => {
       attrs: {
         type: 'radio',
         name: 'option',
-        id: key,
+        id: String(key),
         checked: optionIndex === index,
       },
       setValue: () => setOptionIndex(index),

@@ -10,19 +10,15 @@ import useBank from '../../api/useBank'
 import useForm from '../../hooks/useForm'
 import validateForm from '../validateForm'
 import { isAvailable, getFeeDenomList } from '../validateConfirm'
-import { Coins, Dec, MsgSubmitProposal } from '@terra-money/terra.js'
+import { Coins, MsgSubmitProposal } from '@terra-money/terra.js'
 import {
   TextProposal,
-  TaxRateUpdateProposal,
-  RewardWeightUpdateProposal,
   CommunityPoolSpendProposal,
   ParameterChangeProposal,
 } from '@terra-money/terra.js'
 
 enum TypeKey {
   TEXT = '',
-  TAX_RATE_UPDATE = 'tax_rate_update',
-  REWARD_WEIGHT_UPDATE = 'reward_weight_update',
   COMMUNITY_POOL_SPEND = 'community_pool_spend',
   PARAM_CHANGE = 'param_change',
 }
@@ -43,8 +39,6 @@ const CHANGES_PLACEHOLDER = `[{
 
 interface CustomField {
   proposal_type: string
-  tax_rate: string
-  reward_weight: string
   recipient: string
   amount: string
   changes: string
@@ -73,14 +67,6 @@ export default (): PostPage => {
     {
       key: TypeKey.TEXT,
       title: t('Post:Governance:Text Proposal'),
-    },
-    {
-      key: TypeKey.TAX_RATE_UPDATE,
-      title: t('Post:Governance:Tax-rate Update'),
-    },
-    {
-      key: TypeKey.REWARD_WEIGHT_UPDATE,
-      title: t('Post:Governance:Reward-weight Update'),
     },
     {
       key: TypeKey.COMMUNITY_POOL_SPEND,
@@ -121,20 +107,6 @@ export default (): PostPage => {
           : v.input(input, { max: toInput(max.amount) }),
       typeIndex: '',
       proposal_type: '',
-      tax_rate:
-        key === TypeKey.TAX_RATE_UPDATE
-          ? v.between(updates.tax_rate, {
-              range: [0, 1],
-              label: t('Post:Governance:Tax-rate'),
-            })
-          : '',
-      reward_weight:
-        key === TypeKey.REWARD_WEIGHT_UPDATE
-          ? v.between(updates.reward_weight, {
-              range: [0, 1],
-              label: t('Post:Governance:Reward-weight'),
-            })
-          : '',
       recipient:
         key === TypeKey.COMMUNITY_POOL_SPEND
           ? v.address(updates.recipient)
@@ -170,8 +142,6 @@ export default (): PostPage => {
     input: '',
 
     proposal_type: 'text',
-    tax_rate: '',
-    reward_weight: '',
     recipient: '',
     amount: '',
     changes: '',
@@ -188,20 +158,6 @@ export default (): PostPage => {
 
   const customField: Field[] = {
     [TypeKey.TEXT]: [],
-    [TypeKey.TAX_RATE_UPDATE]: [
-      {
-        ...getDefaultProps('tax_rate'),
-        label: t('Post:Governance:Tax-rate'),
-        attrs: { ...getDefaultAttrs('tax_rate'), placeholder: '0' },
-      },
-    ],
-    [TypeKey.REWARD_WEIGHT_UPDATE]: [
-      {
-        ...getDefaultProps('reward_weight'),
-        label: t('Post:Governance:Reward-weight'),
-        attrs: { ...getDefaultAttrs('reward_weight'), placeholder: '0' },
-      },
-    ],
     [TypeKey.COMMUNITY_POOL_SPEND]: [
       {
         ...getDefaultProps('recipient'),
@@ -344,21 +300,11 @@ const validateChanges = (changes: string) => {
 }
 
 const sanitize = (typeKey: TypeKey, values: Values) => {
-  const { title, description, tax_rate, reward_weight } = values
+  const { title, description } = values
   const { recipient, amount, changes } = values
 
   return {
     [TypeKey.TEXT]: new TextProposal(title, description),
-    [TypeKey.TAX_RATE_UPDATE]: new TaxRateUpdateProposal(
-      title,
-      description,
-      new Dec(tax_rate || 0)
-    ),
-    [TypeKey.REWARD_WEIGHT_UPDATE]: new RewardWeightUpdateProposal(
-      title,
-      description,
-      new Dec(reward_weight || 0)
-    ),
     [TypeKey.COMMUNITY_POOL_SPEND]: new CommunityPoolSpendProposal(
       title,
       description,

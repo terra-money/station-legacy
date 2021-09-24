@@ -251,7 +251,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
     if (MsgGrantAuthorization && 'authorization' in value) {
       const { grantee, authorization } = value
       const info = MsgGrantAuthorization[grantee]
-      return !(info && info.types.includes(authorization.type))
+      return !(info && info.types.includes((authorization as any).type))
     }
 
     return msg.toData().type === 'msgauth/MsgGrantAuthorization'

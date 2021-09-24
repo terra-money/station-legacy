@@ -93,12 +93,10 @@ export default (denoms: string[]): PostPage<CoinFields> => {
       msgs: [
         new MsgInstantiateContract(
           address,
+          address,
           code_id,
           init_msg,
-          init_coins,
-          true,
-          address,
-          address
+          init_coins
         ),
       ],
       memo: stringify({ name, description }),
