@@ -1,0 +1,51 @@
+@import '../styles/mixins';
+@import '../styles/variables';
+
+.page {
+  @include flex;
+  background: rgba(white, 0.8);
+  z-index: 9999;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.article {
+  text-align: center;
+}
+
+.image {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.cogs {
+  animation-name: spin;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  // animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.title {
+  color: $brand;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.button {
+  width: 176px;
+}

@@ -23,6 +23,7 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import ErrorComponent from '../components/ErrorComponent'
 import ModalContent from '../components/ModalContent'
 import Modal from '../components/Modal'
+import UnderMaintenance from '../components/UnderMaintenance'
 import AuthModal from '../auth/AuthModal'
 import useMergeChains from '../pages/settings/useMergeChains'
 
@@ -108,6 +109,7 @@ const App = () => {
 
             <Modal config={modal.config}>{modal.content}</Modal>
             <ToastContainer {...ToastConfig} autoClose={false} />
+            <UnderMaintenance />
           </AuthProvider>
         </ConfigProvider>
       </AppProvider>
