@@ -1,4 +1,4 @@
-import { AccAddress } from '@terra-money/terra.js'
+import { AccAddress, Coin } from '@terra-money/terra.js'
 import BigNumber from 'bignumber.js'
 import { DateTime } from 'luxon'
 import { CoinItem, DisplayCoin, Whitelist } from '../types'
@@ -127,3 +127,8 @@ export const parseJSON = (string?: string) => {
     return undefined
   }
 }
+
+export const toStationCoin = ({ amount, denom }: Coin) => ({
+  amount: amount.toString(),
+  denom: denom.toString(),
+})

@@ -1,26 +1,29 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import c from 'classnames'
 import { useDeposit } from '../lib'
-import { DepositContent } from '../lib'
-import Displays from '../components/Displays'
+import { useDepositsContents } from '../pages/proposal/ProposalDeposits'
 import Post from './Post'
 import s from './Deposit.module.scss'
 
 interface Props {
-  params: { id: string; title: string }
-  contents: DepositContent[]
+  params: { id: number; title: string }
 }
 
-const Deposit = ({ params, contents }: Props) => {
+const Deposit = ({ params }: Props) => {
   const response = useDeposit(params)
+  const despoitsContents = useDepositsContents(params.id)
+
+  if (!despoitsContents) return null
+
+  const { contents } = despoitsContents
 
   const formProps = {
     renderBeforeFields: () => (
       <dl className={c('dl-wrap', s.dl)}>
-        {contents.map(({ title, displays, content }) => (
+        {Object.values(contents).map(({ title, content }) => (
           <Fragment key={title}>
             <dt>{title}</dt>
-            <dd>{displays ? <Displays list={displays} /> : content}</dd>
+            <dd>{content}</dd>
           </Fragment>
         ))}
       </dl>

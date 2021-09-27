@@ -16,7 +16,7 @@ interface Values {
 }
 
 const denom = 'uluna'
-export default ({ id, title }: { id: string; title: string }): PostPage => {
+export default ({ id, title }: { id: number; title: string }): PostPage => {
   const { t } = useTranslation()
   const address = useAddress()
   const { data: bank, loading, error } = useBank()

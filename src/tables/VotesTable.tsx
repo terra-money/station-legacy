@@ -1,5 +1,3 @@
-import React from 'react'
-import { Dictionary } from 'ramda'
 import { VotesTable, VoteContent } from '../lib'
 import { PaginationTableUI } from '../lib'
 import { useVotes, useVoteOptions } from '../lib'
@@ -9,7 +7,7 @@ import Loading from '../components/Loading'
 import Pagination from '../components/Pagination'
 import Card from '../components/Card'
 import Table from '../components/Table'
-import Voter from '../pages/proposal/Voter'
+import AccountLink from '../pages/proposal/AccountLink'
 
 const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
   const tabs = useVoteOptions(count)
@@ -30,7 +28,7 @@ const Votes = ({ id, count }: { id: string; count: Dictionary<number> }) => {
     return (
       <tr key={index}>
         <td>
-          <Voter voter={voter} />
+          <AccountLink address={voter.address} />
         </td>
 
         <td>{answer}</td>

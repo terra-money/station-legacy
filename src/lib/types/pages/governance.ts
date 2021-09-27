@@ -43,7 +43,6 @@ export interface VoteOptions {
 export interface VoteOption {
   label: string
   ratio: string
-  display: DisplayCoin
   color: string
 }
 

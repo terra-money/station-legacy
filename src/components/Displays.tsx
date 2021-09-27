@@ -1,4 +1,3 @@
-import React from 'react'
 import { DisplayCoin } from '../lib'
 import Number from './Number'
 

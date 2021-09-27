@@ -13,7 +13,7 @@ type Props = {
 
 const Pagination: FC<PaginationParams & Props> = (props) => {
   const { count, title, empty, link, action, children, ...pagination } = props
-  const { page } = pagination
+  const { page, limit } = pagination
 
   const getLinks = () =>
     link && {
@@ -28,10 +28,14 @@ const Pagination: FC<PaginationParams & Props> = (props) => {
   const renderEmpty = () =>
     empty ? <>{empty}</> : <p>{title ? `No ${title}s` : 'No Data'}</p>
 
+  const hideButtons = count < limit
+
   return count > 0 ? (
     <>
       {children}
-      <PaginationButtons links={getLinks()} actions={getActions()} />
+      {!hideButtons && (
+        <PaginationButtons links={getLinks()} actions={getActions()} />
+      )}
     </>
   ) : (
     renderEmpty()

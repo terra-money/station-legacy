@@ -8,7 +8,7 @@ import useBank from '../../api/useBank'
 import { getFeeDenomList, isFeeAvailable } from '../validateConfirm'
 import { optionColors } from '../../pages/governance/helpers'
 
-export default ({ id, title }: { id: string; title: string }): PostPage => {
+export default ({ id, title }: { id: number; title: string }): PostPage => {
   const { t } = useTranslation()
   const address = useAddress()
   const { data: bank, loading, error } = useBank()

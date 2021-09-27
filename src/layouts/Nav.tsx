@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import c from 'classnames'
+import { Proposal } from '@terra-money/terra.js'
 import { useMenu, ErrorBoundary } from '../lib'
 import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import { isExtension } from '../utils/env'
 import { useExtension } from '../extension/useExtension'
 import Icon from '../components/Icon'
+import { useProposalStatusList } from '../data/lcd/gov'
 import NavItem from './NavItem'
 import Guide from './Guide'
 import Lang from './Lang'
@@ -18,6 +20,8 @@ const Nav = () => {
   const { pathname } = useLocation()
   const history = useHistory()
   const { goBack } = useExtension()
+  const list = useProposalStatusList()
+  const defaultProposalStatus = list[Proposal.Status.VOTING_PERIOD]
 
   /* Menu */
   const name = useMenu()
@@ -56,7 +60,7 @@ const Nav = () => {
     },
     {
       name: name['Governance'],
-      to: '/governance?status=Voting',
+      to: `/governance?status=${defaultProposalStatus.key}`,
       icon: 'how_to_vote',
       submenu: ['/proposal'],
     },

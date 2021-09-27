@@ -1,69 +1,63 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { ProposalUI } from '../../lib'
-import { useProposal, useMenu } from '../../lib'
+import { Proposal } from '@terra-money/terra.js'
+import { useMenu } from '../../lib'
 import { useGoBack } from '../../hooks'
+import { useProposal, useProposalId } from '../../data/lcd/gov'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Page from '../../components/Page'
 import ProposalHeader from './ProposalHeader'
+import ProposalVotes from './ProposalVotes'
+import ProposalDeposits from './ProposalDeposits'
+import ProposalActions from './ProposalActions'
 import ProposalFooter from './ProposalFooter'
-import Deposit from './Deposit'
-import Votes from './Votes'
-import NotVoted from './NotVoted'
-import Actions from './Actions'
-import VotesTable from '../../tables/VotesTable'
 import Depositors from '../../tables/Depositors'
 
-const Proposal = () => {
+const ProposalDetails = () => {
   useGoBack('/governance')
-
   const { Proposal: title } = useMenu()
-  const { id } = useParams<{ id: string }>()
-  const { error, loading, ui } = useProposal(id)
 
-  const render = (ui: ProposalUI) => {
-    const { vote, deposit, tallying } = ui
+  /* query */
+  const id = useProposalId()
+  const result = useProposal(id)
+  const { error, isLoading: loading, data } = result
+
+  const render = (proposal: Proposal) => {
+    const { status } = proposal
+    const { DEPOSIT_PERIOD, VOTING_PERIOD } = Proposal.Status
 
     return (
       <>
-        <ProposalHeader {...ui} />
+        <ProposalHeader proposal={proposal} />
 
-        {vote && (
-          <>
-            <Votes {...vote} />
-            {vote.notVoted && <NotVoted {...vote.notVoted} />}
-            <VotesTable id={id} count={vote.count} />
-          </>
-        )}
+        {status !== DEPOSIT_PERIOD && <ProposalVotes />}
 
-        {deposit && (
+        {(status === VOTING_PERIOD || status === DEPOSIT_PERIOD) && (
           <div className="row">
             <div className="col col-4">
-              <Deposit {...deposit} />
+              <ProposalDeposits />
             </div>
             <div className="col col-8">
-              <Depositors id={id} />
+              <Depositors />
             </div>
           </div>
         )}
 
-        {tallying && <ProposalFooter {...tallying} />}
+        <ProposalFooter />
       </>
     )
   }
 
   return (
-    <Page title={title} action={ui && <Actions {...ui} />}>
+    <Page title={title} action={data && <ProposalActions proposal={data} />}>
       {error ? (
-        <ErrorComponent error={error} card />
+        <ErrorComponent error={error as Error} card />
       ) : loading ? (
         <Loading card />
       ) : (
-        ui && render(ui)
+        data && render(data)
       )}
     </Page>
   )
 }
 
-export default Proposal
+export default ProposalDetails

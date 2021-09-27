@@ -8,7 +8,7 @@ import Staking from '../pages/staking/Staking'
 import Validator from '../pages/validator/Validator'
 import Market from '../pages/market/Market'
 import Governance from '../pages/governance/Governance'
-import Proposal from '../pages/proposal/Proposal'
+import ProposalDetails from '../pages/proposal/Proposal'
 import Contracts from '../pages/contracts/Contracts'
 import Network from '../pages/settings/Network'
 
@@ -23,7 +23,7 @@ export default (
     <Route path="/validator/:address" component={Validator} />
     <Route path="/swap" component={Market} />
     <Route path="/governance" component={Governance} />
-    <Route path="/proposal/:id" component={Proposal} />
+    <Route path="/proposal/:id" component={ProposalDetails} />
     <Route path="/contracts" component={Contracts} />
     <Route path="/network" component={Network} />
     <Route render={() => <ErrorComponent card />} />

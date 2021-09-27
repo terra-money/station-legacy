@@ -2,25 +2,10 @@ import { useTranslation } from 'react-i18next'
 import { Duration } from 'luxon'
 import { GovernancePage, GovernanceUI, GovernanceParamUI } from '../../types'
 import { ProposalsData, ProposalItemData, ProposalItemUI } from '../../types'
-import { ProposalStatus, Vote } from '../../types'
+import { Vote } from '../../types'
 import { format, div, percent, toNumber, gte } from '../../utils'
 import useFCD from '../../api/useFCD'
 import { calcDepositRatio, convertVote } from './helpers'
-
-/** tabs */
-export const useProposalStatus = (): {
-  key: ProposalStatus
-  label: string
-}[] => {
-  const { t } = useTranslation()
-
-  return [
-    { key: 'Voting', label: t('Page:Governance:Voting') },
-    { key: 'Deposit', label: t('Page:Governance:Deposit') },
-    { key: 'Passed', label: t('Page:Governance:Passed') },
-    { key: 'Rejected', label: t('Page:Governance:Rejected') },
-  ]
-}
 
 export default ({ status }: { status: string }): GovernancePage => {
   const { t } = useTranslation()

@@ -3,7 +3,11 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import c from 'classnames'
 import useSearch from './useSearch'
 
-export default (name: string, tabs: { key: string; label: string }[]) => {
+export default (
+  name: string,
+  tabs: { key: string; label: string }[],
+  initialTab = ''
+) => {
   const { pathname } = useLocation()
   const history = useHistory()
   const [sp, getNextSearch] = useSearch()
@@ -34,7 +38,7 @@ export default (name: string, tabs: { key: string; label: string }[]) => {
   }
 
   /* return */
-  const currentTab = sp.get(name) || ''
+  const currentTab = sp.get(name) || initialTab || ''
   return {
     currentTab,
     page: Number(sp.get('page')) || 1,

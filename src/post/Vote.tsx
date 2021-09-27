@@ -4,7 +4,7 @@ import VoteItem from './VoteItem'
 import Post from './Post'
 import s from './Vote.module.scss'
 
-const Vote = ({ params }: { params: { id: string; title: string } }) => {
+const Vote = ({ params }: { params: { id: number; title: string } }) => {
   const response = useVote(params)
 
   const formProps = {
