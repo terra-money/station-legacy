@@ -1,13 +1,17 @@
-import { useEffect } from 'react'
+import {
+  useConnectedWallet,
+  useWallet,
+  WalletStatus,
+} from '@terra-money/wallet-provider'
+import extension from 'extensionizer'
+import { without } from 'ramda'
+import { useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { atom, useRecoilState, useRecoilValue } from 'recoil'
-import { without } from 'ramda'
-import extension from 'extensionizer'
-import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider'
-import { localSettings } from '../utils/localStorage'
-import { isExtension } from '../utils/env'
-import * as ledger from '../wallet/ledger'
 import { useAuthModal } from '../auth/useAuthModal'
+import { isExtension } from '../utils/env'
+import { localSettings } from '../utils/localStorage'
+import * as ledger from '../wallet/ledger'
 
 const userState = atom({
   key: 'userState',
@@ -27,7 +31,7 @@ export const useAuth = () => {
   const authModal = useAuthModal()
   const [user, setUser] = useRecoilState(userState)
   const connectedWallet = useConnectedWallet()
-  const { disconnect } = useWallet()
+  const { status, disconnect } = useWallet()
   const { replace } = useHistory()
 
   // Store user on connect wallet-provider
@@ -37,6 +41,18 @@ export const useAuth = () => {
       setUser({ address: terraAddress, provider: true })
     }
   }, [connectedWallet, setUser])
+
+  // Remove user on disconnect wallet-provider
+  useEffect(() => {
+    if (
+      status === WalletStatus.WALLET_NOT_CONNECTED &&
+      user?.provider === true
+    ) {
+      setUser(undefined)
+      localSettings.delete(['user'])
+      extension.storage?.local.remove(['wallet'])
+    }
+  }, [setUser, status, user?.provider])
 
   // On sign in
   useEffect(() => {
@@ -59,12 +75,12 @@ export const useAuth = () => {
   }, [user])
 
   // On sign out
-  const signOut = () => {
+  const signOut = useCallback(() => {
     disconnect()
     setUser(undefined)
     localSettings.delete(['user'])
     extension.storage?.local.remove(['wallet'])
-  }
+  }, [disconnect, setUser])
 
   return { signIn: setUser, signOut }
 }
