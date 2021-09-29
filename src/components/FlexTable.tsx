@@ -1,4 +1,4 @@
-import React, { ReactNode, CSSProperties } from 'react'
+import { ReactNode, CSSProperties } from 'react'
 import c from 'classnames'
 import { percent, sum, gt } from '../lib'
 import s from './FlexTable.module.scss'

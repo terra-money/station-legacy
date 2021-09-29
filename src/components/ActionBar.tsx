@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import s from './ActionBar.module.scss'
 
 const ActionBar = ({ list }: { list: ReactNode[] }) => (

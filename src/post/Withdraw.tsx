@@ -1,4 +1,3 @@
-import React from 'react'
 import { WithdrawProps } from '../lib'
 import { useWithdraw } from '../lib'
 import Post from './Post'

@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { percent, gt, min } from '../lib'
 import { ReactComponent as Tilde } from '../images/Tilde.svg'

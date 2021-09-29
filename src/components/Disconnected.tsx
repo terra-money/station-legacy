@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useInfo } from '../lib'
 import Icon from './Icon'
 import s from './Disconnected.module.scss'

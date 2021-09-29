@@ -1,4 +1,3 @@
-import React from 'react'
 import { StakingRatioUI } from '../../lib'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'

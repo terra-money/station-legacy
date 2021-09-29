@@ -1,4 +1,3 @@
-import React from 'react'
 import { useMenu, useStaking } from '../../lib'
 import { StakingPersonal } from '../../lib'
 import { useApp, useSearch } from '../../hooks'

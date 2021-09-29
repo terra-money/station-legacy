@@ -1,4 +1,3 @@
-import React from 'react'
 import { useInfo } from '../lib'
 import Info from './Info'
 import ProgressCircle from './ProgressCircle'

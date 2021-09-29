@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import c from 'classnames'
 import { VoteProgressBar } from '../../lib'
 import s from './VoteProgress.module.scss'

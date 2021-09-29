@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DisplaySelector as Props } from '../../lib'
 import Card from '../../components/Card'
 import Number from '../../components/Number'

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import { Card as CardProps } from '../lib'
 import Icon from './Icon'
 import Card from './Card'

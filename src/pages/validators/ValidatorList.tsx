@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 import { useHistory } from 'react-router-dom'
 import { StakingUI } from '../../lib'
 import { ValidatorListHeading } from '../../lib'

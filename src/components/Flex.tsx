@@ -1,4 +1,4 @@
-import React, { FC, RefObject } from 'react'
+import { FC, RefObject } from 'react'
 import c from 'classnames'
 
 type Attrs = { className?: string; forwardRef?: RefObject<HTMLElement> }

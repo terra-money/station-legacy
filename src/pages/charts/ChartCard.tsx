@@ -1,4 +1,3 @@
-import React from 'react'
 import { ChartDataSets, ChartOptions } from 'chart.js'
 import { ChartUI, ChartKey } from '../../types'
 import { CumulativeType, AccountType } from '../../types'

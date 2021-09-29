@@ -1,7 +1,7 @@
-import React, { FC, RefObject } from 'react'
+import { FC, RefObject, HTMLAttributes } from 'react'
 import c from 'classnames'
 
-interface Props extends React.HTMLAttributes<HTMLElement> {
+interface Props extends HTMLAttributes<HTMLElement> {
   name: string
   size?: number
   forwardRef?: RefObject<HTMLSpanElement>

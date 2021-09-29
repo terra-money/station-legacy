@@ -1,4 +1,3 @@
-import React from 'react'
 import ExtLink from '../components/ExtLink'
 
 const UpdateElectron = ({ version, title, message, ...rest }: Version) => {

@@ -1,7 +1,7 @@
 import 'core-js'
 import 'react-app-polyfill/ie11'
 
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'

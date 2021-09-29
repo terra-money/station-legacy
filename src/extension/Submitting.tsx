@@ -1,4 +1,3 @@
-import React from 'react'
 import gif from './submitting.gif'
 import s from './Submitting.module.scss'
 

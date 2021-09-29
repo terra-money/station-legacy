@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { useActiveDenoms } from '../lib'
 
 interface Props {

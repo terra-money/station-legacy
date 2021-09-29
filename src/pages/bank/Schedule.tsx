@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { ScheduleUI } from '../../lib'
 import Icon from '../../components/Icon'

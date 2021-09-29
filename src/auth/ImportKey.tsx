@@ -1,4 +1,3 @@
-import React from 'react'
 import { importKey } from '../utils/localStorage'
 import Form from '../components/Form'
 import ErrorComponent from '../components/ErrorComponent'

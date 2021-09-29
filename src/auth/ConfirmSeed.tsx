@@ -1,4 +1,3 @@
-import React from 'react'
 import { useConfirmSeed, SignUpNext } from '../lib'
 import Form, { State } from '../components/Form'
 import ButtonGroup from '../components/ButtonGroup'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isNil } from 'ramda'

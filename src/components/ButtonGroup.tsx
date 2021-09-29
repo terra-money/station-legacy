@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import c from 'classnames'
 import { format } from '../lib'
 import s from './ButtonGroup.module.scss'

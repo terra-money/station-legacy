@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuery } from '../lib'
 import { useApp } from '../hooks'
 import ModalContent from '../components/ModalContent'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useAssets, AssetsUI } from '../../lib'
 import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'

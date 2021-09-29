@@ -1,4 +1,3 @@
-import React from 'react'
 import { useMarket, useMenu } from '../../lib'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'

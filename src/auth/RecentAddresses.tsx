@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRecentAddresses } from '../lib'
 import { localSettings } from '../utils/localStorage'
 import Icon from '../components/Icon'

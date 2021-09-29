@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { MyDelegations as Item } from '../../lib'
 import Chart from '../../components/Chart'
 import Number from '../../components/Number'

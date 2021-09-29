@@ -1,4 +1,3 @@
-import React from 'react'
 import Icon from '../components/Icon'
 import s from './Pagination.module.scss'
 

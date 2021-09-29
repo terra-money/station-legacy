@@ -1,4 +1,4 @@
-import React, { FC, AnchorHTMLAttributes } from 'react'
+import { FC, AnchorHTMLAttributes } from 'react'
 import Icon from './Icon'
 import styles from './ExtLink.module.scss'
 

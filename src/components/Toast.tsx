@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes } from 'react'
 import { toast } from 'react-toastify'
 import c from 'classnames'
 import Icon from '../components/Icon'

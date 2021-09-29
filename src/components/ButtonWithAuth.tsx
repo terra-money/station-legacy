@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes } from 'react'
 import c from 'classnames'
 import { useConnectedWallet } from '@terra-money/wallet-provider'
 import { useText } from '../lib'

@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { TxUI, MessageUI, Card as CardProps } from '../../lib'
 import { format } from '../../lib'

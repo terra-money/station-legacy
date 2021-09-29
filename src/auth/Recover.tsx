@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { SignUpNext, Seed } from '../lib'
 import { useSignUp } from '../lib'
 import { generateAddresses, generateWallet } from '../utils'

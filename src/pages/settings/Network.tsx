@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import classNames from 'classnames/bind'
 import { useCurrentChainName } from '../../data/chain'
 import { localSettings } from '../../utils/localStorage'

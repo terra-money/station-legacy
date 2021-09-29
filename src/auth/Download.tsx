@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import classNames from 'classnames'
 import { DownloadLink, DownloadLinks, useDownload } from '../lib'
 import { ReactComponent as Mac } from './Mac.svg'

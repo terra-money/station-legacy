@@ -1,4 +1,5 @@
-import React, { ReactNode, RefObject, useRef, useState, useEffect } from 'react'
+import { ReactNode, RefObject, HTMLAttributes } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import c from 'classnames'
 import s from './Pop.module.scss'
 
@@ -39,7 +40,7 @@ export const Tooltip = (props: TooltipProps) => {
   )
 }
 
-type Attrs = React.HTMLAttributes<HTMLElement>
+type Attrs = HTMLAttributes<HTMLElement>
 
 interface PopProps {
   type: 'pop' | 'tooltip'

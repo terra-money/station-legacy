@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react'
+import { useState, ReactNode } from 'react'
 import { ContractsUI, ContractUI, is } from '../../lib'
 import { useMenu, useContract, useContracts } from '../../lib'
 import { useApp, useGoBack } from '../../hooks'

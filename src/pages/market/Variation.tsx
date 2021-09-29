@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { Variation as VariationProps } from '../../lib'
 import { gt, lt } from '../../lib'

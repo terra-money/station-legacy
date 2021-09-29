@@ -1,4 +1,3 @@
-import React from 'react'
 import ChartCard from './ChartCard'
 
 const Charts = () => (

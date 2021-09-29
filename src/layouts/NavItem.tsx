@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { NavLink, useLocation } from 'react-router-dom'
 import Icon from '../components/Icon'

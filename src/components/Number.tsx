@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { format, DisplayCoin } from '../lib'
 
 interface Props extends Partial<DisplayCoin> {

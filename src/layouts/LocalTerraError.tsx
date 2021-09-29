@@ -1,4 +1,3 @@
-import React from 'react'
 import { useInfo } from '../lib'
 import Logo from '../images/LocalTerraLogo.png'
 import ModalContent from '../components/ModalContent'

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import PaginationButtons from './PaginationButtons'
 import { Pagination as PaginationParams } from '../lib'
 import { toNumber, plus } from '../lib'

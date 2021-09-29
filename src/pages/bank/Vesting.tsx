@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { VestingItemUI } from '../../lib'
 import Icon from '../../components/Icon'
 import AmountCard from './AmountCard'

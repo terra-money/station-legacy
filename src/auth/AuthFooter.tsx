@@ -1,4 +1,3 @@
-import React from 'react'
 import { AuthMenuUI, Trans } from '../lib'
 import Icon from '../components/Icon'
 import Pop from '../components/Pop'

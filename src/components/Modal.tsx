@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import ReactModal from 'react-modal'
 import Icon from './Icon'
 import s from './Modal.module.scss'

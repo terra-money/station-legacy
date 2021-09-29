@@ -1,4 +1,3 @@
-import React from 'react'
 import { ConfirmLedger as Props } from '../lib'
 import ProgressCircle from '../components/ProgressCircle'
 import Icon from '../components/Icon'

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react'
+import { useState, ReactNode } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import c from 'classnames'
 import { useText } from '../lib'

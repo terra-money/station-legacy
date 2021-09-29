@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { CoinFields as Props } from '../lib'
 import Field from '../components/Field'

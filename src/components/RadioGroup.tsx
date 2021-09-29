@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import s from './RadioGroup.module.scss'
 

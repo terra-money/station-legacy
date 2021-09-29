@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { ValidatorUI } from '../../lib'
 import { ReactComponent as Terra } from '../../images/Terra.svg'

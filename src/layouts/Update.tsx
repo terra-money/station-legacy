@@ -1,4 +1,3 @@
-import React from 'react'
 import Toast from '../components/Toast'
 
 const Update = ({ title, content, forceUpdate }: VersionWeb) => (

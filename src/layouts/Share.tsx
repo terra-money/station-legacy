@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { useShare } from '../lib'
 import { ReactComponent as Twitter } from './Twitter.svg'
 import { ReactComponent as Telegram } from './Telegram.svg'

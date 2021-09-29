@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { Field } from '../lib'
 import s from './VoteItem.module.scss'

@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes } from 'react'
 import { Trans, SignUpWarning } from '../lib'
 import Pop from '../components/Pop'
 import Flex from '../components/Flex'

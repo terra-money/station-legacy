@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './RewardTip.module.scss'
 
 interface Props {

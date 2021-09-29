@@ -1,4 +1,3 @@
-import React from 'react'
 import { useMenu } from '../../lib'
 import { isExtension } from '../../utils/env'
 import WithAuth from '../../auth/WithAuth'

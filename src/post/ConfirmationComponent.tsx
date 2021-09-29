@@ -1,4 +1,4 @@
-import React, { ReactNode, Fragment, FC } from 'react'
+import { ReactNode, Fragment, FC } from 'react'
 import c from 'classnames'
 import { Card } from '../lib'
 import { ConfirmLedger as ConfirmLedgerProps } from '../lib'

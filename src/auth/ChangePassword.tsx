@@ -1,4 +1,3 @@
-import React from 'react'
 import { toast } from 'react-toastify'
 import { useChangePassword, useManageAccounts } from '../lib'
 import { useUser } from '../data/auth'

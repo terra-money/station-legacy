@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { RawKey } from '@terra-money/terra.js'
 import { ConfirmProps, format } from '../lib'
 import { useConfirm } from '../lib'

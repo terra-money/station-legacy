@@ -1,4 +1,3 @@
-import React from 'react'
 import { Filter, Point } from '../../lib'
 import { PriceUI } from '../../lib'
 import { usePrice, format } from '../../lib'

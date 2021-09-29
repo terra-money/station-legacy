@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { StakingPersonal, DisplayCoin } from '../../lib'
 import Card from '../../components/Card'
 import Flex from '../../components/Flex'

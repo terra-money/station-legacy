@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, SelectHTMLAttributes } from 'react'
+import { DetailedHTMLProps, SelectHTMLAttributes } from 'react'
 import c from 'classnames'
 import Icon from './Icon'
 import s from './Select.module.scss'

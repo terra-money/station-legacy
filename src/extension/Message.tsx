@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import { Msg } from '@terra-money/terra.js'
 import Icon from '../components/Icon'
 import { getDl } from './Confirm'

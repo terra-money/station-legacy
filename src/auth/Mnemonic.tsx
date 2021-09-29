@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import { FC, useRef, useState, useEffect } from 'react'
+import { ButtonHTMLAttributes } from 'react'
 import 'intersection-observer'
 import { useInView } from 'react-intersection-observer'
 import c from 'classnames'
 import s from './Mnemonic.module.scss'
 
-type ButtonAttrs = React.ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>
 
 interface ButtonProps {
   isFocused: boolean
@@ -12,7 +13,7 @@ interface ButtonProps {
   onFocusHidden: () => void
 }
 
-const Button: React.FC<ButtonProps> = (props) => {
+const Button: FC<ButtonProps> = (props) => {
   const { isFocused, attrs, onFocusHidden, children } = props
   const [ref, inView, entry] = useInView({ threshold: 0.99 })
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, FC, ReactNode } from 'react'
+import { useRef, useState, useEffect, FC, ReactNode } from 'react'
 import c from 'classnames'
 import Icon from './Icon'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSend } from '../lib'
 import useTokenBalance from '../cw20/useTokenBalance'
 import FormInformation from '../components/FormInformation'

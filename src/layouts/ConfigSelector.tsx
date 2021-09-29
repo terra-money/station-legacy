@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import Pop from '../components/Pop'
 import Icon from '../components/Icon'

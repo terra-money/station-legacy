@@ -1,4 +1,3 @@
-import React from 'react'
 import { path } from 'ramda'
 import { ChartPoint, ChartTooltipCallback } from 'chart.js'
 import { VoteOption, percent, toNumber, gt } from '../../lib'

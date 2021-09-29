@@ -1,4 +1,3 @@
-import React from 'react'
 import { useCreate } from '../lib'
 import CoinFields from './CoinFields'
 import Post from './Post'

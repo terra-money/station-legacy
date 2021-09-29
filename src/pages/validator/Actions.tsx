@@ -1,4 +1,3 @@
-import React from 'react'
 import { ValidatorUI, format } from '../../lib'
 import { DelegateType } from '../../post/hooks/staking/useDelegate'
 import { useApp } from '../../hooks'

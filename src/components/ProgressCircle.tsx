@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import c from 'classnames'
 import s from './ProgressCircle.module.scss'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { SignUpNext, Field, AccountUI } from '../lib'
 import { useSelectAccount } from '../lib'

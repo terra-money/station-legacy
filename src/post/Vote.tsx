@@ -1,4 +1,3 @@
-import React from 'react'
 import { useVote, Field } from '../lib'
 import VoteItem from './VoteItem'
 import Post from './Post'

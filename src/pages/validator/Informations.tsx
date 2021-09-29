@@ -1,4 +1,3 @@
-import React from 'react'
 import { ValidatorUI } from '../../lib'
 import Card from '../../components/Card'
 import ExtLink from '../../components/ExtLink'

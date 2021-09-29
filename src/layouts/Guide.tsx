@@ -1,4 +1,3 @@
-import React from 'react'
 import Icon from '../components/Icon'
 import Flex from '../components/Flex'
 import s from './Guide.module.scss'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DelegatorsTable, DelegatorContent } from '../lib'
 import { PaginationTableUI } from '../lib'
 import { useDelegators, format } from '../lib'

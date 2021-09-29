@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { NotVoted as Props } from '../../lib'
 import useValidators from '../../hooks/useValidators'

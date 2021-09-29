@@ -1,4 +1,3 @@
-import React from 'react'
 import { useUpload } from '../lib'
 import Post from './Post'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSignInWithLedger } from '../lib'
 import * as ledger from '../wallet/ledger'
 import ConfirmLedger from './ConfirmLedger'

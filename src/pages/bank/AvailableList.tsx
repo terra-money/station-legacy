@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { AvailableUI, HideSmallUI } from '../../lib'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'

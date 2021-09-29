@@ -1,6 +1,3 @@
-import React from 'react'
-//import { toast } from 'react-toastify'
-// import semver from 'semver'
 import { useHeight, HeightData } from '../lib'
 import Flex from '../components/Flex'
 import ExtLink from '../components/ExtLink'

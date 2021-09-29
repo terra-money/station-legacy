@@ -1,4 +1,3 @@
-import React from 'react'
 import { useExtension } from './useExtension'
 import Icon from '../components/Icon'
 import s from './Connect.module.scss'

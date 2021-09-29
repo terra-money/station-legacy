@@ -1,4 +1,3 @@
-import React from 'react'
 import { generateSeed } from '../utils'
 import Recover from './Recover'
 

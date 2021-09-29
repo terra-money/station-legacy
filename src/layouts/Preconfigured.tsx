@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { generateWallet } from '../utils'
 import { encryptWallet } from '../utils/localStorage'
 import { useAuth } from '../data/auth'

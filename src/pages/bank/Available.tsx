@@ -1,4 +1,3 @@
-import React from 'react'
 import c from 'classnames'
 import { AvailableItem } from '../../lib'
 import { useApp } from '../../hooks'

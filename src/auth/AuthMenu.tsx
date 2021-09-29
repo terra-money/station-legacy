@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import c from 'classnames'
 import { Card } from '../lib'
 import { isExtension } from '../utils/env'

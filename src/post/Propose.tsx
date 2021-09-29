@@ -1,4 +1,3 @@
-import React from 'react'
 import { usePropose } from '../lib'
 import Post from './Post'
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import c from 'classnames'
 
 type Props = { small?: boolean; light?: boolean }

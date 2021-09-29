@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { AuthMenuKey } from '../lib'
 import { isExtension } from '../utils/env'
 import Recover from './Recover'

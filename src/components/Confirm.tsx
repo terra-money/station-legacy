@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, ImgHTMLAttributes } from 'react'
+import { FC, ReactNode, ImgHTMLAttributes } from 'react'
 import Icon from './Icon'
 import s from './Confirm.module.scss'
 
