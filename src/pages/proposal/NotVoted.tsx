@@ -1,7 +1,7 @@
 import React from 'react'
 import c from 'classnames'
 import { NotVoted as Props } from '../../lib'
-import useValidators from '../../lib/hooks/useValidators'
+import useValidators from '../../hooks/useValidators'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
 import Flex from '../../components/Flex'

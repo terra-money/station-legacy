@@ -1,5 +1,5 @@
 import { useDelegate } from '../lib'
-import { DelegateType } from '../lib/post/staking/useDelegate'
+import { DelegateType } from './hooks/staking/useDelegate'
 import Post from './Post'
 
 interface Props {

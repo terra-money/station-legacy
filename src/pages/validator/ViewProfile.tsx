@@ -1,6 +1,6 @@
 import React from 'react'
 import src from './ViewProfile.png'
-import useValidators from '../../lib/hooks/useValidators'
+import useValidators from '../../hooks/useValidators'
 import ExtLink from '../../components/ExtLink'
 import styles from './ViewProfile.module.scss'
 

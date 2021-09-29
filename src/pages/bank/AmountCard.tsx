@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from 'react'
 import { AvailableItem } from '../../lib'
-import { TERRA_ASSETS } from '../../lib/pages/constants'
+import { TERRA_ASSETS } from '../hooks/constants'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'

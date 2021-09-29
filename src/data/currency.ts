@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
 import BigNumber from 'bignumber.js'
 import { CoinItem } from '../lib'
-import useLCD from '../lib/api/useLCD'
+import useLCD from '../api/useLCD'
 import { localSettings } from '../utils/localStorage'
 
 const currencyState = atom({

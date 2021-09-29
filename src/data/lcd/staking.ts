@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import useLCD from '../../lib/api/useLCD'
+import useLCD from '../../api/useLCD'
 
 export const useStakingPool = () => {
   const lcd = useLCD()

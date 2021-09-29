@@ -1,4 +1,4 @@
-import useFinder from '../../lib/hooks/useFinder'
+import useFinder from '../../hooks/useFinder'
 import ExtLink from '../../components/ExtLink'
 
 const AccountLink = ({ address }: { address: string }) => {

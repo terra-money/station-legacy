@@ -4,7 +4,7 @@ import { useQuery } from 'react-query'
 import BigNumber from 'bignumber.js'
 import { Proposal, Vote } from '@terra-money/terra.js'
 import { div, format, percent } from '../../lib'
-import useLCD from '../../lib/api/useLCD'
+import useLCD from '../../api/useLCD'
 
 /* gov */
 export const useQueryVotingParams = () => {

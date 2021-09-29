@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import c from 'classnames'
-import useFCD from '../lib/api/useFCD'
+import useFCD from '../api/useFCD'
 import { isExtension, isWeb } from '../utils/env'
 import { useCurrentChainName, useManageChain } from '../data/chain'
 import { useModal } from '../hooks'

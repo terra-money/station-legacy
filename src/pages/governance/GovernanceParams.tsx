@@ -1,6 +1,6 @@
 import { Duration } from 'luxon'
 import { div, format, toNumber } from '../../lib'
-import { toStationCoin } from '../../lib/utils/format'
+import { toStationCoin } from '../../utils/format'
 import Displays from '../../components/Displays'
 import { useQueryDepositParams, useQueryVotingParams } from '../../data/lcd/gov'
 

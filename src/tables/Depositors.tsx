@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { format } from '../lib'
-import { toStationCoin } from '../lib/utils/format'
+import { toStationCoin } from '../utils/format'
 import { useDeposits, useProposalId } from '../data/lcd/gov'
 import ErrorComponent from '../components/ErrorComponent'
 import Loading from '../components/Loading'

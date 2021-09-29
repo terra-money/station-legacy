@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSend } from '../lib'
-import useTokenBalance from '../lib/cw20/useTokenBalance'
+import useTokenBalance from '../cw20/useTokenBalance'
 import FormInformation from '../components/FormInformation'
 import ExtLink from '../components/ExtLink'
 import Post from './Post'

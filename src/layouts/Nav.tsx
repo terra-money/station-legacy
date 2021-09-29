@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import c from 'classnames'
 import { Proposal } from '@terra-money/terra.js'
-import { useMenu, ErrorBoundary } from '../lib'
+import { useMenu } from '../lib'
 import { ReactComponent as TerraStation } from '../images/TerraStation.svg'
 import { isExtension } from '../utils/env'
 import { useExtension } from '../extension/useExtension'
 import Icon from '../components/Icon'
+import { ErrorBoundaryComponent } from '../components/ErrorBoundary'
 import { useProposalStatusList } from '../data/lcd/gov'
 import NavItem from './NavItem'
 import Guide from './Guide'
@@ -130,9 +131,9 @@ const Nav = () => {
 
           <section className={s.chain}>
             <Chain />
-            <ErrorBoundary>
+            <ErrorBoundaryComponent>
               <Height />
-            </ErrorBoundary>
+            </ErrorBoundaryComponent>
           </section>
         </footer>
       </section>

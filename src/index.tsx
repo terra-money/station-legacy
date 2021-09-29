@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { RecoilRoot } from 'recoil'
 import * as Sentry from '@sentry/browser'
 
+import './lang'
 import './index.scss'
 import { isLocal, isExtension } from './utils/env'
 import WithChains from './WithChains'
