@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useQuery } from 'react-query'
 import BigNumber from 'bignumber.js'
-import { Proposal, Vote } from '@terra-money/terra.js'
+import { Deposit, Proposal, Vote } from '@terra-money/terra.js'
 import { div, format, percent } from '../../lib'
 import useLCD from '../../api/useLCD'
 
@@ -32,7 +32,10 @@ export const useProposer = (id: number) => {
 /* proposals: details */
 export const useDeposits = (id: number) => {
   const lcd = useLCD()
-  return useQuery(['deposits', id], () => lcd.gov.deposits(id))
+  return useQuery(
+    ['deposits', id],
+    async () => (await lcd.gov.deposits(id)) as unknown as Deposit[]
+  )
 }
 
 export const useVotes = (id: number) => {
