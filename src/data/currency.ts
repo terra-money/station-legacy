@@ -37,7 +37,8 @@ export const useCurrencyRates = () => {
         .reduce((acc, { amount, denom }) => ({ ...acc, [denom]: amount }), {})
 
       return { ...rates, uluna: '1' }
-    }
+    },
+    { staleTime: Infinity }
   )
 
   const getRate = (currency: string, base: string) => {
