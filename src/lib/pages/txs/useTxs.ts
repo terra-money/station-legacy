@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
 
-import { createActionRuleSet } from '../../../ruleset/create'
-import { createLogMatcherForActions } from '../../../ruleset/execute'
-import { getTxCanonicalMsgs } from '../../../ruleset/format'
+import {
+  createActionRuleSet,
+  getTxCanonicalMsgs,
+  createLogMatcherForActions,
+} from '../../../ruleset'
 
 import { TxsPage, Tx, TxUI } from '../../types'
 import { format } from '../../utils'
