@@ -5,7 +5,7 @@ import styles from './FormInformation.module.scss'
 const FormInformation: FC = ({ children }) => (
   <p className={styles.component}>
     <Icon name="info" />
-    <span>{children}</span>
+    <section>{children}</section>
   </p>
 )
 

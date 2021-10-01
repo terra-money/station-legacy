@@ -5,15 +5,17 @@ import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
+import Icon from '../../components/Icon'
 import s from './AmountCard.module.scss'
 
 interface Props extends AvailableItem {
   button: ReactNode
+  buttonAttrs?: { onClick: () => void; children: string }
   icon?: string
 }
 
 const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
-  const { currencyValueDisplay } = props
+  const { currencyValueDisplay, buttonAttrs } = props
   const { value, unit } = display
   const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
@@ -47,7 +49,11 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
           )}
         </section>
 
-        <div className={s.button}>{button}</div>
+        {isExtension ? (
+          <Icon name="chevron_right" />
+        ) : (
+          <div className={s.button}>{button}</div>
+        )}
       </header>
 
       {children}
@@ -55,7 +61,9 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
   )
 
   return isExtension ? (
-    <div className={s.extension}>{content}</div>
+    <button className={s.extension} {...buttonAttrs}>
+      {content}
+    </button>
   ) : (
     <Card bodyClassName={s.card}>{content}</Card>
   )

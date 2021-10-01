@@ -79,5 +79,6 @@ $padding-sm: 15px 20px;
 }
 
 .link {
+  @include flex;
   color: $brand;
 }

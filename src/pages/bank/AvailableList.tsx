@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
+import classNames from 'classnames'
 import { AvailableUI, HideSmallUI } from '../../lib'
+import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'
 import Checkbox from '../../components/Checkbox'
@@ -44,8 +46,11 @@ const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
     <Card
       title={renderTitle()}
       actions={hideSmall && renderCheckbox(hideSmall)}
+      noShadow={isExtension}
     >
-      {children}
+      <section className={classNames(isExtension && styles.extension)}>
+        {children}
+      </section>
       {footer}
     </Card>
   )

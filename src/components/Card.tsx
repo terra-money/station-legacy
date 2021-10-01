@@ -18,6 +18,7 @@ type Props = {
   style?: object
 
   bordered?: boolean
+  noShadow?: boolean
   bgHeader?: boolean
   small?: boolean
   fixedHeight?: boolean
@@ -27,7 +28,7 @@ const Card: FC<Props> = (props) => {
   const { title, footer, children, actions, onClick } = props
   const { className, headerClassName, mainClassName } = props
   const { bodyClassName, footerClassName } = props
-  const { bordered, bgHeader, small, fixedHeight, style } = props
+  const { bordered, noShadow, bgHeader, small, fixedHeight, style } = props
   const shouldCollapse = !(bordered || bgHeader)
 
   const bodyRef = useRef<HTMLDivElement>(null)
@@ -81,6 +82,7 @@ const Card: FC<Props> = (props) => {
         'card',
         small && 'card-small',
         bordered && 'bordered',
+        noShadow && 'no-shadow',
         className
       )}
       style={style}

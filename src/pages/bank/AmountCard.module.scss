@@ -16,10 +16,18 @@
 }
 
 .extension {
+  display: block;
+  width: 100%;
   padding: 20px;
 
   &:not(:first-child) {
-    border-top: 1px solid #e9edf8;
+    border-top: 1px solid $line;
+  }
+
+  .header {
+    @include flex(space-between);
+    width: 100%;
+    height: unset;
   }
 }
 

@@ -14,18 +14,19 @@ const Available = (item: Props) => {
   const { denom, token, buttonLabel } = item
   const { modal } = useApp()
 
-  const renderButton = () => {
-    const openModal = () => modal.open(<Send denom={denom || token || ''} />)
-    const className = c('btn btn-primary btn-sm', s.button)
-
-    return (
-      <ButtonWithAuth onClick={openModal} className={className}>
-        {buttonLabel}
-      </ButtonWithAuth>
-    )
+  const buttonAttrs = {
+    onClick: () => modal.open(<Send denom={denom || token || ''} />),
+    children: buttonLabel,
   }
 
-  return <AmountCard {...item} button={renderButton()} />
+  const renderButton = () => {
+    const className = c('btn btn-primary btn-sm', s.button)
+    return <ButtonWithAuth {...buttonAttrs} className={className} />
+  }
+
+  return (
+    <AmountCard {...item} button={renderButton()} buttonAttrs={buttonAttrs} />
+  )
 }
 
 export default Available
