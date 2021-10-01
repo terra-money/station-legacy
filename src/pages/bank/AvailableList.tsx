@@ -48,9 +48,12 @@ const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
       actions={hideSmall && renderCheckbox(hideSmall)}
       noShadow={isExtension}
     >
-      <section className={classNames(isExtension && styles.extension)}>
-        {children}
-      </section>
+      {!!list.length && (
+        <section className={classNames(isExtension && styles.extension)}>
+          {children}
+        </section>
+      )}
+
       {footer}
     </Card>
   )
