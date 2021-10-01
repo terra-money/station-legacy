@@ -60,19 +60,24 @@ export const useAuth = () => {
       const { address } = user
 
       addToRecentAddress(address)
-      authModal.close()
       localSettings.set({ user })
       extension.storage?.local.set({ wallet: { address } })
-
-      if (isExtension) {
-        replace('/')
-        // Close connection to Ledger. It is not allowed to be accessed from multiple tabs.
-        user.ledger && ledger.close()
-      }
     }
 
     // eslint-disable-next-line
   }, [user])
+
+  const signIn = (user: User) => {
+    setUser(user)
+    authModal.close()
+
+    if (isExtension) {
+      replace('/')
+
+      // Close connection to Ledger. It is not allowed to be accessed from multiple tabs.
+      user.ledger && ledger.close()
+    }
+  }
 
   // On sign out
   const signOut = useCallback(() => {
@@ -82,7 +87,7 @@ export const useAuth = () => {
     extension.storage?.local.remove(['wallet'])
   }, [disconnect, setUser])
 
-  return { signIn: setUser, signOut }
+  return { signIn, signOut }
 }
 
 const addToRecentAddress = (address: string) => {
