@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import c from 'classnames'
+import c from 'classnames/bind'
 import useFCD from '../api/useFCD'
 import { isExtension, isWeb } from '../utils/env'
 import { useCurrentChainName, useManageChain } from '../data/chain'
@@ -11,6 +11,8 @@ import useMergeChains from '../pages/settings/useMergedChains'
 import LocalTerraError from './LocalTerraError'
 import s from './Chain.module.scss'
 import NavStyles from './Nav.module.scss'
+
+const cx = c.bind(s)
 
 const Chain = ({ disabled }: { disabled?: boolean }) => {
   const { set } = useManageChain()
@@ -38,15 +40,22 @@ const Chain = ({ disabled }: { disabled?: boolean }) => {
     }
   }
 
+  const colorClassName = cx(
+    currentChainName !== 'mainnet' && (isExtension ? 'red' : 'bg-red')
+  )
+
   return isWeb ? (
-    <div className={s.select}>{currentChainName}</div>
+    <div className={c(s.select, colorClassName)}>{currentChainName}</div>
   ) : (
     <>
       <Select
         value={currentChainName}
         onChange={handleChange}
         className={c('form-control', s.select)}
-        containerClassName={isExtension ? NavStyles.select : undefined}
+        containerClassName={c(
+          isExtension ? NavStyles.select : undefined,
+          colorClassName
+        )}
         icon={isExtension ? 'wifi_tethering' : undefined}
         disabled={disabled}
       >
