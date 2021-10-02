@@ -1,8 +1,10 @@
-import { useHistory, Switch, Route, useRouteMatch } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import extension from 'extensionizer'
 import { useAuthMenu } from '../lib'
 import { AuthMenuKey } from '../lib'
 import { loadKeys } from '../utils/localStorage'
+import { useAddress } from '../data/auth'
 import { menu } from './getAuthMenu'
 import getAuthMenuKeys from './getAuthMenuKeys'
 import AuthMenu from './AuthMenu'
@@ -18,6 +20,8 @@ const AuthRoute = () => {
 
   const keys: AuthMenuKey[] = getAuthMenuKeys()
   const { ui, list } = useAuthMenu(keys)
+
+  const address = useAddress()
 
   /* render */
   const render = () => (
@@ -53,6 +57,7 @@ const AuthRoute = () => {
 
   return (
     <Switch>
+      {address && <Redirect to="/" />}
       <Route path={path + '/'} exact render={render} />
       <Route path={path + '/ledger'} component={SignInWithLedger} />
       <Route path={path + '/select'} component={SignIn} />
