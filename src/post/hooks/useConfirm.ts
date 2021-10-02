@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { Coins, LCDClient, StdFee } from '@terra-money/terra.js'
+import { Coins, isTxError, LCDClient, StdFee } from '@terra-money/terra.js'
 import { StdSignMsg, StdTx } from '@terra-money/terra.js'
 import { useConnectedWallet } from '@terra-money/wallet-provider'
 import { ConfirmProps, ConfirmPage, Sign, Field, GetKey } from '../../types'
@@ -142,7 +142,9 @@ export default (
         const lcd = new LCDClient({ chainID, URL, gasPrices })
 
         const data = await lcd.tx.broadcastSync(signedTx)
-        setTxHash(data.txhash)
+        isTxError(data)
+          ? setErrorMessage(checkError(data.raw_log))
+          : setTxHash(data.txhash)
       }
 
       const gasFee = new Coins({ [fee.denom]: fee.amount })
