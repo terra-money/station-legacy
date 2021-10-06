@@ -17,7 +17,7 @@ export default (t: TFunction): Props<Result> => ({
   filterConfig: {
     type: { initial: CumulativeType.P },
     duration: { initial: 3, list: [0, 3, 7, 14, 30] },
-    denom: { initial: 'ukrw' },
+    denom: { initial: 'uusd' },
   },
   getValue: (results, { type, denom, duration }) => {
     const result = results.find((r) => r.denom === denom)
