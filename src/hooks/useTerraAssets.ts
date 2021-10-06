@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { TERRA_ASSETS } from '../pages/hooks/constants'
+import { TERRA_ASSETS } from '../constants'
 
 const config = { baseURL: TERRA_ASSETS }
 

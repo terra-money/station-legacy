@@ -10,7 +10,7 @@ import c from 'classnames'
 import { useCurrentChainName } from '../data/chain'
 import { useCurrency } from '../data/currency'
 import { useLang } from '../data/lang'
-import { TERRA_ASSETS } from '../pages/hooks/constants'
+import { TERRA_ASSETS } from '../constants'
 
 import { electron, report } from '../utils'
 import { isElectron, isExtension } from '../utils/env'

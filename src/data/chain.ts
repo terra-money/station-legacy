@@ -28,6 +28,11 @@ export const useCurrentChainName = () => {
   return name
 }
 
+export const useChainID = () => {
+  const { chainID } = useCurrentChain()
+  return chainID
+}
+
 export const useManageChain = () => {
   const setChainName = useSetRecoilState(chainNameState)
   const currentChain = useCurrentChain()
