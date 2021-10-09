@@ -77,6 +77,7 @@ export default Header
 const getBadgeClassName = (status: string) => {
   const suffix: { [status: string]: string } = {
     active: 'success',
+    unbonding: 'warning',
     inactive: 'warning',
     jailed: 'danger',
   }
