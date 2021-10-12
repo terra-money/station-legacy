@@ -6,7 +6,7 @@ import {
   createActionRuleSet,
   getTxCanonicalMsgs,
   createLogMatcherForActions,
-} from '../../../ruleset'
+} from '@terra-money/log-finder-ruleset'
 
 import { TxsPage, Tx, TxUI } from '../../../types'
 import { format } from '../../../utils'
