@@ -7,6 +7,7 @@ import { getStoredWallet } from '../utils/localStorage'
 import { encrypt } from '../utils/terra-keystore'
 import { useUser } from '../data/auth'
 import Form from '../components/Form'
+import InvalidFeedback from '../components/InvalidFeedback'
 import QRCode from './QRCode'
 
 interface Values {
@@ -79,9 +80,18 @@ const GenerateQRCode = ({ exportKey }: { exportKey?: boolean }) => {
       title={exportKey ? 'Export private key' : 'Export with QR code'}
       data={exportKey ? encoded : data}
       warn={
-        exportKey
-          ? 'Keep this encrypted key private'
-          : t('Auth:Manage:Keep this QR code private')
+        exportKey ? (
+          <>
+            <InvalidFeedback>Keep this encrypted key private</InvalidFeedback>
+            <InvalidFeedback>
+              Both the private key and password are required to recover a wallet
+            </InvalidFeedback>
+          </>
+        ) : (
+          <InvalidFeedback>
+            {t('Auth:Manage:Keep this QR code private')}
+          </InvalidFeedback>
+        )
       }
       exportKey={exportKey}
     />
