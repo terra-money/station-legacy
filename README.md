@@ -30,6 +30,8 @@ Add the following entry to your `/etc/hosts` file:
 ```sh
 git clone https://github.com/terra-money/station.git
 cd station
+git submodule init
+git submodule update
 npm i
 npm run start
 ```
