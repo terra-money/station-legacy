@@ -87,20 +87,18 @@ export default ({ address }: User): TxsPage => {
               link: getLink!({ network: chainId, q: 'tx', v: txhash }),
               hash: txhash,
               date: format.date(timestamp, { toLocale: true }),
-              messages: success
-                ? msgs.map((msg) => {
-                    if (!msg)
-                      return {
-                        tag: 'Unknown',
-                        summary: ['Unknown tx'],
-                        success,
-                      }
+              messages: msgs.map((msg) => {
+                if (!msg)
+                  return {
+                    tag: 'Unknown',
+                    summary: ['Unknown tx'],
+                    success,
+                  }
 
-                    const tag = msg.msgType.split('/')[1].replaceAll('-', ' ')
-                    const summary = msg.canonicalMsg.map(parseTxText)
-                    return { tag, summary, success }
-                  })
-                : [{ tag: 'Failed', summary: [raw_log], success }],
+                const tag = msg.msgType.split('/')[1].replaceAll('-', ' ')
+                const summary = msg.canonicalMsg.map(parseTxText)
+                return { tag, summary, success }
+              }),
               details: [
                 {
                   title: t('Common:Tx:Tx fee'),
@@ -109,6 +107,7 @@ export default ({ address }: User): TxsPage => {
                     .join(', '),
                 },
                 { title: t('Common:Tx:Memo'), content: memo },
+                !success ? { title: 'Log', content: raw_log } : {},
               ].filter(({ content }) => !!content),
             }
           }),
