@@ -1,7 +1,8 @@
 import { useState, ReactNode } from 'react'
-import { ContractsUI, ContractUI, is } from '../../lib'
+import { ContractsUI } from '../../lib'
 import { useMenu, useContract, useContracts } from '../../lib'
 import { useApp, useGoBack } from '../../hooks'
+import useRenderContract from '../hooks/contracts/useRenderContract'
 import Page from '../../components/Page'
 import Info from '../../components/Info'
 import Card from '../../components/Card'
@@ -19,14 +20,13 @@ import Search from './Search'
 const Contracts = () => {
   useGoBack('/')
   const [param, setParam] = useState<string>('') // For searching with contract address
-  const [params, setParams] = useState<{ owner?: string; search?: string }>({})
-  const { error, ui, create, upload } = useContracts({ ...params })
-  const contract: ContractUI | undefined = useContract(param)
+  const { error, ui, create, upload } = useContracts()
+  const { data: contract } = useContract(param)
+  const renderContract = useRenderContract()
   const { Contracts: title } = useMenu()
   const { modal } = useApp()
 
   const submit = (value: string) => {
-    setParams(!value ? {} : { [is.address(value) ? 'owner' : 'search']: value })
     setParam(value)
   }
 
@@ -56,7 +56,7 @@ const Contracts = () => {
         <Search submit={submit} placeholder={attrs?.placeholder} />
 
         {contract ? (
-          <Contract {...contract} />
+          <Contract {...renderContract(contract)} />
         ) : (
           <More
             isEmpty={!list?.length}

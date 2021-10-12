@@ -16,9 +16,9 @@ export interface ContractsUI {
 export interface ContractUI {
   address: string
   link?: string
-  date: string
+  date?: string
   code: { label: string; value: string }
-  contract: { label: string; value: string }
+  contract?: { label: string; value: string }
   interact: string
   query: string
 }

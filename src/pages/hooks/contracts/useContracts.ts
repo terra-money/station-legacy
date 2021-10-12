@@ -2,13 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ContractsPage, Contract } from '../../../types'
 import useFCD from '../../../api/useFCD'
-import useFinder from '../../../hooks/useFinder'
-import renderContract from './renderContract'
-
-interface Params {
-  owner?: string
-  search?: string
-}
+import useRenderContract from './useRenderContract'
 
 interface Response {
   contracts: Contract[]
@@ -16,9 +10,9 @@ interface Response {
   next: number
 }
 
-export default (props: Params): ContractsPage => {
+export default (): ContractsPage => {
   const { t } = useTranslation()
-  const getLink = useFinder()
+  const renderContract = useRenderContract()
 
   /* api */
   const [contracts, setContracts] = useState<Contract[]>([])
@@ -27,7 +21,7 @@ export default (props: Params): ContractsPage => {
   const [done, setDone] = useState(false)
 
   const url = '/v1/wasm/contracts'
-  const params = { ...props, offset }
+  const params = { offset }
   const response = useFCD<Response>({ url, params })
   const { data } = response
 
@@ -53,9 +47,7 @@ export default (props: Params): ContractsPage => {
       : {
           more,
           search: { placeholder: t('Page:Contracts:Search') },
-          list: contracts.map((contract) =>
-            renderContract(contract, getLink, t)
-          ),
+          list: contracts.map(renderContract),
         }
 
   return {

@@ -35,10 +35,13 @@ const Contract = ({ address, link, date, ...props }: ContractUI) => {
             <strong>{code.label}</strong>
             <span>{code.value}</span>
           </li>
-          <li>
-            <strong>{contract.label}</strong>
-            <span>{contract.value}</span>
-          </li>
+
+          {contract && (
+            <li>
+              <strong>{contract.label}</strong>
+              <span>{contract.value}</span>
+            </li>
+          )}
         </ul>
 
         <ActionBar
