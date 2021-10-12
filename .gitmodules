@@ -1,3 +1,0 @@
-[submodule "src/ruleset"]
-	path = src/ruleset
-	url = https://github.com/terra-money/log-finder-ruleset.git
