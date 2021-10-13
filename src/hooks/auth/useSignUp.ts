@@ -179,7 +179,18 @@ export default (props: Props): SignUp => {
     }
   }
 
-  const disabled = invalid || seed.some((word) => !word.length) || loading
+  const validateSeed = () => {
+    const isValidWord = (word: string) => wordlist.includes(word)
+    if (seed.every(isValidWord)) {
+      return true
+    } else {
+      const h = seed.slice(0, 12)
+      const t = seed.slice(12)
+      return h.every(isValidWord) && t.every((word) => !word)
+    }
+  }
+
+  const disabled = invalid || !validateSeed() || loading
 
   return Object.assign(
     {
