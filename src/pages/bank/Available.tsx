@@ -1,4 +1,5 @@
 import { AvailableItem } from '../../lib'
+import { isExtension } from '../../utils/env'
 import { useApp } from '../../hooks'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import AnchorEarn from '../../post/AnchorEarn'
@@ -48,7 +49,7 @@ const Available = (item: Props) => {
       buttonAttrs={buttonAttrs}
       extended={denom === 'uusd'}
     >
-      {denom === 'uusd' && (
+      {!isExtension && denom === 'uusd' && (
         <AnchorEarnCard button={renderAnchorEarnButton('Withdraw')} />
       )}
     </AmountCard>
