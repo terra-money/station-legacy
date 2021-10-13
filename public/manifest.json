@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Terra Station",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "options_ui": {
     "page": "index.html"
   },

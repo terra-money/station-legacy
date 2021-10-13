@@ -94,7 +94,7 @@ export default (props: Props): SignUp => {
   /* Seed */
   const blank = Array.from({ length: 24 }, () => '')
   const [seed, setSeed] = useState<Seed>(generated ?? blank)
-  const phrase = seed.join(' ')
+  const phrase = seed.join(' ').trim()
 
   const phraseField: Field = {
     label: t('Auth:SignUp:Seed phrase'),
