@@ -13,12 +13,13 @@ interface Props extends FormProps {
   dl?: { dt: ReactNode; dd: ReactNode }[]
   ledger?: ConfirmLedgerProps
   result?: Card
+  warn?: string
   txhash?: string
   pagination?: ReactNode
   onFinish?: () => void
 }
 
-const ConfirmationComponent: FC<Props> = ({ dl, ledger, ...props }) => {
+const ConfirmationComponent: FC<Props> = ({ dl, ledger, warn, ...props }) => {
   const { result, onFinish, children, pagination, txhash, ...formProps } = props
 
   const renderResultButton = (label: string) => (
@@ -60,6 +61,8 @@ const ConfirmationComponent: FC<Props> = ({ dl, ledger, ...props }) => {
             {formProps.form.errors?.map((error, index) => (
               <InvalidFeedback key={index}>{error}</InvalidFeedback>
             ))}
+
+            {warn && <InvalidFeedback warn>{warn}</InvalidFeedback>}
           </section>
         </>
       )}

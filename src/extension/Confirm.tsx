@@ -208,8 +208,13 @@ const Component = ({ requestType, details, ...props }: Props) => {
     )
   }, [])
 
+  const isSign = requestType === 'sign'
+
+  const title = isSign ? 'Confirm signature' : 'Confirm transaction'
+  const label = `${title} with password`
+
   const passwordField: Field = {
-    label: 'Confirm with password',
+    label,
     element: 'input',
     attrs: {
       type: 'password',
@@ -266,11 +271,13 @@ const Component = ({ requestType, details, ...props }: Props) => {
       : setPasswordError('Incorrect password')
   }
 
+  const submitLabel = isSign ? 'Sign' : 'Post'
+
   const form = {
-    title: 'Confirm',
+    title,
     fields: !user.ledger ? [passwordField, storePasswordField] : [],
     disabled,
-    submitLabel: 'Submit',
+    submitLabel,
     onSubmit: disabled ? undefined : submit,
     submitting,
   }
@@ -284,6 +291,10 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   const parseTxText = useParseTxText()
 
+  const warn = isSign
+    ? 'The origin is signing a transaction. This transaction will be routed and processed by the origin. Interact only with origins that you trust.'
+    : undefined
+
   return submitting ? (
     <Submitting />
   ) : (
@@ -291,6 +302,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
       form={form}
       result={result}
       pagination={pagination}
+      warn={warn}
       onFinish={() => window.location.reload()}
       cancel={{ children: 'Deny', onClick: onDeny }}
     >
