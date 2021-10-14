@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { format } from '../../../utils'
+import { format, is } from '../../../utils'
 import { truncate } from '../../../utils/format'
 import useLCD from '../../../api/useLCD'
 import { useCurrentChainName } from '../../../data/chain'
@@ -64,6 +64,8 @@ const useParseTxText = () => {
   const parseWord = (word: string): string =>
     word.split(',').length > 1
       ? 'multiple coins'
+      : is.nativeDenom(word)
+      ? format.denom(word)
       : word
           .replaceAll(REGEXP.COIN, replaceCoin)
           .replaceAll(REGEXP.ADDRESS, replaceAddress)

@@ -22,6 +22,7 @@ import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
 import LedgerKey from '../extension/LedgerKey'
+import useParseTxText from '../pages/hooks/txs/useParseTxText'
 import s from './Confirm.module.scss'
 
 interface Props extends RecordedExtSign {
@@ -281,6 +282,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
     ? { content: 'Success!', ...defaultResultProps }
     : undefined
 
+  const parseTxText = useParseTxText()
+
   return submitting ? (
     <Submitting />
   ) : (
@@ -307,7 +310,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
       <section>
         {msgs.map((msg, index) => (
-          <Message msg={msg} key={index} />
+          <Message msg={msg} parseTxText={parseTxText} key={index} />
         ))}
       </section>
     </ConfirmationComponent>

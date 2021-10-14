@@ -17,14 +17,12 @@ $border: 1px solid #e9edf8;
 .header {
   @include flex(space-between);
   cursor: pointer;
-  padding: 15px;
-  line-height: 1.75;
+  padding: 15px 20px;
 
-  .badge {
-    background: $brand;
-    border-radius: 5px;
-    color: white;
-    padding: 0 5px;
+  .type {
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
 
   .button {

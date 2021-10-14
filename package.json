@@ -15,6 +15,7 @@
     "@terra-money/ledger-terra-js": "^1.1",
     "@terra-money/log-finder": "^1.1.6",
     "@terra-money/log-finder-ruleset": "^1.0.0",
+    "@terra-money/msg-reader": "^1.0.3",
     "@terra-money/terra.js": "^2.0.14",
     "@terra-money/wallet-provider": "^2.2.0",
     "@ungap/url-search-params": "^0.2",
