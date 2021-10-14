@@ -218,8 +218,7 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
     const sorted = validators
       .filter((v) => {
         const delegated = v.myDelegation && gt(v.myDelegation, 0)
-        const hidden =
-          (v.status === 'jailed' && !delegated) || v.status === 'inactive'
+        const hidden = v.status === 'jailed' && !delegated
         return !hidden
       })
       .sort(({ votingPower: a }, { votingPower: b }) =>
