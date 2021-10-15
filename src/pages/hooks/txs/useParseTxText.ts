@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query'
-import BigNumber from 'bignumber.js'
 import { format, is } from '../../../utils'
 import { truncate } from '../../../utils/format'
 import useLCD from '../../../api/useLCD'
@@ -54,26 +53,26 @@ const useParseTxText = () => {
 
   const replaceCoin = (coin: string) => {
     const { amount, token } = splitTokenText(coin)
-    const coinStr = format.coin(
-      { amount, denom: token },
-      undefined,
-      undefined,
-      whitelist
-    )
-    const isOnlyAmount = new BigNumber(coinStr).isFinite()
-    return isOnlyAmount ? `${coinStr} ${truncate(token)}` : coinStr
+    const value = format.amount(amount)
+    const unit = format.denom(token, whitelist) || truncate(token)
+    return [value, unit].join(' ')
   }
 
-  const parseWord = (word: string): string =>
-    word.split(',').filter((str) => str !== '').length > 1
+  const parseWord = (word: string): string => {
+    if (word.endsWith(',')) {
+      return parseWord(word.slice(0, -1)) + ','
+    }
+
+    return word.split(',').length > 1
       ? 'multiple coins'
       : is.nativeDenom(word)
       ? format.denom(word)
       : word
           .replaceAll(REGEXP.COIN, replaceCoin)
           .replaceAll(REGEXP.ADDRESS, replaceAddress)
+  }
 
-  return (text: string = '') => text.split(' ').map(parseWord).join(' ')
+  return (setence: string = '') => setence.split(' ').map(parseWord).join(' ')
 }
 
 export default useParseTxText
