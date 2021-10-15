@@ -35,9 +35,10 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { user, pagination, onFinish } = props
   const { name } = user
   const { id, origin, gasPrices, ...rest } = details
-  const { waitForConfirmation, ...txOptionsData } = rest
+  const { waitForConfirmation, bytes, ...txOptionsData } = rest
   const txOptions = parseCreateTxOptions(txOptionsData)
-  const { msgs, memo } = txOptions
+  const msgs = txOptions?.msgs
+  const memo = txOptions?.memo
 
   /* chain */
   const { chainID, lcd: URL, name: network } = useCurrentChain()
@@ -58,28 +59,42 @@ const Component = ({ requestType, details, ...props }: Props) => {
       if (user.ledger) {
         // ledger
         const key = new LedgerKey(await ledger.getPubKey())
-        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
-        const stdSignature = await key.createSignature(stdSignMsg)
 
-        result = {
-          recid: 0,
-          signature: stdSignature.signature,
-          public_key: stdSignature.pub_key,
-          stdSignMsgData: stdSignMsg.toData(),
+        if (txOptions) {
+          const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
+          const stdSignature = await key.createSignature(stdSignMsg)
+
+          result = {
+            recid: 0,
+            signature: stdSignature.signature,
+            public_key: stdSignature.pub_key,
+            stdSignMsgData: stdSignMsg.toData(),
+          }
         }
       } else {
         const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
-        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
-        const { signature, recid } = key.ecdsaSign(
-          Buffer.from(stdSignMsg.toJSON())
-        )
 
-        result = {
-          recid,
-          signature: Buffer.from(signature).toString('base64'),
-          public_key: key.publicKey?.toString('base64'),
-          stdSignMsgData: stdSignMsg.toData(),
+        if (txOptions) {
+          const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
+          const { signature, recid } = key.ecdsaSign(
+            Buffer.from(stdSignMsg.toJSON())
+          )
+
+          result = {
+            recid,
+            signature: Buffer.from(signature).toString('base64'),
+            public_key: key.publicKey?.toString('base64'),
+            stdSignMsgData: stdSignMsg.toData(),
+          }
+        } else if (bytes) {
+          const { signature, recid } = await key.ecdsaSign(Buffer.from(bytes))
+
+          result = {
+            recid,
+            signature: Buffer.from(signature).toString('base64'),
+            public_key: key.publicKey?.toString('base64'),
+          }
         }
       }
 
@@ -103,63 +118,65 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   /* post tx */
   const postTx = async () => {
-    setSubmitting(true)
+    if (txOptions) {
+      setSubmitting(true)
 
-    try {
-      let signed: StdTx
+      try {
+        let signed: StdTx
 
-      if (user.ledger) {
-        const key = new LedgerKey(await ledger.getPubKey())
-        signed = await lcd.wallet(key).createAndSignTx(txOptions)
-      } else {
-        const { privateKey } = getStoredWallet(name!, password)
-        const key = new RawKey(Buffer.from(privateKey, 'hex'))
-        signed = await lcd.wallet(key).createAndSignTx(txOptions)
-      }
+        if (user.ledger) {
+          const key = new LedgerKey(await ledger.getPubKey())
+          signed = await lcd.wallet(key).createAndSignTx(txOptions)
+        } else {
+          const { privateKey } = getStoredWallet(name!, password)
+          const key = new RawKey(Buffer.from(privateKey, 'hex'))
+          signed = await lcd.wallet(key).createAndSignTx(txOptions)
+        }
 
-      const data = await lcd.tx.broadcastSync(signed)
-      const { raw_log, txhash } = data
-      const code = isTxError(data) ? data.code : undefined
+        const data = await lcd.tx.broadcastSync(signed)
+        const { raw_log, txhash } = data
+        const code = isTxError(data) ? data.code : undefined
 
-      const onVerified = (result: object) => {
-        setSubmitting(false)
-        setSubmitted(true)
-        onFinish({
-          result,
-          success: true,
+        const onVerified = (result: object) => {
+          setSubmitting(false)
+          setSubmitted(true)
+          onFinish({
+            result,
+            success: true,
+            password: storePassword ? password : undefined,
+          })
+        }
+
+        const onError = (message: string) => {
+          setSubmitting(false)
+          setSubmitted(true)
+          setErrorMessage(message)
+          onFinish({
+            result: data,
+            success: false,
+            error: { code: 2 /* Tx error */, message },
           password: storePassword ? password : undefined,
-        })
-      }
+          })
+        }
 
-      const onError = (message: string) => {
+        code
+          ? onError(raw_log)
+          : waitForConfirmation
+          ? verifyTx(txhash, onVerified, onError)
+          : onVerified(data)
+      } catch (error) {
         setSubmitting(false)
         setSubmitted(true)
-        setErrorMessage(message)
+        setErrorMessage(error.message)
         onFinish({
-          result: data,
           success: false,
-          error: { code: 2 /* Tx error */, message },
-          password: storePassword ? password : undefined,
+          error: {
+            code: 3,
+            message:
+              error.response?.data?.error /* error on tx */ ?? error.message,
+          },
         })
       }
-
-      code
-        ? onError(raw_log)
-        : waitForConfirmation
-        ? verifyTx(txhash, onVerified, onError)
-        : onVerified(data)
-    } catch (error) {
-      setSubmitting(false)
-      setSubmitted(true)
-      setErrorMessage(error.message)
-      onFinish({
-        success: false,
-        error: {
-          code: 3,
-          message:
-            error.response?.data?.error /* error on tx */ ?? error.message,
-        },
-      })
     }
   }
 
@@ -258,18 +275,20 @@ const Component = ({ requestType, details, ...props }: Props) => {
     Dictionary<Dictionary<{ url: string; types: string[] }>>
   >('/msgs/MsgGrantAuthorization.json')
 
-  const isDangerousTx = msgs.some((msg) => {
-    const { value } = msg.toData()
-    const MsgGrantAuthorization = data?.[network]
+  const isDangerousTx = !msgs
+    ? false
+    : msgs.some((msg) => {
+        const { value } = msg.toData()
+        const MsgGrantAuthorization = data?.[network]
 
-    if (MsgGrantAuthorization && 'authorization' in value) {
-      const { grantee, authorization } = value
-      const info = MsgGrantAuthorization[grantee]
-      return !(info && info.types.includes((authorization as any).type))
-    }
+        if (MsgGrantAuthorization && 'authorization' in value) {
+          const { grantee, authorization } = value
+          const info = MsgGrantAuthorization[grantee]
+          return !(info && info.types.includes((authorization as any).type))
+        }
 
-    return msg.toData().type === 'msgauth/MsgGrantAuthorization'
-  })
+        return msg.toData().type === 'msgauth/MsgGrantAuthorization'
+      })
 
   const disabled = (!user.ledger && !password) || isDangerousTx
 
@@ -329,7 +348,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
       </dl>
 
       <section>
-        {msgs.map((msg, index) => (
+        {msgs?.map((msg, index) => (
           <Message msg={msg} parseTxText={parseTxText} key={index} />
         ))}
       </section>
@@ -379,12 +398,18 @@ const usePage = (total: number) => {
 }
 
 /* helpers */
-const parseCreateTxOptions = (params: TxOptionsData): CreateTxOptions => {
-  const { msgs, fee } = params
-  return {
-    ...params,
-    msgs: msgs.map((msg) => Msg.fromData(JSON.parse(msg))),
-    fee: fee ? StdFee.fromData(JSON.parse(fee)) : undefined,
+const parseCreateTxOptions = (
+  params: TxOptionsData
+): CreateTxOptions | undefined => {
+  try {
+    const { msgs, fee } = params
+    return {
+      ...params,
+      msgs: msgs.map((msg) => Msg.fromData(JSON.parse(msg))),
+      fee: fee ? StdFee.fromData(JSON.parse(fee)) : undefined,
+    }
+  } catch {
+    return
   }
 }
 
