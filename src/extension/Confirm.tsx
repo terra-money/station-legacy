@@ -94,7 +94,10 @@ const Component = ({ requestType, details, ...props }: Props) => {
       setSubmitting(false)
       setSubmitted(true)
       setErrorMessage(error.message)
-      onFinish({ success: false })
+      onFinish({
+        success: false,
+        password: storePassword ? password : undefined,
+      })
     }
   }
 
@@ -136,6 +139,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
           result: data,
           success: false,
           error: { code: 2 /* Tx error */, message },
+          password: storePassword ? password : undefined,
         })
       }
 
@@ -180,7 +184,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   const onDeny = () => {
     setErrorMessage('User denied.')
-    onFinish({ success: false, error: { code: 1 /* User denied */ } })
+    onFinish({
+      success: false,
+      error: { code: 1 /* User denied */ },
+      password: storePassword ? password : undefined,
+    })
   }
 
   /* form */
