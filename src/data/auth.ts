@@ -84,7 +84,7 @@ export const useAuth = () => {
     disconnect()
     setUser(undefined)
     localSettings.delete(['user'])
-    extension.storage?.local.remove(['wallet'])
+    extension.storage?.local.remove(['wallet', 'encrypted', 'timestamp'])
   }, [disconnect, setUser])
 
   return { signIn, signOut }
