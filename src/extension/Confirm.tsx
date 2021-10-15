@@ -198,7 +198,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
         if (
           encrypted &&
           timestamp &&
-          isBefore(new Date(), addHours(new Date(timestamp), 1))
+          isBefore(new Date(), addHours(new Date(timestamp), 24))
         ) {
           const decrypted = decrypt(encrypted, String(timestamp))
           setStorePassword(true)
@@ -233,7 +233,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   }
 
   const storePasswordField: Field = {
-    label: 'Save password for an hour',
+    label: 'Save password for 24 hour',
     element: 'input',
     attrs: {
       type: 'checkbox',
