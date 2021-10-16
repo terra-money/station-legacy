@@ -88,7 +88,9 @@ const Component = ({ requestType, details, ...props }: Props) => {
             stdSignMsgData: stdSignMsg.toData(),
           }
         } else if (bytes) {
-          const { signature, recid } = await key.ecdsaSign(Buffer.from(bytes))
+          const { signature, recid } = await key.ecdsaSign(
+            Buffer.from(bytes, 'base64')
+          )
 
           result = {
             recid,
@@ -155,7 +157,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
             result: data,
             success: false,
             error: { code: 2 /* Tx error */, message },
-          password: storePassword ? password : undefined,
+            password: storePassword ? password : undefined,
           })
         }
 
