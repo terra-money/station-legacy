@@ -92,6 +92,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
             Buffer.from(bytes, 'base64')
           )
 
+          if(!signature) throw new Error('signature is undefined')
+
           result = {
             recid,
             signature: Buffer.from(signature).toString('base64'),
@@ -120,65 +122,65 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   /* post tx */
   const postTx = async () => {
-    if (txOptions) {
-      setSubmitting(true)
+    if (!txOptions) return
 
-      try {
-        let signed: StdTx
+    setSubmitting(true)
 
-        if (user.ledger) {
-          const key = new LedgerKey(await ledger.getPubKey())
-          signed = await lcd.wallet(key).createAndSignTx(txOptions)
-        } else {
-          const { privateKey } = getStoredWallet(name!, password)
-          const key = new RawKey(Buffer.from(privateKey, 'hex'))
-          signed = await lcd.wallet(key).createAndSignTx(txOptions)
-        }
+    try {
+      let signed: StdTx
 
-        const data = await lcd.tx.broadcastSync(signed)
-        const { raw_log, txhash } = data
-        const code = isTxError(data) ? data.code : undefined
+      if (user.ledger) {
+        const key = new LedgerKey(await ledger.getPubKey())
+        signed = await lcd.wallet(key).createAndSignTx(txOptions)
+      } else {
+        const { privateKey } = getStoredWallet(name!, password)
+        const key = new RawKey(Buffer.from(privateKey, 'hex'))
+        signed = await lcd.wallet(key).createAndSignTx(txOptions)
+      }
 
-        const onVerified = (result: object) => {
-          setSubmitting(false)
-          setSubmitted(true)
-          onFinish({
-            result,
-            success: true,
-            password: storePassword ? password : undefined,
-          })
-        }
+      const data = await lcd.tx.broadcastSync(signed)
+      const { raw_log, txhash } = data
+      const code = isTxError(data) ? data.code : undefined
 
-        const onError = (message: string) => {
-          setSubmitting(false)
-          setSubmitted(true)
-          setErrorMessage(message)
-          onFinish({
-            result: data,
-            success: false,
-            error: { code: 2 /* Tx error */, message },
-            password: storePassword ? password : undefined,
-          })
-        }
-
-        code
-          ? onError(raw_log)
-          : waitForConfirmation
-          ? verifyTx(txhash, onVerified, onError)
-          : onVerified(data)
-      } catch (error) {
+      const onVerified = (result: object) => {
         setSubmitting(false)
         setSubmitted(true)
-        setErrorMessage(error.message)
         onFinish({
-          success: false,
-          error: {
-            code: 3,
-            message:
-              error.response?.data?.error /* error on tx */ ?? error.message,
-          },
+          result,
+          success: true,
+          password: storePassword ? password : undefined,
         })
       }
+
+      const onError = (message: string) => {
+        setSubmitting(false)
+        setSubmitted(true)
+        setErrorMessage(message)
+        onFinish({
+          result: data,
+          success: false,
+          error: { code: 2 /* Tx error */, message },
+          password: storePassword ? password : undefined,
+        })
+      }
+
+      code
+        ? onError(raw_log)
+        : waitForConfirmation
+        ? verifyTx(txhash, onVerified, onError)
+        : onVerified(data)
+    } catch (error) {
+      setSubmitting(false)
+      setSubmitted(true)
+      setErrorMessage(error.message)
+      onFinish({
+        success: false,
+        error: {
+          code: 3,
+          message:
+            error.response?.data?.error /* error on tx */ ?? error.message,
+        },
+      })
     }
   }
 
