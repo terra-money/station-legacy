@@ -1,7 +1,8 @@
 import { FC, ReactNode, useState } from 'react'
 import classNames from 'classnames/bind'
+import { BuyUST } from '@terra-money/react-widget'
 import { AvailableItem } from '../../lib'
-import { TERRA_ASSETS } from '../../constants'
+import { TERRA_ASSETS, TRANSAK_API_KEY } from '../../constants'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
 import Card from '../../components/Card'
@@ -41,6 +42,12 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
         <h1 className={s.denom}>
           {icon}
           {unit}
+
+          {!isExtension && extended && (
+            <div className={s.buyust}>
+              <BuyUST transakApiKey={TRANSAK_API_KEY} />
+            </div>
+          )}
         </h1>
 
         <section className={s.value}>
