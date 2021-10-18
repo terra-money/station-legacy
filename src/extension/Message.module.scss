@@ -1,17 +1,21 @@
 @import '../styles/mixins';
 @import '../styles/variables';
 
-$border: 1px solid #e9edf8;
+$border: 1px solid #cfd8ea;
 
 .message {
   border: $border;
   border-radius: 5px;
-  box-shadow: 0 5px 10px 0 fade-out(black, 0.95);
   font-size: 12px;
 
   & + & {
-    margin-top: 20px;
+    margin-top: 15px;
   }
+}
+
+.danger {
+  border: 1px solid $red;
+  color: $red;
 }
 
 .header {

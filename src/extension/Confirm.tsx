@@ -299,6 +299,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   const parseTxText = useParseTxText()
 
+  const getIsMsgExecuteContract = (msg: Msg) =>
+    msg.toData().type === 'wasm/MsgExecuteContract'
+
+  const isOriginTerra = origin.includes('terra.money')
+
   const warn = isSign
     ? 'The origin is signing a transaction. This transaction will be routed and processed by the origin. Interact only with origins that you trust.'
     : undefined
@@ -329,9 +334,12 @@ const Component = ({ requestType, details, ...props }: Props) => {
       </dl>
 
       <section>
-        {msgs.map((msg, index) => (
-          <Message msg={msg} parseTxText={parseTxText} key={index} />
-        ))}
+        {msgs.map((msg) => {
+          const isDanger = !(isOriginTerra || getIsMsgExecuteContract(msg))
+          return (
+            <Message msg={msg} danger={isDanger} parseTxText={parseTxText} />
+          )
+        })}
       </section>
     </ConfirmationComponent>
   )
@@ -387,10 +395,3 @@ const parseCreateTxOptions = (params: TxOptionsData): CreateTxOptions => {
     fee: fee ? StdFee.fromData(JSON.parse(fee)) : undefined,
   }
 }
-
-/* render */
-export const getDl = (object: object): { dt: string; dd: string }[] =>
-  Object.entries(object).map(([k, v]) => ({
-    dt: k,
-    dd: typeof v === 'object' ? JSON.stringify(v, null, 2) : v,
-  }))
