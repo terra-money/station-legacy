@@ -7,8 +7,8 @@ import {
   fabricateMarketDepositStableCoin,
   fabricateMarketRedeemStable,
   MARKET_DENOMS,
-  columbus4,
-  tequila0004,
+  columbus5,
+  bombay12,
   queryMarketEpochState,
 } from '@anchor-protocol/anchor.js'
 import { plus, useBank } from '../../lib'
@@ -91,7 +91,7 @@ const useAnchorEarn = ({ address, addresses }: Props): AnchorEarnInfo => {
 export default () => {
   const address = useAddress()
   const currentChain = useCurrentChainName()
-  const addresses = { mainnet: columbus4, testnet: tequila0004 }[currentChain]
+  const addresses = { mainnet: columbus5, testnet: bombay12 }[currentChain]
   if (!address || !addresses) return null
   return useAnchorEarn({ address, addresses })
 }

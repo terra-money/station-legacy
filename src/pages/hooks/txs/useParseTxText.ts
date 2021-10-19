@@ -18,9 +18,10 @@ const useParseTxText = () => {
   const { whitelist } = useWhitelist()
   const { contracts } = useContracts(chainName)
   const lcd = useLCD()
-  const { data: validators } = useQuery('validators', () =>
-    lcd.staking.validators()
-  )
+  const { data: validators } = useQuery('validators', async () => {
+    const [validators] = await lcd.staking.validators()
+    return validators
+  })
 
   /*
   # Terra address

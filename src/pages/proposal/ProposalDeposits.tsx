@@ -66,7 +66,7 @@ export const useDepositsContents = (id: number) => {
   const amountTotal = deposits.reduce(
     (acc, { amount }) =>
       new BigNumber(acc)
-        .plus(amount.get('uluna')?.amount.toString() ?? 0)
+        .plus(amount?.get('uluna')?.amount.toString() ?? 0)
         .toString(),
     '0'
   )

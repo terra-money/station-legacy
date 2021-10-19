@@ -54,7 +54,7 @@ const Depositors = () => {
 
                   <td>
                     <Displays
-                      list={amount.map((coin) =>
+                      list={amount?.map((coin) =>
                         format.display(toStationCoin(coin))
                       )}
                     />
