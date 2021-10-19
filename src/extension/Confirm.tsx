@@ -3,8 +3,8 @@ import c from 'classnames'
 import { addHours, isBefore } from 'date-fns'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import extension from 'extensionizer'
-import { CreateTxOptions } from '@terra-money/terra.js'
-import { Msg, TxInfo, StdFee, StdTx } from '@terra-money/terra.js'
+import { CreateTxOptions, PublicKey, SignatureV2 } from '@terra-money/terra.js'
+import { Msg, TxInfo, Fee, Tx } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
 import { Field } from '../lib'
@@ -53,34 +53,48 @@ const Component = ({ requestType, details, ...props }: Props) => {
     setSubmitting(true)
 
     try {
-      let result
+      let result: Tx.Data
 
       if (user.ledger) {
-        // ledger
-        const key = new LedgerKey(await ledger.getPubKey())
-        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
-        const stdSignature = await key.createSignature(stdSignMsg)
+        const pk = await ledger.getPubKey()
+        if (!pk) throw new Error('PubKey is undefined')
 
-        result = {
-          recid: 0,
-          signature: stdSignature.signature,
-          public_key: stdSignature.pub_key,
-          stdSignMsgData: stdSignMsg.toData(),
-        }
+        const publicKey = PublicKey.fromAmino({
+          type: 'tendermint/PubKeySecp256k1',
+          value: pk.toString('base64'),
+        })
+
+        const key = new LedgerKey(publicKey)
+        const wallet = lcd.wallet(key)
+
+        const { account_number, sequence } =
+          await wallet.accountNumberAndSequence()
+
+        const stdSignMsg = await wallet.createTx({ ...txOptions, sequence })
+        const signedTx = await key.signTx(stdSignMsg, {
+          accountNumber: account_number,
+          sequence,
+          signMode: SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+          chainID,
+        })
+
+        result = signedTx.toData()
       } else {
         const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
-        const stdSignMsg = await lcd.wallet(key).createTx(txOptions)
-        const { signature, recid } = key.ecdsaSign(
-          Buffer.from(stdSignMsg.toJSON())
-        )
+        const wallet = lcd.wallet(key)
+        const stdSignMsg = await wallet.createTx(txOptions)
+        const { account_number, sequence } =
+          await wallet.accountNumberAndSequence()
 
-        result = {
-          recid,
-          signature: Buffer.from(signature).toString('base64'),
-          public_key: key.publicKey?.toString('base64'),
-          stdSignMsgData: stdSignMsg.toData(),
-        }
+        const signedTx = await key.signTx(stdSignMsg, {
+          accountNumber: account_number,
+          sequence,
+          signMode: SignatureV2.SignMode.SIGN_MODE_DIRECT,
+          chainID,
+        })
+
+        result = signedTx.toData()
       }
 
       onFinish({
@@ -106,11 +120,22 @@ const Component = ({ requestType, details, ...props }: Props) => {
     setSubmitting(true)
 
     try {
-      let signed: StdTx
+      let signed: Tx
 
       if (user.ledger) {
-        const key = new LedgerKey(await ledger.getPubKey())
-        signed = await lcd.wallet(key).createAndSignTx(txOptions)
+        const pk = await ledger.getPubKey()
+        if (!pk) throw new Error('PubKey is undefined')
+
+        const publicKey = PublicKey.fromAmino({
+          type: 'tendermint/PubKeySecp256k1',
+          value: pk.toString('base64'),
+        })
+
+        const key = new LedgerKey(publicKey)
+        signed = await lcd.wallet(key).createAndSignTx({
+          ...txOptions,
+          signMode: SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+        })
       } else {
         const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
@@ -257,18 +282,18 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { data } = useTerraAssets<
     Dictionary<Dictionary<{ url: string; types: string[] }>>
   >('/msgs/MsgGrantAuthorization.json')
+  const GrantAllowed = data?.[network]
 
   const isDangerousTx = msgs.some((msg) => {
-    const { value } = msg.toData()
-    const MsgGrantAuthorization = data?.[network]
+    const data = msg.toData()
 
-    if (MsgGrantAuthorization && 'authorization' in value) {
-      const { grantee, authorization } = value
-      const info = MsgGrantAuthorization[grantee]
-      return !(info && info.types.includes((authorization as any).type))
-    }
+    if (data['@type'] !== '/cosmos.authz.v1beta1.MsgGrant') return false
+    if (!GrantAllowed) return true
 
-    return msg.toData().type === 'msgauth/MsgGrantAuthorization'
+    const { grant, grantee } = data
+    const { authorization } = grant
+    const allowedTypes = GrantAllowed[grantee].types
+    return !allowedTypes.includes(authorization['@type'])
   })
 
   const disabled = (!user.ledger && !password) || isDangerousTx
@@ -300,7 +325,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const parseTxText = useParseTxText()
 
   const getIsMsgExecuteContract = (msg: Msg) =>
-    msg.toData().type === 'wasm/MsgExecuteContract'
+    msg.toData()['@type'] === '/terra.wasm.v1beta1.MsgExecuteContract'
 
   const isOriginTerra = origin.includes('terra.money')
 
@@ -389,9 +414,18 @@ const usePage = (total: number) => {
 /* helpers */
 const parseCreateTxOptions = (params: TxOptionsData): CreateTxOptions => {
   const { msgs, fee } = params
+
+  const isProto = '@type' in JSON.parse(msgs[0])
+
   return {
     ...params,
-    msgs: msgs.map((msg) => Msg.fromData(JSON.parse(msg))),
-    fee: fee ? StdFee.fromData(JSON.parse(fee)) : undefined,
+    msgs: msgs.map((msg) =>
+      isProto ? Msg.fromData(JSON.parse(msg)) : Msg.fromAmino(JSON.parse(msg))
+    ),
+    fee: !fee
+      ? undefined
+      : isProto
+      ? Fee.fromData(JSON.parse(fee))
+      : Fee.fromAmino(JSON.parse(fee)),
   }
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { Coins, isTxError, LCDClient, StdFee } from '@terra-money/terra.js'
-import { StdSignMsg, StdTx } from '@terra-money/terra.js'
+import { isTxError } from '@terra-money/terra.js'
+import { Coins, LCDClient, Fee, Tx, SignatureV2 } from '@terra-money/terra.js'
 import { useConnectedWallet } from '@terra-money/wallet-provider'
 import { ConfirmProps, ConfirmPage, Sign, Field, GetKey } from '../../types'
 import { PostResult, PostError } from '../../types'
@@ -11,7 +11,7 @@ import { useCurrentChain } from '../../data/chain'
 import fcd from '../../api/fcd'
 import { format } from '../../utils'
 import { toInput, toAmount } from '../../utils/format'
-import { lt, gt } from '../../utils/math'
+import { lt, gt, toNumber } from '../../utils/math'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 
@@ -64,7 +64,7 @@ export default (
   /* simulate */
   const [simulating, setSimulating] = useState(true)
   const [simulated, setSimulated] = useState(false)
-  const [unsignedTx, setUnsignedTx] = useState<StdSignMsg>()
+  const [unsignedTx, setUnsignedTx] = useState<Tx>()
   const [gas, setGas] = useState('0')
   const isGasEstimated = gt(gas, 0)
 
@@ -86,10 +86,10 @@ export default (
         const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
         const lcd = new LCDClient({ chainID, URL, gasPrices })
         const options = { msgs, feeDenoms: [denom], memo, gasAdjustment }
-        const unsignedTx = await lcd.tx.create(address, options)
+        const unsignedTx = await lcd.tx.create([{ address }], options)
         setUnsignedTx(unsignedTx)
 
-        const gas = String(unsignedTx.fee.gas)
+        const gas = String(unsignedTx.auth_info.fee.gas_limit)
         const estimatedFee = calcFee!.feeFromGas(gas, denom)
         setGas(gas)
         setInput(toInput(estimatedFee ?? '0'))
@@ -137,7 +137,7 @@ export default (
       setSubmitting(true)
       setErrorMessage(undefined)
 
-      const broadcast = async (signedTx: StdTx) => {
+      const broadcast = async (signedTx: Tx) => {
         const { gasPrices } = calcFee!
         const lcd = new LCDClient({ chainID, URL, gasPrices })
 
@@ -149,14 +149,28 @@ export default (
 
       const gasFee = new Coins({ [fee.denom]: fee.amount })
       const fees = tax ? gasFee.add(tax) : gasFee
-      unsignedTx.fee = new StdFee(unsignedTx.fee.gas, fees)
+      unsignedTx.auth_info.fee = new Fee(
+        toNumber(unsignedTx.auth_info.fee.gas_limit),
+        fees
+      )
 
       if (connected) {
         const { result } = await connected.post(unsignedTx as any)
         setTxHash(result.txhash)
       } else {
         const key = await getKey(name ? { name, password } : undefined)
-        const signed = await key.signTx(unsignedTx)
+        const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
+        const lcd = new LCDClient({ chainID, URL, gasPrices })
+        const wallet = lcd.wallet(key)
+        const { account_number, sequence } =
+          await wallet.accountNumberAndSequence()
+
+        const signed = await key.signTx(unsignedTx, {
+          chainID,
+          sequence,
+          signMode: SignatureV2.SignMode.SIGN_MODE_DIRECT,
+          accountNumber: account_number,
+        })
         await broadcast(signed)
       }
     } catch (error) {

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { RawKey } from '@terra-money/terra.js'
+import { PublicKey, RawKey } from '@terra-money/terra.js'
 import { ConfirmProps, format } from '../lib'
 import { useConfirm } from '../lib'
 import LedgerKey from '../extension/LedgerKey'
@@ -28,7 +28,15 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
     password: isPreconfigured(user!) ? PW : '',
     getKey: async (params) => {
       if (user?.ledger) {
-        const key = new LedgerKey(await ledgers.getPubKey())
+        const pk = await ledgers.getPubKey()
+        if (!pk) throw new Error('PubKey is undefined')
+
+        const publicKey = PublicKey.fromAmino({
+          type: 'tendermint/PubKeySecp256k1',
+          value: pk.toString('base64'),
+        })
+
+        const key = new LedgerKey(publicKey)
         return key
       } else if (user?.wallet) {
         // Preconfigured wallet

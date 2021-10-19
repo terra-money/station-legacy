@@ -1,4 +1,4 @@
-import { Key, PublicKey, StdSignMsg, StdSignature } from '@terra-money/terra.js'
+import { Key, SignDoc, SignatureV2 } from '@terra-money/terra.js'
 import * as ledger from '../wallet/ledger'
 
 class LedgerKey extends Key {
@@ -8,25 +8,28 @@ class LedgerKey extends Key {
     )
   }
 
-  public async createSignature(tx: StdSignMsg): Promise<StdSignature> {
+  public async createSignatureAmino(tx: SignDoc): Promise<SignatureV2> {
     const pubkeyBuffer = await ledger.getPubKey()
 
     if (!pubkeyBuffer) {
       throw new Error('failed getting public key from ledger')
     }
 
-    const signatureBuffer = await ledger.sign(tx.toJSON())
+    const signatureBuffer = await ledger.sign(tx.toAminoJSON())
 
     if (!signatureBuffer) {
       throw new Error('failed signing from ledger')
     }
 
-    return new StdSignature(
-      signatureBuffer.toString('base64'),
-      PublicKey.fromData({
-        type: 'tendermint/PubKeySecp256k1',
-        value: pubkeyBuffer.toString('base64'),
-      })
+    return new SignatureV2(
+      this.publicKey!,
+      new SignatureV2.Descriptor(
+        new SignatureV2.Descriptor.Single(
+          SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+          signatureBuffer.toString('base64')
+        )
+      ),
+      tx.sequence
     )
   }
 }

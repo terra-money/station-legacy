@@ -19,7 +19,7 @@ const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
   const toggle = () => setIsOpen(!isOpen)
 
   /* render */
-  const { type } = msg.toData()
+  const { '@type': type } = msg.toData()
   const [, badge] = type.split('/Msg')
   const msgText = readMsg(msg)
 
