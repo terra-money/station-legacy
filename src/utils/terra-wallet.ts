@@ -22,7 +22,7 @@ export const generateWallet = async (
 
   return {
     privateKey: mk.privateKey.toString('hex'),
-    publicKey: mk.publicKey?.toString('hex') ?? '',
+    publicKey: Buffer.from(mk.publicKey!.encodeAminoPubkey()).toString('hex'),
     terraAddress: mk.accAddress,
   }
 }

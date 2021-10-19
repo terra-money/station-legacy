@@ -59,7 +59,10 @@ export default ({ onSuccess }: Props): ImportKey => {
       if (!privateKey) throw new Error(t('Auth:Form:Incorrect password'))
 
       const rawKey = new RawKey(Buffer.from(privateKey, 'hex'))
-      const publicKey = rawKey.publicKey!.toString('hex')
+      const publicKey = Buffer.from(
+        rawKey.publicKey!.encodeAminoPubkey()
+      ).toString('hex')
+
       const wallet = { privateKey, publicKey, terraAddress: address }
       await onSuccess({ name, password, wallet })
       signIn({ name, address })
