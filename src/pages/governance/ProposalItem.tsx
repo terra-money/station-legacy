@@ -53,11 +53,11 @@ const ProposalItem = ({ proposal }: { proposal: Proposal }) => {
   const title = content?.title || ''
 
   const footer =
-    status === Proposal.Status.DEPOSIT_PERIOD ? (
+    status === Proposal.Status.PROPOSAL_STATUS_DEPOSIT_PERIOD ? (
       <section className={s.details}>
         <Deposit id={id} />
       </section>
-    ) : status === Proposal.Status.VOTING_PERIOD ? (
+    ) : status === Proposal.Status.PROPOSAL_STATUS_VOTING_PERIOD ? (
       <section className={s.details}>
         <Votes id={id} />
       </section>

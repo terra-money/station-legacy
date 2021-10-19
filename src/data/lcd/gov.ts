@@ -60,7 +60,6 @@ export const useProposalId = () => {
 }
 
 export interface ProposalStatusItem {
-  key: string
   label: string
   color: string
 }
@@ -69,26 +68,10 @@ export const useProposalStatusList = (): Record<number, ProposalStatusItem> => {
   const { t } = useTranslation()
 
   return {
-    2: {
-      key: 'voting_period',
-      label: t('Page:Governance:Voting'),
-      color: 'badge-info',
-    },
-    1: {
-      key: 'deposit_period',
-      label: t('Page:Governance:Deposit'),
-      color: 'badge-success',
-    },
-    3: {
-      key: 'passed',
-      label: t('Page:Governance:Passed'),
-      color: 'badge-primary',
-    },
-    4: {
-      key: 'rejected',
-      label: t('Page:Governance:Rejected'),
-      color: 'badge-danger',
-    },
+    1: { label: t('Page:Governance:Deposit'), color: 'badge-success' },
+    2: { label: t('Page:Governance:Voting'), color: 'badge-info' },
+    3: { label: t('Page:Governance:Passed'), color: 'badge-primary' },
+    4: { label: t('Page:Governance:Rejected'), color: 'badge-danger' },
   }
 }
 
@@ -98,7 +81,12 @@ export const useProposalStatus = ({ status }: Proposal) => {
 }
 
 type VotedAmount = Partial<Record<Vote.Option, string>>
-const { YES, NO, NO_WITH_VETO, ABSTAIN } = Vote.Option
+const {
+  VOTE_OPTION_YES: YES,
+  VOTE_OPTION_NO: NO,
+  VOTE_OPTION_NO_WITH_VETO: NO_WITH_VETO,
+  VOTE_OPTION_ABSTAIN: ABSTAIN,
+} = Vote.Option
 
 export const useVotesContents = (id: number) => {
   const { t } = useTranslation()

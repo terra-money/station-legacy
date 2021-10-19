@@ -12,26 +12,28 @@ import Card from '../../components/Card'
 import NotAvailable from '../../components/NotAvailable'
 import ButtonWithAuth from '../../components/ButtonWithAuth'
 import Propose from '../../post/Propose'
-import { ProposalStatusItem } from '../../data/lcd/gov'
 import { useProposalStatusList } from '../../data/lcd/gov'
 import GovernanceParams from './GovernanceParams'
 import ProposalItem from './ProposalItem'
 import s from './Governance.module.scss'
 
-const DEFAULT_TAB = 'voting_period'
+const DEFAULT_TAB = String(Proposal.Status.PROPOSAL_STATUS_VOTING_PERIOD)
 
 const Governance = () => {
   const { t } = useTranslation()
   const { modal } = useApp()
   const proposalStatus = useProposalStatusList()
-  const tabs = sortByIsVoting(Object.values(proposalStatus))
+  const tabs = sortByIsVoting(
+    Object.entries(proposalStatus).map(([key, { label }]) => ({ key, label }))
+  )
   const { Governance: title } = useMenu()
   const { currentTab, renderTabs } = usePageTabs('status', tabs, DEFAULT_TAB)
   const status = currentTab || DEFAULT_TAB
 
   const lcd = useLCD()
   const result = useQuery(['proposals', status], async () => {
-    const proposals = await lcd.gov.proposals({ status })
+    // TODO: Pagination
+    const [proposals] = await lcd.gov.proposals({ proposal_status: status })
     return reverse(proposals)
   })
 
@@ -80,7 +82,7 @@ const Governance = () => {
 export default Governance
 
 /* helpers */
-const sortByIsVoting = (array: ProposalStatusItem[]) =>
+const sortByIsVoting = (array: { key: string; label: string }[]) =>
   array.sort(
     ({ key: a }, { key: b }) =>
       Number(b === 'voting_period') - Number(a === 'voting_period')

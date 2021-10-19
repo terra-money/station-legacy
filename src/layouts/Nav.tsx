@@ -8,7 +8,6 @@ import { isExtension } from '../utils/env'
 import { useExtension } from '../extension/useExtension'
 import Icon from '../components/Icon'
 import { ErrorBoundaryComponent } from '../components/ErrorBoundary'
-import { useProposalStatusList } from '../data/lcd/gov'
 import NavItem from './NavItem'
 import Guide from './Guide'
 import Lang from './Lang'
@@ -21,8 +20,7 @@ const Nav = () => {
   const { pathname } = useLocation()
   const history = useHistory()
   const { goBack } = useExtension()
-  const list = useProposalStatusList()
-  const defaultProposalStatus = list[Proposal.Status.VOTING_PERIOD]
+  const defaultProposalStatus = Proposal.Status.PROPOSAL_STATUS_VOTING_PERIOD
 
   /* Menu */
   const name = useMenu()
@@ -61,7 +59,7 @@ const Nav = () => {
     },
     {
       name: name['Governance'],
-      to: `/governance?status=${defaultProposalStatus.key}`,
+      to: `/governance?status=${defaultProposalStatus}`,
       icon: 'how_to_vote',
       submenu: ['/proposal'],
     },

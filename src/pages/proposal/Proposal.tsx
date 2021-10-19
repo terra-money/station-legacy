@@ -12,6 +12,11 @@ import ProposalActions from './ProposalActions'
 import ProposalFooter from './ProposalFooter'
 import Depositors from '../../tables/Depositors'
 
+const {
+  PROPOSAL_STATUS_DEPOSIT_PERIOD: DEPOSIT_PERIOD,
+  PROPOSAL_STATUS_VOTING_PERIOD: VOTING_PERIOD,
+} = Proposal.Status
+
 const ProposalDetails = () => {
   useGoBack('/governance')
   const { Proposal: title } = useMenu()
@@ -23,7 +28,6 @@ const ProposalDetails = () => {
 
   const render = (proposal: Proposal) => {
     const { status } = proposal
-    const { DEPOSIT_PERIOD, VOTING_PERIOD } = Proposal.Status
 
     return (
       <>

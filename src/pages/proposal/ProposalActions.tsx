@@ -12,7 +12,7 @@ const ProposalActions = ({ proposal }: { proposal: Proposal }) => {
   const { title } = content
   const params = { id, title }
 
-  return status === Proposal.Status.VOTING_PERIOD ? (
+  return status === Proposal.Status.PROPOSAL_STATUS_VOTING_PERIOD ? (
     <ButtonWithAuth
       placement="bottom"
       className="btn btn-primary btn-sm"
@@ -20,7 +20,7 @@ const ProposalActions = ({ proposal }: { proposal: Proposal }) => {
     >
       {t('Page:Governance:Vote')}
     </ButtonWithAuth>
-  ) : status === Proposal.Status.DEPOSIT_PERIOD ? (
+  ) : status === Proposal.Status.PROPOSAL_STATUS_DEPOSIT_PERIOD ? (
     <ButtonWithAuth
       placement="bottom"
       className="btn btn-sky btn-sm"

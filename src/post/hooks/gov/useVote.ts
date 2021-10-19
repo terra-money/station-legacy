@@ -16,22 +16,22 @@ export default ({ id, title }: { id: number; title: string }): PostPage => {
   type OptionItem = { key: MsgVote.Option; label: string; color: string }
   const OptionsList: OptionItem[] = [
     {
-      key: MsgVote.Option.YES,
+      key: MsgVote.Option.VOTE_OPTION_YES,
       label: t('Page:Governance:Yes'),
       color: optionColors['Yes'],
     },
     {
-      key: MsgVote.Option.NO,
+      key: MsgVote.Option.VOTE_OPTION_NO,
       label: t('Page:Governance:No'),
       color: optionColors['No'],
     },
     {
-      key: MsgVote.Option.NO_WITH_VETO,
+      key: MsgVote.Option.VOTE_OPTION_NO_WITH_VETO,
       label: t('Page:Governance:No\nWithVeto'),
       color: optionColors['NoWithVeto'],
     },
     {
-      key: MsgVote.Option.ABSTAIN,
+      key: MsgVote.Option.VOTE_OPTION_ABSTAIN,
       label: t('Page:Governance:Abstain'),
       color: optionColors['Abstain'],
     },

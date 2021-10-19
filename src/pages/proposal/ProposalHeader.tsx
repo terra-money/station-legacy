@@ -15,13 +15,12 @@ import s from './ProposalHeader.module.scss'
 const ProposerHeader = ({ proposal }: { proposal: Proposal }) => {
   const { t } = useTranslation()
   const { id, content, submit_time } = proposal
-  const { title, description } = content
   const badge = useProposalStatus(proposal)
   const proposer = useProposer(proposal.id)
 
   /* details */
-  const { type, value } = content.toData()
-  const contents = Object.entries(value)
+  const { '@type': type, title, description, ...rest } = content.toData()
+  const contents = Object.entries(rest)
     .filter(([key]) => !['title', 'description'].includes(key))
     .map(([key, content]) => ({
       title: capitalize(t('Page:Governance:' + key)),
