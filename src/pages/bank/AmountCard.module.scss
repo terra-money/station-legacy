@@ -105,6 +105,10 @@
 }
 
 .buyust {
+  @media (max-width: $breakpoint - 1) {
+    display: none;
+  }
+
   border-left: 1px solid #e4e8f6;
   margin-left: 10px;
   padding-left: 10px;
