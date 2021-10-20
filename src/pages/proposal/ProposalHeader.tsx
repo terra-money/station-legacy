@@ -8,7 +8,6 @@ import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import Displays from '../../components/Displays'
 import { useProposalStatus } from '../../data/lcd/gov'
-import AccountLink from './AccountLink'
 import s from './ProposalHeader.module.scss'
 
 const ProposerHeader = ({ proposal }: { proposal: Proposal }) => {
