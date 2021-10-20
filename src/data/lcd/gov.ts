@@ -23,12 +23,6 @@ export const useProposal = (id: number) => {
   return useQuery(['proposal', id], () => lcd.gov.proposal(id))
 }
 
-export const useProposer = (id: number) => {
-  const lcd = useLCD()
-  const { data } = useQuery(['proposer', id], () => lcd.gov.proposer(id))
-  return data
-}
-
 /* proposals: details */
 export const useDeposits = (id: number) => {
   const lcd = useLCD()

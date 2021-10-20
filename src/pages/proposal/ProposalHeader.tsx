@@ -8,7 +8,6 @@ import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import Displays from '../../components/Displays'
 import { useProposalStatus } from '../../data/lcd/gov'
-import { useProposer } from '../../data/lcd/gov'
 import AccountLink from './AccountLink'
 import s from './ProposalHeader.module.scss'
 
@@ -16,7 +15,6 @@ const ProposerHeader = ({ proposal }: { proposal: Proposal }) => {
   const { t } = useTranslation()
   const { id, content, submit_time } = proposal
   const badge = useProposalStatus(proposal)
-  const proposer = useProposer(proposal.id)
 
   /* details */
   const { '@type': type, title, description, ...rest } = content.toData()
@@ -55,16 +53,6 @@ const ProposerHeader = ({ proposal }: { proposal: Proposal }) => {
           )}
 
           <h1 className={s.title}>{title}</h1>
-          <p className={s.meta}>
-            {proposer && (
-              <>
-                Submitted by{' '}
-                <strong>
-                  <AccountLink address={proposer} />
-                </strong>
-              </>
-            )}
-          </p>
 
           <p
             className={s.description}
