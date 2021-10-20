@@ -1,7 +1,8 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, ReactNode } from 'react'
 import classNames from 'classnames/bind'
-import { Msg } from '@terra-money/terra.js'
+import { Msg, MsgTransfer } from '@terra-money/terra.js'
 import { readMsg } from '@terra-money/msg-reader'
+import { format } from '../utils'
 import Icon from '../components/Icon'
 import s from './Message.module.scss'
 
@@ -11,7 +12,7 @@ interface Props {
   msg: Msg
   danger?: boolean
   defaultIsOpen?: boolean
-  parseTxText: (text?: string) => string
+  parseTxText: (text?: string) => ReactNode
 }
 
 const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
@@ -20,7 +21,6 @@ const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
 
   /* render */
   const { '@type': type } = msg.toData()
-  const [, badge] = type.split('/Msg')
   const msgText = readMsg(msg)
 
   const renderDl = () => (
@@ -29,6 +29,7 @@ const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
       <dd>
         <pre>{type}</pre>
       </dd>
+
       {getDl(msg).map(({ dt, dd }, index) => (
         <Fragment key={index}>
           <dt>{dt}</dt>
@@ -40,10 +41,24 @@ const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
     </dl>
   )
 
+  const parseIbcMessage = ({ token, source_channel }: MsgTransfer) => {
+    if (!token) return `Transfer via ${source_channel}`
+
+    const { amount, denom } = token
+    const value = format.amount(amount.toString())
+
+    return `Transfer ${value}${denom} via ${source_channel}`
+  }
+
+  const parsedIbcMessage =
+    type === '/ibc.applications.transfer.v1.MsgTransfer'
+      ? parseIbcMessage(msg as MsgTransfer)
+      : undefined
+
   return (
     <article className={cx(s.message, { danger })}>
       <header className={s.header} onClick={toggle}>
-        <p>{parseTxText(msgText) || badge}</p>
+        <p>{parsedIbcMessage ?? (parseTxText(msgText) || type)}</p>
         <Icon name={isOpen ? 'expand_less' : 'expand_more'} size={14} />
       </header>
 

@@ -13,7 +13,6 @@ import { format } from '../../../utils'
 import { useCurrentChainName } from '../../../data/chain'
 import useFCD from '../../../api/useFCD'
 import useFinder from '../../../hooks/useFinder'
-import useParseTxText from './useParseTxText'
 
 interface Response {
   txs: Tx[]
@@ -25,8 +24,6 @@ export default ({ address }: User): TxsPage => {
   const { t } = useTranslation()
   const getLink = useFinder()
   const currentChainName = useCurrentChainName()
-
-  const parseTxText = useParseTxText()
 
   /* api */
   const [txs, setTxs] = useState<Tx[]>([])
@@ -96,7 +93,7 @@ export default ({ address }: User): TxsPage => {
                   }
 
                 const tag = msg.msgType.split('/')[1].replaceAll('-', ' ')
-                const summary = msg.canonicalMsg.map(parseTxText)
+                const summary = msg.canonicalMsg
                 return { tag, summary, success }
               }),
               details: [

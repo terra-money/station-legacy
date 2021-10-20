@@ -4,6 +4,7 @@ import { ConfirmProps, format } from '../lib'
 import { useConfirm } from '../lib'
 import LedgerKey from '../extension/LedgerKey'
 import { decryptWallet, getStoredWallet } from '../utils/localStorage'
+import { is } from '../utils'
 import { useUser } from '../data/auth'
 import getSigner from '../wallet/signer'
 import signTx from '../wallet/api/signTx'
@@ -111,9 +112,11 @@ const Confirmation = ({ confirm, modal, onFinish }: Props) => {
             className="form-control form-control-sm"
             onChange={(e) => fee.select.setValue(e.target.value)}
           >
-            {fee.select.options.map((option) => (
-              <option {...option} key={option.value} />
-            ))}
+            {fee.select.options
+              .filter((option) => is.nativeDenom(option.value))
+              .map((option) => (
+                <option {...option} key={option.value} />
+              ))}
           </Select>
         )}
       </Flex>

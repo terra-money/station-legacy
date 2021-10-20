@@ -1,6 +1,7 @@
 import c from 'classnames'
 import { TxUI, MessageUI, Card as CardProps } from '../../lib'
 import { format } from '../../lib'
+import ParseTxText from '../hooks/txs/ParseTxText'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
 import Badge from '../../components/Badge'
@@ -34,7 +35,9 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
 
         <section className={s.text}>
           {summary.map((item, index) => (
-            <p key={index}>{item}</p>
+            <p key={index}>
+              <ParseTxText>{item}</ParseTxText>
+            </p>
           ))}
         </section>
       </article>

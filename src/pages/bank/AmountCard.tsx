@@ -3,11 +3,14 @@ import classNames from 'classnames/bind'
 import { BuyUST } from '@terra-money/react-widget'
 import { AvailableItem } from '../../lib'
 import { TERRA_ASSETS, TRANSAK_API_KEY } from '../../constants'
+import { is } from '../../utils'
 import { isExtension } from '../../utils/env'
 import { ReactComponent as Terra } from '../../images/Terra.svg'
+import { ReactComponent as IBC } from '../../images/IBC.svg'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import Icon from '../../components/Icon'
+import IBCUnit from './IBCUnit'
 import s from './AmountCard.module.scss'
 
 const cx = classNames.bind(s)
@@ -22,6 +25,8 @@ interface Props extends AvailableItem {
 const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
   const { currencyValueDisplay, buttonAttrs, extended } = props
   const { value, unit } = display
+  const isIBC = is.ibcDenom(unit)
+
   const [iconError, setIconError] = useState(false)
   const size = { width: 24, height: 24 }
   const src = `${TERRA_ASSETS}/icon/60/${unit}.png`
@@ -30,6 +35,8 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
 
   const icon = props.icon ? (
     <img src={props.icon} className={s.icon} alt="" {...size} />
+  ) : isIBC ? (
+    <IBC {...size} />
   ) : !iconError ? (
     <img src={src} onError={() => setIconError(true)} alt="" {...size} />
   ) : (
@@ -41,7 +48,7 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
       <header className={cx(s.header, { extended })}>
         <h1 className={s.denom}>
           {icon}
-          {unit}
+          {isIBC ? <IBCUnit>{unit}</IBCUnit> : unit}
 
           {!isExtension && extended && (
             <div className={s.buyust}>

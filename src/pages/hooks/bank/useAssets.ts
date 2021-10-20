@@ -49,8 +49,9 @@ export default (config?: Config): AssetsPage => {
     available: !balance.length
       ? undefined
       : {
-          title: t('Page:Bank:Available'),
+          title: 'Terra Native',
           list: balance
+            .filter(({ denom }) => !denom.startsWith('ibc/'))
             .map(({ available, denom }) => {
               const currencyValule = getCurrentCurrencyValue({
                 denom,
@@ -73,8 +74,22 @@ export default (config?: Config): AssetsPage => {
           },
           send: t('Post:Send:Send'),
         },
+    ibc: !balance.filter(({ denom }) => denom.startsWith('ibc/')).length
+      ? undefined
+      : {
+          title: 'IBC Tokens',
+          list: balance
+            .filter(({ denom }) => denom.startsWith('ibc/'))
+            .map(({ available, denom }) => {
+              return {
+                denom,
+                display: { value: format.amount(available), unit: denom },
+              }
+            }),
+          send: t('Post:Send:Send'),
+        },
     tokens: {
-      title: 'Tokens',
+      title: 'CW20 Tokens',
       list:
         tokenList?.map(({ token, symbol, icon, balance, decimals }) => {
           const display = {

@@ -22,7 +22,7 @@ import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
 import LedgerKey from '../extension/LedgerKey'
-import useParseTxText from '../pages/hooks/txs/useParseTxText'
+import ParseTxText from '../pages/hooks/txs/ParseTxText'
 import s from './Confirm.module.scss'
 
 interface Props extends RecordedExtSign {
@@ -322,8 +322,6 @@ const Component = ({ requestType, details, ...props }: Props) => {
     ? { content: 'Success!', ...defaultResultProps }
     : undefined
 
-  const parseTxText = useParseTxText()
-
   const getIsMsgExecuteContract = (msg: Msg) =>
     msg.toData()['@type'] === '/terra.wasm.v1beta1.MsgExecuteContract'
 
@@ -362,7 +360,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
         {msgs.map((msg) => {
           const isDanger = !(isOriginTerra || getIsMsgExecuteContract(msg))
           return (
-            <Message msg={msg} danger={isDanger} parseTxText={parseTxText} />
+            <Message
+              msg={msg}
+              danger={isDanger}
+              parseTxText={(text) => <ParseTxText>{text}</ParseTxText>}
+            />
           )
         })}
       </section>

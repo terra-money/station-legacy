@@ -10,6 +10,7 @@ export interface AssetsPage extends BankAPI {
 export interface AssetsUI {
   card?: Card
   available?: AvailableUI
+  ibc?: AvailableUI
   tokens: AvailableUI
   vesting?: VestingUI
 }

@@ -21,6 +21,7 @@ export default {
 
   nativeTerra,
   nativeDenom: (string = '') => string === 'uluna' || nativeTerra(string),
+  ibcDenom: (string = '') => string.startsWith('ibc/'),
 
   json: (param: any) => {
     try {

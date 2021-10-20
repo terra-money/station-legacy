@@ -1,45 +1,31 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useQuery } from 'react-query'
 import { TFunction } from 'i18next'
+import BigNumber from 'bignumber.js'
 import { format, is } from '../../utils'
 import { min, percent } from '../../utils/math'
 import fcd from '../../api/fcd'
-import BigNumber from 'bignumber.js'
 
 type Response = Result<string>
 const useCalcTax = (denom: string, t: TFunction) => {
-  const [rate, setRate] = useState('0')
-  const [cap, setCap] = useState('0')
-  const [loadingRate, setLoadingRate] = useState(false)
-  const [loadingCap, setLoadingCap] = useState(false)
-  const loading = loadingRate || loadingCap
-
-  useEffect(() => {
-    const fetchRate = async () => {
-      setLoadingRate(true)
+  const { data: rate = '0', isLoading: loadingRate } = useQuery(
+    'taxRate',
+    async () => {
       const { data } = await fcd.get<Response>('/treasury/tax_rate')
-      const { result } = data
-      setRate(result)
-      setLoadingRate(false)
+      return data.result
     }
+  )
 
-    fetchRate()
-  }, [])
-
-  useEffect(() => {
-    const fetchCap = async () => {
-      setLoadingCap(true)
+  const { data: cap = '0', isLoading: loadingCap } = useQuery(
+    ['taxCap', denom],
+    async () => {
       const { data } = await fcd.get<Response>(`/treasury/tax_cap/${denom}`)
-      const { result } = data
-      setCap(result)
-      setLoadingCap(false)
-    }
+      return data.result
+    },
+    { enabled: !(denom === 'uluna' || is.ibcDenom(denom) || is.address(denom)) }
+  )
 
-    const noTax = denom === 'uluna' || is.address(denom)
-
-    if (denom) {
-      !noTax ? fetchCap() : setCap('0')
-    }
-  }, [denom])
+  const loading = loadingRate || loadingCap
 
   const getMax = useCallback(
     (balance: string) => {

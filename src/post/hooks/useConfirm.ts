@@ -22,6 +22,8 @@ interface SignParams {
   sign: Sign
 }
 
+const gasAdjustment = 1.75
+
 export default (
   { memo, submitLabels, message, ...rest }: ConfirmProps,
   { user, password: defaultPassword = '', getKey }: SignParams
@@ -80,8 +82,6 @@ export default (
         setSimulating(true)
         setEstimated(undefined)
         setErrorMessage(undefined)
-
-        const gasAdjustment = 1.75
 
         const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
         const lcd = new LCDClient({ chainID, URL, gasPrices })
@@ -155,7 +155,15 @@ export default (
       )
 
       if (connected) {
-        const { result } = await connected.post(unsignedTx as any)
+        const { result } = await connected.post({
+          msgs,
+          fee: new Fee(toNumber(unsignedTx.auth_info.fee.gas_limit), fees),
+          memo,
+          gas,
+          gasPrices: { [denom]: calcFee!.gasPrice(denom) },
+          gasAdjustment,
+          feeDenoms: [denom],
+        })
         setTxHash(result.txhash)
       } else {
         const key = await getKey(name ? { name, password } : undefined)
