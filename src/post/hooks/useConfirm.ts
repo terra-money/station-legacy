@@ -168,9 +168,12 @@ export default (
         const signed = await key.signTx(unsignedTx, {
           chainID,
           sequence,
-          signMode: SignatureV2.SignMode.SIGN_MODE_DIRECT,
+          signMode: name
+            ? SignatureV2.SignMode.SIGN_MODE_DIRECT
+            : SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
           accountNumber: account_number,
         })
+
         await broadcast(signed)
       }
     } catch (error) {
