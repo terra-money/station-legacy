@@ -1,7 +1,6 @@
 import { format } from '../../utils'
 import { truncate } from '../../utils/format'
 import { useDenomTrace } from '../../data/lcd/ibc'
-import styles from './IBCUnit.module.scss'
 
 const IBCUnit = ({ children: unit }: { children: string }) => {
   const hash = unit.replace('ibc/', '')
@@ -9,17 +8,9 @@ const IBCUnit = ({ children: unit }: { children: string }) => {
 
   if (!data) return <>{truncate(hash)}</>
 
-  const { base_denom, path } = data
+  const { base_denom } = data
 
-  return (
-    <article>
-      {format.denom(base_denom) || base_denom}
-
-      <span className={styles.meta}>
-        {truncate(hash)} ({path.replace('transfer/', '')})
-      </span>
-    </article>
-  )
+  return <>{format.denom(base_denom) || base_denom}</>
 }
 
 export default IBCUnit
