@@ -111,6 +111,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
       onFinish({
         success: false,
         password: storePassword ? password : undefined,
+        error: {
+          code: 3,
+          message:
+            error.response?.data?.error /* error on tx */ ?? error.message,
+        },
       })
     }
   }
