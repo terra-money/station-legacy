@@ -67,7 +67,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
 
   /* tax */
   const [submitted, setSubmitted] = useState(false)
-  const shouldTax = is.nativeTerra(denom)
+  const shouldTax = is.nativeTerra(denom) || is.ibcDenom(denom)
   const calcTax = useCalcTax(denom, t)
   const calcFee = useCalcFee()
   const balance = getBalance()

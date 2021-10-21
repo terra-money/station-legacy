@@ -44,11 +44,14 @@ const useCalcTax = (denom: string, t: TFunction) => {
   )
 
   const getTax = useCallback(
-    (amount: string) =>
-      BigNumber.min(new BigNumber(amount).times(rate), new BigNumber(cap))
+    (amount: string) => {
+      const tax = new BigNumber(amount).times(rate)
+
+      return (is.ibcDenom(denom) ? tax : BigNumber.min(tax, new BigNumber(cap)))
         .integerValue(BigNumber.ROUND_CEIL)
-        .toString(),
-    [cap, rate]
+        .toString()
+    },
+    [cap, denom, rate]
   )
 
   const label = useMemo(
