@@ -65,8 +65,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   /* ready: balance */
   const bank = useBank()
   const cw20TokenBalance = useTokenBalance()
-  const { whitelist, loading: loadingWhitelist } = useWhitelist()
-  const { pairs, loading: loadingPairs } = usePairs(currentChainName)
+  const { whitelist, isLoading: loadingWhitelist } = useWhitelist()
+  const { pairs, isLoading: loadingPairs } = usePairs(currentChainName)
   const loadingUI =
     bank.loading || loadingWhitelist || cw20TokenBalance.loading || loadingPairs
 
