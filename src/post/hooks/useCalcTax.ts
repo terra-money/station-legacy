@@ -19,10 +19,12 @@ const useCalcTax = (denom: string, t: TFunction) => {
   const { data: cap = '0', isLoading: loadingCap } = useQuery(
     ['taxCap', denom],
     async () => {
-      const { data } = await fcd.get<Response>(`/treasury/tax_cap/${denom}`)
+      const { data } = await fcd.get<Response>(
+        `/treasury/tax_cap/${encodeURIComponent(encodeURIComponent(denom))}`
+      )
       return data.result
     },
-    { enabled: !(denom === 'uluna' || is.ibcDenom(denom) || is.address(denom)) }
+    { enabled: !(denom === 'uluna' || is.address(denom)) }
   )
 
   const loading = loadingRate || loadingCap
@@ -47,11 +49,11 @@ const useCalcTax = (denom: string, t: TFunction) => {
     (amount: string) => {
       const tax = new BigNumber(amount).times(rate)
 
-      return (is.ibcDenom(denom) ? tax : BigNumber.min(tax, new BigNumber(cap)))
+      return BigNumber.min(tax, new BigNumber(cap))
         .integerValue(BigNumber.ROUND_CEIL)
         .toString()
     },
-    [cap, denom, rate]
+    [cap, rate]
   )
 
   const label = useMemo(
