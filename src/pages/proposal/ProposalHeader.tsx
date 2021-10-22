@@ -1,7 +1,9 @@
 import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
+import { last } from 'ramda'
 import c from 'classnames'
 import xss from 'xss'
+import { capitalCase } from 'capital-case'
 import { Proposal } from '@terra-money/terra.js'
 import { CoinItem, format } from '../../lib'
 import Card from '../../components/Card'
@@ -33,7 +35,10 @@ const ProposerHeader = ({ proposal }: { proposal: Proposal }) => {
 
   const details = [
     { title: `${t('Page:Governance:Proposal')} ID`, content: id },
-    { title: t('Common:Type'), content: type },
+    {
+      title: t('Common:Type'),
+      content: capitalCase(last(type.split('.')) ?? ''),
+    },
     ...contents,
     {
       title: t('Page:Governance:Submit time'),
