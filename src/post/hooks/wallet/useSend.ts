@@ -44,8 +44,8 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
-  const validate = ({ input, to, memo }: Values) => ({
-    to: v.address(to),
+  const validate = ({ input, to, memo, interchain }: Values) => ({
+    to: interchain ? '' : v.address(to),
     input: v.input(
       input,
       { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
