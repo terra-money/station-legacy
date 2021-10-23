@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
-import { MsgExecuteContract, MsgSend, MsgTransfer } from '@terra-money/terra.js'
+import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { BankData, Whitelist } from '../../../types'
 import { PostPage, CoinItem, Field } from '../../../types'
@@ -24,7 +24,6 @@ interface Values {
   to: string
   input: string
   memo: string
-  interchain: boolean
 }
 
 export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
@@ -36,7 +35,6 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
   const v = validateForm(t)
   const { data: denomTrace } = useDenomTrace(denom)
   const ibcDenom = denomTrace?.base_denom
-  const channel = denomTrace?.path.replace('transfer/', '') ?? ''
 
   /* form */
   const getBalance = () =>
@@ -44,8 +42,8 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
-  const validate = ({ input, to, memo, interchain }: Values) => ({
-    to: interchain ? '' : v.address(to),
+  const validate = ({ input, to, memo }: Values) => ({
+    to: v.address(to),
     input: v.input(
       input,
       { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
@@ -55,14 +53,13 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
       v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
       v.includes(memo, '<') ||
       v.includes(memo, '>'),
-    interchain: '',
   })
 
-  const initial = { to: '', interchain: false, input: '', memo: '' }
+  const initial = { to: '', input: '', memo: '' }
   const form = useForm<Values>(initial, validate)
   const { values, setValue, invalid } = form
   const { getDefaultProps, getDefaultAttrs } = form
-  const { to, input, memo, interchain } = values
+  const { to, input, memo } = values
   const amount = toAmount(input, tokens?.[denom]?.decimals)
 
   /* tax */
@@ -126,15 +123,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
     },
   ]
 
-  const interchainField: Field = {
-    ...getDefaultProps('interchain'),
-    label: `Interchain (${channel})`,
-    attrs: { ...getDefaultAttrs('interchain'), type: 'checkbox' },
-  }
-
-  const fields = is.ibcDenom(denom)
-    ? [...defaultFields, interchainField]
-    : defaultFields
+  const fields = defaultFields
 
   const isInvalidAmount =
     gt(amount, maxAmount) || _.isEmpty(amount) || _.toNumber(amount) <= 0
@@ -179,27 +168,14 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
     .concat(memo ? { name: t('Common:Tx:Memo'), text: memo } : [])
 
   const getConfirm = (bank: BankData, whitelist: Whitelist): ConfirmProps => ({
-    msgs: is.ibcDenom(denom)
-      ? interchain
-        ? [
-            new MsgTransfer(
-              'transfer',
-              channel,
-              new Coin(denom, amount),
-              address,
-              to,
-              undefined,
-              (Date.now() + 60 * 1000) * 1e6
-            ),
-          ]
-        : [new MsgSend(address, to, [new Coin(denom, amount)])]
-      : is.nativeDenom(denom)
-      ? [new MsgSend(address, to, [new Coin(denom, amount)])]
-      : [
-          new MsgExecuteContract(address, denom, {
-            transfer: { recipient: to, amount },
-          }),
-        ],
+    msgs:
+      is.nativeDenom(denom) || is.ibcDenom(denom)
+        ? [new MsgSend(address, to, [new Coin(denom, amount)])]
+        : [
+            new MsgExecuteContract(address, denom, {
+              transfer: { recipient: to, amount },
+            }),
+          ],
     tax: shouldTax ? new Coin(denom, taxAmount) : undefined,
     memo,
     contents,
