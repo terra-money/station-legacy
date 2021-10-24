@@ -5,7 +5,7 @@ import { Coin, Coins } from '@terra-money/terra.js'
 import { Msg, MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { PostPage, CoinItem, Field } from '../../../types'
 import { BankData, Pairs, ConfirmProps } from '../../../types'
-import { format, gt, minus, sum } from '../../../utils'
+import { format, gt, is, minus, sum } from '../../../utils'
 import { toInput } from '../../../utils/format'
 import { useAddress } from '../../../data/auth'
 import { useCurrentChain, useCurrentChainName } from '../../../data/chain'
@@ -31,19 +31,20 @@ export default ({ bank, pairs }: Params): PostPage => {
   const currentChainName = useCurrentChainName()
   const currentChain = useCurrentChain()
   const { lcd } = currentChain
+  const balance = bank.balance.filter(({ denom }) => is.nativeDenom(denom))
 
   const activeDenoms = useActiveDenoms()
-  const balanceDenoms = bank.balance.map(({ denom }) => denom)
+  const balanceDenoms = balance.map(({ denom }) => denom)
   const { getTax, loading: loadingTaxes } = useCalcTaxes(balanceDenoms, t)
 
   type OptionItem = { key: string; label: string; available: string }
-  const options: OptionItem[] = bank.balance.map(({ denom, available }) => ({
+  const options: OptionItem[] = balance.map(({ denom, available }) => ({
     key: denom,
     label: format.denom(denom),
     available,
   }))
 
-  const availableList = bank.balance.reduce<Dictionary<string>>(
+  const availableList = balance.reduce<Dictionary<string>>(
     (acc, { denom, available }) => ({ ...acc, [denom]: available }),
     {}
   )
@@ -52,8 +53,7 @@ export default ({ bank, pairs }: Params): PostPage => {
     minus(availableList[denom], getTax(availableList[denom], denom))
 
   /* form */
-  const hasLunaOnly =
-    bank.balance.length === 1 && bank.balance[0].denom === 'uluna'
+  const hasLunaOnly = balance.length === 1 && balance[0].denom === 'uluna'
   const initial = { to: hasLunaOnly ? 'uusd' : 'uluna' }
   const validate = () => ({ to: '' })
   const [submitted, setSubmitted] = useState(false)
@@ -273,7 +273,7 @@ export default ({ bank, pairs }: Params): PostPage => {
     onSubmit: disabled ? undefined : () => setSubmitted(true),
   }
 
-  const feeDenomList = getFeeDenomList(bank.balance).filter(
+  const feeDenomList = getFeeDenomList(balance).filter(
     (denom) => !checked.includes(denom)
   )
 
@@ -323,7 +323,7 @@ export default ({ bank, pairs }: Params): PostPage => {
       defaultValue: defaultFeeDenom,
       list: feeDenomList,
     },
-    validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
+    validate: (fee: CoinItem) => isFeeAvailable(fee, balance),
     submitLabels: [t('Post:Swap:Swap'), t('Post:Swap:Swapping...')],
     message: t('Post:Swap:Swapped {{coin}} to {{unit}}', {
       coin: checked.map((denom) => format.denom(denom)).join(', '),
