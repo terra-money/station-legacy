@@ -48,7 +48,7 @@ export const denom = (denom = '', whitelist?: Whitelist): string => {
       : denom.replace('u', '').toUpperCase()
   }
 
-  return symbol || isValidTerra ? unit.slice(0, 2) + 'T' : ''
+  return symbol || (isValidTerra ? unit.slice(0, 2) + 'T' : '')
 }
 
 export const display = (
