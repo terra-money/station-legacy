@@ -41,10 +41,14 @@ export const denom = (denom = '', whitelist?: Whitelist): string => {
   const symbol = AccAddress.validate(denom) && whitelist?.[denom]?.symbol
 
   if (!isValidTerra && !AccAddress.validate(denom)) {
-    return denom === 'uluna' ? 'Luna' : denom.replace('u', '').toUpperCase()
+    return denom.startsWith('ibc')
+      ? ''
+      : denom === 'uluna'
+      ? 'Luna'
+      : denom.replace('u', '').toUpperCase()
   }
 
-  return symbol || (isValidTerra ? unit.slice(0, 2) + 'T' : '')
+  return symbol || isValidTerra ? unit.slice(0, 2) + 'T' : ''
 }
 
 export const display = (
