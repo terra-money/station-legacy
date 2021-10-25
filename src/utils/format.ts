@@ -40,10 +40,11 @@ export const denom = (denom = '', whitelist?: Whitelist): string => {
   const isValidTerra = is.nativeTerra(denom) && currencies.includes(unit)
   const symbol = AccAddress.validate(denom) && whitelist?.[denom]?.symbol
 
-  return (
-    symbol ||
-    (denom === 'uluna' ? 'Luna' : isValidTerra ? unit.slice(0, 2) + 'T' : '')
-  )
+  if (!isValidTerra && !AccAddress.validate(denom)) {
+    return denom === 'uluna' ? 'Luna' : denom.replace('u', '').toUpperCase()
+  }
+
+  return symbol || (isValidTerra ? unit.slice(0, 2) + 'T' : '')
 }
 
 export const display = (

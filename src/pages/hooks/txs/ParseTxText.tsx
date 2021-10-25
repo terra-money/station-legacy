@@ -1,5 +1,6 @@
 import { Fragment, ReactNode } from 'react'
 import { useQuery } from 'react-query'
+import { AccAddress, ValAddress } from '@terra-money/terra.js'
 import { format, is } from '../../../utils'
 import { truncate } from '../../../utils/format'
 import useLCD from '../../../api/useLCD'
@@ -90,7 +91,7 @@ const ParseTxText = ({ children: sentence }: { children?: string }) => {
           ? 'multiple coins'
           : is.nativeDenom(word)
           ? format.denom(word)
-          : word.match(REGEXP.ADDRESS)
+          : AccAddress.validate(word) || ValAddress.validate(word)
           ? replaceAddress(word)
           : word.match(REGEXP.COIN)
           ? word
