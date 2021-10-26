@@ -15,7 +15,7 @@ const AnchorEarnCard = ({ button }: { button: ReactNode }) => {
       <div className={styles.row}>
         <div className={styles.content}>
           <div className={styles.label}>
-            Deposit <span className={styles.badge}>20% APY</span>
+            Deposit <span className={styles.badge}>~20% APY</span>
           </div>
           <div>{format.amount(aust)}</div>
         </div>
