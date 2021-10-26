@@ -1,14 +1,14 @@
-import { useState } from 'react'
 import { ConnectType, useWallet } from '@terra-money/wallet-provider'
+import { useState } from 'react'
+import ModalContent from '../components/ModalContent'
+import { useApp } from '../hooks'
 import { AuthMenuKey, useAuthMenu } from '../lib'
 import { isElectron, isWeb } from '../utils/env'
 import { loadKeys } from '../utils/localStorage'
-import { useApp } from '../hooks'
-import ModalContent from '../components/ModalContent'
+import AuthFooter from './AuthFooter'
+import AuthMenu from './AuthMenu'
 import { menu } from './getAuthMenu'
 import getAuthMenuKeys from './getAuthMenuKeys'
-import AuthMenu from './AuthMenu'
-import AuthFooter from './AuthFooter'
 
 const AuthModal = () => {
   const { authModal } = useApp()
@@ -49,11 +49,11 @@ const AuthModal = () => {
         : []
     )
     .concat(
-      availableConnectTypes.includes(ConnectType.WEBEXTENSION)
+      availableConnectTypes.includes(ConnectType.WEB_CONNECT)
         ? {
             title: 'Terra Station Extension',
             icon: 'extension',
-            onClick: () => connect(ConnectType.WEBEXTENSION),
+            onClick: () => connect(ConnectType.WEB_CONNECT),
           }
         : availableConnectTypes.includes(ConnectType.CHROME_EXTENSION)
         ? {
