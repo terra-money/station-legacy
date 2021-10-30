@@ -9,6 +9,7 @@ export interface ConfirmProps {
   memo?: string
   contents: ConfirmContent[]
   feeDenom: { defaultValue?: string; list: string[] }
+  gasAdjustment?: number
   validate: (fee: CoinItem) => boolean
   submitLabels: string[]
   message: string

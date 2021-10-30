@@ -22,13 +22,14 @@ interface SignParams {
   sign: Sign
 }
 
-const gasAdjustment = 1.75
+const DEFAULT_GAS_ADJUSTMENT = 1.75
 
 export default (
   { memo, submitLabels, message, ...rest }: ConfirmProps,
   { user, password: defaultPassword = '', getKey }: SignParams
 ): ConfirmPage => {
   const { contents, msgs, tax, feeDenom, validate, warning, parseResult } = rest
+  const gasAdjustment = rest.gasAdjustment ?? DEFAULT_GAS_ADJUSTMENT
 
   const { t } = useTranslation()
   const { ERROR } = useInfo()

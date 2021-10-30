@@ -84,6 +84,7 @@ const AnchorEarnComponent = ({ type, earn }: Props) => {
         type
       ),
       tax: type === 'Deposit' ? new Coin(denom, tax) : undefined,
+      gasAdjustment: 2.1,
       validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
       submitLabels: {
         Deposit: ['Deposit', 'Depositing...'],
