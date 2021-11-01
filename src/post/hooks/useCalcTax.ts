@@ -5,9 +5,11 @@ import BigNumber from 'bignumber.js'
 import { format, is } from '../../utils'
 import { min, percent } from '../../utils/math'
 import fcd from '../../api/fcd'
+import useLCD from '../../api/useLCD'
 
 type Response = Result<string>
 const useCalcTax = (denom: string, t: TFunction) => {
+  const lcd = useLCD()
   const { data: rate = '0', isLoading: loadingRate } = useQuery(
     'taxRate',
     async () => {
@@ -19,12 +21,10 @@ const useCalcTax = (denom: string, t: TFunction) => {
   const { data: cap = '0', isLoading: loadingCap } = useQuery(
     ['taxCap', denom],
     async () => {
-      const { data } = await fcd.get<Response>(
-        `/treasury/tax_cap/${encodeURIComponent(encodeURIComponent(denom))}`
-      )
-      return data.result
+      const data = await lcd.treasury.taxCap(denom)
+      return data.amount.toString()
     },
-    { enabled: !(denom === 'uluna' || is.address(denom)) }
+    { enabled: denom !== '' && denom !== 'uluna' && !is.address(denom) }
   )
 
   const loading = loadingRate || loadingCap
