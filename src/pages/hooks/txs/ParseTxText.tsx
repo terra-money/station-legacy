@@ -26,7 +26,8 @@ const IBCBaseDenom = ({ children: unit }: { children: string }) => {
 const Coin = ({ children: coin }: { children: string }) => {
   const { whitelist } = useWhitelist()
   const { amount, token } = splitTokenText(coin)
-  const value = format.amount(amount)
+  /* Load token precision from the whitelist if defined. amount defaults to 6. */
+  const value = format.amount(amount, whitelist && whitelist[token]?.decimals)
 
   const unit = is.ibcDenom(token) ? (
     <IBCBaseDenom>{token}</IBCBaseDenom>
