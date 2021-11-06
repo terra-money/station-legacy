@@ -1,11 +1,18 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AssetsPage, BankData, Schedule, TokenBalance } from '../../../types'
+import {
+  AssetsPage,
+  BankData,
+  NFTTokenBalance,
+  Schedule,
+  TokenBalance,
+} from '../../../types'
 import { format } from '../../../utils'
 import { percent, gte } from '../../../utils/math'
 import { useCurrency, useCurrencyRates } from '../../../data/currency'
 import useBank from '../../../api/useBank'
 import useTokenBalance from '../../../cw20/useTokenBalance'
+import useNFTTokenBalance from '../../../cw721/useTokenBalance'
 
 const SMALL = '1000000'
 
@@ -18,6 +25,7 @@ export default (config?: Config): AssetsPage => {
   const { t } = useTranslation()
   const bank = useBank()
   const tokenBalances = useTokenBalance()
+  const nftTokenBalances = useNFTTokenBalance()
   const currency = useCurrency()
   const { getValue, getCurrentCurrencyValue } = useCurrencyRates()
   const [hideSmall, setHideSmall] = useState<boolean>(
@@ -27,11 +35,13 @@ export default (config?: Config): AssetsPage => {
   const load = () => {
     bank.execute()
     tokenBalances.load()
+    nftTokenBalances.load()
   }
 
   const render = (
     { balance, vesting }: BankData,
-    tokenList?: TokenBalance[]
+    tokenList?: TokenBalance[],
+    nftTokenList?: NFTTokenBalance[]
   ) => ({
     card:
       !balance.length && !tokenList?.length && !vesting.length
@@ -101,6 +111,20 @@ export default (config?: Config): AssetsPage => {
         }) ?? [],
       send: t('Post:Send:Send'),
     },
+    nftTokens: {
+      title: 'CW721 Tokens (NFTs)',
+      list:
+        nftTokenList?.map(({ token, symbol, icon, owned, balance }) => {
+          const display = {
+            value: format.amount(balance, 0),
+            owned: owned,
+            unit: symbol,
+          }
+
+          return { icon, token, display }
+        }) ?? [],
+      send: t('Post:Send:Send'),
+    },
     vesting: !vesting.length
       ? undefined
       : {
@@ -140,7 +164,9 @@ export default (config?: Config): AssetsPage => {
     { setHideSmall, load },
     bank,
     { loading: bank.loading || tokenBalances.loading },
-    bank.data && { ui: render(bank.data, tokenBalances.list) }
+    bank.data && {
+      ui: render(bank.data, tokenBalances.list, nftTokenBalances.list),
+    }
   )
 }
 

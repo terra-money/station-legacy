@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda'
-import { DisplayCoin, Card, BankAPI } from '..'
+import { DisplayCoin, Card, BankAPI, NFTDisplayCoin, NFTDisplay } from '..'
 
 export interface AssetsPage extends BankAPI {
   ui?: AssetsUI
@@ -12,12 +12,19 @@ export interface AssetsUI {
   available?: AvailableUI
   ibc?: AvailableUI
   tokens: AvailableUI
+  nftTokens: AvailableUI
   vesting?: VestingUI
 }
 
 export interface AvailableUI {
   title: string
   list: AvailableItem[]
+  hideSmall?: HideSmallUI
+  send: string
+}
+export interface NFTAvailableUI {
+  title: string
+  list: NFTAvailableItem[]
   hideSmall?: HideSmallUI
   send: string
 }
@@ -33,6 +40,13 @@ export interface AvailableItem {
   denom?: string
   token?: string
   display: DisplayCoin
+  currencyValueDisplay?: DisplayCoin
+}
+export interface NFTAvailableItem {
+  icon?: string
+  denom?: string
+  token?: string
+  display: NFTDisplayCoin
   currencyValueDisplay?: DisplayCoin
 }
 
@@ -63,13 +77,23 @@ export interface Token {
   icon?: string
   token: string
   decimals?: number
+} /* cw20 */
+export interface NFTToken {
+  symbol: string
+  icon?: string
+  token: string
+  owned?: NFTDisplay[]
 }
 
 export interface TokenBalance extends Token {
   balance: string
 }
+export interface NFTTokenBalance extends NFTToken {
+  balance: string
+}
 
 export type Tokens = Dictionary<Token>
+export type NFTTokens = Dictionary<NFTToken>
 
 /* contracts */
 export interface ContractInfo {
