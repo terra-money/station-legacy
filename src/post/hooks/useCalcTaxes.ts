@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { Dictionary } from 'ramda'
 import BigNumber from 'bignumber.js'
 import { TFunction } from 'i18next'
-import fcd from '../../api/fcd'
+import useLCD from '../../api/useLCD'
 
-type Response = Result<string>
 const useCalcTaxes = (denoms: string[], t: TFunction) => {
+  const lcd = useLCD()
   const [rate, setRate] = useState('0')
   const [caps, setCaps] = useState<Dictionary<string>>({})
   const [loadingRate, setLoadingRate] = useState(false)
@@ -15,27 +15,23 @@ const useCalcTaxes = (denoms: string[], t: TFunction) => {
   useEffect(() => {
     const fetchRate = async () => {
       setLoadingRate(true)
-      const { data } = await fcd.get<Response>('/treasury/tax_rate')
-      const { result } = data
-      setRate(result)
+      const rate = await lcd.treasury.taxRate()
+      setRate(rate.toString())
       setLoadingRate(false)
     }
 
     fetchRate()
-  }, [])
+  }, [lcd])
 
   useEffect(() => {
     const fetchCap = async () => {
       setLoadingCaps(true)
-      const queries = denoms.map((denom) =>
-        fcd.get<Response>(`/treasury/tax_cap/${denom}`)
-      )
-
+      const queries = denoms.map((denom) => lcd.treasury.taxCap(denom))
       const responses = await Promise.all(queries)
       const caps = denoms.reduce(
         (acc, denom, index) => ({
           ...acc,
-          [denom]: responses[index].data.result,
+          [denom]: responses[index].amount.toString(),
         }),
         {}
       )
@@ -47,7 +43,7 @@ const useCalcTaxes = (denoms: string[], t: TFunction) => {
     fetchCap()
 
     // eslint-disable-next-line
-  }, [JSON.stringify(denoms)])
+  }, [JSON.stringify(denoms), lcd])
 
   const getTax = useCallback(
     (amount: string, denom: string) =>
