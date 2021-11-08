@@ -22,7 +22,6 @@ import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
 import LedgerKey from '../extension/LedgerKey'
-import ParseTxText from '../pages/hooks/txs/ParseTxText'
 import s from './Confirm.module.scss'
 
 interface Props extends RecordedExtSign {
@@ -364,13 +363,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
       <section>
         {msgs.map((msg) => {
           const isDanger = !(isOriginTerra || getIsMsgExecuteContract(msg))
-          return (
-            <Message
-              msg={msg}
-              danger={isDanger}
-              parseTxText={(text) => <ParseTxText>{text}</ParseTxText>}
-            />
-          )
+          return <Message msg={msg} danger={isDanger} />
         })}
       </section>
     </ConfirmationComponent>

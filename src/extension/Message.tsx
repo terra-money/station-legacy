@@ -1,9 +1,12 @@
-import { useState, Fragment, ReactNode } from 'react'
+import { useState, Fragment } from 'react'
 import classNames from 'classnames/bind'
-import { Msg, MsgTransfer } from '@terra-money/terra.js'
+import { Msg } from '@terra-money/terra.js'
 import { readMsg } from '@terra-money/msg-reader'
-import { format } from '../utils'
+import { TxDescription } from '@terra-money/react-widget'
 import Icon from '../components/Icon'
+import { useCurrentChainName } from '../data/chain'
+import { useAddress } from '../data/auth'
+import useLCD from '../api/useLCD'
 import s from './Message.module.scss'
 
 const cx = classNames.bind(s)
@@ -12,16 +15,20 @@ interface Props {
   msg: Msg
   danger?: boolean
   defaultIsOpen?: boolean
-  parseTxText: (text?: string) => ReactNode
 }
 
-const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
+const Message = ({ msg, danger, defaultIsOpen }: Props) => {
   const [isOpen, setIsOpen] = useState(defaultIsOpen)
   const toggle = () => setIsOpen(!isOpen)
 
   /* render */
   const { '@type': type } = msg.toData()
   const msgText = readMsg(msg)
+
+  const address = useAddress()
+  const network = useCurrentChainName()
+  const lcd = useLCD()
+  const config = { name: network, ...lcd.config }
 
   const renderDl = () => (
     <dl className={s.dl}>
@@ -41,24 +48,14 @@ const Message = ({ msg, danger, defaultIsOpen, parseTxText }: Props) => {
     </dl>
   )
 
-  const parseIbcMessage = ({ token, source_channel }: MsgTransfer) => {
-    if (!token) return `Transfer via ${source_channel}`
-
-    const { amount, denom } = token
-    const value = format.amount(amount.toString())
-
-    return `Transfer ${value}${denom} via ${source_channel}`
-  }
-
-  const parsedIbcMessage =
-    type === '/ibc.applications.transfer.v1.MsgTransfer'
-      ? parseIbcMessage(msg as MsgTransfer)
-      : undefined
-
   return (
     <article className={cx(s.message, { danger })}>
       <header className={s.header} onClick={toggle}>
-        <p>{parsedIbcMessage ?? (parseTxText(msgText) || type)}</p>
+        <p>
+          <TxDescription network={config} config={{ myWallet: address }}>
+            {msgText || type}
+          </TxDescription>
+        </p>
         <Icon name={isOpen ? 'expand_less' : 'expand_more'} size={14} />
       </header>
 

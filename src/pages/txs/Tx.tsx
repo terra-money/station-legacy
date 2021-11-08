@@ -1,11 +1,14 @@
 import c from 'classnames'
+import { TxDescription } from '@terra-money/react-widget'
 import { TxUI, MessageUI, Card as CardProps } from '../../lib'
 import { format } from '../../lib'
-import ParseTxText from '../hooks/txs/ParseTxText'
 import Card from '../../components/Card'
 import Icon from '../../components/Icon'
 import Badge from '../../components/Badge'
 import ExtLink from '../../components/ExtLink'
+import { useCurrentChainName } from '../../data/chain'
+import { useAddress } from '../../data/auth'
+import useLCD from '../../api/useLCD'
 import s from './Tx.module.scss'
 
 const Tx = ({ link, hash, date, messages, details }: TxUI) => {
@@ -22,6 +25,11 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
     </>
   )
 
+  const address = useAddress()
+  const network = useCurrentChainName()
+  const lcd = useLCD()
+  const config = { name: network, ...lcd.config }
+
   const renderMessage = (
     { tag, summary, success }: MessageUI,
     index: number
@@ -36,7 +44,9 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
         <section className={s.text}>
           {summary.map((item, index) => (
             <p key={index}>
-              <ParseTxText>{item}</ParseTxText>
+              <TxDescription network={config} config={{ myWallet: address }}>
+                {item}
+              </TxDescription>
             </p>
           ))}
         </section>
