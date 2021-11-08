@@ -170,8 +170,12 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       input: '',
     }
 
-    setValues({ ...defaultValues, ...values })
+    setSimulationsMarket([])
+    setSimulationsTerraswap([])
+    setSimulationsRoute([])
+    setNativePrincipals([])
     setTradingFeeTerraswap('0')
+    setValues({ ...defaultValues, ...values })
   }
 
   /* simulate */
@@ -597,6 +601,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         : isFeeAvailable(fee, bank.balance),
     submitLabels: [t('Post:Swap:Swap'), t('Post:Swap:Swapping...')],
     message: '',
+    onFinish: init,
     parseResult: ({ logs }) => {
       if (!logs) return ''
 

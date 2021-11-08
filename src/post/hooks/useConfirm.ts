@@ -25,7 +25,7 @@ interface SignParams {
 const DEFAULT_GAS_ADJUSTMENT = 1.75
 
 export default (
-  { memo, submitLabels, message, ...rest }: ConfirmProps,
+  { memo, submitLabels, message, onFinish, ...rest }: ConfirmProps,
   { user, password: defaultPassword = '', getKey }: SignParams
 ): ConfirmPage => {
   const { contents, msgs, tax, feeDenom, validate, warning, parseResult } = rest
@@ -197,6 +197,7 @@ export default (
       }
     } finally {
       setSubmitting(false)
+      onFinish?.()
     }
   }
 

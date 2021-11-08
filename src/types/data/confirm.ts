@@ -13,6 +13,7 @@ export interface ConfirmProps {
   validate: (fee: CoinItem) => boolean
   submitLabels: string[]
   message: string
+  onFinish?: () => void
   parseResult?: (result: PostResult) => string
   warning?: string | string[]
   cancel?: () => void
