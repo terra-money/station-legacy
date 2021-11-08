@@ -27,6 +27,10 @@
       "Log": "Journal"
     },
 
+    "TNS": {
+      "This name has not yet been configured": "Ce nom n'a pas encore été configuré"
+    },
+
     "Form": {
       "Optional": "Optionel",
       "Next": "Suivant",

@@ -23,7 +23,7 @@ interface Props {
 
 const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
   const { label, element, attrs, setValue, error } = field
-  const { copy, button, unit, options, ui } = field
+  const { copy, button, helper, unit, options, ui } = field
   const isCheckbox = ['checkbox', 'radio'].includes(attrs.type!)
   const className = isCheckbox ? 'form-check' : 'form-group'
 
@@ -63,6 +63,8 @@ const Field = ({ field, focus, onFocus, render, ...props }: Props) => {
       <label className="label" htmlFor={attrs.id}>
         {label}
       </label>
+
+      {helper && <div className={c(s.helper)}>{helper}</div>}
 
       {copy && (
         <Copy

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PostPage, ConfirmProps, BankData } from '../../../types'
 import { CoinItem, Field } from '../../../types'
@@ -16,6 +16,7 @@ import {
   CommunityPoolSpendProposal,
   ParameterChangeProposal,
 } from '@terra-money/terra.js'
+import { useTns } from '../../../hooks/useTns'
 
 enum TypeKey {
   TEXT = '',
@@ -61,6 +62,13 @@ export default (): PostPage => {
   const { data: bank, loading, error } = useBank()
   const { data: pool, ...poolResponse } = useFCD<Pool>({ url })
   const { loading: poolLoading, error: poolError } = poolResponse
+
+  const {
+    address: resolvedAddress,
+    error: tnsError,
+    resolve: resolveTns,
+  } = useTns()
+
   const lunaPool = find('uluna:amount', pool?.result)
 
   const TypesList = [
@@ -87,6 +95,9 @@ export default (): PostPage => {
     const { typeIndex, title, description, input, ...updates } = values
     const { key } = TypesList[typeIndex]
 
+    const recipient = resolvedAddress || updates.recipient
+    const recipientErr = tnsError || v.address(recipient)
+
     return {
       title: !title.length
         ? t('Common:Validate:{{label}} is required', {
@@ -107,10 +118,7 @@ export default (): PostPage => {
           : v.input(input, { max: toInput(max.amount) }),
       typeIndex: '',
       proposal_type: '',
-      recipient:
-        key === TypeKey.COMMUNITY_POOL_SPEND
-          ? v.address(updates.recipient)
-          : '',
+      recipient: key === TypeKey.COMMUNITY_POOL_SPEND ? recipientErr : '',
       amount:
         key === TypeKey.COMMUNITY_POOL_SPEND
           ? !lunaPool
@@ -150,8 +158,12 @@ export default (): PostPage => {
   const [submitted, setSubmitted] = useState(false)
   const form = useForm<Values>(initial, validate)
   const { values, setValue, invalid, getDefaultProps, getDefaultAttrs } = form
-  const { typeIndex, input, title } = values
+  const { typeIndex, input, title, recipient } = values
   const amount = toAmount(input)
+
+  useEffect(() => {
+    resolveTns(recipient)
+  }, [recipient, resolveTns])
 
   /* render */
   const unit = format.denom(denom)
@@ -162,6 +174,7 @@ export default (): PostPage => {
       {
         ...getDefaultProps('recipient'),
         label: t('Post:Governance:Recipient'),
+        helper: resolvedAddress,
         attrs: { ...getDefaultAttrs('recipient'), placeholder: '0' },
       },
       {
@@ -230,7 +243,10 @@ export default (): PostPage => {
   const getConfirm = (bank: BankData): ConfirmProps => ({
     msgs: [
       new MsgSubmitProposal(
-        sanitize(TypesList[typeIndex].key, values),
+        sanitize(TypesList[typeIndex].key, {
+          ...values,
+          recipient: resolvedAddress || values.recipient,
+        }),
         new Coins(gt(amount, 0) ? { [denom]: amount } : {}),
         address
       ),

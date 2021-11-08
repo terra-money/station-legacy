@@ -27,6 +27,10 @@
       "Log": "Журнал"
     },
 
+    "TNS": {
+      "This name has not yet been configured": "Это имя еще не настроено"
+    },
+
     "Form": {
       "Optional": "По желанию",
       "Next": "Следующий",
