@@ -7,6 +7,7 @@ import zh from '../lang/zh.json'
 import fr from '../lang/fr.json'
 import ru from '../lang/ru.json'
 import pl from '../lang/pl.json'
+import it from '../lang/it.json'
 
 i18n
   .use(LanguageDetector)
