@@ -214,7 +214,7 @@
       "Staking return": "Rendimento Staking",
       "Annualized staking yield for Luna based on tax rewards, oracle rewards, gas, MIR and ANC airdrop rewards and latest prices of Luna (annualize return = 7 days moving average return * 365)": "Rendimento annualizzato per lo Staking di Luna, basato sulle tasse di transazione, ricompense oracle, gas, MIR e ANC airdrop e ultimo prezzo di luna (rendimento annualizzato = media mobile a 7 giorni del rendimento * 365)",
       "Tax rewards": "Ricompense Tasse",
-      "Tax rewards distributed over the selected time period": "Ricompense Tasse distruite sul periodo di tempo selezionato",
+      "Tax rewards distributed over the selected time period": "Ricompense Tasse distribuite sul periodo di tempo selezionato",
       "Total accounts": "Numero totale di account",
       "Total": "Totale",
       "Active": "Attivo",
@@ -268,7 +268,7 @@
       "Release time": "Tempo di rilascio",
 
       "Rank": "Rango",
-      "Moniker": "Soprannome",
+      "Moniker": "Nome",
 
       "Operator address": "Indirizzo operatore",
       "Account address": "Indirizzo Account",
@@ -295,7 +295,7 @@
 
       "No events": "Nessun evento",
       "No delegators": "Nessun delegatore",
-      "This validator has no claim history yet": "Questo validatore non ha ancora una cronologia ricompense ritirate",
+      "This validator has no claim history yet": "Questo validatore non ha ancora una cronologia ricompense",
 
       "Pro Tip — your rewards will be automatically withdrawn in the following cases": "Consigli da professionista - le tue ricompense verranno automaticamente ritirate nei seguenti casi:",
       "Delegating more to a validator you’ve already delegated to": "Delega ancora ad un validatore a cui avevi già delegato",
@@ -354,7 +354,7 @@
       "Vote": "Vota",
       "Voting end time": "Tempo limite per la votazione",
       "Most voted on": "La maggior parte ha votato su",
-      "Percent voting": "Porcentuale di voto",
+      "Percent voting": "Percentuale di voto",
       "{{n}} of {{d}} has voted": "{{n}} di {{d}} ha votato",
       "No votes yet": "Ancora nessun voto",
       "Voter": "Elettore",
@@ -399,7 +399,7 @@
       "You don't have enough balance. Please adjust either the amount or the fee.": "Non hai abbastanza saldo. Si prega di modificare l'importo o la tassa",
 
       "Confirm with ledger": "Conferma con ledger",
-      "Please confirm in your\nLedger Wallet": "Perfavore, conferma nel suo \n Portafoglio ledger ",
+      "Please confirm in your\nLedger Wallet": "Per favore, conferma nel suo \n Portafoglio ledger ",
 
       "Confirm with password": "Conferma con password",
       "Input your password to confirm": "Inserisci la tua password per confermare",
@@ -421,7 +421,7 @@
       "Send": "Invia",
       "Sending...": "Siamo inviando...",
       "Sent {{coin}} to {{address}}": "Invio di {{coin}} a {{address}}",
-      "Please double check if the above transaction requires a memo": "Perfavore, controlla se la transazione necessita di un memo.",
+      "Please double check if the above transaction requires a memo": "Per favore, controlla se la transazione necessita di un memo.",
       "A fee of 1 UST or 0.1% of the transfer amount (whichever is greater) will be charged for transferring assets from Terra to Ethereum through Shuttle": "Una tassa di 1 UST o dello 0,1% dell'importo trasferito (il maggiore dei due) verrà addebitato per trasferire asset da Terra ad Ethereum tramite Shuttle."
     },
 
@@ -450,7 +450,7 @@
 
       "Remember to leave a small amount of tokens undelegated, as subsequent transactions (e.g. redelegation) require fees to be paid.": "Ricorda di lasciare una piccola quantità di token non delegati, poichè le transazioni successive (es la ridelega) richiedono il pagamento di commissioni.",
       "Undelegation takes 21 days to complete. You would not get rewards in the meantime.": "La revoca della delega impiega 21 giorni per essere completata, durante questi giorni non guadagnerai ricompense.",
-      "Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.": "Ridelegare allo stesso validatore sarà proibito per 21 giorni. Perfavore assicurati di inserire la quantità giusta di Luna da delegare."
+      "Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.": "Ridelegare allo stesso validatore sarà proibito per 21 giorni. Per favore assicurati di inserire la quantità giusta di Luna da delegare."
     },
 
     "Swap": {
