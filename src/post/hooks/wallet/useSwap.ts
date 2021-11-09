@@ -561,7 +561,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         displays: [
           format.display(
             { amount, denom: from },
-            whitelist?.[to]?.decimals,
+            whitelist?.[from]?.decimals,
             undefined,
             whitelist
           ),
