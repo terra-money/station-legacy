@@ -221,6 +221,9 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   // simulate: Expected price
   const [price, setPrice] = useState('0')
   const expectedPrice = div(amount, simulated)
+  const decimals =
+    (whitelist?.[to]?.decimals ?? 6) - (whitelist?.[from]?.decimals ?? 6)
+  const formattedExpectedPrice = times(expectedPrice, Math.pow(10, decimals))
 
   // simulate: Max & Tax
   const shouldTax = is.nativeTerra(from) && mode !== 'Market'
@@ -455,14 +458,16 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       ? undefined
       : {
           title: 'Expected price',
-          text: !(isFinite(expectedPrice) && gt(expectedPrice, 0))
+          text: !(
+            isFinite(formattedExpectedPrice) && gt(formattedExpectedPrice, 0)
+          )
             ? 'Simulating...'
-            : gt(expectedPrice, 1)
+            : gt(formattedExpectedPrice, 1)
             ? `1 ${format.denom(to, whitelist)} = ${format.decimal(
-                expectedPrice
+                formattedExpectedPrice
               )} ${format.denom(from, whitelist)}`
             : `1 ${format.denom(from, whitelist)} = ${format.decimal(
-                div(1, expectedPrice)
+                div(1, formattedExpectedPrice)
               )} ${format.denom(to, whitelist)}`,
         },
     spread:
