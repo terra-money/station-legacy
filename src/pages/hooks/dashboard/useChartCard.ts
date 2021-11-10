@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
+import { useQueries } from 'react-query'
 import { useTranslation } from 'react-i18next'
 import { ChartCard, ChartFilter } from '../../../types'
 import { CumulativeType, AccountType } from '../../../types'
-import { format } from '../../../utils'
+import { format, is } from '../../../utils'
+import { useGetQueryDenomTrace } from '../../../data/lcd/ibc'
 import useFCD from '../../../api/useFCD'
 
 export interface Props<T = any> {
@@ -86,6 +88,13 @@ export default <T extends { denom?: string }>(props: Props): ChartCard => {
   const { data } = useFCD<Response>({ url: getURL() })
   const results = Array.isArray(data) ? data : data?.[type]
 
+  const denoms =
+    results?.filter(({ denom }) => denom).map(({ denom }) => denom) ?? []
+  const getQuery = useGetQueryDenomTrace()
+  const r = useQueries(denoms?.map((denom) => getQuery(denom)) ?? [])
+  const denomTraces = r.map(({ data }) => data?.base_denom)
+  const isDenomTracesLoading = r.some(({ isLoading }) => isLoading)
+
   /* render */
   const renderFilter = (): ChartFilter => ({
     type: config?.type
@@ -99,13 +108,15 @@ export default <T extends { denom?: string }>(props: Props): ChartCard => {
         }
       : undefined,
     denom:
-      config?.denom && results
+      config?.denom && results && !isDenomTracesLoading
         ? {
             value: denom!,
             set: setDenom,
-            options: results.map(({ denom }) => ({
+            options: results.map(({ denom }, index) => ({
               value: denom!,
-              children: format.denom(denom!),
+              children: format.denom(
+                is.ibcDenom(denom) ? denomTraces[index] : denom!
+              ),
             })),
           }
         : undefined,
