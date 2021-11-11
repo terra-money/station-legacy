@@ -11,7 +11,6 @@
     "@anchor-protocol/anchor.js": "^1.2.0-alpha.6",
     "@ledgerhq/hw-transport-webhid": "^5.29.0",
     "@ledgerhq/hw-transport-webusb": "^5.29.0",
-    "@sentry/browser": "^6.2.5",
     "@terra-money/ledger-terra-js": "^1.1",
     "@terra-money/log-finder": "^1.1.6",
     "@terra-money/log-finder-ruleset": "^1.0.2",

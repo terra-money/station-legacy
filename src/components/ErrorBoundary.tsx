@@ -1,6 +1,5 @@
 import { FC, Component, ReactNode, ErrorInfo } from 'react'
 import { AxiosError } from 'axios'
-import * as Sentry from '@sentry/browser'
 import { useText } from '../lib'
 
 interface ErrorBoundaryComponentProps {
@@ -38,18 +37,8 @@ interface ErrorBoundaryProps {
 const ErrorBoundary: FC<ErrorBoundaryProps> = ({ fallback, children }) => {
   const { OOPS } = useText()
 
-  const handleError = (error: Error, errorInfo: ErrorInfo) => {
-    Sentry.withScope((scope) => {
-      scope.setExtras(errorInfo as any)
-      Sentry.captureException(error)
-    })
-  }
-
   return (
-    <ErrorBoundaryComponent
-      fallback={fallback ?? OOPS}
-      handleError={handleError}
-    >
+    <ErrorBoundaryComponent fallback={fallback ?? OOPS}>
       {children}
     </ErrorBoundaryComponent>
   )

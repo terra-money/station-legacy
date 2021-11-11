@@ -6,20 +6,15 @@ import { render } from 'react-dom'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { RecoilRoot } from 'recoil'
-import * as Sentry from '@sentry/browser'
 
 import './lang'
 import './index.scss'
-import { isLocal, isExtension } from './utils/env'
+import { isExtension } from './utils/env'
 import WithChains from './WithChains'
 import ErrorBoundary from './components/ErrorBoundary'
 import Disconnected from './components/Disconnected'
 import App from './layouts/App'
 import './customize.scss'
-
-const dsn = ''
-const environment = process.env.REACT_APP_ENV
-!isLocal && !!dsn && Sentry.init({ dsn, environment })
 
 const route = (children: ReactNode) =>
   isExtension ? (
