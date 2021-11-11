@@ -16,7 +16,9 @@ function injectScript() {
   try {
     const container = document.head || document.documentElement
     const scriptTag = document.createElement('script')
-    scriptTag.setAttribute('async', 'false')
+    // FIXME (Ian Lee) <script async="false"> is useless. both async="false" and async="true" operate in async="true"
+    //  by removing async attribute, the `inpage.js` will be complated before DOM loading.
+    //scriptTag.setAttribute('async', 'false')
     scriptTag.setAttribute('src', extension.runtime.getURL('inpage.js'))
     container.insertBefore(scriptTag, container.children[0])
     container.removeChild(scriptTag)
