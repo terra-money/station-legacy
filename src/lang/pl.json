@@ -27,6 +27,10 @@
       "Log": "Rejestr"
     },
 
+    "TNS": {
+      "This name has not yet been configured": "Ta nazwa nie została jeszcze ustawiona"
+    },
+
     "Form": {
       "Optional": "Opcjonalne",
       "Next": "Następne",

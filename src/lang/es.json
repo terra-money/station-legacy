@@ -27,6 +27,10 @@
       "Log": "Diario"
     },
 
+    "TNS": {
+      "This name has not yet been configured": "Este nombre aún no se ha configurado"
+    },
+
     "Form": {
       "Optional": "Opcional",
       "Next": "Siguiente",

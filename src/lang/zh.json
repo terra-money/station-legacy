@@ -27,6 +27,10 @@
       "Log": "记录"
     },
 
+    "TNS": {
+      "This name has not yet been configured": "此名称尚未配置"
+    },
+
     "Form": {
       "Optional": "可选项",
       "Next": "下一步",

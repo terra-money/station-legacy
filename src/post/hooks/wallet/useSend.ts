@@ -1,24 +1,33 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Coin, MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import _ from 'lodash'
-import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
-import { Coin } from '@terra-money/terra.js'
-import { BankData, Whitelist } from '../../../types'
-import { PostPage, CoinItem, Field } from '../../../types'
-import { ConfirmContent, ConfirmProps } from '../../../types'
-import { is, format, find } from '../../../utils'
-import { gt, max, minus } from '../../../utils/math'
-import { toAmount, toInput } from '../../../utils/format'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import useBank from '../../../api/useBank'
+import { TokenBalanceQuery } from '../../../cw20/useTokenBalance'
 import { useAddress } from '../../../data/auth'
 import { useDenomTrace } from '../../../data/lcd/ibc'
-import { TokenBalanceQuery } from '../../../cw20/useTokenBalance'
-import useBank from '../../../api/useBank'
 import useForm from '../../../hooks/useForm'
-import validateForm from '../validateForm'
-import { isAvailable, isFeeAvailable } from '../validateConfirm'
-import { getFeeDenomList } from '../validateConfirm'
+import { useTns } from '../../../hooks/useTns'
+import {
+  BankData,
+  CoinItem,
+  ConfirmContent,
+  ConfirmProps,
+  Field,
+  PostPage,
+  Whitelist,
+} from '../../../types'
+import { find, format, is } from '../../../utils'
+import { toAmount, toInput } from '../../../utils/format'
+import { gt, max, minus } from '../../../utils/math'
 import { useCalcFee } from '../txHelpers'
 import useCalcTax from '../useCalcTax'
+import {
+  getFeeDenomList,
+  isAvailable,
+  isFeeAvailable,
+} from '../validateConfirm'
+import validateForm from '../validateForm'
 
 interface Values {
   to: string
@@ -36,24 +45,34 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
   const { data: denomTrace } = useDenomTrace(denom)
   const ibcDenom = denomTrace?.base_denom
 
+  const {
+    address: resolvedAddress,
+    error: tnsError,
+    resolve: resolveTns,
+  } = useTns()
+
   /* form */
   const getBalance = () =>
     (is.nativeDenom(denom) || is.ibcDenom(denom)
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
-  const validate = ({ input, to, memo }: Values) => ({
-    to: v.address(to),
-    input: v.input(
-      input,
-      { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
-      tokens?.[denom]?.decimals
-    ),
-    memo:
-      v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
-      v.includes(memo, '<') ||
-      v.includes(memo, '>'),
-  })
+  const validate = ({ input, to, memo }: Values) => {
+    const recipient = resolvedAddress || to
+
+    return {
+      to: tnsError || v.address(recipient),
+      input: v.input(
+        input,
+        { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
+        tokens?.[denom]?.decimals
+      ),
+      memo:
+        v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
+        v.includes(memo, '<') ||
+        v.includes(memo, '>'),
+    }
+  }
 
   const initial = { to: '', input: '', memo: '' }
   const form = useForm<Values>(initial, validate)
@@ -61,6 +80,12 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
   const { getDefaultProps, getDefaultAttrs } = form
   const { to, input, memo } = values
   const amount = toAmount(input, tokens?.[denom]?.decimals)
+
+  useEffect(() => {
+    resolveTns(to)
+  }, [to, resolveTns])
+
+  const recipient = resolvedAddress || to
 
   /* tax */
   const [submitted, setSubmitted] = useState(false)
@@ -86,6 +111,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
     {
       ...getDefaultProps('to'),
       label: t('Post:Send:Send to'),
+      helper: resolvedAddress,
       attrs: {
         ...getDefaultAttrs('to'),
         placeholder: `Terra address`,
@@ -141,7 +167,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
     .concat([
       {
         name: t('Post:Send:Send to'),
-        text: to,
+        text: recipient,
       },
       {
         name: t('Common:Tx:Amount'),
@@ -170,10 +196,10 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
   const getConfirm = (bank: BankData, whitelist: Whitelist): ConfirmProps => ({
     msgs:
       is.nativeDenom(denom) || is.ibcDenom(denom)
-        ? [new MsgSend(address, to, [new Coin(denom, amount)])]
+        ? [new MsgSend(address, recipient, [new Coin(denom, amount)])]
         : [
             new MsgExecuteContract(address, denom, {
-              transfer: { recipient: to, amount },
+              transfer: { recipient: recipient, amount },
             }),
           ],
     tax: shouldTax ? new Coin(denom, taxAmount) : undefined,
@@ -195,7 +221,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
         undefined,
         whitelist
       ),
-      address: to,
+      address: recipient,
     }),
     warning: [
       t(

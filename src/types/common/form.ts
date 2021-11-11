@@ -20,6 +20,7 @@ export interface Field<U = any> {
 
   error?: string
   copy?: string
+  helper?: string
   ui?: U
 
   /* post */
