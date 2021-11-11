@@ -10,10 +10,10 @@ const TERRA_STATION_INFO = {
 }
 
 if (
-  typeof window.terraExtensions !== 'undefined' &&
-  Array.isArray(window.terraExtensions)
+  typeof window.terraWallets !== 'undefined' &&
+  Array.isArray(window.terraWallets)
 ) {
-  window.terraExtensions.push(TERRA_STATION_INFO)
+  window.terraWallets.push(TERRA_STATION_INFO)
 } else {
-  window.terraExtensions = [TERRA_STATION_INFO]
+  window.terraWallets = [TERRA_STATION_INFO]
 }
