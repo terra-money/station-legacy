@@ -28,7 +28,7 @@ export const isMarketAvailable = ({ from, to }: SwapParams) =>
 export const findPair = ({ from, to }: SwapParams, pairs?: Pairs) => {
   if (!pairs) return
 
-  const shouldBurnLuna = from === 'uluna' && is.nativeTerra(from)
+  const shouldBurnLuna = from === 'uluna' && is.nativeTerra(to)
   const pair = Object.entries(pairs).find(([, tokens]) =>
     [from, to].every((token) => tokens.includes(token))
   )?.[0]
