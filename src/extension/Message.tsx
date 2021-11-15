@@ -2,7 +2,7 @@ import { useState, Fragment } from 'react'
 import classNames from 'classnames/bind'
 import { Msg } from '@terra-money/terra.js'
 import { readMsg } from '@terra-money/msg-reader'
-import { TxDescription } from '@terra-money/react-widget'
+import { TxDescription } from '@terra-money/react-base-components'
 import Icon from '../components/Icon'
 import { useCurrentChainName } from '../data/chain'
 import { useAddress } from '../data/auth'
@@ -52,7 +52,10 @@ const Message = ({ msg, danger, defaultIsOpen }: Props) => {
     <article className={cx(s.message, { danger })}>
       <header className={s.header} onClick={toggle}>
         <p>
-          <TxDescription network={config} config={{ myWallet: address }}>
+          <TxDescription
+            network={config}
+            config={{ myWallet: address, printCoins: 2 }}
+          >
             {msgText || type}
           </TxDescription>
         </p>
