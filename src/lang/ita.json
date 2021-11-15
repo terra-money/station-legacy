@@ -1,0 +1,549 @@
+{
+  "Common": {
+    "Coin": "Moneta",
+
+    "All": "Tutto",
+    "Type": "Tipo",
+    "Change": "Cambio",
+    "Time": "Data",
+    "Weight": "Peso",
+
+    "Copy": "Copia",
+    "Copied": "Copiato",
+
+    "Account": {
+      "Address": "Indirizzo",
+      "Available": "Disponibile"
+    },
+
+    "Tx": {
+      "Tx": "Tx",
+      "Tx Hash": "Tx Hash",
+      "Height": "Altezza",
+      "Amount": "Quantità",
+      "Memo": "Memo",
+      "Fee": "Tassa",
+      "Tx fee": "Tassa per la transazione",
+      "Log": "Log"
+    },
+
+    "Form": {
+      "Optional": "Opzionale",
+      "Next": "Prossimo",
+      "Confirm": "Conferma",
+      "Ok": "Ok",
+      "Cancel": "Annulla",
+      "Loading...": "Caricamento...",
+      "Retry": "Riprova"
+    },
+
+    "Error": {
+      "Oops! Something went wrong": "Oops! Qualcosa è andato storto",
+      "You have encountered an error": "Hai riscontrato un errore",
+      "Station ran into an error": "Station ha riscontrato un errore",
+
+      "No internet connection": "Nessuna connessione a internet",
+      "Please check your internet connection and retry again": "Per favore, controlla la tua connessione ad internet e riprova",
+
+      "LocalTerra doesn't seem to be running.": "Sembra che LocalTerra non stia funzionando.",
+
+      "LocalTerra is a one-click local Terra testnet & ecosystem for easy development of smart contracts and Terra tools.": "LocalTerra è una testnet one-click locale per Terra e un semplice ecosistema per lo sviluppo di smart contracts e strumenti Terra.",
+      "Learn more about it here": "Scopri di più qui"
+    },
+
+    "Loading": {
+      "Data is loading...": "Caricamento dei dati...",
+      "Please wait a moment": "Per favore aspetta un momento"
+    },
+
+    "Validate": {
+      "{{label}} is required": "{{label}} è obbligatorio",
+      "{{label}} are required": "{{label}} sono obbligatori",
+      "{{label}} is too long": "{{label}} è troppo lungo",
+      "{{label}} is invalid": "{{label}} non è valido",
+      "{{label}} already exists": "{{label}} esiste già",
+      "{{label}} doesn't exist": "{{label}} non esiste",
+      "{{label}} must be between {{min}} and {{max}}": "{{label}} deve essere tra {{min}} e {{max}}",
+      "{{label}} must be between {{min}} and {{max}} characters": "{{label}} deve avere almeno {{min}} e massimo {{max}} caratteri",
+      "{{label}} must be longer than {{min}} characters": "{{label}} deve avere almeno {{min}} caratteri",
+      "{{label}} must be within {{decimals}} decimal points": "{{label}} deve essere entro {{decimals}} numeri decimali",
+      "{{label}} cannot include angle brackets": "{{label}} non può includere parentesi angolari",
+      "Password does not match": "La Password non corrisponde",
+      "Insufficient balance": "Saldo non sufficiente",
+      "Invalid": "Non valido"
+    }
+  },
+
+  "Auth": {
+    "Menu": {
+      "Recover existing wallet": "Recupera un Portafoglio esistente",
+      "New wallet": "Crea un nuovo Portafoglio",
+      "Select wallet": "Seleziona un Portafoglio",
+      "Access with ledger": "Accedi con ledger",
+      "Browse with address": "Identificati con un indirizzo",
+      "Download Terra Station": "Scarica Terra Station"
+    },
+
+    "Common": {
+      "Welcome": "Benvenuto",
+      "Connect": "Connettiti",
+
+      "Connect to your wallet, create a new wallet or recover an existing wallet using a seed phrase": "Connettiti al tuo Portafoglio, crea un nuovo Portafoglio o recupera un Portafoglio esistente usando una seed phrase.",
+      "Create a new wallet or recover an existing wallet using a seed phrase": "Crea un nuovo Portafoglio o recupera un Portafoglio esistente usando una seed phrase",
+
+      "Just browsing?": "Stai solo consultando?",
+      "Quickly glance through your address": "Dai un'occhiata veloce al tuo indirizzo",
+
+      "How can I create an wallet?": "Come posso creare un Portafoglio?",
+      "If you want to create an wallet, please download <0>Terra Station for Windows/MacOS</0>. We don't support creating a wallet for Terra Station web due to the security reasons.": "Se vuoi creare un Portafoglio, per favore scarica <0>Terra Station per Windows/macOS</0>. La creazione di un Portafoglio per il web di Terra Station non è supportata per questioni di sicurezza.",
+
+      "Connection required": "Connessione richiesta",
+      "This page shows data for a specific address. To access the page, please <0>connect</0>.": "Questa pagina mostra i dati per uno specifico indirizzo. Per accedere alla pagina, per favore <0> connettiti</0>",
+      "Please connect with wallet or ledger to execute": "Per favore connettiti con un Portafoglio o con ledger per eseguire"
+    },
+
+    "Form": {
+      "Password": "Password",
+      "Must be at least 10 characters": "Deve avere almeno 10 caratteri",
+      "Incorrect password": "Password errata"
+    },
+
+    "SignUp": {
+      "Wallet name": "Nome del Portafoglio",
+      "Enter 5-20 alphanumeric characters": "Inserisci 5-20 caratteri alfanumerici",
+      "Confirm password": "Conferma password",
+      "Confirm your password": "Conferma la tua password",
+      "Seed phrase": "Seed phrase",
+
+      "{{word}} is an invalid word": "{{word}} non è una parola valida",
+      "What if I lost my seed phrase?": "Se ho perso la mia seed phrase?",
+      "We cannot recover your information for you. If you lose your seed phrase it's GONE FOREVER. Terra Station does not store your mnemonic.": "Non possiamo recuperare le tue informazioni. Se perdi la tua seed phrase è PERSA PER SEMPRE. Terra Station non salva la tua seed phrase.",
+      "I have securely <0>WRITTEN DOWN MY SEED</0>. I understand that lost seeds cannot be recovered.": "Ho scritto accuratamente <0>LA MIA SEED PHRASE</0>. Comprendo che le seed phrase perse non possono essere recuperate.",
+      "Select address to recover": "Selezione indirizzo da recuperare",
+      "Vested": "Acquista",
+      "Delegated": "Delega",
+      "Undelegated": "Non delegati",
+      "No balance": "Saldo esaurito",
+      "Wallet recovered successfully!": "Portafoglio recuperato con successo!",
+      "Welcome back to Terra Station.": "Bentornato su Terra Station.",
+
+      "Confirm your seed": "Conferma la tua seed phrase",
+      "{{index}} word": "Parola numero {{index}}",
+      "Select or type": "Scrivi o seleziona",
+      "Create a wallet": "Crea un Portafoglio",
+      "Wallet created!": "Portafoglio creato",
+      "Welcome aboard to Terra Station.": "Benvenuto a bordo di Terra Station.",
+      "Explore the Terra Network": "Esplora la rete Terra"
+    },
+
+    "SignIn": {
+      "Wallet": "Portafoglio",
+      "Wallet address": "Indirizzo del Portafoglio",
+      "Input your wallet address": "Inserisci l'indirizzo del tuo Portafoglio",
+      "Please plug in your\nLedger Wallet": "Perfavore, connetti il tuo\n Portafoglio Ledger",
+      "Browse": "Cerca"
+    },
+
+    "Manage": {
+      "Manage wallets": "Gestisci Portafogli",
+      "Change password or delete wallet": "Cambia password o cancella portafoglio",
+      "Change password": "Cambia password",
+      "Delete wallet": "Cancella wallet",
+
+      "Current password": "Password attuale",
+      "New password": "Nuova password",
+      "Confirm new password": "Conferma nuova password",
+      "Password changed": "Password cambiata",
+      "You can now connect with your new password": "Ora puoi connetterti usando la tua nuova password",
+
+      "Are you sure you want to delete this wallet? Your wallet cannot be recovered without seed phrase.": "Sei sicuro di voler cancellare questo Portafoglio? Una volta cancellato non potrà essere recuperato senza seed phrase.",
+      "Delete": "Cancella",
+
+      "Recent addresses": "Indirizzi recenti",
+      "Delete all": "Cancella tutti"
+    },
+
+    "Download": {
+      "For Mac": "Per Mac",
+      "For Windows": "Per Windows"
+    }
+  },
+
+  "Page": {
+    "Share": "Condividi",
+    "Twitter": "Twitter",
+    "Telegram": "Telegram",
+    "Mail": "Email",
+    "Copy link": "Copia link",
+
+    "Menu": {
+      "Dashboard": "Dashboard",
+      "Wallet": "Portafoglio",
+      "History": "Cronologia",
+      "Staking": "Staking",
+      "Validator details": "Informazioni sul validatore",
+      "Swap": "Swap",
+      "Governance": "Governance",
+      "Proposal details": "Dettagli proposta",
+      "Contracts": "Contratto"
+    },
+
+    "Dashboard": {
+      "Tax rate": "Aliquota fiscale",
+      "Capped at {{cappedAt}}": "Limitato a {{cappedAt}}",
+      "Issuance": "Emissione",
+      "Community pool": "Community pool",
+      "Staking ratio": "Percentuale in Staking",
+      "{{staked}} staked": "{{staked}} staked",
+      "Staked Luna / Total Luna": "Staked Luna/ Luna Totali"
+    },
+
+    "Chart": {
+      "Cumulative": "Cumulativo",
+      "Periodic": "Periodico",
+      "Annualized": "Annualizzato",
+      "Daily": "Giornaliero",
+      "From genesis": "Dall'inizio",
+      "Last day": "Ultimo giorno",
+      "{{d}} days": "{{d}} giorni",
+      "/ year": "/ anno",
+      "/ day": "/ giorno",
+
+      "Transaction volume": "Volume di transazione",
+      "The onchain transaction volume for the selected currency over the selected time period": "Il volume di transazione onchain per la valuta impostata e nel periodo di tempo selezionato",
+      "Staking return": "Rendimento Staking",
+      "Annualized staking yield for Luna based on tax rewards, oracle rewards, gas, MIR and ANC airdrop rewards and latest prices of Luna (annualize return = 7 days moving average return * 365)": "Rendimento annualizzato per lo Staking di Luna, basato sulle tasse di transazione, ricompense oracle, gas, MIR e ANC airdrop e ultimo prezzo di luna (rendimento annualizzato = media mobile a 7 giorni del rendimento * 365)",
+      "Tax rewards": "Ricompense Tasse",
+      "Tax rewards distributed over the selected time period": "Ricompense Tasse distribuite sul periodo di tempo selezionato",
+      "Total accounts": "Numero totale di account",
+      "Total": "Totale",
+      "Active": "Attivo",
+      "Number of total registered accounts in the selected period": "Numero totale di account registrati nel periodo selezionato"
+    },
+
+    "Bank": {
+      "My wallet": "Il mio Portafoglio",
+      "Verify this address on your Ledger": "Verifica questo indirizzo sul tuo Ledger",
+
+      "Wallet empty": "Portafoglio vuoto",
+      "This wallet doesn't hold any coins yet": "Questo Portafoglio non contiene ancora nessuna moneta",
+
+      "Available": "Disponibile",
+      "Hide small balances": "Nascondi saldi irrilevanti",
+
+      "Vesting schedule": "Programma di maturazione",
+      "This displays your investment with Terra. Vested Luna can be delegated in the meantime.": "Qui viene mostrato il tuo investimento con Terra. I Luna acquisiti possono essere delegati",
+
+      "Released": "Liberado",
+      "Releasing": "En proceso de ser liberado",
+      "Release on": "Publicado en"
+    },
+
+    "Txs": {
+      "Default": "Base",
+      "Send": "Invia",
+      "Receive": "Ricevi",
+      "Staking": "Staking",
+      "Swap": "Cambia",
+      "Governance": "Governance",
+      "Contract": "Contratto",
+      "Other": "Altro",
+
+      "No transaction history": "Nessuna cronologia delle transazioni",
+      "Looks like you haven't made any transaction yet": "Sembra che tu non abbia ancora eseguito transazioni."
+    },
+
+    "Staking": {
+      "Withdraw all rewards": "Ritira tutte le ricompense",
+      "Available for delegation": "Disponibile per essere delegato",
+      "Delegated assets": "Asset delegati",
+      "Undelegated assets": "Asset non delegati",
+
+      "Validator": "Validatore",
+      "Action": "Azione",
+      "Delegated": "Delegato",
+      "Undelegated": "Non delegato",
+      "Rewards": "Ricompense",
+      "Reward": "Ricompensa",
+      "Release time": "Tempo di rilascio",
+
+      "Rank": "Rango",
+      "Moniker": "Nome",
+
+      "Operator address": "Indirizzo operatore",
+      "Account address": "Indirizzo Account",
+
+      "Voting power": "Potere di Voto",
+      "Self-delegation": "Autodelega",
+
+      "Commission": "Commissione",
+      "Validator commission": "Commissione Validatore",
+      "Max commission rate": "Tasso massimo di commissione",
+      "Max daily commission change": "Variazione giornaliera massima della commissione",
+      "Last commission change": "Último cambio di commissione",
+      "Delegation return": "Ritorno della delegazione",
+      "Uptime": "Disponibilità",
+      "Last 10k blocks": "Ultimi 10k blocchi ",
+
+      "My delegations": "Le mie delegazioni",
+      "My rewards": "Le mie ricompense",
+
+      "Delegations": "Delegazioni",
+      "Event log": "Registro eventi",
+      "Delegators": "Delegatore",
+      "Claim log": "Registro ricompense ritirate",
+
+      "No events": "Nessun evento",
+      "No delegators": "Nessun delegatore",
+      "This validator has no claim history yet": "Questo validatore non ha ancora una cronologia ricompense",
+
+      "Pro Tip — your rewards will be automatically withdrawn in the following cases": "Consigli da professionista - le tue ricompense verranno automaticamente ritirate nei seguenti casi:",
+      "Delegating more to a validator you’ve already delegated to": "Delega ancora ad un validatore a cui avevi già delegato",
+      "Undelegation of assets": "Ritiro degli assest",
+      "Redelegation of assets": "Delegazione di altri assets",
+      "Mainnet upgrade": "Aggiornamenti della Mainnet",
+      "This won’t appear in your transaction history, but your rewards will be reflected in your balance.": "In questi casi le transazioni non apparariranno nell cronologia, ma verranno visualizzati nel tuo saldo."
+    },
+
+    "Swap": {
+      "Luna price": "Prezzo Luna",
+      "Chart is not available": "Grafico non disponibile",
+
+      "1m": "1m",
+      "5m": "5m",
+      "15m": "15m",
+      "30m": "30m",
+      "1h": "1h",
+      "1d": "1d",
+
+      "Terra exchange rate": "Tasso di cambio Terra",
+      "Swap coins": "Cambia moneta"
+    },
+
+    "Governance": {
+      "Voting period": "Periodo di voto",
+      "Minimum deposit": "Deposito Minimo",
+      "Maximum deposit period": "Deposito Massimo",
+
+      "No proposals here yet. Be the first!": "Ancora nessuna proposta qui. Sii il primo!",
+      "Proposal": "Proposta",
+
+      "Deposit": "Deposito",
+      "Voting": "Voto",
+      "Passed": "Approvato",
+      "Rejected": "Respinto",
+
+      "Submitted by {{proposer}} at {{date}}": "Inviato da {{proposer}} in {{date}}",
+      "Submitted by ": "Presentato da",
+      "Submit time": "Data di invio",
+      "Ends in": "Termina in",
+
+      "tax_rate": "aliquota_fiscale",
+      "reward_weight": "peso_ricompensa",
+      "recipient": "destinatario",
+      "amount": "quantità",
+      "changes": "modifica",
+
+      "Min deposit completed": "Deposito minimo completato",
+      "Deposit end time": "Fine deposito",
+      "Total": "Totale",
+      "Depositor": "Depositatnte",
+      "Depositors": "Depositanti",
+      "No deposits yet": "Ancora nessun deposito",
+
+      "Vote": "Vota",
+      "Voting end time": "Tempo limite per la votazione",
+      "Most voted on": "La maggior parte ha votato su",
+      "Percent voting": "Percentuale di voto",
+      "{{n}} of {{d}} has voted": "{{n}} di {{d}} ha votato",
+      "No votes yet": "Ancora nessun voto",
+      "Voter": "Elettore",
+      "Answer": "Risposta",
+
+      "Yes": "Sí",
+      "No": "No",
+      "NoWithVeto": "NoConVeto",
+      "No\nWithVeto": "No\nConVeto",
+      "Abstain": "Astenuto",
+
+      "The following validators you've delegated to have not yet voted on this proposal": "I seguenti validatori a cui hai delegato non hanno ancora votato questa proposta",
+      "Request to vote": "Richiesta di voto",
+
+      "Tallying procedure": "Procedura di conteggio",
+      "Quorum": "Quorum",
+      "Pass threshold": "Soglia di passaggio",
+      "Veto threshold": "Soglia di veto",
+
+      "New proposal": "Nuova proposta"
+    },
+
+    "Contracts": {
+      "Contract": "Contratto",
+
+      "Create": "Crea",
+      "Upload": "Carica",
+      "Interact": "Interagisci",
+      "Query": "Ricerca",
+
+      "Search": "Cerca",
+      "No contracts": "Nessun contratto",
+      "No contracts yet": "Ancora nessun contratto"
+    }
+  },
+
+  "Post": {
+    "Confirm": {
+      "Simulating...": "Simulazione...",
+
+      "Recommended fee is {{fee}} or higher.\nTransactions with low fee might fail to proceed.": "La tassa raccomandata è di {{fee}} o più. Le transazioni con commissioni basse potrebbero non andare a buon fine.",
+      "You don't have enough balance. Please adjust either the amount or the fee.": "Non hai abbastanza saldo. Si prega di modificare l'importo o la tassa",
+
+      "Confirm with ledger": "Conferma con ledger",
+      "Please confirm in your\nLedger Wallet": "Per favore, conferma nel suo \n Portafoglio ledger ",
+
+      "Confirm with password": "Conferma con password",
+      "Input your password to confirm": "Inserisci la tua password per confermare",
+
+      "Success!": "Successo!"
+    },
+
+    "Send": {
+      "Send {{unit}}": "Invia {{unit}}",
+      "Send to": "Invia a",
+      "Network": "Rete",
+      "Input receiver's wallet address": "Inserisci l'indirizzo del portfoglio del destinatario",
+      "Input memo": "Inserisci memo",
+      "Tax": "Tassa",
+      "Tax ({{percent}}, Max {{max}})": "Tassa ({{percent}}, massimo {{max}})",
+      "Recent transactions": "Transazioni recenti",
+
+      "Calculating tax...": "Calcolando la tassa...",
+      "Send": "Invia",
+      "Sending...": "Siamo inviando...",
+      "Sent {{coin}} to {{address}}": "Invio di {{coin}} a {{address}}",
+      "Please double check if the above transaction requires a memo": "Per favore, controlla se la transazione necessita di un memo.",
+      "A fee of 1 UST or 0.1% of the transfer amount (whichever is greater) will be charged for transferring assets from Terra to Ethereum through Shuttle": "Una tassa di 1 UST o dello 0,1% dell'importo trasferito (il maggiore dei due) verrà addebitato per trasferire asset da Terra ad Ethereum tramite Shuttle."
+    },
+
+    "Staking": {
+      "Source ({{length}})": "Fonte ({{length}})",
+      "Delegate to": "Delega a",
+      "Undelegate from": "Revoca la delega da",
+
+      "Delegate": "Delega",
+      "Delegating...": "Delegando...",
+      "Delegated {{coin}} to {{moniker}}": "Delega {{coin}} a {{moniker}}",
+
+      "Redelegate": "Ridelega",
+      "Redelegating...": "Ridelegando...",
+      "Redelegated {{coin}} to {{moniker}}": "Ridelega {{coin}} a {{moniker}}",
+
+      "Undelegate": "Revoca la delega",
+      "Undelegating...": "Revocando la delega...",
+      "Undelegated {{coin}} from {{moniker}}": "Revocando la delega di {{coin}} da {{nombre}}",
+
+      "Withdraw": "Ritira",
+      "Withdrawing...": "Ritirando...",
+      "Withdrew to {{to}}": "Ritirato su {{to}}",
+
+      "Create Validator": "Crea Validatore",
+
+      "Remember to leave a small amount of tokens undelegated, as subsequent transactions (e.g. redelegation) require fees to be paid.": "Ricorda di lasciare una piccola quantità di token non delegati, poichè le transazioni successive (es la ridelega) richiedono il pagamento di commissioni.",
+      "Undelegation takes 21 days to complete. You would not get rewards in the meantime.": "La revoca della delega impiega 21 giorni per essere completata, durante questi giorni non guadagnerai ricompense.",
+      "Redelegation to the same validator will be prohibited for 21 days. Please make sure you input the right amount of luna to delegate.": "Ridelegare allo stesso validatore sarà proibito per 21 giorni. Per favore assicurati di inserire la quantità giusta di Luna da delegare."
+    },
+
+    "Swap": {
+      "Swapping is not available": "Lo Swapping non è disponibile",
+      "Swapping is not available at the moment": "Lo Swapping non è disponibile al momento.",
+      "Select a coin to swap": "Seleziona una moneta da swappare",
+
+      "Select a coin...": "Seleziona una moneta...",
+
+      "Current balance": "Saldo corrente",
+      "Spread": "Spread",
+      "Receive": "Ricevi",
+
+      "Luna swap spread": "Spread di swap di Luna",
+      "min.": "min.",
+      "tobin tax": "Impuesto Tobin",
+      "except for {{unit}} set at {{rate}}": "tranne che per {{unit}} impostata a {{rate}}",
+
+      "Swap": "Swap",
+      "Swapping...": "Swapping...",
+      "Swapped {{coin}} to {{unit}}": "Swap {{coin}} per {{unit}}",
+
+      "Final amount you receive in {{unit}} may vary due to the swap rate changes": "La quantità totale che riceverai in {{unit}} potrebbe cambiare a seconda del cambio di swap rate."
+    },
+
+    "Governance": {
+      "Propose": "Proposta",
+      "Proposing...": "Proponendo...",
+      "Deposit": "Deposito",
+      "Depositing...": "Depositando...",
+      "Vote": "Vota",
+      "Voting...": "Votando...",
+
+      "Text Proposal": "Testo della proposta",
+      "Tax-rate Update": "Aggiornamento dell'aliquota fiscale",
+      "Reward-weight Update": "Aggiornamento del Peso delle Ricompense",
+      "Community-pool Spend": "Spesa per la Community-pool",
+      "Parameter-change": "Cambio di parametri",
+
+      "Title": "Titolo",
+      "Description": "Descrizione",
+      "Initial deposit": "Deposito iniziale",
+
+      "Tax-rate": "Aliquota fiscale",
+      "Reward-weight": "Peso della ricompensa",
+      "Recipient": "Destinatario",
+      "Changes": "Cambio",
+
+      "Community pool": "Community-pool",
+
+      "Created proposal {{title}} with {{coin}} deposit": "Creata una proposta {{title}} con deposito di {{coin}}",
+      "Created proposal {{title}} without deposit": "Creata proposta {{title}} senza deposito",
+      "Deposited {{coin}} to {{title}}": "{{coin}} depositata a {{title}}",
+      "Voted {{answer}} for {{title}}": "Votato {{answer}} per {{title}}"
+    },
+
+    "Contracts": {
+      "Code upload": "Caricamento del codice",
+      "Create contract": "Crea un contratto",
+      "Interact with": "Interagisci con",
+      "Query": "Ricerca",
+
+      "Contract address": "Indirizzo del contratto",
+
+      "File": "File",
+      "Choose a file": "Seleziona un file",
+      "Size": "Dimensione",
+      "The uploaded file is invalid": "Il file caricato non è valido",
+
+      "Name": "Nome",
+      "Description": "Descrizione",
+      "Repo URL": "Url repository",
+      "Code": "Codice",
+      "Coins": "Coins",
+
+      "InitMsg JSON": "InitMsg JSON",
+      "HandleMsg JSON": "GestisciMSG JSON",
+      "QueryMsg JSON": "QueryMSG JSON",
+
+      "Upload": "Carica",
+      "Uploading...": "Caricando...",
+      "Uploaded code": "Codice caricato",
+
+      "Create": "Crea",
+      "Creating...": "Creando...",
+      "Created contract": "Creato contratto",
+
+      "Interact": "Interagisci",
+      "Interacting...": "Interagendo...",
+      "Interacted with {{address}}": "Interagisci con {{address}}",
+
+      "Query result": "Risultato query",
+      "JSON output": "Output JSON"
+    }
+  }
+}
