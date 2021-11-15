@@ -1,5 +1,5 @@
 import c from 'classnames'
-import { TxDescription } from '@terra-money/react-widget'
+import { TxDescription } from '@terra-money/react-base-components'
 import { TxUI, MessageUI, Card as CardProps } from '../../lib'
 import { format } from '../../lib'
 import Card from '../../components/Card'
@@ -44,7 +44,10 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
         <section className={s.text}>
           {summary.map((item, index) => (
             <p key={index}>
-              <TxDescription network={config} config={{ myWallet: address }}>
+              <TxDescription
+                network={config}
+                config={{ myWallet: address, printCoins: 2 }}
+              >
                 {item}
               </TxDescription>
             </p>
