@@ -38,13 +38,25 @@ const AuthModal = () => {
     )
   })
 
+  /* Modal */
+  const modalActions = {
+    close: authModal.close,
+    goBack: currentKey && (() => setCurrentKey(undefined)),
+  }
+
+  const handleClick = (callbackFn: () => void) => {
+    callbackFn()
+    modalActions.close()
+  }
+
   const walletProviderList = ([] as any)
     .concat(
       availableInstallTypes.includes(ConnectType.CHROME_EXTENSION)
         ? {
             title: 'Terra Station Extension',
             icon: 'extension',
-            onClick: () => install(ConnectType.CHROME_EXTENSION),
+            onClick: () =>
+              handleClick(() => install(ConnectType.CHROME_EXTENSION)),
           }
         : []
     )
@@ -53,13 +65,14 @@ const AuthModal = () => {
         ? {
             title: 'Terra Station Extension',
             icon: 'extension',
-            onClick: () => connect(ConnectType.WEB_CONNECT),
+            onClick: () => handleClick(() => connect(ConnectType.WEB_CONNECT)),
           }
         : availableConnectTypes.includes(ConnectType.CHROME_EXTENSION)
         ? {
             title: 'Terra Station Extension',
             icon: 'extension',
-            onClick: () => connect(ConnectType.CHROME_EXTENSION),
+            onClick: () =>
+              handleClick(() => connect(ConnectType.CHROME_EXTENSION)),
           }
         : []
     )
@@ -68,18 +81,13 @@ const AuthModal = () => {
         ? {
             title: 'Terra Station Mobile',
             icon: 'smartphone',
-            onClick: () => connect(ConnectType.WALLETCONNECT),
+            onClick: () =>
+              handleClick(() => connect(ConnectType.WALLETCONNECT)),
           }
         : []
     )
 
   const authMenuList = (isWeb ? walletProviderList : []).concat(defaultList)
-
-  /* Modal */
-  const modalActions = {
-    close: authModal.close,
-    goBack: currentKey && (() => setCurrentKey(undefined)),
-  }
 
   const footer = !isElectron && <AuthFooter {...ui.web} actions={actions} />
 
