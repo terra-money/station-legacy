@@ -20,6 +20,7 @@ export interface AvailableUI {
   list: AvailableItem[]
   hideSmall?: HideSmallUI
   send: string
+  disclaimer?: string
 }
 
 export interface HideSmallUI {

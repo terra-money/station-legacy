@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AssetsPage, BankData, Schedule, TokenBalance } from '../../../types'
 import { format } from '../../../utils'
-import { percent, gte } from '../../../utils/math'
+import { minus, percent, gt, gte, toNumber } from '../../../utils/math'
 import { useCurrency, useCurrencyRates } from '../../../data/currency'
 import useBank from '../../../api/useBank'
+import { useActiveDenoms } from '../../../lib'
 import useTokenBalance from '../../../cw20/useTokenBalance'
 
 const SMALL = '1000000'
@@ -16,6 +17,7 @@ interface Config {
 
 export default (config?: Config): AssetsPage => {
   const { t } = useTranslation()
+  const oracleActiveDenoms = useActiveDenoms()
   const bank = useBank()
   const tokenBalances = useTokenBalance()
   const currency = useCurrency()
@@ -30,90 +32,97 @@ export default (config?: Config): AssetsPage => {
   }
 
   const render = (
+    denoms: string[],
     { balance, vesting }: BankData,
     tokenList?: TokenBalance[]
-  ) => ({
-    card:
-      !balance.length && !tokenList?.length && !vesting.length
-        ? {
-            title: t('Page:Bank:Wallet empty'),
-            content: t("Page:Bank:This wallet doesn't hold any coins yet"),
-          }
-        : !balance.length && !vesting.length && tokenList?.length
-        ? {
-            title: t('Page:Bank:Wallet empty'),
-            content:
-              'This wallet does not hold any native tokens, so the transaction could not be processed.',
-          }
-        : undefined,
-    available: !balance.length
-      ? undefined
-      : {
-          title: 'Terra Native',
-          list: balance
-            .filter(({ denom }) => !denom.startsWith('ibc/'))
-            .map(({ available, denom }) => {
-              const currencyValule = getCurrentCurrencyValue({
-                denom,
-                amount: available,
-              })
-              return {
-                denom,
-                display: format.display({ amount: available, denom }),
-                currencyValueDisplay: !gte(currencyValule, 0)
-                  ? undefined
-                  : format.display({ amount: currencyValule, denom: currency }),
-                uusdValue: getValue({ denom, amount: available }, 'uusd'),
-              }
+  ) => {
+    return {
+      available: {
+        disclaimer: !balance.length
+          ? 'This wallet does not hold any native tokens, so the transaction could not be processed.'
+          : undefined,
+        title: 'Terra Native',
+        list: ['uluna', ...denoms]
+          .map((denom) => {
+            const available =
+              balance.find((item) => item.denom === denom)?.available ?? '0'
+            const currencyValule = getCurrentCurrencyValue({
+              denom,
+              amount: available,
             })
-            .filter(({ uusdValue }) => !hideSmall || gte(uusdValue, SMALL)),
-          hideSmall: {
-            label: t('Page:Bank:Hide small balances'),
-            checked: hideSmall,
-            toggle: () => setHideSmall((v) => !v),
-          },
-          send: t('Post:Send:Send'),
-        },
-    ibc: !balance.filter(({ denom }) => denom.startsWith('ibc/')).length
-      ? undefined
-      : {
-          title: 'IBC Tokens',
-          list: balance
-            .filter(({ denom }) => denom.startsWith('ibc/'))
-            .map(({ available, denom }) => {
-              return {
-                denom,
-                display: { value: format.amount(available), unit: denom },
-              }
-            }),
-          send: t('Post:Send:Send'),
-        },
-    tokens: {
-      title: 'CW20 Tokens',
-      list:
-        tokenList?.map(({ token, symbol, icon, balance, decimals }) => {
-          const display = {
-            value: format.amount(balance, decimals),
-            unit: symbol,
-          }
 
-          return { icon, token, display }
-        }) ?? [],
-      send: t('Post:Send:Send'),
-    },
-    vesting: !vesting.length
-      ? undefined
-      : {
-          title: t('Page:Bank:Vesting schedule'),
-          desc: t(
-            'Page:Bank:This displays your investment with Terra. Vested Luna can be delegated in the meantime.'
+            return {
+              available,
+              denom,
+              display: format.display({ amount: available, denom }),
+              currencyValueDisplay: !gte(currencyValule, 0)
+                ? undefined
+                : format.display({ amount: currencyValule, denom: currency }),
+              uusdValue: getValue({ denom, amount: available }, 'uusd'),
+            }
+          })
+          .filter(
+            ({ available, denom }) =>
+              ['uluna', 'uusd'].includes(denom) || gt(available, 0)
+          )
+          .filter(({ uusdValue }) => !hideSmall || gte(uusdValue, SMALL))
+          .sort(({ uusdValue: a }, { uusdValue: b }) => toNumber(minus(b, a)))
+          .sort(
+            ({ denom: a }, { denom: b }) =>
+              Number(b === 'uusd') - Number(a === 'uusd')
+          )
+          .sort(
+            ({ denom: a }, { denom: b }) =>
+              Number(b === 'uluna') - Number(a === 'uluna')
           ),
-          list: vesting.map(({ total, denom, schedules }) => ({
-            display: format.display({ amount: total, denom }),
-            schedule: schedules.map((item) => getSchedule(item, denom)),
-          })),
+        hideSmall: {
+          label: t('Page:Bank:Hide small balances'),
+          checked: hideSmall,
+          toggle: () => setHideSmall((v) => !v),
         },
-  })
+        send: t('Post:Send:Send'),
+      },
+      ibc: !balance.filter(({ denom }) => denom.startsWith('ibc/')).length
+        ? undefined
+        : {
+            title: 'IBC Tokens',
+            list: balance
+              .filter(({ denom }) => denom.startsWith('ibc/'))
+              .map(({ available, denom }) => {
+                return {
+                  denom,
+                  display: { value: format.amount(available), unit: denom },
+                }
+              }),
+            send: t('Post:Send:Send'),
+          },
+      tokens: {
+        title: 'CW20 Tokens',
+        list:
+          tokenList?.map(({ token, symbol, icon, balance, decimals }) => {
+            const display = {
+              value: format.amount(balance, decimals),
+              unit: symbol,
+            }
+
+            return { icon, token, display }
+          }) ?? [],
+        send: t('Post:Send:Send'),
+      },
+      vesting: !vesting.length
+        ? undefined
+        : {
+            title: t('Page:Bank:Vesting schedule'),
+            desc: t(
+              'Page:Bank:This displays your investment with Terra. Vested Luna can be delegated in the meantime.'
+            ),
+            list: vesting.map(({ total, denom, schedules }) => ({
+              display: format.display({ amount: total, denom }),
+              schedule: schedules.map((item) => getSchedule(item, denom)),
+            })),
+          },
+    }
+  }
 
   const getSchedule = (schedule: Schedule, denom: string) => {
     const { amount, startTime, endTime, ratio, freedRate } = schedule
@@ -139,8 +148,15 @@ export default (config?: Config): AssetsPage => {
   return Object.assign(
     { setHideSmall, load },
     bank,
-    { loading: bank.loading || tokenBalances.loading },
-    bank.data && { ui: render(bank.data, tokenBalances.list) }
+    {
+      loading:
+        oracleActiveDenoms.isLoading || bank.loading || tokenBalances.loading,
+    },
+    oracleActiveDenoms.data &&
+      oracleActiveDenoms.data &&
+      bank.data && {
+        ui: render(oracleActiveDenoms.data, bank.data, tokenBalances.list),
+      }
   )
 }
 

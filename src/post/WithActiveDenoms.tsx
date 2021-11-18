@@ -7,7 +7,7 @@ interface Props {
 
 const WithActiveDenoms = ({ children }: Props) => {
   const { data } = useActiveDenoms()
-  return <>{data && data.result.length ? children(data.result) : null}</>
+  return <>{data && data.length ? children(data) : null}</>
 }
 
 export default WithActiveDenoms

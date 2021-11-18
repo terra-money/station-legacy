@@ -239,11 +239,9 @@ export default ({ bank, pairs }: Params): PostPage => {
           element: 'select',
           attrs: getDefaultAttrs('to'),
           setValue: (value: string) => setValue('to', value),
-          options: ['uluna', ...(activeDenoms.data?.result ?? [])].map(
-            (denom) => {
-              return { value: denom, children: format.denom(denom) }
-            }
-          ),
+          options: ['uluna', ...(activeDenoms.data ?? [])].map((denom) => {
+            return { value: denom, children: format.denom(denom) }
+          }),
         },
         input: {
           label: '',

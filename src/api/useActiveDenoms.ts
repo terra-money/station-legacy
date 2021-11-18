@@ -1,7 +1,7 @@
-import { OracleData } from '../types'
-import useFCD from './useFCD'
+import { useQuery } from 'react-query'
+import useLCD from './useLCD'
 
 export default () => {
-  const response = useFCD<OracleData>({ url: '/oracle/denoms/actives' })
-  return response
+  const lcd = useLCD()
+  return useQuery('lcd.oracle.activeDenoms', () => lcd.oracle.activeDenoms())
 }

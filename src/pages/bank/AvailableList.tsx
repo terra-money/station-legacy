@@ -5,6 +5,7 @@ import { isExtension } from '../../utils/env'
 import { localSettings } from '../../utils/localStorage'
 import Card from '../../components/Card'
 import Checkbox from '../../components/Checkbox'
+import InvalidFeedback from '../../components/InvalidFeedback'
 import Available from './Available'
 import styles from './AvailableList.module.scss'
 
@@ -14,7 +15,7 @@ interface Props extends AvailableUI {
 }
 
 const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
-  const { button, footer } = props
+  const { button, footer, disclaimer } = props
 
   const content = list.map((item, i) => (
     <Available {...item} buttonLabel={send} key={i} />
@@ -48,6 +49,12 @@ const AvailableList = ({ title, list, hideSmall, send, ...props }: Props) => {
       actions={hideSmall && renderCheckbox(hideSmall)}
       noShadow={isExtension}
     >
+      {disclaimer && (
+        <InvalidFeedback className={styles.disclaimer}>
+          {disclaimer}
+        </InvalidFeedback>
+      )}
+
       {!!list.length && (
         <section className={classNames(isExtension && styles.extension)}>
           {children}
