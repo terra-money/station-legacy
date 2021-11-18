@@ -16,7 +16,7 @@
     "@terra-money/log-finder-ruleset": "^1.0.2",
     "@terra-money/msg-reader": "^2.1.2",
     "@terra-money/react-base-components": "^1.0.1",
-    "@terra-money/react-widget": "^1.0.8",
+    "@terra-money/react-widget": "^1.0.9",
     "@terra-money/terra.js": "^2.1.23",
     "@terra-money/wallet-provider": "^2.5.0",
     "@ungap/url-search-params": "^0.2",
