@@ -176,7 +176,7 @@ export default (denom: string, tokenBalance: TokenBalanceQuery): PostPage => {
               transfer: { recipient: to, amount },
             }),
           ],
-    tax: shouldTax ? new Coin(denom, taxAmount) : undefined,
+    tax: shouldTax && gt(taxAmount, 0) ? new Coin(denom, taxAmount) : undefined,
     memo,
     contents,
     feeDenom: { list: getFeeDenomList(bank.balance) },

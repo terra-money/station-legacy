@@ -50,7 +50,7 @@ const useCalcTax = (denom: string, t: TFunction) => {
       const tax = new BigNumber(amount).times(rate)
 
       return BigNumber.min(tax, new BigNumber(cap))
-        .integerValue(BigNumber.ROUND_CEIL)
+        .integerValue(BigNumber.ROUND_FLOOR)
         .toString()
     },
     [cap, rate]

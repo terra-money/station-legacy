@@ -51,7 +51,7 @@ const useCalcTaxes = (denoms: string[], t: TFunction) => {
         new BigNumber(amount).times(rate),
         new BigNumber(caps[denom])
       )
-        .integerValue(BigNumber.ROUND_CEIL)
+        .integerValue(BigNumber.ROUND_FLOOR)
         .toString(),
     [caps, rate]
   )
