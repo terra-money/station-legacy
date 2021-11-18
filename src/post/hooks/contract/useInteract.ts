@@ -4,7 +4,7 @@ import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../../../types'
 import { PostPage, CoinItem, Field } from '../../../types'
 import { ConfirmProps } from '../../../types'
-import { is } from '../../../utils'
+import { gt, is } from '../../../utils'
 import { parseJSON } from '../../../utils/format'
 import { useAddress } from '../../../data/auth'
 import useBank from '../../../api/useBank'
@@ -80,9 +80,9 @@ export default (
       ),
     ],
     tax: new Coins(
-      coinsFields.coins.map(
-        ({ amount, denom }) => new Coin(denom, getTax(amount, denom))
-      )
+      coinsFields.coins
+        .filter(({ amount, denom }) => gt(getTax(amount, denom), 0))
+        .map(({ amount, denom }) => new Coin(denom, getTax(amount, denom)))
     ),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },

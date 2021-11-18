@@ -555,7 +555,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
               ),
             ],
           }[mode]) ?? [],
-    tax: shouldTax ? new Coin(from, tax) : undefined,
+    tax: shouldTax && gt(tax, 0) ? new Coin(from, tax) : undefined,
     contents: [
       {
         name: 'Mode',

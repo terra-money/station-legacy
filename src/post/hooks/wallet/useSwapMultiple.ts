@@ -5,7 +5,7 @@ import { Coin, Coins } from '@terra-money/terra.js'
 import { Msg, MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { PostPage, CoinItem, Field } from '../../../types'
 import { BankData, Pairs, ConfirmProps } from '../../../types'
-import { format, gt, is, minus, sum } from '../../../utils'
+import { format, gt, gte, is, minus, sum } from '../../../utils'
 import { toInput } from '../../../utils/format'
 import { useAddress } from '../../../data/auth'
 import { useCurrentChain, useCurrentChainName } from '../../../data/chain'
@@ -284,9 +284,11 @@ export default ({ bank, pairs }: Params): PostPage => {
     tax:
       to === 'uluna'
         ? new Coins(
-            checked.map(
-              (denom) => new Coin(denom, getTax(availableList[denom], denom))
-            )
+            checked
+              .filter((denom) => gte(getTax(availableList[denom], denom), 0))
+              .map(
+                (denom) => new Coin(denom, getTax(availableList[denom], denom))
+              )
           )
         : undefined,
     contents: [

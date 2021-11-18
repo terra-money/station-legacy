@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { BankData, CoinItem } from '../types'
-import { div, format } from '../utils'
+import { div, format, gt } from '../utils'
 import { toAmount, toInput } from '../utils/format'
 import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
@@ -83,7 +83,7 @@ const AnchorEarnComponent = ({ type, earn }: Props) => {
         { Deposit: input, Withdraw: div(input, exchangeRate) }[type],
         type
       ),
-      tax: type === 'Deposit' ? new Coin(denom, tax) : undefined,
+      tax: type === 'Deposit' && gt(tax, 0) ? new Coin(denom, tax) : undefined,
       gasAdjustment: 2.1,
       validate: (fee: CoinItem) => isFeeAvailable(fee, bank.balance),
       submitLabels: {
