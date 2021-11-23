@@ -85,7 +85,7 @@ export default <T extends { denom?: string }>(props: Props): ChartCard => {
   /* api */
   type Response = T[] | ({ [key in CumulativeType]: T[] } & { total?: number })
   const getURL = () => (typeof url === 'string' ? url : url(filter))
-  const { data } = useFCD<Response>({ url: getURL() })
+  const { data, loading } = useFCD<Response>({ url: getURL() })
   const results = Array.isArray(data) ? data : data?.[type]
 
   const denoms =
@@ -146,7 +146,7 @@ export default <T extends { denom?: string }>(props: Props): ChartCard => {
   })
 
   return Object.assign(
-    { ...rest, filter: renderFilter() },
+    { ...rest, filter: renderFilter(), loading },
     results && {
       value: getValue(results, filter, data && 'total' in data && data.total),
       chart: getChart(results, filter),

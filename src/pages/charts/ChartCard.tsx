@@ -12,6 +12,7 @@ import Select from '../../components/Select'
 import RadioGroup from '../../components/RadioGroup'
 import Flex from '../../components/Flex'
 import Number from '../../components/Number'
+import styles from './ChartCard.module.scss'
 
 interface ChartProps {
   scales?: ChartOptions['scales']
@@ -42,7 +43,7 @@ interface Props {
 
 const Component = ({ chartKey }: Props) => {
   const { scales, lineStyle, fixedYAxis } = chartProps[chartKey]
-  const { filter, value, chart, ...rest } = useChart(chartKey)
+  const { filter, value, chart, loading, ...rest } = useChart(chartKey)
   const { type, denom, account, duration } = filter
 
   /* render */
@@ -129,7 +130,8 @@ const Component = ({ chartKey }: Props) => {
     }
 
     return (
-      <>
+      <div className={styles.container}>
+        {loading && <p className={styles.loading}>Loading...</p>}
         <header style={{ marginBottom: 20 }}>
           <Flex>
             {Array.isArray(value) ? (
@@ -154,7 +156,7 @@ const Component = ({ chartKey }: Props) => {
             height={260}
           />
         </section>
-      </>
+      </div>
     )
   }
 

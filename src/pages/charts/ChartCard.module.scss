@@ -1,0 +1,17 @@
+@import '../../styles/mixins';
+
+.container {
+  position: relative;
+}
+
+.loading {
+  @include flex;
+
+  background: rgba(white, 90%);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

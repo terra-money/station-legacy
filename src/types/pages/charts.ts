@@ -22,6 +22,7 @@ export interface ChartCard {
   filter: ChartFilter
   value?: DisplayCoin | [string, string]
   chart?: ChartUI
+  loading: boolean
 }
 
 export interface ChartFilter {
