@@ -6,7 +6,6 @@ import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Page from '../../components/Page'
 import Claims from '../../tables/Claims'
-import Delegations from '../../tables/Delegations'
 import Delegators from '../../tables/Delegators'
 import Header from './Header'
 import Actions from './Actions'
@@ -26,7 +25,6 @@ const Validator = () => {
       <Informations {...ui} />
 
       <h2>{delegations}</h2>
-      <Delegations address={address} />
       <Delegators address={address} />
       <Claims address={address} />
     </>
