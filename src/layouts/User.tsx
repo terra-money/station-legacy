@@ -2,6 +2,7 @@ import { useState } from 'react'
 import c from 'classnames'
 import { useText } from '../lib'
 import { ReactComponent as Ledger } from '../images/Ledger.svg'
+import { ReactComponent as QRCode } from '../images/QRCode.svg'
 import { isExtension } from '../utils/env'
 import { useModal } from '../hooks'
 import * as ledger from '../wallet/ledger'
@@ -48,7 +49,7 @@ const Address = ({ children }: { children: string }) => {
           <AddressQRCode />
         </ModalContent>
       ),
-    children: <Icon name="qr_code_2" size={12} />,
+    children: <QRCode width={12} height={12} />,
   }
 
   return !children ? null : (
