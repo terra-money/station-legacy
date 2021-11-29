@@ -35,10 +35,10 @@ const AmountCard: FC<Props> = ({ display, button, children, ...props }) => {
 
   const icon = props.icon ? (
     <img src={props.icon} className={s.icon} alt="" {...size} />
-  ) : isIBC ? (
-    <IBC {...size} />
   ) : !iconError ? (
     <img src={src} onError={() => setIconError(true)} alt="" {...size} />
+  ) : isIBC ? (
+    <IBC {...size} />
   ) : (
     <Terra {...size} />
   )
