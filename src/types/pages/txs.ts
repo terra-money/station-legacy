@@ -16,6 +16,7 @@ export interface TxUI {
   date: string
   messages: MessageUI[]
   details: Card[]
+  collapsedLength: number
 }
 
 export interface MessageUI {

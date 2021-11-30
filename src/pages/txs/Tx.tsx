@@ -11,7 +11,7 @@ import { useAddress } from '../../data/auth'
 import useLCD from '../../api/useLCD'
 import s from './Tx.module.scss'
 
-const Tx = ({ link, hash, date, messages, details }: TxUI) => {
+const Tx = ({ link, hash, date, messages, details, collapsedLength }: TxUI) => {
   const renderTitle = () => (
     <>
       <ExtLink href={link} className={s.hash}>
@@ -67,6 +67,9 @@ const Tx = ({ link, hash, date, messages, details }: TxUI) => {
   return (
     <Card title={renderTitle()} {...classNames} bgHeader>
       {messages.map(renderMessage)}
+      {collapsedLength ? (
+        <span className={s.collapsed}>{collapsedLength} more</span>
+      ) : null}
       <hr />
       <ul className={s.details}>{details.map(renderDetail)}</ul>
     </Card>

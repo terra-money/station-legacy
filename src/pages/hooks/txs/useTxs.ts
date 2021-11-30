@@ -60,6 +60,8 @@ export default ({ address }: User): TxsPage => {
       : []
   }
 
+  const renderLimit = 3
+
   /* render */
   const ui =
     !response.loading && !txs.length
@@ -80,11 +82,13 @@ export default ({ address }: User): TxsPage => {
             const success = !isTxError(txItem)
             const msgs = getCanonicalMsgs(txItem)
 
+            const collapsedLength = txItem.tx.value.msg?.length - renderLimit
+
             return {
               link: getLink!({ network: chainId, q: 'tx', v: txhash }),
               hash: txhash,
               date: format.date(timestamp, { toLocale: true }),
-              messages: msgs.map((msg) => {
+              messages: msgs.slice(0, renderLimit).map((msg) => {
                 if (!msg)
                   return {
                     tag: 'Unknown',
@@ -106,6 +110,7 @@ export default ({ address }: User): TxsPage => {
                 { title: t('Common:Tx:Memo'), content: memo },
                 !success ? { title: 'Log', content: raw_log } : {},
               ].filter(({ content }) => !!content),
+              collapsedLength: Math.max(collapsedLength, 0),
             }
           }),
         }
