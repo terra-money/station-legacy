@@ -21,6 +21,7 @@ export interface ExtSign extends TxOptionsData {
   origin: string
   purgeQueue?: boolean
   waitForConfirmation?: boolean
+  bytes?: string
 
   /* response */
   success?: boolean

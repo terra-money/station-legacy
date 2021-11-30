@@ -35,9 +35,12 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { user, pagination, onFinish } = props
   const { name } = user
   const { id, origin, gasPrices, ...rest } = details
-  const { waitForConfirmation, ...txOptionsData } = rest
+  const { waitForConfirmation, bytes, ...txOptionsData } = rest
   const txOptions = parseCreateTxOptions(txOptionsData)
-  const { msgs, memo, fee } = txOptions
+
+  const msgs = txOptions?.msgs
+  const memo = txOptions?.memo
+  const fee = txOptions?.fee
 
   /* chain */
   const { chainID, lcd: URL, name: network } = useCurrentChain()
@@ -53,9 +56,11 @@ const Component = ({ requestType, details, ...props }: Props) => {
     setSubmitting(true)
 
     try {
-      let result: Tx.Data
+      let result
 
       if (user.ledger) {
+        if (!txOptions) return
+
         const pk = await ledger.getPubKey()
         if (!pk) throw new Error('PubKey is undefined')
 
@@ -82,19 +87,34 @@ const Component = ({ requestType, details, ...props }: Props) => {
       } else {
         const { privateKey } = getStoredWallet(name!, password)
         const key = new RawKey(Buffer.from(privateKey, 'hex'))
-        const wallet = lcd.wallet(key)
-        const stdSignMsg = await wallet.createTx(txOptions)
-        const { account_number, sequence } =
-          await wallet.accountNumberAndSequence()
 
-        const signedTx = await key.signTx(stdSignMsg, {
-          accountNumber: account_number,
-          sequence,
-          signMode: SignatureV2.SignMode.SIGN_MODE_DIRECT,
-          chainID,
-        })
+        if (bytes) {
+          const { signature, recid } = await key.ecdsaSign(
+            Buffer.from(bytes, 'base64')
+          )
 
-        result = signedTx.toData()
+          if (!signature) throw new Error('signature is undefined')
+
+          result = {
+            recid,
+            signature: Buffer.from(signature).toString('base64'),
+            public_key: key.publicKey?.toAmino().value as string,
+          }
+        } else if (txOptions) {
+          const wallet = lcd.wallet(key)
+          const stdSignMsg = await wallet.createTx(txOptions)
+          const { account_number, sequence } =
+            await wallet.accountNumberAndSequence()
+
+          const signedTx = await key.signTx(stdSignMsg, {
+            accountNumber: account_number,
+            sequence,
+            signMode: SignatureV2.SignMode.SIGN_MODE_DIRECT,
+            chainID,
+          })
+
+          result = signedTx.toData()
+        }
       }
 
       onFinish({
@@ -122,6 +142,8 @@ const Component = ({ requestType, details, ...props }: Props) => {
 
   /* post tx */
   const postTx = async () => {
+    if (!txOptions) return
+
     setSubmitting(true)
 
     try {
@@ -289,17 +311,19 @@ const Component = ({ requestType, details, ...props }: Props) => {
   >('/msgs/MsgGrantAuthorization.json')
   const GrantAllowed = data?.[network]
 
-  const isDangerousTx = msgs.some((msg) => {
-    const data = msg.toData()
+  const isDangerousTx = !msgs
+    ? false
+    : msgs.some((msg) => {
+        const data = msg.toData()
 
-    if (data['@type'] !== '/cosmos.authz.v1beta1.MsgGrant') return false
-    if (!GrantAllowed) return true
+        if (data['@type'] !== '/cosmos.authz.v1beta1.MsgGrant') return false
+        if (!GrantAllowed) return true
 
-    const { grant, grantee } = data
-    const { authorization } = grant
-    const allowedTypes = GrantAllowed[grantee].types
-    return !allowedTypes.includes(authorization['@type'])
-  })
+        const { grant, grantee } = data
+        const { authorization } = grant
+        const allowedTypes = GrantAllowed[grantee].types
+        return !allowedTypes.includes(authorization['@type'])
+      })
 
   const disabled = (!user.ledger && !password) || isDangerousTx
 
@@ -333,7 +357,9 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const isOriginTerra = origin.includes('terra.money')
 
   const warn = isSign
-    ? 'The origin is signing a transaction. This transaction will be routed and processed by the origin. Interact only with origins that you trust.'
+    ? bytes
+      ? 'The origin is signing an arbitrary data.'
+      : 'The origin is signing a transaction. This transaction will be routed and processed by the origin. Interact only with origins that you trust.'
     : undefined
 
   return submitting ? (
@@ -377,7 +403,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
       </dl>
 
       <section>
-        {msgs.map((msg) => {
+        {msgs?.map((msg, index) => {
           const isDanger = !(isOriginTerra || getIsMsgExecuteContract(msg))
           return <Message msg={msg} danger={isDanger} />
         })}
@@ -428,20 +454,26 @@ const usePage = (total: number) => {
 }
 
 /* helpers */
-const parseCreateTxOptions = (params: TxOptionsData): CreateTxOptions => {
-  const { msgs, fee } = params
+const parseCreateTxOptions = (
+  params: TxOptionsData
+): CreateTxOptions | undefined => {
+  try {
+    const { msgs, fee } = params
 
-  const isProto = '@type' in JSON.parse(msgs[0])
+    const isProto = '@type' in JSON.parse(msgs[0])
 
-  return {
-    ...params,
-    msgs: msgs.map((msg) =>
-      isProto ? Msg.fromData(JSON.parse(msg)) : Msg.fromAmino(JSON.parse(msg))
-    ),
-    fee: !fee
-      ? undefined
-      : isProto
-      ? Fee.fromData(JSON.parse(fee))
-      : Fee.fromAmino(JSON.parse(fee)),
+    return {
+      ...params,
+      msgs: msgs.map((msg) =>
+        isProto ? Msg.fromData(JSON.parse(msg)) : Msg.fromAmino(JSON.parse(msg))
+      ),
+      fee: !fee
+        ? undefined
+        : isProto
+        ? Fee.fromData(JSON.parse(fee))
+        : Fee.fromAmino(JSON.parse(fee)),
+    }
+  } catch {
+    return undefined
   }
 }
