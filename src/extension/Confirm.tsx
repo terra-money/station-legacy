@@ -7,7 +7,7 @@ import { CreateTxOptions, PublicKey, SignatureV2 } from '@terra-money/terra.js'
 import { Msg, TxInfo, Fee, Tx } from '@terra-money/terra.js'
 import { isTxError } from '@terra-money/terra.js'
 import { LCDClient, RawKey } from '@terra-money/terra.js'
-import { Field } from '../lib'
+import { Field, format, is } from '../lib'
 import { decrypt } from '../utils'
 import { testPassword, getStoredWallet } from '../utils/localStorage'
 import useTerraAssets from '../hooks/useTerraAssets'
@@ -21,6 +21,7 @@ import { PW, isPreconfigured } from '../layouts/Preconfigured'
 import Pagination from './Pagination'
 import Submitting from './Submitting'
 import Message from './Message'
+import IBCUnit from '../pages/bank/IBCUnit'
 import LedgerKey from '../extension/LedgerKey'
 import s from './Confirm.module.scss'
 
@@ -36,7 +37,7 @@ const Component = ({ requestType, details, ...props }: Props) => {
   const { id, origin, gasPrices, ...rest } = details
   const { waitForConfirmation, ...txOptionsData } = rest
   const txOptions = parseCreateTxOptions(txOptionsData)
-  const { msgs, memo } = txOptions
+  const { msgs, memo, fee } = txOptions
 
   /* chain */
   const { chainID, lcd: URL, name: network } = useCurrentChain()
@@ -351,6 +352,21 @@ const Component = ({ requestType, details, ...props }: Props) => {
         <dd>{origin}</dd>
         <dt>timestamp</dt>
         <dd>{formatDistanceToNow(new Date(id))} ago</dd>
+        <dt>fee</dt>
+        <dd>
+          <ul>
+            {fee?.amount.toArray().map(({ denom, amount }) => (
+              <li key={denom}>
+                {format.amount(amount.toString())}{' '}
+                {is.ibcDenom(denom) ? (
+                  <IBCUnit>{denom}</IBCUnit>
+                ) : (
+                  format.denom(denom)
+                )}
+              </li>
+            ))}
+          </ul>
+        </dd>
 
         {memo && (
           <>
