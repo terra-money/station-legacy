@@ -71,12 +71,14 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     bank.loading || loadingWhitelist || cw20TokenBalance.loading || loadingPairs
 
   // tokens
-  const nativeTokensOptions = ['uluna', ...actives].map((denom) => ({
-    value: denom,
-    children: format.denom(denom),
-    balance: find(`${denom}:available`, bank.data?.balance) ?? '0',
-    icon: `${TERRA_ASSETS}/icon/60/${format.denom(denom)}.png`,
-  }))
+  const nativeTokensOptions = Object.values(bank.data?.balance ?? []).map(
+    ({ denom, available }) => ({
+      value: denom,
+      children: format.denom(denom) || denom,
+      balance: available,
+      icon: `${TERRA_ASSETS}/icon/60/${format.denom(denom)}.png`,
+    })
+  )
 
   const cw20TokensList = whitelist
     ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
@@ -226,7 +228,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const formattedExpectedPrice = times(expectedPrice, Math.pow(10, decimals))
 
   // simulate: Max & Tax
-  const shouldTax = is.nativeTerra(from) && mode !== 'Market'
+  const shouldTax =
+    (is.nativeTerra(from) || is.ibcDenom(from)) && mode !== 'Market'
   const calcTax = useCalcTax(from, t)
   const calcFee = useCalcFee()
   const { getMax, getTax, label: taxLabel, loading: loadingTax } = calcTax
