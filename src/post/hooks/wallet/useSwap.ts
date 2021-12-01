@@ -86,11 +86,11 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   }
 
   // tokens
-  const nativeTokensOptions = Object.values(bank.data?.balance ?? []).map(
-    ({ denom, available }) => ({
+  const nativeTokensOptions = ['uluna', ...actives, ...ibcDenoms].map(
+    (denom) => ({
       value: denom,
       children: formatDenom(denom),
-      balance: available,
+      balance: find(`${denom}:available`, bank.data?.balance) ?? '0',
       icon: `${TERRA_ASSETS}/icon/60/${formatDenom(denom)}.png`,
     })
   )
