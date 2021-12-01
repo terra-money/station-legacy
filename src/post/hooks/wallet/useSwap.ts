@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
+import { flatten, uniq } from 'ramda'
 import { MsgExecuteContract, MsgSwap } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { PostPage, SwapUI, ConfirmProps } from '../../../types'
@@ -71,14 +72,15 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const loadingUI =
     bank.loading || loadingWhitelist || cw20TokenBalance.loading || loadingPairs
 
-  const ibcDenoms =
-    bank.data?.balance.map(({ denom }) => denom).filter(is.ibcDenom) ?? []
-  const denomTraceList = useDenomTraceList(ibcDenoms)
+  const terraswapAvailableList = uniq(flatten(Object.values(pairs ?? {})))
+  const terraswapAvailableIBCDenoms = terraswapAvailableList.filter(is.ibcDenom)
+  const denomTraceList = useDenomTraceList(terraswapAvailableIBCDenoms)
 
   const formatDenom = (denom: string) => {
     if (is.ibcDenom(denom)) {
       const base_denom =
-        denomTraceList[ibcDenoms.indexOf(denom)].data?.base_denom
+        denomTraceList[terraswapAvailableIBCDenoms.indexOf(denom)].data
+          ?.base_denom
       return format.denom(base_denom) ?? format.truncate(denom)
     } else {
       return format.denom(denom, whitelist)
@@ -86,14 +88,16 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   }
 
   // tokens
-  const nativeTokensOptions = ['uluna', ...actives, ...ibcDenoms].map(
-    (denom) => ({
-      value: denom,
-      children: formatDenom(denom),
-      balance: find(`${denom}:available`, bank.data?.balance) ?? '0',
-      icon: `${TERRA_ASSETS}/icon/60/${formatDenom(denom)}.png`,
-    })
-  )
+  const nativeTokensOptions = [
+    'uluna',
+    ...actives,
+    ...terraswapAvailableIBCDenoms,
+  ].map((denom) => ({
+    value: denom,
+    children: formatDenom(denom),
+    balance: find(`${denom}:available`, bank.data?.balance) ?? '0',
+    icon: `${TERRA_ASSETS}/icon/60/${formatDenom(denom)}.png`,
+  }))
 
   const cw20TokensList = whitelist
     ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
