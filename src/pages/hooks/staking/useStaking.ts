@@ -210,6 +210,8 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
   const [asc, setAsc] = useState<boolean>(initialAsc)
   const { prop, isString } = sorter
 
+  const minSortedUptimeDiff = 0.001
+
   const renderValidators = (staking: StakingData): StakingUI => {
     const { validators, delegationTotal = '0', undelegations } = staking
     const undelegationTotal = calcUndelegationTotal(undelegations)
@@ -229,7 +231,14 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
         const b: string = String(path(prop.split('.'), validatorB) || 0)
         const c = asc ? 1 : -1
         const compareString = c * (a.toLowerCase() > b.toLowerCase() ? 1 : -1)
-        const compareNumber = c * (gt(a, b) ? 1 : -1)
+        const compareNumber =
+          c *
+          (Math.abs(toNumber(minus(a, b))) < minSortedUptimeDiff
+            ? Math.random() - 0.5
+            : gt(a, b)
+            ? 1
+            : -1)
+
         return a === b ? 0 : isString ? compareString : compareNumber
       })
       .sort(({ status: a }, { status: b }) => {
