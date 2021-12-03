@@ -1,20 +1,18 @@
 import Icon from '../components/Icon'
 import Flex from '../components/Flex'
+import ExtLink from '../components/ExtLink'
 import s from './Guide.module.scss'
 
+const LINK =
+  'https://docs.terra.money/Tutorials/Get-started/Terra-Station-desktop.html'
+
 const Guid = () => (
-  <div className={s.component}>
+  <ExtLink href={LINK} className={s.component}>
     <Flex>
       <Icon name="help" />
-      Guide PDF
+      Tutorial
     </Flex>
-
-    <div>
-      <a href="https://terra.money/static/Terra_Station_Guide_Eng.pdf" download>
-        ENG
-      </a>
-    </div>
-  </div>
+  </ExtLink>
 )
 
 export default Guid
