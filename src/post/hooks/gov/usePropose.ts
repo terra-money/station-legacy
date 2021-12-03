@@ -10,7 +10,7 @@ import useBank from '../../../api/useBank'
 import useForm from '../../../hooks/useForm'
 import validateForm from '../validateForm'
 import { isAvailable, getFeeDenomList } from '../validateConfirm'
-import { Coins, MsgSubmitProposal } from '@terra-money/terra.js'
+import { Coin, Coins, MsgSubmitProposal } from '@terra-money/terra.js'
 import {
   TextProposal,
   CommunityPoolSpendProposal,
@@ -40,7 +40,8 @@ const CHANGES_PLACEHOLDER = `[{
 interface CustomField {
   proposal_type: string
   recipient: string
-  amount: string
+  ulunaAmount: string
+  uusdAmount: string
   changes: string
 }
 
@@ -61,7 +62,8 @@ export default (): PostPage => {
   const { data: bank, loading, error } = useBank()
   const { data: pool, ...poolResponse } = useFCD<Pool>({ url })
   const { loading: poolLoading, error: poolError } = poolResponse
-  const lunaPool = find('uluna:amount', pool?.result)
+  const ulunaPool = find('uluna:amount', pool?.result)
+  const uusdPool = find('uusd:amount', pool?.result)
 
   const TypesList = [
     {
@@ -111,16 +113,31 @@ export default (): PostPage => {
         key === TypeKey.COMMUNITY_POOL_SPEND
           ? v.address(updates.recipient)
           : '',
-      amount:
+      ulunaAmount:
         key === TypeKey.COMMUNITY_POOL_SPEND
-          ? !lunaPool
+          ? !ulunaPool
             ? t("Common:Validate:{{label}} doesn't exist", {
                 label: t('Post:Governance:Community pool'),
               })
-            : v.between(updates.amount, {
-                range: [0, lunaPool],
+            : updates.ulunaAmount
+            ? v.between(updates.ulunaAmount, {
+                range: [0, toInput(ulunaPool)],
                 label: t('Post:Governance:Community pool'),
               })
+            : ''
+          : '',
+      uusdAmount:
+        key === TypeKey.COMMUNITY_POOL_SPEND
+          ? !uusdPool
+            ? t("Common:Validate:{{label}} doesn't exist", {
+                label: t('Post:Governance:Community pool'),
+              })
+            : updates.uusdAmount
+            ? v.between(updates.uusdAmount, {
+                range: [0, toInput(uusdPool)],
+                label: t('Post:Governance:Community pool'),
+              })
+            : ''
           : '',
       changes:
         key === TypeKey.PARAM_CHANGE
@@ -143,7 +160,8 @@ export default (): PostPage => {
 
     proposal_type: 'text',
     recipient: '',
-    amount: '',
+    ulunaAmount: '',
+    uusdAmount: '',
     changes: '',
   }
 
@@ -165,9 +183,15 @@ export default (): PostPage => {
         attrs: { ...getDefaultAttrs('recipient'), placeholder: '0' },
       },
       {
-        ...getDefaultProps('amount'),
-        label: t('Common:Tx:Amount'),
-        attrs: { ...getDefaultAttrs('amount'), placeholder: '0' },
+        ...getDefaultProps('ulunaAmount'),
+        label: 'Luna amount (Optional)',
+        attrs: { ...getDefaultAttrs('ulunaAmount'), placeholder: '0' },
+        unit,
+      },
+      {
+        ...getDefaultProps('uusdAmount'),
+        label: 'UST amount (Optional)',
+        attrs: { ...getDefaultAttrs('uusdAmount'), placeholder: '0' },
         unit,
       },
     ],
@@ -301,7 +325,7 @@ const validateChanges = (changes: string) => {
 
 const sanitize = (typeKey: TypeKey, values: Values) => {
   const { title, description } = values
-  const { recipient, amount, changes } = values
+  const { recipient, ulunaAmount, uusdAmount, changes } = values
 
   return {
     [TypeKey.TEXT]: new TextProposal(title, description),
@@ -309,7 +333,14 @@ const sanitize = (typeKey: TypeKey, values: Values) => {
       title,
       description,
       recipient,
-      new Coins({ uluna: toAmount(amount) })
+      new Coins(
+        [
+          { amount: toAmount(ulunaAmount), denom: 'uluna' },
+          { amount: toAmount(uusdAmount), denom: 'uusd' },
+        ]
+          .filter(({ amount }) => gt(amount, 0))
+          .map(({ denom, amount }) => new Coin(denom, amount))
+      )
     ),
     [TypeKey.PARAM_CHANGE]: new ParameterChangeProposal(
       title,
