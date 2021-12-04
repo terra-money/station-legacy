@@ -58,7 +58,7 @@ export default (): ((v: ValidatorData, params?: Params) => ValidatorUI) => {
       },
       commission: {
         title: t('Page:Staking:Commission'),
-        percent: percent(commissionInfo.rate, 0),
+        percent: percent(commissionInfo.rate, 1),
       },
       maxRate: {
         title: t('Page:Staking:Max commission rate'),
