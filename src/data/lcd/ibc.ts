@@ -1,6 +1,7 @@
 import { useQueries, useQuery } from 'react-query'
 import { is } from '../../utils'
 import useLCD from '../../api/useLCD'
+import { fromPairs, zip } from 'ramda'
 
 export const useGetQueryDenomTrace = () => {
   const lcd = useLCD()
@@ -23,4 +24,14 @@ export const useDenomTrace = (denom = '') => {
 export const useDenomTraceList = (denoms: string[]) => {
   const getQuery = useGetQueryDenomTrace()
   return useQueries(denoms.map(getQuery))
+}
+
+export const useDenomTracePair = (denoms: string[] = []) => {
+  const results = useDenomTraceList(denoms)
+  return fromPairs(
+    zip(
+      denoms,
+      results.map(({ data }) => data?.base_denom ?? '')
+    )
+  )
 }

@@ -25,6 +25,7 @@ const Staking = () => {
 
   const renderButton = ({ withdrawAll }: StakingPersonal) => {
     const { attrs, amounts, validators } = withdrawAll
+
     return (
       <ButtonWithAuth
         {...attrs}

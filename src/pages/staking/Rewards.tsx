@@ -1,8 +1,12 @@
 import { RewardsTable } from '../../lib'
+import { format, is } from '../../utils'
+import { useDenomTracePair } from '../../data/lcd/ibc'
 import Table from '../../components/Table'
 import Number from '../../components/Number'
 
 const Rewards = ({ headings, contents }: RewardsTable) => {
+  const denomPair = useDenomTracePair(contents.map(({ coin }) => coin.denom))
+
   return (
     <Table light small>
       <thead>
@@ -13,11 +17,13 @@ const Rewards = ({ headings, contents }: RewardsTable) => {
       </thead>
 
       <tbody>
-        {contents.map((content, index) => (
+        {contents.map(({ coin: { denom }, display }, index) => (
           <tr key={index}>
-            <td>{content['unit']}</td>
+            <td>
+              {format.denom(is.ibcDenom(denom) ? denomPair[denom] : denom)}
+            </td>
             <td className="text-right">
-              <Number>{content['value']}</Number>
+              <Number>{display.value}</Number>
             </td>
           </tr>
         ))}
