@@ -11,30 +11,36 @@ export const useTerraObserver = () => {
   const [error, setError] = useState<Event | CloseEvent>()
 
   useEffect(() => {
-    ws.current = new WebSocket(OBSERVER)
+    if (!ws.current) {
+      ws.current = new WebSocket(OBSERVER)
 
-    ws.current.onopen = () => {
-      setConnected(true)
-      ws.current?.send(
-        JSON.stringify({ subscribe: 'new_block', chain_id: chainID })
-      )
+      ws.current.onopen = () => {
+        setConnected(true)
+        ws.current?.send(
+          JSON.stringify({ subscribe: 'new_block', chain_id: chainID })
+        )
+      }
+
+      ws.current.onclose = (error) => {
+        setConnected(false)
+        setError(error)
+      }
+
+      ws.current.onerror = (error) => {
+        setConnected(false)
+        setError(error)
+      }
+
+      ws.current.onmessage = (event) => {
+        const message = JSON.parse(event.data)
+        setBlock(message.data.block)
+      }
     }
 
-    ws.current.onclose = (error) => {
-      setConnected(false)
-      setError(error)
+    return () => {
+      ws.current?.close()
     }
-
-    ws.current.onerror = (error) => {
-      setConnected(false)
-      setError(error)
-    }
-
-    ws.current.onmessage = (event) => {
-      const message = JSON.parse(event.data)
-      setBlock(message.data.block)
-    }
-  }, [chainID, setBlock])
+  }, [chainID])
 
   return { connected, error, block }
 }

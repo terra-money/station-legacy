@@ -75,7 +75,7 @@ const App = () => {
 
   return deprecatedUI ?? !ready ? null : (
     <ExtensionProvider value={extension}>
-      <AppProvider value={app} key={key}>
+      <AppProvider value={app}>
         <Nav />
         <section className={s.main}>
           <Header className={s.header} />
@@ -84,6 +84,7 @@ const App = () => {
               isExtension ? s.extension : s.content,
               isExtension && padding && s.padding
             )}
+            key={key}
           >
             <ErrorBoundary fallback={<ErrorComponent card />} key={pathname}>
               {isExtension ? <Extension /> : routes}
