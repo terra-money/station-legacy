@@ -17,7 +17,7 @@ const NFTItemList = ({ nft }: { nft: NFTContract }) => {
       className={styles.logo}
     />
   ) : (
-    <Default className={styles.logo} />
+    <Default width="24" height="24" className={styles.logo} />
   )
 
   const nftTitle = (

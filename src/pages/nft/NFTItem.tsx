@@ -36,7 +36,7 @@ const NFTItem = (item: Props) => {
         className={styles.image}
       />
     ) : (
-      <Default className={styles.image} />
+      <Default width="50" height="50" className={styles.image} />
     )
 
     const viewButtonAttrs = {
