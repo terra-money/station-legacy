@@ -6,7 +6,7 @@ import NFTItem from './NFTItem'
 import styles from './NFTItemList.module.scss'
 
 const NFTItemList = ({ nft }: { nft: NFTContract }) => {
-  const { data } = useCW721Tokens(nft.contract)
+  const { data, isLoading } = useCW721Tokens(nft.contract)
 
   const icon = nft.icon ? (
     <img
@@ -32,13 +32,11 @@ const NFTItemList = ({ nft }: { nft: NFTContract }) => {
   return (
     <article className={styles.itemCard}>
       {nftTitle}
-      {tokenList && !isEmpty(tokenList) ? (
-        tokenList.map((name, key) => (
-          <NFTItem {...nft} nftName={name} key={key} />
-        ))
-      ) : (
-        <span className={styles.empty}>No token found.</span>
-      )}
+      {tokenList && !isEmpty(tokenList)
+        ? tokenList.map((name, key) => (
+            <NFTItem {...nft} nftName={name} key={key} />
+          ))
+        : !isLoading && <span className={styles.empty}>No token found</span>}
     </article>
   )
 }
