@@ -23,10 +23,14 @@ const NFTItem = (item: Props) => {
     const { extension } = data
     const { name, image } = extension
 
-    const icon = image ? (
+    const imgUrl = image?.startsWith('ipfs://')
+      ? image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      : image
+
+    const icon = imgUrl ? (
       <img
         alt="nft logo"
-        src={image}
+        src={imgUrl}
         width="50"
         height="50"
         className={styles.image}
