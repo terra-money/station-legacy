@@ -210,7 +210,7 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
   const [asc, setAsc] = useState<boolean>(initialAsc)
   const { prop, isString } = sorter
 
-  const minSortedUptimeDiff = 0.001
+  const minSortedUptimeDiff = 0.0001
 
   const renderValidators = (staking: StakingData): StakingUI => {
     const { validators, delegationTotal = '0', undelegations } = staking
