@@ -6,9 +6,9 @@ import useWhitelist from '../../cw20/useWhitelist'
 import ModalContent from '../../components/ModalContent'
 import Icon from '../../components/Icon'
 import Tokens from './Tokens'
-import styles from './AddToken.module.scss'
+import styles from './AddCW20Token.module.scss'
 
-const AddToken = () => {
+const AddCW20Token = () => {
   const { whitelist, isLoading } = useWhitelist()
   const lcd = useLCD()
   const [input, setInput] = useState('')
@@ -68,4 +68,4 @@ const AddToken = () => {
   )
 }
 
-export default AddToken
+export default AddCW20Token

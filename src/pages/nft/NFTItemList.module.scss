@@ -1,0 +1,34 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.itemCard {
+  border: 1px solid $line;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  padding: 25px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.itemTitle {
+  @include flex(flex-start, center);
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 17px;
+  text-align: left;
+}
+
+.empty {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  padding-top: 15px;
+  border-top: 1px solid $line;
+}
+
+.logo {
+  margin-right: 10px;
+  border-radius: 50%;
+}

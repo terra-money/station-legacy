@@ -7,6 +7,7 @@ export default (): Dictionary<string> => {
   return {
     Dashboard: t('Page:Menu:Dashboard'),
     Wallet: t('Page:Menu:Wallet'),
+    NFT: t('Page:Menu:NFT'),
     History: t('Page:Menu:History'),
     Staking: t('Page:Menu:Staking'),
     Validator: t('Page:Menu:Validator details'),

@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  color: #459cf4;
+  margin-top: 16px;
+}

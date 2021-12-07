@@ -179,6 +179,7 @@
     "Menu": {
       "Dashboard": "Приборная панель",
       "Wallet": "кошелёк",
+      "NFT": "NFT",
       "History": "История",
       "Staking": "Ставка",
       "Validator details": "Детали валидатора",

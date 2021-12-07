@@ -179,6 +179,7 @@
     "Menu": {
       "Dashboard": "Tablero de mandos",
       "Wallet": "Cartera",
+      "NFT": "NFT",
       "History": "Histórico",
       "Staking": "Estacar",
       "Validator details": "Información del validador",

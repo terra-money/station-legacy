@@ -2,7 +2,7 @@ import { useTokens } from '../../data/tokens'
 import ModalContent from '../../components/ModalContent'
 import Tokens from './Tokens'
 
-const ManageToken = () => {
+const ManageCW20Token = () => {
   const tokens = useTokens()
   return (
     <ModalContent>
@@ -12,4 +12,4 @@ const ManageToken = () => {
   )
 }
 
-export default ManageToken
+export default ManageCW20Token

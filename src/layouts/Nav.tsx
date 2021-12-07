@@ -42,6 +42,11 @@ const Nav = () => {
       icon: 'account_balance_wallet',
     },
     {
+      name: name['NFT'],
+      to: '/nft',
+      icon: 'token',
+    },
+    {
       name: name['History'],
       to: '/history',
       icon: 'subject',

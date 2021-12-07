@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.title {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  @include flex(center, flex-start);
+
+  @media (max-width: $breakpoint) {
+    flex-direction: column;
+  }
+}

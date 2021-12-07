@@ -2,6 +2,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import Dashboard from '../pages/dashboard/Dashboard'
 import Bank from '../pages/bank/Bank'
+import NFT from '../pages/nft/NFT'
 import Txs from '../pages/txs/Txs'
 import Staking from '../pages/staking/Staking'
 import Validator from '../pages/validator/Validator'
@@ -17,6 +18,7 @@ export default (
   <Switch>
     <Route path="/" component={Dashboard} exact />
     <Route path="/wallet" component={Bank} />
+    <Route path="/nft" component={NFT} />
     <Route path="/history" component={Txs} />
     <Route path="/staking" component={Staking} />
     <Route path="/validator/:address" component={Validator} />
