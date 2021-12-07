@@ -24,7 +24,13 @@ const NFTItem = (item: Props) => {
     const { name, image } = extension
 
     const icon = image ? (
-      <img alt="nft logo" src={image} width="50" className={styles.image} />
+      <img
+        alt="nft logo"
+        src={image}
+        width="50"
+        height="50"
+        className={styles.image}
+      />
     ) : (
       <Default className={styles.image} />
     )

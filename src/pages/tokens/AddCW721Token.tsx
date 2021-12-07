@@ -8,7 +8,7 @@ import { NFTContract, NFTContracts } from '../../types'
 import NFTTokens from './NFTTokens'
 import styles from './AddCW721Token.module.scss'
 
-const AddNFTToken = () => {
+const AddCW721Token = () => {
   const { whitelist, isLoading } = useCW721Whitelist()
   const lcd = useLCD()
   const [input, setInput] = useState('')
@@ -59,18 +59,16 @@ const AddNFTToken = () => {
         <Icon name="search" />
       </section>
 
-      {input && (
-        <ul className={styles.list}>
-          <NFTTokens
-            contracts={
-              result ? [result] : Object.values(whitelist ?? {}).filter(filter)
-            }
-            muteOnAdded
-          />
-        </ul>
-      )}
+      <ul className={styles.list}>
+        <NFTTokens
+          contracts={
+            result ? [result] : Object.values(whitelist ?? {}).filter(filter)
+          }
+          muteOnAdded
+        />
+      </ul>
     </ModalContent>
   )
 }
 
-export default AddNFTToken
+export default AddCW721Token

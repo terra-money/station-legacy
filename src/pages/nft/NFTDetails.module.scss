@@ -12,8 +12,8 @@
   margin-left: 2px;
 }
 
-.nftList {
-  width: 774px;
+.nftDetails {
+  flex: 2;
   margin-right: 20px;
   justify-content: center;
   text-align: center;
@@ -23,4 +23,8 @@
 
     margin-bottom: 25px;
   }
+}
+
+.placeholder {
+  padding: 25px 0;
 }

@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import classnames from 'classnames'
+import classnames from 'classnames/bind'
 import { useNFTTokens } from '../../data/nftTokens'
 import ManageCW721Token from '../tokens/ManageCW721Tokens'
 import AddCW721Token from '../tokens/AddCW721Token'
@@ -9,6 +9,8 @@ import { useApp } from '../../hooks'
 import NFTItemList from './NFTItemList'
 import NFTPlaceholder from './NFTPlaceholder'
 import styles from './NFTDetails.module.scss'
+
+const cx = classnames.bind(styles)
 
 const NFTDetails = () => {
   const { modal } = useApp()
@@ -25,7 +27,7 @@ const NFTDetails = () => {
   )
 
   const nftList = (
-    <Card className={styles.nftList}>
+    <>
       {title}
       {nfts.map((nft, key) => (
         <NFTItemList nft={nft} key={key} />
@@ -36,10 +38,16 @@ const NFTDetails = () => {
       >
         Add tokens
       </button>
-    </Card>
+    </>
   )
 
-  return <>{isEmpty(nfts) ? <NFTPlaceholder /> : nftList}</>
+  const isEmptyList = isEmpty(nfts)
+
+  return (
+    <Card className={cx(styles.nftDetails, { placeholder: isEmptyList })}>
+      {isEmptyList ? <NFTPlaceholder /> : nftList}
+    </Card>
+  )
 }
 
 export default NFTDetails

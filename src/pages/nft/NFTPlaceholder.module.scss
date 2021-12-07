@@ -1,18 +1,6 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
-.wrapper {
-  width: 774px;
-  margin-right: 20px;
-  text-align: center;
-  padding: 25px 0;
-
-  @media (max-width: $breakpoint) {
-    width: 100%;
-    margin-bottom: 25px;
-  }
-}
-
 .title {
   font-size: 20px;
   font-weight: 500;

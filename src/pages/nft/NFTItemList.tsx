@@ -9,7 +9,13 @@ const NFTItemList = ({ nft }: { nft: NFTContract }) => {
   const { data } = useCW721Tokens(nft.contract)
 
   const icon = nft.icon ? (
-    <img src={nft.icon} alt="icon" className={styles.logo} />
+    <img
+      src={nft.icon}
+      alt="icon"
+      width="24"
+      height="24"
+      className={styles.logo}
+    />
   ) : (
     <Default className={styles.logo} />
   )

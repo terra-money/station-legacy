@@ -19,7 +19,7 @@ const Marketplace = () => {
       {markets?.map((market, key) => (
         <ExtLink className={styles.address} href={market.link} key={key}>
           {market.name}
-          <Icon name="north_east" />
+          <Icon name="north_east" size={14} />
         </ExtLink>
       ))}
     </article>

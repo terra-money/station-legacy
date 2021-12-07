@@ -6,7 +6,7 @@ import { useCurrentChainName } from './chain'
 
 export const nftTokensState = atom<Dictionary<NFTContracts>>({
   key: 'nftTokensState',
-  default: JSON.parse(localStorage.getItem('nftTokens') || '{}'),
+  default: JSON.parse(localStorage.getItem('NFT') || '{}'),
 })
 
 export const useManageNFTTokens = () => {
@@ -15,13 +15,13 @@ export const useManageNFTTokens = () => {
 
   const add = (params: NFTContracts) => {
     const next = { ...tokens, [name]: { ...tokens[name], ...params } }
-    localStorage.setItem('nftTokens', JSON.stringify(next))
+    localStorage.setItem('NFT', JSON.stringify(next))
     setTokens(next)
   }
 
   const remove = (token: string) => {
     const next = { ...tokens, [name]: omit([token], tokens[name]) }
-    localStorage.setItem('nftTokens', JSON.stringify(next))
+    localStorage.setItem('NFT', JSON.stringify(next))
     setTokens(next)
   }
 

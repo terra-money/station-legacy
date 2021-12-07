@@ -25,7 +25,6 @@ export default (nftContract: string, token_id: string): PostPage => {
   const v = validateForm(t)
 
   /* form */
-
   const validate = ({ input, to, memo }: Values) => ({
     to: v.address(to),
     input: v.input(input),
@@ -37,7 +36,7 @@ export default (nftContract: string, token_id: string): PostPage => {
 
   const initial = { to: '', input: '', memo: '' }
   const form = useForm<Values>(initial, validate)
-  const { values, invalid } = form
+  const { values } = form
   const { getDefaultProps, getDefaultAttrs } = form
   const { to, memo } = values
 
@@ -65,12 +64,11 @@ export default (nftContract: string, token_id: string): PostPage => {
     },
   ]
 
-  const fields = defaultFields
   const disabled = !AccAddress.validate(to)
 
   const formUI = {
     title: t('Post:Send:Send'),
-    fields,
+    fields: defaultFields,
     disabled,
     submitLabel: t('Common:Form:Next'),
     onSubmit: () => setSubmitted(true),
