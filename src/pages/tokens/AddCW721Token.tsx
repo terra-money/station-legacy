@@ -1,31 +1,36 @@
-import { AccAddress } from '@terra-money/terra.js'
 import { useEffect, useState } from 'react'
-import { Token, Whitelist } from '../../lib'
+import { AccAddress } from '@terra-money/terra.js'
 import useLCD from '../../api/useLCD'
-import useWhitelist from '../../cw20/useWhitelist'
+import useCW721Whitelist from '../../cw721/useCW721Whitelist'
 import ModalContent from '../../components/ModalContent'
 import Icon from '../../components/Icon'
-import Tokens from './Tokens'
-import styles from './AddToken.module.scss'
+import { NFTContract, NFTContracts } from '../../types'
+import NFTTokens from './NFTTokens'
+import styles from './AddCW721Token.module.scss'
 
-const AddToken = () => {
-  const { whitelist, isLoading } = useWhitelist()
+const AddNFTToken = () => {
+  const { whitelist, isLoading } = useCW721Whitelist()
   const lcd = useLCD()
   const [input, setInput] = useState('')
-  const [results, setResults] = useState<Whitelist>({})
+  const [results, setResults] = useState<NFTContracts>({})
 
-  const filter = ({ token, symbol }: Token) =>
-    symbol.toLowerCase().includes(input.toLowerCase()) ||
-    (AccAddress.validate(input) && token.includes(input))
+  const filter = ({ contract, symbol, name }: NFTContract) =>
+    symbol?.toLowerCase().includes(input.toLowerCase()) ||
+    name.toLowerCase().includes(input.toLowerCase()) ||
+    (AccAddress.validate(input) && contract.includes(input))
 
   useEffect(() => {
     const search = async (token: string) => {
       try {
-        const info = await lcd.wasm.contractQuery<Token>(token, {
-          token_info: {},
+        const info = await lcd.wasm.contractQuery<NFTContract>(token, {
+          contract_info: {},
         })
 
-        setResults((prev) => ({ ...prev, [token]: { ...info, token: token } }))
+        const contract = info.contract || input
+        setResults((prev) => ({
+          ...prev,
+          [token]: { ...info, token: token, contract },
+        }))
       } catch (error) {}
     }
 
@@ -41,7 +46,7 @@ const AddToken = () => {
 
   return isLoading ? null : (
     <ModalContent>
-      <h1 className="modal-title">Add token</h1>
+      <h1 className="modal-title">Add NFT token</h1>
 
       <section className={styles.wrapper}>
         <input
@@ -56,8 +61,8 @@ const AddToken = () => {
 
       {input && (
         <ul className={styles.list}>
-          <Tokens
-            tokens={
+          <NFTTokens
+            contracts={
               result ? [result] : Object.values(whitelist ?? {}).filter(filter)
             }
             muteOnAdded
@@ -68,4 +73,4 @@ const AddToken = () => {
   )
 }
 
-export default AddToken
+export default AddNFTToken

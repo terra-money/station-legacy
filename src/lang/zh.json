@@ -181,6 +181,7 @@
     "Menu": {
       "Dashboard": "仪表盘",
       "Wallet": "钱包",
+      "NFT": "NFT",
       "History": "交易记录",
       "Staking": "权益质押",
       "Validator details": "验证人详情",

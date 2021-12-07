@@ -1,0 +1,26 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.title {
+  @include flex(space-between);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.addButton {
+  @include flex();
+  margin-left: 2px;
+}
+
+.nftList {
+  width: 774px;
+  margin-right: 20px;
+  justify-content: center;
+  text-align: center;
+
+  @media (max-width: $breakpoint) {
+    width: 100%;
+
+    margin-bottom: 25px;
+  }
+}

@@ -179,6 +179,7 @@
     "Menu": {
       "Dashboard": "Panel główny",
       "Wallet": "Portfel",
+      "NFT": "NFT",
       "History": "Historia",
       "Staking": "Staking",
       "Validator details": "Informacje o walidatorze",

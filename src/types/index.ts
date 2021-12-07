@@ -18,6 +18,7 @@ export * from './auth/ledger'
 
 /* pages */
 export * from './pages/assets'
+export * from './pages/nft'
 export * from './pages/dashboard'
 export * from './pages/charts'
 export * from './pages/txs'

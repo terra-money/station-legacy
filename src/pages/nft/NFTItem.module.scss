@@ -1,0 +1,37 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.wrapper {
+  @include flex(space-between);
+  border-top: 1px solid $line;
+  padding: 25px 0;
+
+  &:last-child {
+    padding-bottom: 0px;
+  }
+}
+
+.image {
+  border-radius: 5px;
+  margin-right: 15px;
+}
+
+.info {
+  @include flex();
+  font-size: 14px;
+}
+
+.buttons {
+  @include flex(center, flex-end);
+  flex-wrap: nowrap;
+
+  @media (max-width: $breakpoint) {
+    flex-direction: column;
+  }
+}
+
+.viewButton {
+  @media (max-width: $breakpoint) {
+    margin-bottom: 10px;
+  }
+}
