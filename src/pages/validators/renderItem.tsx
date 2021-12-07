@@ -6,7 +6,6 @@ import { ReactComponent as Terra } from '../../images/Terra.svg'
 import { ReactComponent as New } from './New.svg'
 import { ReactComponent as Check } from './Check.svg'
 import Number from '../../components/Number'
-import Pop from '../../components/Pop'
 import DelegationTooltip from '../staking/DelegationTooltip'
 import s from './renderItem.module.scss'
 
@@ -34,21 +33,17 @@ const renderItem = (props: ValidatorUI, validators?: Dictionary<string>) => {
 
     const content = myActionsTable && <DelegationTooltip {...myActionsTable} />
     return content ? (
-      <Pop type="tooltip" placement="bottom" width={420} content={content}>
-        {({ ref, getAttrs }) => (
-          <span {...getAttrs({ className: s.graph })} ref={ref}>
-            <span
-              className={c(s.bar, s.undelegation)}
-              style={{ width: myUndelegations.percent }}
-            />
-            <span
-              className={c(s.bar, s.delegation)}
-              style={{ width: myDelegations.percent }}
-            />
-            {number}
-          </span>
-        )}
-      </Pop>
+      <span>
+        <span
+          className={c(s.bar, s.undelegation)}
+          style={{ width: myUndelegations.percent }}
+        />
+        <span
+          className={c(s.bar, s.delegation)}
+          style={{ width: myDelegations.percent }}
+        />
+        {number}
+      </span>
     ) : (
       <div className={s.graph}>{number}</div>
     )
