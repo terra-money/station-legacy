@@ -62,7 +62,9 @@ const AddCW721Token = () => {
       <ul className={styles.list}>
         <NFTTokens
           contracts={
-            result ? [result] : Object.values(whitelist ?? {}).filter(filter)
+            result
+              ? [result]
+              : shuffle(Object.values(whitelist ?? {})).filter(filter)
           }
           muteOnAdded
         />
@@ -72,3 +74,19 @@ const AddCW721Token = () => {
 }
 
 export default AddCW721Token
+
+/* Fisher–Yates Shuffle */
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex
+
+  while (currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex--)
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+
+  return array
+}
