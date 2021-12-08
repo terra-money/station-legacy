@@ -14,7 +14,7 @@ type Attr = { align?: 'center' | 'right'; style: CSSProperties }
 const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
   const { data: validators } = useValidators()
   const { rank, moniker, votingPower, selfDelegation, commission } = headings
-  const { uptime, myDelegation } = headings
+  const { uptime } = headings
   const { replace } = useHistory()
   const [, getNextSearch] = useSearch()
 
@@ -25,8 +25,6 @@ const ValidatorList = ({ sorter, headings, contents }: StakingUI) => {
     [selfDelegation, { align: 'right', style: { width: 120 } }],
     [commission, { align: 'right', style: { width: 100, textAlign: 'right' } }],
     [uptime, { align: 'right', style: { width: 80 } }],
-    [undefined, { style: { width: 20 } }],
-    [myDelegation, { align: 'right', style: { width: 200 } }],
   ]
 
   return (
