@@ -5,7 +5,7 @@ import { readMsg } from '@terra-money/msg-reader'
 import { TxDescription } from '@terra-money/react-base-components'
 import Icon from '../components/Icon'
 import { useCurrentChainName } from '../data/chain'
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 import useLCD from '../api/useLCD'
 import s from './Message.module.scss'
 

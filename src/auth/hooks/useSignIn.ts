@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '../../data/auth'
+import { useAuth } from '../auth'
 import { SignIn, Field, TestPassword } from '../../types'
 
 interface Props {

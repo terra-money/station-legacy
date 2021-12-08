@@ -7,7 +7,7 @@ import Icon from '../../components/Icon'
 import Badge from '../../components/Badge'
 import ExtLink from '../../components/ExtLink'
 import { useCurrentChainName } from '../../data/chain'
-import { useAddress } from '../../data/auth'
+import { useAddress } from '../../auth/auth'
 import useLCD from '../../api/useLCD'
 import s from './Tx.module.scss'
 

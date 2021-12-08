@@ -1,4 +1,4 @@
-import { useAuth, useUser } from '../data/auth'
+import { useAuth, useUser } from './auth'
 import { useManageAccounts } from '../lib'
 import { loadKeys, storeKeys } from '../utils/localStorage'
 import Confirm from '../components/Confirm'

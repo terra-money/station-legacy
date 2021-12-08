@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { SignInWithAddress } from '../../types'
-import { useAuth } from '../../data/auth'
+import { useAuth } from '../auth'
 import useForm from '../../hooks/useForm'
 import validateForm from '../../post/hooks/validateForm'
 

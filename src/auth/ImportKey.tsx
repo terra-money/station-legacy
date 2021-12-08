@@ -1,7 +1,7 @@
 import { importKey } from '../utils/localStorage'
 import Form from '../components/Form'
 import ErrorComponent from '../components/ErrorComponent'
-import useImportKey from '../hooks/auth/useImportKey'
+import useImportKey from './hooks/useImportKey'
 
 const ImportKey = () => {
   const { form, error } = useImportKey({

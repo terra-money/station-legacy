@@ -2,7 +2,7 @@ import { useQueries } from 'react-query'
 import { TokenBalance, Tokens } from '../types'
 import { useTokens } from '../data/tokens'
 import useLCD from '../api/useLCD'
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 
 export interface TokenBalanceQuery {
   loading: boolean

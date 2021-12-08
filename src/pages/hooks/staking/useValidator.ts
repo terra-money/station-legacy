@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useAddress } from '../../../data/auth'
+import { useAddress } from '../../../auth/auth'
 import { ValidatorData, ValidatorPage } from '../../../types'
 import useFCD from '../../../api/useFCD'
 import useValidatorItem from './useValidatorItem'

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { generateWallet } from '../utils'
 import { encryptWallet } from '../utils/localStorage'
-import { useAuth } from '../data/auth'
+import { useAuth } from '../auth/auth'
 import Select from '../components/Select'
 import accounts from '../accounts.local.json'
 

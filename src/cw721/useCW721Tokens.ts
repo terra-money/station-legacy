@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 import useLCD from '../api/useLCD'
 
 const useCW721Tokens = (contract: string) => {

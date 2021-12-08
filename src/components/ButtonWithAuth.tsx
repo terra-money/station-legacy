@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from 'react'
 import c from 'classnames'
 import { useConnectedWallet } from '@terra-money/wallet-provider'
 import { useText } from '../lib'
-import { useUser } from '../data/auth'
+import { useUser } from '../auth/auth'
 import Pop from './Pop'
 import s from './ButtonWithName.module.scss'
 

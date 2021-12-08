@@ -14,7 +14,7 @@ import {
 import { plus, useBank } from '../../lib'
 import { gt } from '../../utils'
 import { toAmount } from '../../utils/format'
-import { useAddress } from '../../data/auth'
+import { useAddress } from '../../auth/auth'
 import { useCurrentChainName } from '../../data/chain'
 import useLCD from '../../api/useLCD'
 

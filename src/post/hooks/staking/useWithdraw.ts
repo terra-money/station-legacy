@@ -1,7 +1,7 @@
 import { MsgWithdrawDelegatorReward } from '@terra-money/terra.js'
 import { useTranslation } from 'react-i18next'
 import { WithdrawProps, PostPage } from '../../../types'
-import { useAddress } from '../../../data/auth'
+import { useAddress } from '../../../auth/auth'
 import useBank from '../../../api/useBank'
 import { isFeeAvailable, getFeeDenomList } from '../validateConfirm'
 

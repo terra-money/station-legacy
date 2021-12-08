@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 import { useChangePassword, useManageAccounts } from '../lib'
-import { useUser } from '../data/auth'
+import { useUser } from './auth'
 import { decrypt } from '../utils'
 import { importKey, loadKeys, storeKeys } from '../utils/localStorage'
 import { testPassword } from '../utils/localStorage'

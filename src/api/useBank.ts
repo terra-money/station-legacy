@@ -1,4 +1,4 @@
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 import { BankAPI, BankData, Balance } from '../types'
 import { lt } from '../utils'
 import useFCD from './useFCD'

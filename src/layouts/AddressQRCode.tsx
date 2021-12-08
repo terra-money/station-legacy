@@ -1,5 +1,5 @@
 import QRCode from '../auth/QRCode'
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 
 const AddressQRCode = () => {
   const address = useAddress()

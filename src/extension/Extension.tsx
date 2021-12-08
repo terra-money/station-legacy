@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isNil } from 'ramda'
 import '@ledgerhq/hw-transport-webusb' // include in bundle
-import { useAddress } from '../data/auth'
+import { useAddress } from '../auth/auth'
 import { useExtension } from './useExtension'
 import AuthRoute from '../auth/AuthRoute'
 import ManageWallet from '../auth/ManageWallet'

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { path } from 'ramda'
-import { useAddress, useUser } from '../../../data/auth'
+import { useAddress, useUser } from '../../../auth/auth'
 import { StakingUI, StakingPersonal } from '../../../types'
 import { StakingData, StakingPage, StakingDelegation } from '../../../types'
 import { ValidatorSorter, Undelegation } from '../../../types'

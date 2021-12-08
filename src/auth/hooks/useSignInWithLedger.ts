@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfirmLedger } from '../../types'
-import { useAuth } from '../../data/auth'
+import { useAuth } from '../auth'
 
 export default (getAddress: () => Promise<string>): ConfirmLedger => {
   const { t } = useTranslation()
