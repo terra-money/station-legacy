@@ -53,7 +53,7 @@ const NFTItem = (item: Props) => {
       <article className={styles.wrapper}>
         <div className={styles.info}>
           {icon}
-          <span>{name || tokenId}</span>
+          <span className={styles.name}>{name || tokenId}</span>
         </div>
         <div className={styles.buttons}>
           <ButtonWithAuth

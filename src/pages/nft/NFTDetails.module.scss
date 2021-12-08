@@ -18,9 +18,8 @@
   justify-content: center;
   text-align: center;
 
-  @media (max-width: $breakpoint) {
+  @media (max-width: $breakpoint-large) {
     width: 100%;
-
     margin-bottom: 25px;
   }
 }

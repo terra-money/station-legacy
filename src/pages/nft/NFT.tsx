@@ -1,5 +1,6 @@
 import useMenu from '../hooks/useMenu'
 import Page from '../../components/Page'
+import Flex from '../../components/Flex'
 import WithAuth from '../../auth/WithAuth'
 import Marketplace from './Marketplace'
 import NFTDetails from './NFTDetails'
@@ -11,10 +12,10 @@ const NFT = () => {
     <Page title={title}>
       <WithAuth card>
         {() => (
-          <section className={styles.wrapper}>
+          <Flex className={styles.wrapper}>
             <NFTDetails />
             <Marketplace />
-          </section>
+          </Flex>
         )}
       </WithAuth>
     </Page>

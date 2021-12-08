@@ -7,9 +7,8 @@
 }
 
 .wrapper {
-  @include flex(center, flex-start);
-
-  @media (max-width: $breakpoint) {
+  align-items: flex-start;
+  @media (max-width: $breakpoint-large) {
     flex-direction: column;
   }
 }

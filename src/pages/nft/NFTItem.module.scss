@@ -12,6 +12,7 @@
 }
 
 .image {
+  flex: none;
   border-radius: 5px;
   margin-right: 15px;
 }
@@ -24,6 +25,7 @@
 .buttons {
   @include flex(center, flex-end);
   flex-wrap: nowrap;
+  margin-left: 10px;
 
   @media (max-width: $breakpoint) {
     flex-direction: column;
@@ -34,4 +36,8 @@
   @media (max-width: $breakpoint) {
     margin-bottom: 10px;
   }
+}
+
+.name {
+  text-align: left;
 }

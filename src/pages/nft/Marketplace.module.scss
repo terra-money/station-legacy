@@ -1,18 +1,11 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
-.marketplace {
+.wrapper {
   flex: 1;
-  padding: 20px 25px;
-  border: solid 1px $line;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-
-  @media (max-width: $breakpoint) {
+  @media (max-width: $breakpoint-large) {
     width: 100%;
     border-radius: 0;
-    border: 0;
   }
 }
 

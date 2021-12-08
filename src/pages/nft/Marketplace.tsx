@@ -1,3 +1,4 @@
+import Card from '../../components/Card'
 import ExtLink from '../../components/ExtLink'
 import Icon from '../../components/Icon'
 import useTerraAssets from '../../hooks/useTerraAssets'
@@ -10,18 +11,20 @@ const Marketplace = () => {
   )
 
   return (
-    <article className={styles.marketplace}>
-      <div className={styles.header}>
-        <Icon name="shopping_bag" size={20} />
-        <span className={styles.title}>Marketplace</span>
-      </div>
+    <article className={styles.wrapper}>
+      <Card>
+        <div className={styles.header}>
+          <Icon name="shopping_bag" size={20} />
+          <span className={styles.title}>Marketplace</span>
+        </div>
 
-      {markets?.map((market, key) => (
-        <ExtLink className={styles.address} href={market.link} key={key}>
-          {market.name}
-          <Icon name="north_east" size={14} />
-        </ExtLink>
-      ))}
+        {markets?.map((market, key) => (
+          <ExtLink className={styles.address} href={market.link} key={key}>
+            {market.name}
+            <Icon name="north_east" size={14} />
+          </ExtLink>
+        ))}
+      </Card>
     </article>
   )
 }
