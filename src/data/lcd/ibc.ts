@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from 'react-query'
 import { is } from '../../utils'
 import useLCD from '../../api/useLCD'
-import { fromPairs, zip } from 'ramda'
+import { zipObj } from 'ramda'
 
 export const useGetQueryDenomTrace = () => {
   const lcd = useLCD()
@@ -26,12 +26,12 @@ export const useDenomTraceList = (denoms: string[]) => {
   return useQueries(denoms.map(getQuery))
 }
 
-export const useDenomTracePair = (denoms: string[] = []) => {
+export const useDenomTracePair = (params: string[] = []) => {
+  const denoms = params.filter((denom) => is.ibcDenom(denom))
   const results = useDenomTraceList(denoms)
-  return fromPairs(
-    zip(
-      denoms,
-      results.map(({ data }) => data?.base_denom ?? '')
-    )
+  if (results.some(({ isLoading }) => isLoading)) return {}
+  return zipObj(
+    denoms,
+    results.map(({ data }) => data?.base_denom ?? '')
   )
 }

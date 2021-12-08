@@ -29,6 +29,10 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
     response.data?.rewards?.denoms.map(({ denom }) => denom)
   )
 
+  const formatDenom = (denom: string) => {
+    return is.ibcDenom(denom) ? denomPair[denom] : denom
+  }
+
   /* render */
   const renderPersonal = ({
     rewards,
@@ -96,10 +100,7 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
         },
         amounts:
           rewards?.denoms.map((coin) => {
-            const denom = is.ibcDenom(coin.denom)
-              ? denomPair[coin.denom]
-              : coin.denom
-            return format.display({ ...coin, denom })
+            return format.display({ ...coin, denom: formatDenom(denom) })
           }) ?? [],
         validators:
           myDelegationsFiltered?.map(
@@ -142,9 +143,9 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
                 unit: t('Common:Coin'),
                 value: t('Common:Tx:Amount'),
               },
-              contents: rewards.denoms.map((coin) => {
-                return { display: format.display(coin), coin }
-              }),
+              contents: rewards.denoms.map((coin) =>
+                format.display({ ...coin, denom: formatDenom(coin.denom) })
+              ),
             },
         desc: {
           header: t(

@@ -1,11 +1,4 @@
-import {
-  API,
-  CoinItem,
-  DisplayCoin,
-  Reward,
-  ValidatorData,
-  ValidatorUI,
-} from '..'
+import { API, DisplayCoin, Reward, ValidatorData, ValidatorUI } from '..'
 
 export interface StakingPage extends API<StakingData> {
   personal?: StakingPersonal
@@ -51,7 +44,7 @@ export interface UndelegationsTable {
 
 export interface RewardsTable {
   headings: DisplayCoin
-  contents: { coin: CoinItem; display: DisplayCoin }[]
+  contents: DisplayCoin[]
 }
 
 export interface MyDelegations {
