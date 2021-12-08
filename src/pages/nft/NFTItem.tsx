@@ -21,7 +21,8 @@ const NFTItem = (item: Props) => {
     if (!data) return null
 
     const { extension } = data
-    const { name, image } = extension
+    const image = extension?.image
+    const name = extension?.name
 
     const imgUrl = image?.startsWith('ipfs://')
       ? image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
@@ -57,12 +58,15 @@ const NFTItem = (item: Props) => {
         <div className={styles.buttons}>
           <ButtonWithAuth
             {...viewButtonAttrs}
+            disabled={!extension}
             className={classNames(styles.viewButton, 'btn btn-sky btn-sm')}
           />
-          <ButtonWithAuth
-            {...sendButtonAttrs}
-            className="btn btn-primary btn-sm"
-          />
+          {name && (
+            <ButtonWithAuth
+              {...sendButtonAttrs}
+              className="btn btn-primary btn-sm"
+            />
+          )}
         </div>
       </article>
     )
