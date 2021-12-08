@@ -33,8 +33,8 @@ const NFTItemList = ({ nft }: { nft: NFTContract }) => {
     <article className={styles.itemCard}>
       {nftTitle}
       {tokenList && !isEmpty(tokenList)
-        ? tokenList.map((name, key) => (
-            <NFTItem {...nft} nftName={name} key={key} />
+        ? tokenList.map((tokenId, key) => (
+            <NFTItem {...nft} tokenId={tokenId} key={key} />
           ))
         : !isLoading && <span className={styles.empty}>No token found</span>}
     </article>
