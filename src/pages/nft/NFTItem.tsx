@@ -7,6 +7,7 @@ import { NFTContract } from '../../types'
 import Send from './Send'
 import View from './View'
 import styles from './NFTItem.module.scss'
+import { runCustomImageDataParsers } from '../../utils/nftImageDataParser'
 
 interface Props extends NFTContract {
   tokenId: string
@@ -17,17 +18,6 @@ const NFTItem = (item: Props) => {
   const { modal } = useApp()
   const { data } = useNFTQuery(contract, tokenId)
 
-  const checkLunaPunkImage = (imageData: string | undefined) => {
-    const LUNAPUNKS_CONTRACT = 'terra1qfy2nfr0zh70jyr3h4ns9rzqx4fl8rxpf09ytv'
-    if (contract !== LUNAPUNKS_CONTRACT || !imageData) return
-    const svgSplitString = imageData.split('viewBox')
-    const svg = svgSplitString[0].concat(
-      "xmlns='http://www.w3.org/2000/svg' viewBox",
-      svgSplitString[1]
-    )
-    return 'data:image/svg+xml,'.concat(svg)
-  }
-
   const render = () => {
     if (!data) return null
 
@@ -36,7 +26,10 @@ const NFTItem = (item: Props) => {
 
     const imgUrl = image?.startsWith('ipfs://')
       ? image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
-      : image ?? checkLunaPunkImage(image_data)
+      : image ??
+        runCustomImageDataParsers(image_data, contract) ??
+        image_data ??
+        ''
 
     const icon = imgUrl ? (
       <img
