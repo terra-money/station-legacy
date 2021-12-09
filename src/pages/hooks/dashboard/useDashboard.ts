@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Dictionary } from 'ramda'
 import { DashboardPage, DashboardData, DashboardUI } from '../../../types'
 import { DisplaySelector, TaxCap } from '../../../types'
-import { format } from '../../../utils'
+import { format, is } from '../../../utils'
 import { percent } from '../../../utils/math'
 import { useCurrency } from '../../../data/currency'
 import useFCD from '../../../api/useFCD'
@@ -75,10 +75,12 @@ const getSelector = (
   title,
   select: {
     defaultValue: 'Luna',
-    options: Object.keys(data).map((denom) => {
-      const label = format.denom(denom)
-      return { value: label, children: label }
-    }),
+    options: Object.keys(data)
+      .filter((denom) => is.nativeDenom(denom))
+      .map((denom) => {
+        const label = format.denom(denom)
+        return { value: label, children: label }
+      }),
   },
   displays: Object.entries(data).reduce(
     (acc, [denom, amount]) => ({
