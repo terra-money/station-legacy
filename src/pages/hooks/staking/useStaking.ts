@@ -100,7 +100,7 @@ export default (initialSort?: { by: string; sort?: string }): StakingPage => {
         },
         amounts:
           rewards?.denoms.map((coin) => {
-            return format.display({ ...coin, denom: formatDenom(denom) })
+            return format.display({ ...coin, denom: formatDenom(coin.denom) })
           }) ?? [],
         validators:
           myDelegationsFiltered?.map(
