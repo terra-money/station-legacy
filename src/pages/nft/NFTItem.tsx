@@ -25,7 +25,7 @@ const NFTItem = (item: Props) => {
     const name = extension?.name
 
     const imgUrl = image?.startsWith('ipfs://')
-      ? image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      ? image?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
       : image
 
     const icon = imgUrl ? (
