@@ -10,6 +10,7 @@ export interface NFTContract {
 export interface NFTMarketplace {
   link: string
   name: string
+  icon?: string
 }
 
 export type NFTContracts = Dictionary<NFTContract>
