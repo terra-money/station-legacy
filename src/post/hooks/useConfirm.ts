@@ -11,7 +11,7 @@ import { useCurrentChain } from '../../data/chain'
 import fcd from '../../api/fcd'
 import { format } from '../../utils'
 import { toInput, toAmount } from '../../utils/format'
-import { lt, gt, toNumber } from '../../utils/math'
+import { lt, gt, times, toNumber } from '../../utils/math'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 
@@ -86,11 +86,11 @@ export default (
 
         const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
         const lcd = new LCDClient({ chainID, URL, gasPrices })
-        const options = { msgs, feeDenoms: [denom], memo, gasAdjustment }
+        const options = { msgs, feeDenoms: [denom], memo }
         const unsignedTx = await lcd.tx.create([{ address }], options)
         setUnsignedTx(unsignedTx)
 
-        const gas = String(unsignedTx.auth_info.fee.gas_limit)
+        const gas = times(unsignedTx.auth_info.fee.gas_limit, gasAdjustment)
         const estimatedFee = calcFee!.feeFromGas(gas, denom)
         setGas(gas)
         setInput(toInput(estimatedFee ?? '0'))
@@ -148,23 +148,12 @@ export default (
           : setTxHash(data.txhash)
       }
 
+      const gasLimit = times(unsignedTx.auth_info.fee.gas_limit, gasAdjustment)
       const gasFee = new Coins({ [fee.denom]: fee.amount })
-      const fees = tax ? gasFee.add(tax) : gasFee
-      unsignedTx.auth_info.fee = new Fee(
-        toNumber(unsignedTx.auth_info.fee.gas_limit),
-        fees
-      )
+      const fees = new Fee(toNumber(gasLimit), tax ? gasFee.add(tax) : gasFee)
 
       if (connected) {
-        const { result } = await connected.post({
-          msgs,
-          fee: new Fee(toNumber(unsignedTx.auth_info.fee.gas_limit), fees),
-          memo,
-          gas,
-          gasPrices: { [denom]: calcFee!.gasPrice(denom) },
-          gasAdjustment,
-          feeDenoms: [denom],
-        })
+        const { result } = await connected.post({ msgs, memo, fee: fees })
         setTxHash(result.txhash)
       } else {
         const key = await getKey(name ? { name, password } : undefined)
@@ -174,6 +163,7 @@ export default (
         const { account_number, sequence } =
           await wallet.accountNumberAndSequence()
 
+        unsignedTx.auth_info.fee = fees
         const signed = await key.signTx(unsignedTx, {
           chainID,
           sequence,
