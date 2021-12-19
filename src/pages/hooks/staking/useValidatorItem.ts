@@ -75,7 +75,7 @@ export default (): ((v: ValidatorData, params?: Params) => ValidatorUI) => {
       uptime: {
         title: t('Page:Staking:Uptime'),
         desc: t('Page:Staking:Last 10k blocks'),
-        percent: percent(upTime, 0),
+        percent: percent(upTime, 2),
       },
 
       myDelegations: Object.assign(
